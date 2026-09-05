@@ -6509,6 +6509,7 @@ public class Pesca : Script
     // a ogni pesce preso sono quattrocento scritture su disco e si sente.
     // Cambiano solo col livello, col posto o con un torneo, quindi si
     // ricordano com'erano l'ultima volta.
+    int zoneScritteSpecie = -1;
     int zoneScritteLiv = -1, zoneScritteQui = -2;
     int torneiScrittiLiv = -1, torneiScrittiOra = -2;
     int quadernoScrittoLiv = -1;
@@ -6537,10 +6538,13 @@ public class Pesca : Script
         ScriviNassa();
 
         int quiOra = LuogoQui();
-        if (livelloPescatore != zoneScritteLiv || quiOra != zoneScritteQui)
+        // e anche quando il quaderno cresce: l'esplorazione cambia
+        if (livelloPescatore != zoneScritteLiv || quiOra != zoneScritteQui
+            || quaderno.Count != zoneScritteSpecie)
         {
             zoneScritteLiv = livelloPescatore;
             zoneScritteQui = quiOra;
+            zoneScritteSpecie = quaderno.Count;
             ScriviZone();
         }
         if (livelloPescatore != torneiScrittiLiv || torneoOra != torneiScrittiOra)
