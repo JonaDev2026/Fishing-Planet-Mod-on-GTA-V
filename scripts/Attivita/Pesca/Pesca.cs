@@ -9174,33 +9174,87 @@ public class Pesca : Script
         // A spinning l'esca E' il cucchiaino: non c'e' il pane, e nella
         // casella dell'esca ci sta l'artificiale che hai montato, con
         // quanti ne hai. E' li' che si guarda cosa stai offrendo.
+        // COME IN FISHING PLANET: un cerchio leggero attorno all'esca, un
+        // cerchietto in alto a destra con quante ne restano, e a
+        // sinistra il nome dell'esca e l'amo che sta pescando.
+        //   esca_cx / esca_cy    centro del cerchio grande
+        //   esca_cerchio         diametro del cerchio grande
+        //   esca_img             larghezza dell'immagine dentro
+        //   esca_num_cerchio     diametro del cerchietto del numero
+        //   esca_num_dx / dy     dove sta il cerchietto rispetto al centro
+        //   esca_testo_dx        quanto a sinistra del cerchio sta il testo
         int idEsca = escaMontata;
         string imgEsca = "", nomeEsca = "";
         int prezzoE, livE;
         int idArt; string imgArt, nomeArt;
         bool conArt = Montato("artificiale", out idArt, out imgArt, out nomeArt);
+        string imgSlot = "", nomeSlot = "";
+        int quanteSlot = 0;
         if (conArt)
         {
-            float ax2 = 1172f, ay2 = -42f, al2 = 100f;
-            Sprite(imgArt, ax2 + 2f, ay2 + (al2 - 48f) / 2f + 25f, 120f, 48f);
-            DisegnaTesto("x" + QuantiPezzi("artificiale", idArt),
-                         ax2 + 63f, ay2 + al2 - 5f, 0.38f, 245, 245, 250);
+            imgSlot = imgArt; nomeSlot = nomeArt;
+            quanteSlot = QuantiPezzi("artificiale", idArt);
         }
-        else if (idEsca < 0 || !Articolo("esca", idEsca, out nomeEsca, out imgEsca, out prezzoE, out livE))
+        else
         {
-            if (Montato("esca", out id, out img, out nome))
-            { idEsca = id; imgEsca = img; }
-            else idEsca = -1;
+            if (idEsca < 0 || !Articolo("esca", idEsca, out nomeEsca, out imgEsca, out prezzoE, out livE))
+            {
+                if (Montato("esca", out id, out img, out nome))
+                { idEsca = id; imgEsca = img; nomeEsca = nome; }
+                else idEsca = -1;
+            }
+            if (idEsca >= 0)
+            {
+                imgSlot = imgEsca; nomeSlot = nomeEsca;
+                quanteSlot = QuanteEsche(idEsca);
+            }
         }
-        if (!conArt && idEsca >= 0)
+        if (imgSlot.Length > 0)
         {
-            float qx = 1172f, qy = -42f, ql = 100f;
-            // immagine un po' piu' grande e scesa di 20
-            Sprite(imgEsca, qx + 2f, qy + (ql - 48f) / 2f + 25f, 120f, 48f);
-            // il testo spostato di 4 a destra
-            DisegnaTesto("x" + QuanteEsche(idEsca), qx + 63f, qy + ql - 5f,
-                         0.38f, 245, 245, 250);
+            float ecx = LeggiF("esca_cx", 1215f);
+            float ecy = LeggiF("esca_cy", 62f);
+            float ed = LeggiF("esca_cerchio", 92f);
+            float ew2 = LeggiF("esca_img", 64f);
+            float nd = LeggiF("esca_num_cerchio", 38f);
+            float ndx = LeggiF("esca_num_dx", 34f);
+            float ndy = LeggiF("esca_num_dy", -30f);
+            float tdx = LeggiF("esca_testo_dx", 10f);
+            Sprite("img\\hud\\cerchio.png", ecx - ed * 0.5f, ecy - ed * 0.5f, ed, ed);
+            // l'immagine dentro, con le sue proporzioni
+            Sprite(imgSlot, ecx - ew2 * 0.5f, ecy - ew2 * 0.5f, ew2, ew2);
+            // il cerchietto col numero
+            float ncx = ecx + ndx, ncy = ecy + ndy;
+            Sprite("img\\hud\\cerchio.png", ncx - nd * 0.5f, ncy - nd * 0.5f, nd, nd);
+            DisegnaTesto("" + quanteSlot, ncx, ncy - nd * 0.27f, LeggiF("esca_num_testo", 0.32f), 245, 245, 250);
+            // a sinistra: il nome, e sotto l'amo che pesca
+            float tx = ecx - ed * 0.5f - tdx;
+            DisegnaTestoDestra(nomeSlot, tx, ecy - 22f, LeggiF("esca_nome_testo", 0.32f), 245, 245, 250);
+            if (!conArt)
+            {
+                int idT2; string imT2, nmT2;
+                if (Montato("terminale", out idT2, out imT2, out nmT2))
+                {
+                    string mis = MisuraTerminale(idT2);
+                    if (mis.Length > 0)
+                        DisegnaTestoDestra(L("Hook ", "Amo ") + mis, tx, ecy - 2f,
+                                           LeggiF("esca_amo_testo", 0.28f), 245, 245, 250);
+                }
+            }
         }
+    }
+
+    void DisegnaTestoDestra(string txt, float x, float y, float scala, int r, int g, int b)
+    {
+        try
+        {
+            TextElement el = new TextElement(txt, new PointF(x, y), scala);
+            el.Color = Color.FromArgb(255, r, g, b);
+            el.Font = GTA.UI.Font.ChaletLondon;
+            el.Alignment = Alignment.Right;
+            el.Outline = true;
+            el.Draw();
+        }
+        catch { }
     }
 
     // la misura dell'amo (o del terminale) montato
