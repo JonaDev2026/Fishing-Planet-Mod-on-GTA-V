@@ -8557,6 +8557,10 @@ public class TrainerPesca : Script
                 if (!File.Exists(f)) continue;
                 string nome = File.ReadAllText(f).Trim();
                 try { File.Delete(f); } catch { }
+                // "file|voce": dopo il nome, la voce su cui mettere il cursore
+                string voce = "";
+                int barra = nome.IndexOf('|');
+                if (barra >= 0) { voce = nome.Substring(barra + 1).Trim(); nome = nome.Substring(0, barra).Trim(); }
                 int ks;
                 for (ks = 0; ks < modSubMenu.Count; ks++)
                 {
@@ -8565,6 +8569,13 @@ public class TrainerPesca : Script
                     cur = modSubMenu[ks];
                     menus[cur].Sel = FirstSelectable(cur);
                     menus[cur].Top = 0;
+                    if (voce.Length > 0)
+                    {
+                        int iv;
+                        for (iv = 0; iv < menus[cur].Items.Count; iv++)
+                            if (menus[cur].Items[iv].Text == voce) { menus[cur].Sel = iv; break; }
+                        if (menus[cur].Sel >= MAX_VIS) menus[cur].Top = menus[cur].Sel - MAX_VIS + 1;
+                    }
                     ComandoMod(modSubDir[ks], "apri " + nome);
                     Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", true);
                     return;

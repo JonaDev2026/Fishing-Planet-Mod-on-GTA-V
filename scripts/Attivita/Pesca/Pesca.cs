@@ -10038,10 +10038,9 @@ public class Pesca : Script
     // SINISTRA e DESTRA della croce giri fra i pezzi di quella categoria
     // che hai in borsa - come si cambia arma dentro uno spicchio - lasci
     // LB e il pezzo si monta. Dodici spicchi in senso orario dall'alto,
-    // uno per ogni posto dell'armatura; in basso lo ZAINO: ci lasci LB
-    // e si apre l'equipaggiamento nel menu. I due accanto sono vuoti: ci
-    // lasci la levetta e chiudi senza fare niente. La nassa non c'e':
-    // e' una sola, sta fissa. La canna resta in mano: LB con la lenza
+    // uno per ogni posto dell'armatura; in basso tre pagine del menu:
+    // lo ZAINO apre l'equipaggiamento, la NASSA il pescato del giorno,
+    // PESCI DEL LAGO i pesci del posto dove sei. Ci lasci LB e si apre. La canna resta in mano: LB con la lenza
     // in acqua la ritira e basta, a riporre la canna ci pensa X. Cucchiaino e galleggiante/
     // amo si scacciano da soli: montando uno si smonta l'altro.
     //   ruota_x / ruota_y   centro, in pixel su 1280x720
@@ -10057,11 +10056,11 @@ public class Pesca : Script
     // "terminale" qui e' la casella dell'amo; leader e piombo sono le
     // altre due caselle dei terminali, con la stessa categoria in borsa
     static readonly string[] RUOTA_CAT = new string[] {
-        "canna", "mulinello", "lenza", "leader", "piombo", "",
-        "zaino", "", "terminale", "galleggiante", "esca", "artificiale" };
+        "canna", "mulinello", "lenza", "leader", "piombo", "pesci",
+        "zaino", "nassa", "terminale", "galleggiante", "esca", "artificiale" };
     static readonly string[] RUOTA_NOME = new string[] {
-        "Canna", "Mulinello", "Lenza", "Leader", "Piombo", "",
-        "Zaino", "", "Amo", "Galleggiante", "Esca", "Cucchiaino" };
+        "Canna", "Mulinello", "Lenza", "Leader", "Piombo", "Pesci del lago",
+        "Zaino", "Nassa", "Amo", "Galleggiante", "Esca", "Cucchiaino" };
 
     class VoceRuota
     {
@@ -10098,7 +10097,7 @@ public class Pesca : Script
         List<VoceRuota> v = new List<VoceRuota>();
         if (sp < 0 || sp >= RUOTA_CAT.Length) return v;
         string cat = RUOTA_CAT[sp];
-        if (cat.Length == 0 || cat == "zaino") return v;
+        if (cat.Length == 0 || cat == "zaino" || cat == "nassa" || cat == "pesci") return v;
         VoceRuota vuoto = new VoceRuota();
         vuoto.Cat = cat; vuoto.Id = -1; vuoto.Bob = -1;
         vuoto.Nome = "Vuoto"; vuoto.Dett = "";
@@ -10264,9 +10263,18 @@ public class Pesca : Script
     {
         // ZAINO: si apre l'equipaggiamento nel menu. Glielo si dice al
         // trainer con un file, come per chiudere.
-        if (ruotaSpicchio >= 0 && RUOTA_CAT[ruotaSpicchio] == "zaino")
+        // "file|voce": la pagina, e la voce su cui mettere il cursore
+        string pagina = "";
+        if (ruotaSpicchio >= 0)
         {
-            try { File.WriteAllText(Path.Combine(MY_DIR, "apri.txt"), "casa_voci.txt"); }
+            string cs = RUOTA_CAT[ruotaSpicchio];
+            if (cs == "zaino") pagina = "casa_voci.txt";
+            else if (cs == "nassa") pagina = "casa_voci.txt|" + PESCATO;
+            else if (cs == "pesci") pagina = FileLuogo(LuogoQui());
+        }
+        if (pagina.Length > 0)
+        {
+            try { File.WriteAllText(Path.Combine(MY_DIR, "apri.txt"), pagina); }
             catch { }
         }
         List<VoceRuota> scelte = new List<VoceRuota>();
@@ -10392,6 +10400,21 @@ public class Pesca : Script
                 Sprite(ImgZaino(), px - icz * 0.5f, py - icz * 0.5f, icz, icz);
                 continue;
             }
+            if (RUOTA_CAT[i] == "nassa")
+            {
+                // la nassa che porti; senza, l'ombra se c'e' il PNG
+                int idn; string imn, nmn;
+                if (!Montato("nassa", out idn, out imn, out nmn)) imn = "img/ruota/vuoto_nassa.png";
+                float icn = LeggiF("ruota_icona_nassa", ic);
+                Sprite(imn, px - icn * 0.5f, py - icn * 0.5f, icn, icn);
+                continue;
+            }
+            if (RUOTA_CAT[i] == "pesci")
+            {
+                float icp = LeggiF("ruota_icona_pesci", ic);
+                Sprite("img/ruota/pesci.png", px - icp * 0.5f, py - icp * 0.5f, icp, icp);
+                continue;
+            }
             List<VoceRuota> v = VociRuota(i);
             if (v.Count == 0) continue;
             int pos = ruotaPos[i];
@@ -10406,6 +10429,16 @@ public class Pesca : Script
         if (RUOTA_CAT[ruotaSpicchio] == "zaino")
         {
             DisegnaTesto("Apri l'equipaggiamento", cx, cy - 8f, 0.26f, 255, 255, 255);
+            return;
+        }
+        if (RUOTA_CAT[ruotaSpicchio] == "nassa")
+        {
+            DisegnaTesto("Il pescato del giorno", cx, cy - 8f, 0.26f, 255, 255, 255);
+            return;
+        }
+        if (RUOTA_CAT[ruotaSpicchio] == "pesci")
+        {
+            DisegnaTesto("I pesci di questo posto", cx, cy - 8f, 0.26f, 255, 255, 255);
             return;
         }
         List<VoceRuota> vs = VociRuota(ruotaSpicchio);
