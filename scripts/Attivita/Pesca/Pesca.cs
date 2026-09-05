@@ -5377,7 +5377,7 @@ public class Pesca : Script
         DisegnaRett(px, by, bw * pct / 100f, 2f, 255, 255, 255, 210);
         DisegnaTestoSinistra(pct + "%  " + scoperte + "/" + qs, px + bw + 8f, by - 8f, 0.20f, 200, 202, 210);
         DisegnaTestoSinistra(L("Exploration", "Esplorazione"),
-                             px, by + LeggiF("posto_lic_giu", 6f), 0.17f, 200, 202, 210);
+                             px, by + LeggiF("posto_lic_giu", 6f), 0.22f, 200, 202, 210);
         // il grafico sotto la riga dell'esplorazione, di attivita_giu pixel
         DisegnaAttivita(a, px, by + LeggiF("attivita_giu", 30f), LeggiF("attivita_larga", bw));
     }
