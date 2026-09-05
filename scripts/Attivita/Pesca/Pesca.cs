@@ -2205,13 +2205,6 @@ public class Pesca : Script
         // attorno all'esca, se no in un punto d'acqua davanti a te.
         if (inPesca && inRivaOra) PesceDiPassaggio(Game.GameTime);
         else ViaPesceScena();
-        // PROVA DEL FONDALE: col fondale di prova acceso il quadrante si
-        // vede anche senza lenza in acqua, cosi' lo puoi guardare
-        if (fondaleProva > 0 && fase != FASE_ACQUA && fase != FASE_ABBOCCA && fase != FASE_LOTTA)
-        {
-            if (QuadranteGall()) DisegnaGalleggiante(Game.GameTime, 0f, 0f);
-            else DisegnaSpinning(Game.GameTime, 0f);
-        }
         // LB: la ruota degli attrezzi al posto di quella delle armi
         Ruota();
         // mentre guardi l'inventario, l'HUD dell'attrezzatura: la stessa
@@ -4282,18 +4275,6 @@ public class Pesca : Script
             Function.Call(Hash.SET_NEW_WAYPOINT, PuntoX(lu), PuntoY(lu));
             Avviso("~g~Segnaposto su " + tt.Zona + ".~s~  " + tt.Nome);
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
-            return true;
-        }
-        // LE LISTE DEL TRAINER ARRIVANO COME "comando_valore" (imp_fondale_2),
-        // non "comando valore": il valore sta dopo l'ultimo trattino basso.
-        if (cmd.StartsWith("imp_fondale_")) { arg = cmd.Substring(12); cmd = "imp_fondale"; }
-        if (cmd.StartsWith("imp_gall_")) { arg = cmd.Substring(9); cmd = "imp_gall"; }
-        if (cmd == "imp_fondale")
-        {
-            int fp = Numero(arg);
-            if (fp < 0 || fp > 3) fp = 0;
-            fondaleProva = fp;
-            ScriviImpostazioni();
             return true;
         }
         if (cmd == "imp_gall")
@@ -6374,9 +6355,6 @@ public class Pesca : Script
         //   lista|etichetta|comando|valori|scritte|scelto
         v.Add("lista|Grandezza del galleggiante|imp_gall|0;1;2;3;4"
               + "|Vera;x1.3;x1.6;x2.0;x2.6|" + gallZoom);
-        // PROVA DEL FONDALE (sviluppo): forza il fondale del quadrante
-        v.Add("lista|Fondale di prova|imp_fondale|0;1;2;3"
-              + "|Vero;Mare;Lago;Fiume|" + fondaleProva);
         v.Add("Consiglia zone di pesca|imp_zone||"
               + (avvisaZona ? "Acceso" : "Spento")
               + "||Ti avvisa quando passi su un'acqua dove si pesca."
@@ -12166,17 +12144,11 @@ public class Pesca : Script
     // IL FONDALE DEL QUADRANTE: sabbia in mare, fango e alghe nel lago e
     // in palude, sassi nel fiume e nel torrente. Prende spazio verso
     // l'alto, il bordo sotto resta dov'era. "fondale_alt" e' l'altezza.
-    int fondaleProva = 0;   // 0 vero, 1 mare, 2 lago, 3 fiume (solo per provare)
-
     void DisegnaFondale(float cx, float largo, float top, float alt)
     {
         string tipo = "";
         int lu = LuogoQui();
         if (lu >= 0 && lu < arTipo.Count) tipo = arTipo[lu];
-        // prova dal menu (Impostazioni > Fondale di prova): 1 mare, 2 lago, 3 fiume
-        if (fondaleProva == 1) tipo = "mare";
-        else if (fondaleProva == 2) tipo = "lago";
-        else if (fondaleProva == 3) tipo = "fiume";
         string img = "img\\hud\\fondo_mare.png";
         if (tipo == "lago" || tipo == "palude") img = "img\\hud\\fondo_lago.png";
         else if (tipo == "fiume" || tipo == "torrente") img = "img\\hud\\fondo_fiume.png";
