@@ -7171,7 +7171,7 @@ public class Pesca : Script
     // un pezzo a caso (attesa_caso). Numeri nostri, in config.
     int AttesaAbboccata(float potenza)
     {
-        int attesa = (int)LeggiF("attesa_base", 14000f);
+        int attesa = (int)LeggiF("attesa_base", 60000f);
         if (!regoleVere) return attesa + caso.Next(4000);
         float att = AttivitaAcqua();
         attesa = (int)(attesa / att);
