@@ -8225,6 +8225,16 @@ public class Pesca : Script
                                         : ("img\\hud\\friz_off" + suf + ".png");
             SpriteInclinata(img, fcx - S * 0.5f, fcy - S * 0.5f, S, S, i * (360f / n) * LeggiF("ruota_verso", 1f));
         }
+        // RIQUADRO DI PROVA (sviluppo): la casella di un'icona della
+        // colonna (112x44), 20 px a sinistra del cerchio della frizione.
+        // "prova_riquadro=0" lo toglie.
+        if (LeggiF("prova_riquadro", 1f) > 0.5f)
+        {
+            float pw = LeggiF("prova_w", 112f), ph = LeggiF("prova_h", 44f);
+            float px = LeggiF("prova_x", fcx - fd * 0.5f - 20f - pw);
+            float py = LeggiF("prova_y", fcy - ph * 0.5f);
+            DisegnaRett(px, py, pw, ph, 70, 75, 85, 160);
+        }
         // IN MEZZO IL MULINELLO, e sotto i suoi dati: frizione e metri
         int idm; string imm, nmm;
         if (Montato("mulinello", out idm, out imm, out nmm))
