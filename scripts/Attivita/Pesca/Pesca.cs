@@ -8103,10 +8103,8 @@ public class Pesca : Script
             if (recuperato < 0f) recuperato = 0f;
             if (metriLenza < 0f) metriLenza = 0f;
             HudPesca();
-            int tr = tensione >= 85f ? 245 : (tensione >= 60f ? 250 : 130);
-            int tg = tensione >= 85f ? 90 : (tensione >= 60f ? 210 : 225);
-            int tb = tensione >= 85f ? 90 : (tensione >= 60f ? 90 : 180);
-            BarraCanna(tensione / 100f, tr, tg, tb);
+            // -1: i colori li mettono le tacche, blu -> verde -> giallo -> rosso
+            BarraCanna(tensione / 100f, -1, 0, 0);
             TacchePrizione();
             // UN TESTO SOLO, sempre uguale: cambiarlo fa suonare il bip
             // di GTA a ogni strappo. Che stia tirando lo vedi dalla barra,
@@ -8184,13 +8182,50 @@ public class Pesca : Script
         }
     }
 
+    // LA BARRA A TACCHE.
+    // Cornice chiara, tacche spente scure, accese dal basso. Con un
+    // colore (cr >= 0) sono tutte di quel colore - la carica del lancio,
+    // le attese - con cr = -1 e' la tensione e i colori salgono con la
+    // barra: blu, poi verde, poi giallo e rosso sul finale critico.
+    //   barra_tacche   quante tacche
+    //   barra_larga    larghezza delle tacche
+    //   barra_spazio   spazio fra una tacca e l'altra
     void BarraCanna(float fill01, int cr, int cg, int cb)
     {
-        DisegnaRett(BAR_X - 3f, BarY() - 3f, BAR_W + 6f, BAR_H + 6f, 0, 0, 0, 120);
-        DisegnaRett(BAR_X, BarY(), BAR_W, BAR_H, 30, 32, 36, 90);
         if (fill01 < 0f) fill01 = 0f;
         if (fill01 > 1f) fill01 = 1f;
-        DisegnaRett(BAR_X, BarY() + BAR_H * (1f - fill01), BAR_W, BAR_H * fill01, cr, cg, cb, 240);
+        int n = (int)LeggiF("barra_tacche", 24f);
+        if (n < 4) n = 4;
+        float larga = LeggiF("barra_larga", 18f);
+        float spazio = LeggiF("barra_spazio", 2f);
+        float x = BAR_X + BAR_W * 0.5f - larga * 0.5f;
+        float y0 = BarY();
+        float th = (BAR_H - spazio * (n - 1)) / n;
+        // cornice: un filo chiaro attorno, e il fondo scuro dentro
+        DisegnaRett(x - 3f, y0 - 3f, larga + 6f, BAR_H + 6f, 200, 205, 210, 170);
+        DisegnaRett(x - 2f, y0 - 2f, larga + 4f, BAR_H + 4f, 20, 22, 26, 200);
+        int accese = (int)(fill01 * n + 0.5f);
+        int i;
+        for (i = 0; i < n; i++)
+        {
+            // i = 0 e' in basso
+            float y = y0 + BAR_H - (i + 1) * th - i * spazio;
+            if (i >= accese)
+            {
+                DisegnaRett(x, y, larga, th, 40, 44, 52, 210);
+                continue;
+            }
+            int r = cr, g = cg, b = cb;
+            if (cr < 0)
+            {
+                float t = (i + 0.5f) / n;
+                if (t < 0.35f) { r = 60; g = 130; b = 240; }        // blu
+                else if (t < 0.70f) { r = 80; g = 220; b = 90; }    // verde
+                else if (t < 0.85f) { r = 245; g = 220; b = 60; }   // giallo
+                else { r = 240; g = 70; b = 60; }                   // rosso
+            }
+            DisegnaRett(x, y, larga, th, r, g, b, 240);
+        }
     }
 
     // QUANT'E' FONDO DOVE STA L'ESCA: pelo dell'acqua meno fondale,
