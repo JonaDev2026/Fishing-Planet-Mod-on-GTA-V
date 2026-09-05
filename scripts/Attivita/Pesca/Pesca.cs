@@ -5345,8 +5345,8 @@ public class Pesca : Script
         float oy = LeggiF("orario_y", 40f);
         DisegnaTestoSinistra(hh.ToString("00") + ":" + mi.ToString("00"), ox, oy,
                              LeggiF("orario_testo", 0.42f), 245, 245, 250);
-        DisegnaTestoSinistra(giorno + " " + gg + " " + mese, ox, oy + LeggiF("orario_data_giu", 26f),
-                             0.22f, 200, 202, 210);
+        DisegnaTestoSinistra(giorno + " " + gg + " " + mese, ox, oy + LeggiF("orario_data_giu", 22f),
+                             LeggiF("orario_data_testo", 0.28f), 200, 202, 210);
         // e sotto la data, quanto manca alla licenza
         if (licGiorni > 0)
             DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
@@ -5470,7 +5470,7 @@ public class Pesca : Script
         DisegnaRett(xo, yo, 1f, basso - yo, 255, 255, 255, 230);
         // sotto le ore, in piccolo, cos'e'
         DisegnaTestoSinistra(L("Fish activity in this area", "Attivita' dei pesci in questa zona"), px,
-                             basso + LeggiF("attivita_titolo_giu", 14f), 0.17f, 200, 202, 210);
+                             basso + LeggiF("attivita_titolo_giu", 14f), 0.22f, 200, 202, 210);
     }
 
     // il valore della curva a un'ora con i decimali, fuso col coseno
