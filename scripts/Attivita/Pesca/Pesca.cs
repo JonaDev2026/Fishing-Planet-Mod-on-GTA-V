@@ -8290,14 +8290,13 @@ public class Pesca : Script
             Voce(ic, tx, "rb", "Q", L("Change bait", "Cambia esca"));
             Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Cast", "Lancia"));
         }
-        else if (fase == FASE_ABBOCCA)
+        else if (fase == FASE_ACQUA || fase == FASE_ABBOCCA || fase == FASE_LOTTA)
         {
-            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Hook the fish", "Aggancia il pesce"));
-        }
-        else if (fase == FASE_ACQUA || fase == FASE_LOTTA)
-        {
+            // "aggancia" sta sempre li', anche prima dell'abboccata: cosi'
+            // non si legge solo nell'attimo in cui il pesce tira
             Voce(ic, tx, "lb", "TAB", L("Manage tackle", "Gestisci l'armatura"));
             Voce(ic, tx, "croce_sxdx", "< >", L("Drag", "Frizione"));
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Hook the fish", "Aggancia il pesce"));
             Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Reel in", "Recupera la lenza"));
         }
         else if (fase == FASE_CARD)
