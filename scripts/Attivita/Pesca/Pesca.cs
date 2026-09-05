@@ -4410,6 +4410,7 @@ public class Pesca : Script
         if (cmd == "bob_casa") { return BobinaACasa(Numero(arg)); }
         if (cmd == "bob_borsa") { return BobinaInBorsa(Numero(arg)); }
         if (cmd == "butta_bobc") { return ButtaBobinaCasa(Numero(arg)); }
+        if (cmd == "vendi_bobc") { return VendiBobinaCasa(Numero(arg)); }
         if (cmd == "butta")
         {
             string[] ab = arg.Split(' ');
@@ -5920,7 +5921,7 @@ public class Pesca : Script
                           + "|" + DettaglioBobina(idc2, mc3)
                           + "|bob_borsa " + qbc
                           + "|" + mc3 + " m"
-                          + "||"
+                          + "||vendi_bobc " + qbc
                           + "|Tagliata|190,195,205"
                           + "|butta_bobc " + qbc);
                     quanti++;
@@ -9150,6 +9151,42 @@ public class Pesca : Script
         string nome, img; int prezzo, liv;
         if (!Articolo("lenza", Numero(b.Split('|')[0]), out nome, out img, out prezzo, out liv)) nome = "bobina";
         Avviso("~g~Equipaggiata: ~s~" + nome);
+        return true;
+    }
+
+    // LA BOBINA TAGLIATA SI VENDE A METRO: il prezzo della confezione
+    // diviso i suoi metri, per i metri rimasti, alla percentuale di vendita.
+    bool VendiBobinaCasa(int i)
+    {
+        if (i < 0 || i >= bobineCasa.Count) return false;
+        if (inPesca) { Messaggio("Si vende da casa, non in riva."); return true; }
+        string[] c = bobineCasa[i].Split('|');
+        int id = Numero(c[0]);
+        int m = (c.Length > 1) ? Numero(c[1]) : 0;
+        string nome, img; int prezzo, liv;
+        if (!Articolo("lenza", id, out nome, out img, out prezzo, out liv)) return false;
+        int tot = MetriLenza(id);
+        if (tot <= 0) tot = m;
+        int perc = (int)LeggiF("vendi_percento", 50f);
+        if (perc < 0) perc = 0;
+        if (perc > 100) perc = 100;
+        int reso = (int)((long)prezzo * m / tot * perc / 100);
+        string k = "bobc:" + i;
+        int ora = Game.GameTime;
+        if (vendiChiesto != k || ora > vendiScade)
+        {
+            vendiChiesto = k;
+            vendiScade = ora + 5000;
+            Messaggio("Premi ancora (X) per vendere " + nome + " (" + m + " m) a $" + Dollari(reso));
+            return true;
+        }
+        vendiChiesto = "";
+        if (i >= bobineCasa.Count) return true;
+        bobineCasa.RemoveAt(i);
+        Paga(-reso);
+        SalvaStato();
+        RiscriviTutto();
+        Messaggio("Venduta " + nome + " (" + m + " m)   +$" + Dollari(reso));
         return true;
     }
 
