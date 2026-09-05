@@ -8218,11 +8218,21 @@ public class Pesca : Script
             int r = cr, g = cg, b = cb;
             if (cr < 0)
             {
+                // sfumato tacca per tacca, come nell'immagine: blu in
+                // basso, verde a meta', giallo in alto, rosso sul finale
                 float t = (i + 0.5f) / n;
-                if (t < 0.35f) { r = 60; g = 130; b = 240; }        // blu
-                else if (t < 0.70f) { r = 80; g = 220; b = 90; }    // verde
-                else if (t < 0.85f) { r = 245; g = 220; b = 60; }   // giallo
-                else { r = 240; g = 70; b = 60; }                   // rosso
+                float[] tp = new float[] { 0f, 0.40f, 0.75f, 1f };
+                int[] rp = new int[] { 60, 80, 245, 240 };
+                int[] gp = new int[] { 130, 220, 220, 70 };
+                int[] bp = new int[] { 240, 90, 60, 60 };
+                int k = 0;
+                while (k < 2 && t > tp[k + 1]) k++;
+                float u = (t - tp[k]) / (tp[k + 1] - tp[k]);
+                if (u < 0f) u = 0f;
+                if (u > 1f) u = 1f;
+                r = (int)(rp[k] + (rp[k + 1] - rp[k]) * u);
+                g = (int)(gp[k] + (gp[k + 1] - gp[k]) * u);
+                b = (int)(bp[k] + (bp[k + 1] - bp[k]) * u);
             }
             DisegnaRett(x, y, larga, th, r, g, b, 240);
         }
