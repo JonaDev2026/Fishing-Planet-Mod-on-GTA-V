@@ -11826,6 +11826,9 @@ public class Pesca : Script
             int w = 0;
             while (!Function.Call<bool>(Hash.HAS_ANIM_DICT_LOADED, DIZ_PESCA) && w < 1000)
             { Script.Wait(50); w += 50; }
+            // la posa "solo busto" del cammino (secondaria) resterebbe
+            // sopra le braccia anche dopo: via, prima di una posa intera
+            if (FlagPosa() == 1) Function.Call(Hash.CLEAR_PED_SECONDARY_TASK, p);
             Function.Call(Hash.TASK_PLAY_ANIM, p, DIZ_PESCA, clip,
                           8.0f, -8.0f, -1, FlagPosa(), 0.0f, false, false, false);
             try { Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, velocita); }
@@ -11873,6 +11876,7 @@ public class Pesca : Script
             int w = 0;
             while (!Function.Call<bool>(Hash.HAS_ANIM_DICT_LOADED, DIZ_PESCA) && w < 1000)
             { Script.Wait(50); w += 50; }
+            if (FlagPosa() == 1) Function.Call(Hash.CLEAR_PED_SECONDARY_TASK, p);
             Function.Call(Hash.TASK_PLAY_ANIM, p, DIZ_PESCA, clip,
                           fusione, -8.0f, -1, FlagPosa(), f, false, false, false);
             Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, 0.0f);
