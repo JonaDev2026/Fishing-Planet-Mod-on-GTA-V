@@ -8230,10 +8230,25 @@ public class Pesca : Script
         // "prova_riquadro=0" lo toglie.
         if (LeggiF("prova_riquadro", 1f) > 0.5f)
         {
-            float pw = LeggiF("prova_w", 112f), ph = LeggiF("prova_h", 44f);
-            float px = LeggiF("prova_x", fcx - fd * 0.5f - 20f - pw);
+            // QUATTRO QUADRATI IN COLONNA, alle stesse altezze della
+            // colonna vera (passo 54), 30 px a sinistra della frizione.
+            // Nei primi due la SIMULAZIONE di quello che manca quando
+            // peschi a galleggiante: il leader e il piombo. Gli altri
+            // due restano vuoti: con questa armatura non c'e' altro.
+            float pw = LeggiF("prova_w", 44f), ph = LeggiF("prova_h", 44f);
+            float px = LeggiF("prova_x", fcx - fd * 0.5f - 30f - pw);
             float py = LeggiF("prova_y", fcy - ph * 0.5f);
-            DisegnaRett(px, py, pw, ph, 70, 75, 85, 160);
+            int k;
+            for (k = 0; k < 4; k++)
+            {
+                float qy = py - k * 54f;
+                DisegnaRett(px, qy, pw, ph, 70, 75, 85, 160);
+            }
+            // leader (forma col cavo) e piombo, coi loro dati finti
+            Sprite("img\\terminali\\6214.png", px + 2f, py + 2f, pw - 4f, ph - 4f);
+            DisegnaTesto("7.7 kg", px - 30f, py + 15f, 0.19f, 245, 245, 250);
+            Sprite("img\\terminali\\5112.png", px + 2f, py - 54f + 2f, pw - 4f, ph - 4f);
+            DisegnaTesto("15 g", px - 30f, py - 54f + 15f, 0.19f, 245, 245, 250);
         }
         // IN MEZZO IL MULINELLO, e sotto i suoi dati: frizione e metri
         int idm; string imm, nmm;
