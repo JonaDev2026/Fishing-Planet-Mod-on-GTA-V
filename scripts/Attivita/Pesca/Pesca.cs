@@ -6900,12 +6900,6 @@ public class Pesca : Script
             || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 44);
     }
 
-    static void Aiuto(string t)
-    {
-        try { Screen.ShowHelpTextThisFrame(t); }
-        catch { }
-    }
-
     // I SUONI FATTI DA NOI.
     // I nomi dei suoni di GTA in tanti casi non si sentono: la banca
     // audio non e' caricata e non c'e' verso di saperlo da fuori. Allora
@@ -7687,8 +7681,8 @@ public class Pesca : Script
             if (luOra >= 0 && CodiceLuogo(luOra) != licZona)
             {
                 string bzL;
-                Aiuto("Non sei nel posto della licenza: l'hai pagata per "
-                      + NomeChiosco(licZona, out bzL));
+                Messaggio("~y~Non sei nel posto della licenza: l'hai pagata per "
+                          + NomeChiosco(licZona, out bzL));
             }
             return;
         }
