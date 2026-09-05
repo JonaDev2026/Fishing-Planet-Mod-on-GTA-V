@@ -9381,9 +9381,10 @@ public class TrainerPesca : Script
             {
                 string liv = suo.Substring(0, sp3);
                 string xp = suo.Substring(sp3 + 3);
-                DrawText(liv, sx, y + 3f, 0.25f, Color.FromArgb(255, 245, 205, 80));
-                DrawText(xp, sx + TextWidth(liv + "   ", 0.25f), y + 3f,
-                         0.25f, Color.FromArgb(255, 130, 200, 245));
+                // prima gli XP (blu), poi il livello (giallo) alla loro destra
+                DrawText(xp, sx, y + 3f, 0.25f, Color.FromArgb(255, 130, 200, 245));
+                DrawText(liv, sx + TextWidth(xp + "   ", 0.25f), y + 3f,
+                         0.25f, Color.FromArgb(255, 245, 205, 80));
             }
             else
                 DrawText(suo, sx, y + 3f, 0.25f, Color.FromArgb(255, 130, 200, 245));
