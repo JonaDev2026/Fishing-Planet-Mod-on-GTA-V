@@ -7444,7 +7444,10 @@ public class Pesca : Script
                 }
                 // levetta indietro: la strappata, tira la lenza verso di te
                 float ay = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 31);
+                // "strappata=0" in config la spegne (prova: col cammino
+                // la levetta indietro faceva un passo avanti)
                 if (ay > 0.5f && now > miaStrappataDa
+                    && LeggiF("strappata", 1f) > 0.5f
                     && (fase == FASE_ACQUA || fase == FASE_LOTTA))
                 {
                     miaStrappataDa = now + (int)LeggiF("anim_strappo_ms", 420f) + 220;
