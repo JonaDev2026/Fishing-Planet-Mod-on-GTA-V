@@ -12071,7 +12071,7 @@ public class Pesca : Script
         // il pelo dell'acqua
         DisegnaRett(cx - largo * 0.5f, top, largo, 2f, 150, 195, 235, 235);
         // il fondo
-        DisegnaRett(cx - largo * 0.5f, top + alt - 2f, largo, 2f, 150, 130, 95, 235);
+        DisegnaFondale(cx, largo, top, alt);
 
         // il cucchiaino, di lato, dove sta adesso
         float eh = LeggiF("spin_esca_h", 16f);
@@ -12141,6 +12141,21 @@ public class Pesca : Script
         return "";
     }
 
+    // IL FONDALE DEL QUADRANTE: sabbia in mare, fango e alghe nel lago e
+    // in palude, sassi nel fiume e nel torrente. Prende spazio verso
+    // l'alto, il bordo sotto resta dov'era. "fondale_alt" e' l'altezza.
+    void DisegnaFondale(float cx, float largo, float top, float alt)
+    {
+        string tipo = "";
+        int lu = LuogoQui();
+        if (lu >= 0 && lu < arTipo.Count) tipo = arTipo[lu];
+        string img = "img\\hud\\fondo_mare.png";
+        if (tipo == "lago" || tipo == "palude") img = "img\\hud\\fondo_lago.png";
+        else if (tipo == "fiume" || tipo == "torrente") img = "img\\hud\\fondo_fiume.png";
+        float fh = LeggiF("fondale_alt", 6f);
+        Sprite(img, cx - largo * 0.5f, top + alt - fh, largo, fh);
+    }
+
     void DisegnaGalleggiante(int now, float giu, float scossa)
     {
         // STESSO QUADRANTE DELLO SPINNING, con dentro il montaggio a
@@ -12156,7 +12171,7 @@ public class Pesca : Script
 
         DisegnaRett(cx - largo * 0.5f, top, largo, alt, 40, 80, 130, 150);
         DisegnaRett(cx - largo * 0.5f, top, largo, 2f, 150, 195, 235, 235);
-        DisegnaRett(cx - largo * 0.5f, top + alt - 2f, largo, 2f, 150, 130, 95, 235);
+        DisegnaFondale(cx, largo, top, alt);
 
         // L'AMO CON L'ESCA, appeso sotto: sta a mezz'acqua, alla
         // profondita' che gli da' il galleggiante ("gall_prof").
