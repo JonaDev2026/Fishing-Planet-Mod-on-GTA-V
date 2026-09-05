@@ -8220,9 +8220,17 @@ public class Pesca : Script
             Sprite(imm, fcx - mw * 0.5f, fcy - mw * 0.5f, mw, mw);
             float fr = FrizioneMul(idm);
             int metri = MetriSuQuestoMulinello(idm);
+            // "1.25 kg  8.4 / 65 m": la frizione, i metri fuori e quelli
+            // che ci sono sul mulinello
             string rm = "";
             if (fr > 0f) rm = fr.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
-            if (metri > 0) rm = (rm.Length > 0) ? (rm + "  " + metri + " m") : (metri + " m");
+            if (metri > 0)
+            {
+                // mentre carichi il lancio sono i metri che farai, se no quelli fuori davvero
+                float fuori = (fase == FASE_CARICA) ? metriFuoriHud : metriLenza;
+                string mf = fuori.ToString("0.0", CultureInfo.InvariantCulture) + " / " + metri + " m";
+                rm = (rm.Length > 0) ? (rm + "  " + mf) : mf;
+            }
             if (rm.Length > 0)
                 DisegnaTesto(rm, fcx, fcy + fd * 0.5f + LeggiF("friz_testo_giu", 4f),
                              0.19f, 245, 245, 250);
@@ -8311,6 +8319,8 @@ public class Pesca : Script
         return fondoEsca;
     }
 
+    float metriFuoriHud = 0f;   // i metri di lenza fuori, per il testo del mulinello
+
     void Metri(float m)
     {
         // NIENTE SEGNI SUL PUNTO CALDO: dove c'e' il pesce lo scopri tu.
@@ -8324,15 +8334,9 @@ public class Pesca : Script
         // sessantacinque di filo in bobina e sono la fine del mondo se
         // ne restano quindici. Il secondo numero e' quello che c'e'
         // davvero sul mulinello adesso, non quello della confezione.
-        int idm2; string im2, nm2;
-        int tot = 0;
-        if (Montato("mulinello", out idm2, out im2, out nm2))
-            tot = MetriSuQuestoMulinello(idm2);
-        string testoM = mm.ToString("0.0", CultureInfo.InvariantCulture);
-        if (tot > 0) testoM += " / " + tot;
-        testoM += " m";
-        DisegnaTesto(testoM,
-                     BAR_X + BAR_W * 0.5f, BarY() - 34f + LeggiF("metri_giu", 11f), 0.38f, cr, cg, cb);
+        // I METRI FUORI NON SI SCRIVONO PIU' QUI: stanno sotto il
+        // mulinello, nel cerchio della frizione ("8.4 / 65 m").
+        metriFuoriHud = mm;
         // sotto i metri: quant'e' fondo dove sta l'esca
         float fondo = FondoDellEsca();
         if (fondo >= 0f)
