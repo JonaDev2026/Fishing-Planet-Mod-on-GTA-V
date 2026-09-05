@@ -7705,7 +7705,6 @@ public class Pesca : Script
             // CON LA RUOTA APERTA NON SI FA ALTRO: niente lancio, niente
             // cambio esca, niente riporre. I tasti sono della ruota.
             if (ruotaAperta) return;
-            Aiuto("Tieni ~INPUT_ATTACK~ per caricare il lancio - ~INPUT_FRONTEND_X~ per riporre - ~INPUT_COVER~ esca");
             if (now > tastoDa && TastoCanna())
             {
                 // niente suono qui: sembrava fosse successo qualcosa di grave.
@@ -7760,7 +7759,6 @@ public class Pesca : Script
             BarraCanna(potenza / 100f, 165, 95, 235);   // viola: stai caricando
             TacchePrizione();
             Metri(MetriDelLancio(potenza));
-            Aiuto("Rilascia ~INPUT_ATTACK~ per lanciare");
             // il corpo si piega indietro e la canna va indietro con lui,
             // tutti e due insieme alla carica
             PosaCarica(p, potenza / 100f);
@@ -7837,7 +7835,6 @@ public class Pesca : Script
             // che stava gia' abboccando.
             if (now > tastoDa && TastoEsca())
             {
-                Aiuto("Recupera la lenza per cambiare esca");
                 tastoDa = now + 600;
             }
 
@@ -7980,7 +7977,6 @@ public class Pesca : Script
             else DisegnaSpinning(now, assaggio ? 1f : 0f);
             GalleggianteInAcqua(now, 0f, assaggio ? 1f : 0f, ritiro);
             if (robaOra >= 0) MuoviRoba(now, false);
-            Aiuto("~INPUT_ATTACK~ recuperi piano - ~INPUT_COVER~ esca");
 
             if (now >= quandoAbbocca)
             {
@@ -8318,7 +8314,6 @@ public class Pesca : Script
             // UN TESTO SOLO, sempre uguale: cambiarlo fa suonare il bip
             // di GTA a ogni strappo. Che stia tirando lo vedi dalla barra,
             // lo senti dal mulinello e te lo dice il pad.
-            Aiuto("~INPUT_ATTACK~ recupera - sinistra/destra la frizione");
             Metri(metriLenza);
 
             if (tensione >= 100f)
