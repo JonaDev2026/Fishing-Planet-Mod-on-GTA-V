@@ -995,6 +995,8 @@ public class Pesca : Script
 
         CaricaStato();
         livelloPescatore = LivelloDa(xpTot);
+        // il campo torna dov'era, se la licenza e' ancora in corso
+        if (inPesca && campoMesso) MettiCampo();
         ScaffaliDelNegozio();
         ScriviZone();
         ScriviTesta();
@@ -2598,6 +2600,12 @@ public class Pesca : Script
                 if (c.Length > 2) licGiorni = Numero(c[2]);
                 inPesca = (licZona.Length > 0 && licGiorni > 0);
             }
+            else if (k == "campo" && c.Length > 4)
+            {
+                campoX = LeggiNum(c[1]); campoY = LeggiNum(c[2]);
+                campoZ = LeggiNum(c[3]); campoDir = LeggiNum(c[4]);
+                campoMesso = true;
+            }
             else if (k == "presosu" && c.Length > 1)
                 presoSu[c[1].Trim()] = 1;
             else if (k == "bobina" && c.Length > 2)
@@ -2690,6 +2698,11 @@ public class Pesca : Script
         v.Add("# stato della pesca - lo scrive la mod, non toccarlo a mano");
         v.Add("xp|" + xpTot);
         v.Add("licenza|" + licZona + "|" + licGiorni);
+        if (campoMesso)
+            v.Add("campo|" + campoX.ToString("0.00", CultureInfo.InvariantCulture)
+                  + "|" + campoY.ToString("0.00", CultureInfo.InvariantCulture)
+                  + "|" + campoZ.ToString("0.00", CultureInfo.InvariantCulture)
+                  + "|" + campoDir.ToString("0.0", CultureInfo.InvariantCulture));
         foreach (KeyValuePair<string, int> kv in magazzino)
             v.Add("casa|" + kv.Key + "|" + kv.Value);
         foreach (KeyValuePair<string, int> kv in borsa)
@@ -5130,6 +5143,8 @@ public class Pesca : Script
         licGiorni = giorni;
         inPesca = true;
         Alba();
+        SegnaCampo(Game.Player.Character);
+        MettiCampo();
         Avviso("~g~Licenza pagata. Buona pesca.");
         return true;
     }
@@ -5230,6 +5245,8 @@ public class Pesca : Script
         inPesca = false;
         licZona = "";
         licGiorni = 0;
+        ViaCampo();
+        campoMesso = false;
         TempoNormale();
         if (avvisa) Avviso("~y~Giornata finita. Si torna a casa.");
         return true;
@@ -10211,6 +10228,7 @@ public class Pesca : Script
         {
             TogliCanna();
             TogliBlipPunti();
+            ViaCampo();
             Ped p = Game.Player.Character;
             if (p != null && p.Exists()) p.Task.ClearAll();
             if (orologioPreso) Function.Call(Hash.PAUSE_CLOCK, false);
@@ -11464,6 +11482,120 @@ public class Pesca : Script
             scenaDa = now;
         }
         catch { ViaPesceScena(); }
+    }
+
+    // ============================================================
+    //  IL CAMPO
+    // ============================================================
+    // Comprata la licenza, dietro a te compare il tuo posto: la cassetta
+    // aperta, lo zaino, le canne di riserva piantate nel terreno, il
+    // secchio, la sedia. Sono prop di GTA (campo.txt), messi a terra
+    // rispetto a dove guardi in quel momento; restano li' finche' la
+    // licenza dura, anche se ti allontani. campo=0 in config li toglie.
+    class PezzoCampo
+    {
+        public string Nome, Modello;
+        public float Dietro, Lato, Rz, Rx, Giu;
+    }
+    List<PezzoCampo> campoPezzi = new List<PezzoCampo>();
+    List<Prop> campoProps = new List<Prop>();
+    float campoX = 0f, campoY = 0f, campoZ = 0f, campoDir = 0f;
+    bool campoMesso = false;
+
+    void CaricaCampo()
+    {
+        campoPezzi.Clear();
+        string[] rows = LeggiRighe("campo.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 4) continue;
+            PezzoCampo x = new PezzoCampo();
+            x.Nome = c[0].Trim();
+            x.Modello = c[1].Trim();
+            x.Dietro = LeggiNum(c[2]);
+            x.Lato = LeggiNum(c[3]);
+            x.Rz = (c.Length > 4) ? LeggiNum(c[4]) : 0f;
+            x.Rx = (c.Length > 5) ? LeggiNum(c[5]) : 0f;
+            x.Giu = (c.Length > 6) ? LeggiNum(c[6]) : 0f;
+            campoPezzi.Add(x);
+        }
+    }
+
+    static float LeggiNum(string t)
+    {
+        float v;
+        if (float.TryParse(t.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out v)) return v;
+        return 0f;
+    }
+
+    // dove stai adesso diventa il posto del campo
+    void SegnaCampo(Ped p)
+    {
+        campoX = p.Position.X; campoY = p.Position.Y; campoZ = p.Position.Z;
+        campoDir = p.Heading;
+        campoMesso = true;
+    }
+
+    void MettiCampo()
+    {
+        ViaCampo();
+        if (!campoMesso || !inPesca) return;
+        if (LeggiF("campo", 1f) < 0.5f) return;
+        if (campoPezzi.Count == 0) CaricaCampo();
+        double rad = campoDir * Math.PI / 180.0;
+        // "avanti" e' dove guardavi: dietro e' il contrario, lato e' la destra
+        float fx = -(float)Math.Sin(rad), fy = (float)Math.Cos(rad);
+        float rx = fy, ry = -fx;
+        int i;
+        for (i = 0; i < campoPezzi.Count; i++)
+        {
+            PezzoCampo x = campoPezzi[i];
+            try
+            {
+                Model m = new Model(x.Modello);
+                if (!m.IsValid || !m.IsInCdImage) continue;
+                m.Request(500);
+                if (!m.IsLoaded) continue;
+                float px = campoX - fx * x.Dietro + rx * x.Lato;
+                float py = campoY - fy * x.Dietro + ry * x.Lato;
+                float pz = campoZ;
+                OutputArgument oz = new OutputArgument();
+                if (Function.Call<bool>(Hash.GET_GROUND_Z_FOR_3D_COORD, px, py, campoZ + 2f, oz, false, false))
+                    pz = oz.GetResult<float>();
+                Prop pr = World.CreateProp(m, new GTA.Math.Vector3(px, py, pz + x.Giu), false, false);
+                m.MarkAsNoLongerNeeded();
+                if (pr == null || !pr.Exists()) continue;
+                Function.Call(Hash.SET_ENTITY_ROTATION, pr, x.Rx, 0f, campoDir + x.Rz, 2, true);
+                Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, pr, false);
+                Function.Call(Hash.FREEZE_ENTITY_POSITION, pr, true);
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pr, true, true);
+                campoProps.Add(pr);
+            }
+            catch { }
+        }
+    }
+
+    void ViaCampo()
+    {
+        int i;
+        for (i = 0; i < campoProps.Count; i++)
+        {
+            try
+            {
+                if (campoProps[i] != null && campoProps[i].Exists())
+                {
+                    Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, campoProps[i], true, true);
+                    Function.Call(Hash.FREEZE_ENTITY_POSITION, campoProps[i], false);
+                    campoProps[i].Delete();
+                }
+            }
+            catch { }
+        }
+        campoProps.Clear();
     }
 
     // ============================================================
