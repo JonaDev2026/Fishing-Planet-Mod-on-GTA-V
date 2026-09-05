@@ -2115,10 +2115,14 @@ public class Pesca : Script
                 conteggio += ".  Non hai ancora montato niente.";
             // la prima riga e' quella del conteggio: senza immagine lasciava
             // il buco del banner, quindi ci mettiamo lo stemma
-            r.Insert(0, "- " + r.Count + " specie -|niente|" + Banner() + "|" + conteggio + ".");
+            // e il banner e' quello del lago, non lo stemma: lo stemma
+            // resta solo per i posti che un banner non ce l'hanno
+            string bnL = BannerArea(lu);
+            if (bnL.Length == 0) bnL = Banner();
+            r.Insert(0, "- " + r.Count + " specie -|niente|" + bnL + "|" + conteggio + ".");
             ScriviVoci(FileLuogo(lu), r);
             menu.Add("sottofile|" + NomeLuogo(lu) + " (" + (r.Count - 1) + ")|" + FileLuogo(lu)
-                     + "||" + Banner() + "|" + conteggio);
+                     + "||" + bnL + "|" + conteggio);
         }
         ScriviVoci("studio_voci.txt", menu);
         ScriviDiario();
