@@ -9102,7 +9102,8 @@ public class Pesca : Script
             // i chili che regge, 8 pixel sotto la canna
             string kgc = PortataCanna(KgCanna(id));
             if (kgc.Length > 0)
-                DisegnaTesto(kgc, chx + 54f, chy + 270f + 8f,
+                DisegnaTesto(kgc, chx + 54f + LeggiF("canna_kg_dx", -4f),
+                             chy + 270f + 8f + LeggiF("canna_kg_dy", -5f),
                              0.19f, 245, 245, 250);
         }
 
