@@ -5384,38 +5384,56 @@ public class Pesca : Script
                 }
                 attivCurva[h] = best;
             }
+            // NON E' UNA TELEMETRIA: la curva si ammorbidisce, ogni ora
+            // pesa con le due vicine, cosi' restano solo le onde grandi
+            float[] lisc = new float[24];
+            for (h = 0; h < 24; h++)
+                lisc[h] = attivCurva[(h + 22) % 24] * 0.15f + attivCurva[(h + 23) % 24] * 0.2f
+                        + attivCurva[h] * 0.3f
+                        + attivCurva[(h + 1) % 24] * 0.2f + attivCurva[(h + 2) % 24] * 0.15f;
+            for (h = 0; h < 24; h++) attivCurva[h] = lisc[h];
         }
         float alt = LeggiF("attivita_alt", 26f);
         float basso = py + alt;
         // la riga base e le ore
         DisegnaRett(px, basso, bw, 1f, 255, 255, 255, 120);
+        // la giornata di pesca parte alle 5: la riga va dalle 5 alle 5
+        float inizio = LeggiF("attivita_da", 5f);
         int k;
         for (k = 0; k <= 24; k += 6)
         {
             float xk = px + bw * k / 24f;
             DisegnaRett(xk, basso, 1f, 3f, 255, 255, 255, 120);
-            DisegnaTesto("" + (k % 24), xk, basso + 3f, 0.17f, 200, 202, 210);
+            DisegnaTesto("" + (((int)inizio + k) % 24), xk, basso + 3f, 0.17f, 200, 202, 210);
         }
-        // la curva: un pezzetto ogni due pixel, interpolando fra le ore
+        // la curva: un pezzetto ogni due pixel, con la fusione morbida
+        // (coseno) fra un'ora e l'altra
         float passo = 2f;
         float x;
         for (x = 0f; x < bw; x += passo)
         {
-            float ora = x / bw * 24f - 0.5f;
-            if (ora < 0f) ora += 24f;
-            int h0 = (int)ora; float u = ora - h0;
-            float v = attivCurva[h0 % 24] * (1f - u) + attivCurva[(h0 + 1) % 24] * u;
-            float y = basso - v * alt;
+            float y = basso - ValoreCurva(inizio + x / bw * 24f) * alt;
             DisegnaRett(px + x, y - 1f, passo, 2f, 255, 255, 255, 210);
         }
         // l'ora di adesso
         int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
         int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
-        float xo = px + bw * (hh + mi / 60f) / 24f;
-        float oraF = hh + mi / 60f - 0.5f; if (oraF < 0f) oraF += 24f;
-        int ho = (int)oraF; float uo = oraF - ho;
-        float vo = attivCurva[ho % 24] * (1f - uo) + attivCurva[(ho + 1) % 24] * uo;
-        DisegnaRett(xo - 2f, basso - vo * alt - 2f, 5f, 5f, 255, 255, 255, 255);
+        float oraOra = hh + mi / 60f - inizio;
+        while (oraOra < 0f) oraOra += 24f;
+        while (oraOra >= 24f) oraOra -= 24f;
+        float xo = px + bw * oraOra / 24f;
+        DisegnaRett(xo - 2f, basso - ValoreCurva(hh + mi / 60f) * alt - 2f, 5f, 5f, 255, 255, 255, 255);
+    }
+
+    // il valore della curva a un'ora con i decimali, fuso col coseno
+    float ValoreCurva(float ora)
+    {
+        ora -= 0.5f;
+        while (ora < 0f) ora += 24f;
+        while (ora >= 24f) ora -= 24f;
+        int h0 = (int)ora; float u = ora - h0;
+        float w = (1f - (float)Math.Cos(u * 3.1415926f)) * 0.5f;
+        return attivCurva[h0 % 24] * (1f - w) + attivCurva[(h0 + 1) % 24] * w;
     }
 
     // QUANTO MANCA ALLA FINE DELLA LICENZA, in tempo VERO.
