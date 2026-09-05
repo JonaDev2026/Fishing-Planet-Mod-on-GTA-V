@@ -9125,6 +9125,17 @@ public class Pesca : Script
     // IL BLOCCO IN BASSO A DESTRA DELL'HUD: la canna e la colonna del
     // montaggio. Sta in una funzione sua perche' lo disegna anche la
     // pagina dell'inventario, per far vedere com'e' armata la canna.
+    // IL QUADRATO DIETRO A OGNI PEZZO MONTATO della colonna: 44x44,
+    // centrato sulla casella dell'icona, colore e trasparenza delle
+    // tacche spente della barra. Solo dove c'e' un pezzo.
+    void QuadratoColonna(float mx, float ry)
+    {
+        if (LeggiF("colonna_quadrati", 1f) < 0.5f) return;
+        float ql = LeggiF("colonna_quadrato", 44f);
+        DisegnaRett(mx + (112f - ql) * 0.5f, ry + (44f - ql) * 0.5f, ql, ql,
+                    210, 215, 220, (int)LeggiF("barra_alfa_spenta", 55f));
+    }
+
     void DisegnaAttrezzatura()
     {
         int id; string img, nome;
@@ -9161,18 +9172,6 @@ public class Pesca : Script
         // Le scritte stanno a sinistra dell'icona, tutte incolonnate.
         float tx = mx + 9f + LeggiF("colonna_testo_dx", 8f);
 
-        // I CINQUE QUADRATI DELLA COLONNA: uno per posto (lenza, piombo,
-        // leader, galleggiante, amo), 44x44, centrati sulla casella
-        // dell'icona, dello stesso colore e trasparenza delle tacche
-        // spente della barra. "colonna_quadrati=0" li toglie.
-        if (LeggiF("colonna_quadrati", 1f) > 0.5f)
-        {
-            float ql = LeggiF("colonna_quadrato", 44f);
-            int qk;
-            for (qk = 0; qk < 5; qk++)
-                DisegnaRett(mx + (112f - ql) * 0.5f, my - qk * 54f + (44f - ql) * 0.5f, ql, ql,
-                            210, 215, 220, (int)LeggiF("barra_alfa_spenta", 55f));
-        }
 
         // IL MULINELLO STA NEL CERCHIO DELLA FRIZIONE, a sinistra della
         // colonna: qui la colonna parte dalla lenza, in basso.
@@ -9181,6 +9180,7 @@ public class Pesca : Script
             float ry = my - piano * 54f;
             // la bobina un filo piu' piccola degli altri ("colonna_lenza"),
             // centrata nella stessa casella
+            QuadratoColonna(mx, ry);
             float ll = LeggiF("colonna_lenza", 38f);
             Sprite(img, mx + (112f - ll) * 0.5f, ry + (44f - ll) * 0.5f, ll, ll);
             float kg = KgLenza(id);
@@ -9197,6 +9197,7 @@ public class Pesca : Script
         if (MontatoTerm("piombo", out id, out img, out nome))
         {
             float ryP = my - piano * 54f;
+            QuadratoColonna(mx, ryP);
             string fp = FormaTerminale(id);
             Sprite(fp.Length > 0 ? fp : img, mx, ryP, 112f, 44f);
             string mp = MisuraTerminale(id);
@@ -9206,6 +9207,7 @@ public class Pesca : Script
         if (MontatoTerm("leader", out id, out img, out nome))
         {
             float ryL = my - piano * 54f;
+            QuadratoColonna(mx, ryL);
             string fl = FormaTerminale(id);
             Sprite(fl.Length > 0 ? fl : img, mx, ryL, 112f, 44f);
             string ml = MisuraTerminale(id);
@@ -9215,6 +9217,7 @@ public class Pesca : Script
         if (Montato("galleggiante", out id, out img, out nome))
         {
             float ryG = my - piano * 54f;
+            QuadratoColonna(mx, ryG);
             Sprite(img, mx, ryG, 112f, 44f);
             // la portata: quanto piombo regge, che e' il dato dell'armatura
             int ig;
@@ -9231,6 +9234,7 @@ public class Pesca : Script
         if (Montato("terminale", out id, out img, out nome))
         {
             float ry = my - piano * 54f;
+            QuadratoColonna(mx, ry);
             string fa = FormaTerminale(id);
             Sprite(fa.Length > 0 ? fa : img, mx, ry, 112f, 44f);
             string mis = MisuraTerminale(id);
