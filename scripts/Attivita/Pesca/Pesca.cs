@@ -2205,6 +2205,13 @@ public class Pesca : Script
         // attorno all'esca, se no in un punto d'acqua davanti a te.
         if (inPesca && inRivaOra) PesceDiPassaggio(Game.GameTime);
         else ViaPesceScena();
+        // PROVA DEL FONDALE: col fondale di prova acceso il quadrante si
+        // vede anche senza lenza in acqua, cosi' lo puoi guardare
+        if (fondaleProva > 0 && fase != FASE_ACQUA && fase != FASE_ABBOCCA && fase != FASE_LOTTA)
+        {
+            if (QuadranteGall()) DisegnaGalleggiante(Game.GameTime, 0f, 0f);
+            else DisegnaSpinning(Game.GameTime, 0f);
+        }
         // LB: la ruota degli attrezzi al posto di quella delle armi
         Ruota();
         // mentre guardi l'inventario, l'HUD dell'attrezzatura: la stessa
