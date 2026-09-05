@@ -10226,6 +10226,21 @@ public class Pesca : Script
         }
     }
 
+    // un cerchio pieno a strisce orizzontali, coi nativi
+    void DiscoRett(float cx, float cy, float r, int cr, int cg, int cb, int ca)
+    {
+        int n = 24;
+        int k;
+        for (k = 0; k < n; k++)
+        {
+            float y0 = -r + (2f * r) * k / n;
+            float y1 = -r + (2f * r) * (k + 1) / n;
+            float ym = (y0 + y1) * 0.5f;
+            float mezza = (float)Math.Sqrt(Math.Max(0.0, r * r - ym * ym));
+            DisegnaRett(cx - mezza, cy + y0, mezza * 2f, y1 - y0, cr, cg, cb, ca);
+        }
+    }
+
     void DisegnaRuota()
     {
         float cx = LeggiF("ruota_x", 640f);
@@ -10254,12 +10269,14 @@ public class Pesca : Script
             float px = cx + rr * (float)Math.Sin(a);
             float py = cy - rr * (float)Math.Cos(a);
             Sprite(v[pos].Img, px - ic * 0.5f, py - ic * 0.5f, ic, ic);
-            if (v.Count > 1)
-                DisegnaTesto((pos + 1) + "/" + v.Count, px, py + ic * 0.5f - 2f,
-                             0.2f, 255, 255, 255);
         }
+        // IL DISCO IN MEZZO NON E' UN PNG.
+        // Le texture di ScriptHookV finiscono sopra tutto quello che
+        // disegnano i nativi, scritte comprese: un PNG qui copriva il
+        // testo. Allora il disco e' fatto di strisce DRAW_RECT, che
+        // stanno sotto le scritte come devono.
         float cs = LeggiF("ruota_centro", 120f);
-        Sprite("img/ruota/centro.png", cx - cs * 0.5f, cy - cs * 0.5f, cs, cs);
+        DiscoRett(cx, cy, cs * 0.5f, 30, 32, 38, 240);
         if (ruotaSpicchio < 0 || RUOTA_CAT[ruotaSpicchio].Length == 0) return;
         DisegnaTesto(RUOTA_NOME[ruotaSpicchio].ToUpper(), cx, cy - 28f, 0.24f, 200, 200, 200);
         List<VoceRuota> vs = VociRuota(ruotaSpicchio);
@@ -10271,7 +10288,9 @@ public class Pesca : Script
         int ps = ruotaPos[ruotaSpicchio];
         if (ps >= vs.Count) ps = 0;
         VoceRuota r = vs[ps];
-        DisegnaTesto(r.Nome, cx, cy - 8f, 0.28f, 255, 255, 255);
+        string nome = r.Nome;
+        if (vs.Count > 1) nome += "  " + (ps + 1) + "/" + vs.Count;
+        DisegnaTesto(nome, cx, cy - 8f, 0.28f, 255, 255, 255);
         string sotto = r.Dett;
         if (r.Montata) sotto = (sotto.Length > 0) ? sotto + "  -  montato" : "montato";
         if (sotto.Length > 0) DisegnaTesto(sotto, cx, cy + 12f, 0.22f, 200, 200, 200);
