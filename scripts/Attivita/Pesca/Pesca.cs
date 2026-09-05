@@ -6592,9 +6592,11 @@ public class Pesca : Script
     int giroMulinello = 0;    // il tic tic del mulinello mentre giri
 
     // LA FRIZIONE: le tacche del cerchio, si gira con destra e sinistra.
-    //   1 tacca accesa = frizione TIRATA: il mulinello non molla, guadagni
+    // COME IN FISHING PLANET: piu' tacche accese = piu' frizione = piu'
+    // freno sulla bobina.
+    //   tutte accese   = frizione TIRATA: il mulinello non molla, guadagni
     //                    lenza in fretta ma la tensione sale subito.
-    //   tutte accese   = frizione MORBIDA: la tensione sale piano, pero'
+    //   1 tacca accesa = frizione MORBIDA: la tensione sale piano, pero'
     //                    il pesce si riprende il filo e non finisci mai.
     // Sta a te trovare la via di mezzo col pesce che hai attaccato.
     // QUANTE POSIZIONI: "friz_posizioni" in config, 12 come le tacche.
@@ -6623,7 +6625,8 @@ public class Pesca : Script
         int n = PosFrizione();
         if (frizione < 1) frizione = 1;
         if (frizione > n) frizione = n;
-        float f = (float)(frizione - 1) / (float)(n - 1) * 3f;   // 0..3
+        // tabelle: indice 0 = tirata, 3 = morbida. Tutte le tacche = tirata.
+        float f = (float)(n - frizione) / (float)(n - 1) * 3f;   // 0..3
         int k = (int)f;
         if (k > 2) k = 2;
         float u = f - k;
@@ -8269,9 +8272,13 @@ public class Pesca : Script
                 string mf = fuori.ToString("0.0", CultureInfo.InvariantCulture) + " / " + metri + " m";
                 rm = (rm.Length > 0) ? (rm + "  " + mf) : mf;
             }
+            float ty = fcy + fd * 0.5f + LeggiF("friz_testo_giu", 4f);
             if (rm.Length > 0)
-                DisegnaTesto(rm, fcx, fcy + fd * 0.5f + LeggiF("friz_testo_giu", 4f),
-                             0.19f, 245, 245, 250);
+                DisegnaTesto(rm, fcx, ty, 0.19f, 245, 245, 250);
+            // sotto: la frizione inserita, in percentuale della massima
+            int pct = (int)(100f * frizione / PosFrizione() + 0.5f);
+            DisegnaTesto(L("drag ", "frizione ") + pct + "%", fcx, ty + LeggiF("friz_riga2", 12f),
+                         0.19f, 245, 245, 250);
         }
     }
 
