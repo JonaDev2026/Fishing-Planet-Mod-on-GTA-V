@@ -9403,11 +9403,15 @@ public class Pesca : Script
         int guadagno = (int)(b * r * t);
         xpTot += guadagno;
 
-        // quanto vale: comune, trofeo o esemplare unico secondo il peso
-        int prezzoPesce = s.PrC;
-        if (s.KgU > 0f && pesceKg >= s.KgU) prezzoPesce = s.PrU;
-        else if (s.KgT > 0f && pesceKg >= s.KgT) prezzoPesce = s.PrT;
-        int vale = Dollari(prezzoPesce);
+        // QUANTO VALE: E' UN PREZZO AL CHILO.
+        // Sul wiki "price_common = 70" vuol dire settanta crediti AL
+        // CHILO, non settanta a pesce: un bluegill da 180 grammi e uno
+        // da 400 non possono valere uguale. La fascia - comune, trofeo,
+        // unico - decide la tariffa, il peso decide il totale.
+        int tariffa = s.PrC;
+        if (s.KgU > 0f && pesceKg >= s.KgU) tariffa = s.PrU;
+        else if (s.KgT > 0f && pesceKg >= s.KgT) tariffa = s.PrT;
+        int vale = Dollari((int)(tariffa * pesceKg + 0.5f));
 
         Aggiungi(quaderno, s.Nome, 1);
         // il diario tiene il piu' grosso, non l'ultimo
