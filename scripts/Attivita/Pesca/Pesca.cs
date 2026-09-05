@@ -6498,7 +6498,7 @@ public class Pesca : Script
         if (inPesca)
         {
             nomeNeg = "Negozio di " + NomeArea(AreaOra());
-            descNeg = "Tutto, al triplo del prezzo.   " + Contatori();
+            descNeg = "Tutto, al triplo del prezzo.";
         }
         v.Add("sottofile|" + nomeNeg + "|negozio.txt||img\\lsfa.png|" + descNeg);
         // INVENTARIO DI CASA: pagina nuova, si sta rifacendo da zero.
