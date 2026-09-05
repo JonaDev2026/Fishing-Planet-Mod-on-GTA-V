@@ -8324,13 +8324,14 @@ public class Pesca : Script
             tot += wi[i] + 6f + tx[i].Length * car + (i < ic.Count - 1 ? gap : 0f);
         }
         float x = LeggiF("consigli_centro", 640f) - tot * 0.5f;
-        // la fascia scura dietro, da un bordo all'altro, come quella di
-        // Rockstar; consigli_sfondo e' l'alfa (0 la toglie)
+        // il rettangolo scuro dietro, largo quanto le voci piu' un
+        // margine, come quello di Rockstar; consigli_sfondo e' l'alfa
         int sfA = (int)LeggiF("consigli_sfondo", 150f);
         if (sfA > 0)
         {
             float sfH = LeggiF("consigli_sfondo_alto", lato + 10f);
-            DisegnaRett(0f, y + lato * 0.5f - sfH * 0.5f, 1280f, sfH, 0, 0, 0, sfA);
+            float sfM = LeggiF("consigli_sfondo_margine", 14f);
+            DisegnaRett(x - sfM, y + lato * 0.5f - sfH * 0.5f, tot + sfM * 2f, sfH, 0, 0, 0, sfA);
         }
         for (i = 0; i < ic.Count; i++)
         {
