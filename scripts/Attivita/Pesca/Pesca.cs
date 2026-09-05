@@ -8329,7 +8329,7 @@ public class Pesca : Script
         int sfA = (int)LeggiF("consigli_sfondo", 150f);
         if (sfA > 0)
         {
-            float sfH = LeggiF("consigli_sfondo_alto", 44f);
+            float sfH = LeggiF("consigli_sfondo_alto", lato + 10f);
             DisegnaRett(0f, y + lato * 0.5f - sfH * 0.5f, 1280f, sfH, 0, 0, 0, sfA);
         }
         for (i = 0; i < ic.Count; i++)
