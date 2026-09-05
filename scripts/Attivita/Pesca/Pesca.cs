@@ -5326,8 +5326,6 @@ public class Pesca : Script
     // DATA E ORA DEL GIOCO, in alto a sinistra (orario_x / orario_y)
     static readonly string[] GIORNI_IT = { "Domenica", "Lunedi'", "Martedi'", "Mercoledi'", "Giovedi'", "Venerdi'", "Sabato" };
     static readonly string[] GIORNI_EN = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
-    static readonly string[] MESI_IT = { "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre" };
-    static readonly string[] MESI_EN = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
     void DisegnaOrario()
     {
@@ -5335,22 +5333,21 @@ public class Pesca : Script
         int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
         int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
         int dw = Function.Call<int>(Hash.GET_CLOCK_DAY_OF_WEEK);
-        int gg = Function.Call<int>(Hash.GET_CLOCK_DAY_OF_MONTH);
-        int me = Function.Call<int>(Hash.GET_CLOCK_MONTH);
         if (dw < 0 || dw > 6) dw = 0;
-        if (me < 0 || me > 11) me = 0;
+        // il giorno a tre lettere accanto all'ora: il giorno del mese e il
+        // mese nel gioco non vogliono dire niente (niente stagioni)
         string giorno = L(GIORNI_EN[dw], GIORNI_IT[dw]);
-        string mese = L(MESI_EN[me], MESI_IT[me]);
+        if (giorno.Length > 3) giorno = giorno.Substring(0, 3);
         float ox = LeggiF("orario_x", 24f);
         float oy = LeggiF("orario_y", 40f);
-        DisegnaTestoSinistra(hh.ToString("00") + ":" + mi.ToString("00"), ox, oy,
-                             LeggiF("orario_testo", 0.42f), 245, 245, 250);
-        DisegnaTestoSinistra(giorno + " " + gg + " " + mese, ox, oy + LeggiF("orario_data_giu", 22f),
+        string ora = hh.ToString("00") + ":" + mi.ToString("00");
+        DisegnaTestoSinistra(ora, ox, oy, LeggiF("orario_testo", 0.42f), 245, 245, 250);
+        DisegnaTestoSinistra(giorno, ox + LeggiF("orario_giorno_dx", 76f), oy + LeggiF("orario_giorno_giu", 8f),
                              LeggiF("orario_data_testo", 0.28f), 200, 202, 210);
-        // e sotto la data, quanto manca alla licenza
+        // e sotto, quanto manca alla licenza
         if (licGiorni > 0)
             DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
-                                 ox, oy + LeggiF("orario_lic_giu", 42f), 0.22f, 200, 202, 210);
+                                 ox, oy + LeggiF("orario_lic_giu", 26f), 0.22f, 200, 202, 210);
     }
 
     // IL POSTO SULL'HUD: nome dell'acqua, sotto una riga bianca
