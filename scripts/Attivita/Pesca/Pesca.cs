@@ -7545,6 +7545,11 @@ public class Pesca : Script
         if (mio < da) mio = da;
         if (mio > a) mio = a;
         float trofeo = (sp.KgT > sp.KgC) ? sp.KgT : sp.KgC;
+        // anche il trofeo ha il suo margine sopra il peso del wiki
+        // (trofeo_extra), ma senza arrivare al peso dell'unico: quello
+        // e' dell'amo grande
+        trofeo = trofeo * (1f + LeggiF("trofeo_extra", 10f) / 100f);
+        if (sp.KgU > sp.KgT && trofeo >= sp.KgU) trofeo = sp.KgU - 0.001f;
         if (a <= da) return unico;
         float f = (float)(mio - da) / (float)(a - da);
         if (f >= 0.999f) return unico;
