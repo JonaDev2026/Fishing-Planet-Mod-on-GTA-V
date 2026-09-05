@@ -2626,6 +2626,15 @@ public class Pesca : Script
                 int uv = Numero(c[2]);
                 if (uv > 0) usati[c[1].Trim()] = uv;
             }
+            else if ((k == "pausa_unico" || k == "pausa_trofeo") && c.Length > 2)
+            {
+                long tp;
+                if (long.TryParse(c[2].Trim(), out tp))
+                {
+                    if (k == "pausa_unico") pausaUnico[c[1].Trim()] = tp;
+                    else pausaTrofeo[c[1].Trim()] = tp;
+                }
+            }
             else if (k == "imp" && c.Length > 2)
             {
                 if (c[1].Trim() == "avvisa_zona") avvisaZona = (Numero(c[2]) != 0);
@@ -2692,6 +2701,13 @@ public class Pesca : Script
         v.Add("imp|regole_vere|" + (regoleVere ? "1" : "0"));
         v.Add("imp|frizione|" + frizione);
         v.Add("imp|minuti|" + minutiFatti);
+        {
+            long oraP = AdessoSec();
+            foreach (KeyValuePair<string, long> kv in pausaUnico)
+                if (kv.Value > oraP) v.Add("pausa_unico|" + kv.Key + "|" + kv.Value);
+            foreach (KeyValuePair<string, long> kv in pausaTrofeo)
+                if (kv.Value > oraP) v.Add("pausa_trofeo|" + kv.Key + "|" + kv.Value);
+        }
         foreach (KeyValuePair<string, int> kv in usati)
             v.Add("usato|" + kv.Key + "|" + kv.Value);
         foreach (KeyValuePair<string, float> kv in record)
@@ -7008,7 +7024,16 @@ public class Pesca : Script
     int PostoAmoMontato()
     {
         int id; string img, nome;
-        if (!Montato("terminale", out id, out img, out nome)) return -1;
+        if (!Montato("terminale", out id, out img, out nome))
+        {
+            // a spinning l'amo e' quello dell'artificiale (colonna "amo")
+            int ida = InUso("artificiale");
+            if (ida < 0) return -1;
+            int j;
+            for (j = 0; j < artificiali.Count; j++)
+                if (artificiali[j].Id == ida) return PostoAmo(artificiali[j].Amo);
+            return -1;
+        }
         int i;
         for (i = 0; i < terminali.Count; i++)
             if (terminali[i].Id == id)
@@ -7366,9 +7391,13 @@ public class Pesca : Script
 
         Specie sp = pesci[scelto];
         float alto = TettoUnico(sp);
+        float tettoAmo = TettoAmo(sp);
+        if (alto > tettoAmo) alto = tettoAmo;
+        alto = TettoPausa(sp, alto);
         if (alto > tenuta) alto = tenuta;
         float basso = sp.KgC * 0.6f;
         if (basso < 0.05f) basso = 0.05f;
+        if (alto < basso) alto = basso;
         // la taglia non e' a caso piatta: con la tecnica sbagliata escono
         // quasi solo i piccoli, con quella giusta si aprono i grossi
         float pend2;
@@ -7380,6 +7409,69 @@ public class Pesca : Script
         kg = basso + tt * (alto - basso);
         if (kg < 0.05f) kg = 0.05f;
         return scelto;
+    }
+
+    // L'AMO DECIDE FINO A CHE TAGLIA SI PESCA (regola di Fishing Planet).
+    // Il pesce ha il suo range di ami sul wiki: con l'amo alla misura
+    // piccola del range escono solo i comuni, dalla meta' in su anche i
+    // trofei, con la misura grande anche gli unici. Fuori dal range si
+    // conta la misura del range piu' vicina. amo_taglia=0 spegne.
+    float TettoAmo(Specie sp)
+    {
+        float unico = TettoUnico(sp);
+        if (LeggiF("amo_taglia", 1f) < 0.5f) return unico;
+        int mio = PostoAmoMontato();
+        if (mio < 0) return unico;
+        int da, a;
+        RangeAmo(sp.Amo, out da, out a);
+        if (da < 0 || a < 0) return unico;
+        if (mio < da) mio = da;
+        if (mio > a) mio = a;
+        float trofeo = (sp.KgT > sp.KgC) ? sp.KgT : sp.KgC;
+        if (a <= da) return unico;
+        float f = (float)(mio - da) / (float)(a - da);
+        if (f >= 0.999f) return unico;
+        if (f >= 0.5f) return trofeo;
+        return sp.KgC;
+    }
+
+    // LA PAUSA DOPO IL COLPO GROSSO: preso un unico, per un po' quella
+    // specie non ne da' altri (tetto al trofeo); preso un trofeo, tetto al
+    // comune. Minuti veri (unico_pausa_min, trofeo_pausa_min), salvati.
+    Dictionary<string, long> pausaUnico = new Dictionary<string, long>();
+    Dictionary<string, long> pausaTrofeo = new Dictionary<string, long>();
+
+    static long AdessoSec()
+    {
+        return (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+    }
+
+    float TettoPausa(Specie sp, float alto)
+    {
+        long ora = AdessoSec();
+        long t;
+        if (pausaUnico.TryGetValue(sp.Nome, out t) && t > ora)
+        {
+            float trofeo = (sp.KgT > sp.KgC) ? sp.KgT : sp.KgC;
+            if (alto > trofeo) alto = trofeo;
+        }
+        if (pausaTrofeo.TryGetValue(sp.Nome, out t) && t > ora)
+        {
+            if (alto > sp.KgC) alto = sp.KgC;
+        }
+        return alto;
+    }
+
+    void SegnaColpoGrosso(Specie sp, float kg)
+    {
+        long ora = AdessoSec();
+        if (sp.KgU > 0f && kg >= sp.KgU)
+        {
+            pausaUnico[sp.Nome] = ora + (long)(LeggiF("unico_pausa_min", 20f) * 60f);
+            pausaTrofeo[sp.Nome] = ora + (long)(LeggiF("trofeo_pausa_min", 5f) * 60f);
+        }
+        else if (sp.KgT > 0f && kg >= sp.KgT)
+            pausaTrofeo[sp.Nome] = ora + (long)(LeggiF("trofeo_pausa_min", 5f) * 60f);
     }
 
     // IL TETTO DEGLI UNICI.
@@ -8549,6 +8641,9 @@ public class Pesca : Script
             float tyE = BarY() - 50f + LeggiF("caldo_giu", 8f) + LeggiF("prof_testo_giu", 14f);
             DisegnaTesto(L("Bait ", "Esca ") + profondita.ToString("0.00", CultureInfo.InvariantCulture) + " m",
                          QuadX(), tyE, 0.22f, 245, 245, 250);
+            // la temperatura dell'acqua (la nostra: ora, meteo, quota)
+            DisegnaTesto(L("Water ", "Acqua ") + GradiAcqua().ToString("0", CultureInfo.InvariantCulture) + "\u00B0",
+                         QuadX(), tyE + LeggiF("temp_testo_giu", 14f), 0.22f, 245, 245, 250);
             // sotto: la frizione inserita, in percentuale della massima
             int pct = (int)(100f * frizione / PosFrizione() + 0.5f);
             DisegnaTesto(L("drag ", "frizione ") + pct + "%", fcx, ty + LeggiF("friz_riga2", 12f),
@@ -10047,6 +10142,7 @@ public class Pesca : Script
         if (s.KgU > 0f && pesceKg >= s.KgU) cardTaglia = "ESEMPLARE UNICO";
         else if (s.KgT > 0f && pesceKg >= s.KgT) cardTaglia = "TROFEO";
         else cardTaglia = "COMUNE";
+        SegnaColpoGrosso(s, pesceKg);
         fase = FASE_CARD;
 
         SalvaStato();
