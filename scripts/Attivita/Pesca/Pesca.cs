@@ -5364,7 +5364,7 @@ public class Pesca : Script
         DisegnaTestoSinistra(arNome[a], px, py, 0.30f, 245, 245, 250);
         // la riga dell'esplorazione ha la sua altezza (esplora_y): sta sotto
         // livello e XP, in alto a sinistra
-        float by = LeggiF("esplora_y", 120f);
+        float by = LeggiF("esplora_y", 140f);
         DisegnaRett(px, by, bw, 2f, 255, 255, 255, 45);
         DisegnaRett(px, by, bw * pct / 100f, 2f, 255, 255, 255, 210);
         DisegnaTestoSinistra(pct + "%  " + scoperte + "/" + qs, px + bw + 8f, by - 8f, 0.20f, 200, 202, 210);
