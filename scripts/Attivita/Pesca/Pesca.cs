@@ -1457,8 +1457,8 @@ public class Pesca : Script
 
     static string Unisci(string a, string b)
     {
-        if (a.Length == 0) return b;
-        if (b.Length == 0) return a;
+        if (a == null || a.Length == 0) return b;
+        if (b == null || b.Length == 0) return a;
         return a + "   " + b;
     }
 
@@ -4898,13 +4898,6 @@ public class Pesca : Script
 
     // i numeri che contano davvero di un pezzo equipaggiato
     // una bobina tagliata: stesso filo, ma i metri sono quelli che ha lei
-    static string Unisci(string a, string b)
-    {
-        if (a == null || a.Length == 0) return b;
-        if (b == null || b.Length == 0) return a;
-        return a + "   " + b;
-    }
-
     string DettaglioBobina(int id, int metri)
     {
         int i;
