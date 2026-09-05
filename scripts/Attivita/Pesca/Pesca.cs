@@ -11056,11 +11056,17 @@ public class Pesca : Script
             for (k = 0; k < RUOTA_N; k++) ruotaPos[k] = PosMontata(k);
             Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
         }
-        // la levetta destra sceglie lo spicchio, non gira la telecamera
+        // CON LA RUOTA APERTA IL GIOCO NON RICEVE NIENTE: tutti i
+        // comandi spenti, e si riaccendono solo la levetta destra e la
+        // croce, che sono della ruota. Niente radio, niente telefono,
+        // niente cambio arma, niente telecamera.
+        Function.Call(Hash.DISABLE_ALL_CONTROL_ACTIONS, 0);
+        Function.Call(Hash.ENABLE_CONTROL_ACTION, 0, 37, true);   // LB: la ruota stessa
         Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 1, true);
         Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 2, true);
         Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 174, true);
         Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 175, true);
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 37, true);
         float sx = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 1);
         float sy = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 2);
         if (Math.Sqrt(sx * sx + sy * sy) > LeggiF("ruota_soglia", 0.5f))
