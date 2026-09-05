@@ -8257,11 +8257,13 @@ public class Pesca : Script
         float sc = LeggiF("consigli_testo", 0.24f);
         float gap = LeggiF("consigli_gap", 30f);
         float ty = y + lato * 0.5f - 9f + LeggiF("consigli_testo_giu", 1f);
-        SpriteInclinata("img\\hud\\croce_sugiu.png", x, y, lato, lato, 90f);
+        // le icone dei tasti stanno in img/hud/tasti (a, b, x, y, lb, rb,
+        // lt, rt, l, r, pad, croce, croce_sugiu, croce_sxdx), bianche
+        Sprite("img\\hud\\tasti\\croce_sxdx.png", x, y, lato, lato);
         x += lato + 6f;
         DisegnaTestoSinistra(L("Drag", "Frizione"), x, ty, sc, 245, 245, 250);
         x += LeggiF("consigli_larga1", 62f) + gap;
-        Sprite("img\\hud\\croce_sugiu.png", x, y, lato, lato);
+        Sprite("img\\hud\\tasti\\croce_sugiu.png", x, y, lato, lato);
         x += lato + 6f;
         DisegnaTestoSinistra(L("Bait depth", "Profondita' dell'esca"), x, ty, sc, 245, 245, 250);
     }
