@@ -12149,6 +12149,9 @@ public class Pesca : Script
         string tipo = "";
         int lu = LuogoQui();
         if (lu >= 0 && lu < arTipo.Count) tipo = arTipo[lu];
+        // prova: "fondale_prova=lago" (o mare, fiume) lo forza; vuoto = automatico
+        string prova = LeggiS("fondale_prova", "");
+        if (prova.Length > 0) tipo = prova;
         string img = "img\\hud\\fondo_mare.png";
         if (tipo == "lago" || tipo == "palude") img = "img\\hud\\fondo_lago.png";
         else if (tipo == "fiume" || tipo == "torrente") img = "img\\hud\\fondo_fiume.png";
