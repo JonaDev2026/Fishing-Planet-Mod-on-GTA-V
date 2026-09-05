@@ -4895,6 +4895,13 @@ public class Pesca : Script
 
     // i numeri che contano davvero di un pezzo equipaggiato
     // una bobina tagliata: stesso filo, ma i metri sono quelli che ha lei
+    static string Unisci(string a, string b)
+    {
+        if (a == null || a.Length == 0) return b;
+        if (b == null || b.Length == 0) return a;
+        return a + "   " + b;
+    }
+
     string DettaglioBobina(int id, int metri)
     {
         int i;
@@ -4936,22 +4943,52 @@ public class Pesca : Script
                 if (nasse[i].Id == id)
                     return "pesce " + nasse[i].KgPesce.ToString("0.##", CultureInfo.InvariantCulture)
                          + " kg   rete " + nasse[i].KgTotale.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+        // TUTTI I DATI CHE IL PEZZO HA, non solo uno: e' da questi che si
+        // sceglie, non dalla marca.
         if (cat == "terminale")
             for (i = 0; i < terminali.Count; i++)
                 if (terminali[i].Id == id)
-                    return (terminali[i].Kg.Length > 0) ? ("tiene " + terminali[i].Kg + " kg") : "";
+                {
+                    Terminale t = terminali[i];
+                    string d = "";
+                    if (t.Misura != null && t.Misura.Length > 0) d = Unisci(d, t.Misura);
+                    if (t.Mm != null && t.Mm.Length > 0) d = Unisci(d, t.Mm + " mm");
+                    if (t.Kg != null && t.Kg.Length > 0) d = Unisci(d, t.Kg + " kg");
+                    if (t.Grammi != null && t.Grammi.Length > 0) d = Unisci(d, t.Grammi + " g");
+                    return d;
+                }
         if (cat == "esca")
             for (i = 0; i < escheShop.Count; i++)
                 if (escheShop[i].Id == id)
-                    return (escheShop[i].Amo.Length > 0) ? ("amo " + escheShop[i].Amo) : "";
+                {
+                    string d = "";
+                    if (escheShop[i].Peso != null && escheShop[i].Peso.Length > 0)
+                        d = Unisci(d, L("weight ", "peso ") + escheShop[i].Peso);
+                    if (escheShop[i].Amo != null && escheShop[i].Amo.Length > 0)
+                        d = Unisci(d, L("hook ", "amo ") + escheShop[i].Amo);
+                    return d;
+                }
         if (cat == "galleggiante")
             for (i = 0; i < galleggianti.Count; i++)
                 if (galleggianti[i].Id == id)
-                    return "piombo " + PortataIt(galleggianti[i].Portata);
+                {
+                    Galleggiante g = galleggianti[i];
+                    string d = L("load ", "piombo ") + PortataIt(g.Portata);
+                    if (g.Forma != null && g.Forma.Length > 0) d = Unisci(d, g.Forma);
+                    if (g.Misura != null && g.Misura.Length > 0) d = Unisci(d, g.Misura);
+                    return d;
+                }
         if (cat == "artificiale")
             for (i = 0; i < artificiali.Count; i++)
                 if (artificiali[i].Id == id)
-                    return artificiali[i].Grammi + " g";
+                {
+                    Artificiale ar = artificiali[i];
+                    string d = ar.Tipo;
+                    if (ar.Grammi != null && ar.Grammi.Length > 0) d = Unisci(d, ar.Grammi + " g");
+                    if (ar.Cm != null && ar.Cm.Length > 0) d = Unisci(d, ar.Cm + " cm");
+                    if (ar.Amo != null && ar.Amo.Length > 0) d = Unisci(d, L("hook ", "amo ") + ar.Amo);
+                    return d;
+                }
         if (cat == "portacanne")
             for (i = 0; i < portacanne.Count; i++)
                 if (portacanne[i].Id == id)
