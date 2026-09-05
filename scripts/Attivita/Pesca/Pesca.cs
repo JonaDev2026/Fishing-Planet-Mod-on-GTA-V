@@ -11193,23 +11193,35 @@ public class Pesca : Script
     //   pesci_scena_ogni  ogni quanti secondi ci prova
     //   pesci_scena_dura  quanti secondi ci mette ad attraversare
     //   pesci_scena_via   a quanti metri dall'esca passa
-    Ped pesceScena = null;
+    // IL GRUPPETTO CHE PASSA: da 1 a pesci_scena_gruppo pesci insieme,
+    // ognuno con la sua sagoma, un po' di lato e un po' in ritardo
+    // sugli altri, cosi' non nuotano in fila.
+    const int SCENA_MAX = 3;
+    Ped[] pesceScena = new Ped[SCENA_MAX];
+    float[] scenaLato = new float[SCENA_MAX];
+    int[] scenaRit = new int[SCENA_MAX];
+    int scenaN = 0;
     int scenaProssimo = 0, scenaDa = 0;
     float scenaX, scenaY, scenaDir, scenaLung;
 
     void ViaPesceScena()
     {
-        try
+        int i;
+        for (i = 0; i < SCENA_MAX; i++)
         {
-            if (pesceScena != null && pesceScena.Exists())
+            try
             {
-                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pesceScena, true, true);
-                Function.Call(Hash.FREEZE_ENTITY_POSITION, pesceScena, false);
-                pesceScena.Delete();
+                if (pesceScena[i] != null && pesceScena[i].Exists())
+                {
+                    Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pesceScena[i], true, true);
+                    Function.Call(Hash.FREEZE_ENTITY_POSITION, pesceScena[i], false);
+                    pesceScena[i].Delete();
+                }
             }
+            catch { }
+            pesceScena[i] = null;
         }
-        catch { }
-        pesceScena = null;
+        scenaN = 0;
         scenaDa = 0;
     }
 
@@ -11243,28 +11255,37 @@ public class Pesca : Script
 
         int dura = (int)(LeggiF("pesci_scena_dura", 7f) * 1000f);
 
-        // quello che sta passando adesso: lo si porta avanti
-        if (pesceScena != null && pesceScena.Exists())
+        // quelli che stanno passando adesso: li si porta avanti
+        if (scenaN > 0)
         {
-            float t = (float)(now - scenaDa) / (float)dura;
-            if (t >= 1f) { ViaPesceScena(); return; }
             double rad = scenaDir * Math.PI / 180.0;
             float dx = -(float)Math.Sin(rad), dy = (float)Math.Cos(rad);
-            // parte da un capo e arriva all'altro, ondeggiando un po'
-            float avanti = (t - 0.5f) * scenaLung;
-            float px = scenaX + dx * avanti;
-            float py = scenaY + dy * avanti;
-            float pz = scenaAcquaZ - LeggiF("pesci_scena_giu", 0.45f)
-                     + (float)Math.Sin(now * 0.003) * 0.06f;
-            float coda = (float)Math.Sin(now * 0.012) * 8f;
-            try
+            bool finiti = true;
+            int q;
+            for (q = 0; q < scenaN; q++)
             {
-                Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, pesceScena,
-                              px, py, pz, false, false, false);
-                Function.Call(Hash.SET_ENTITY_ROTATION, pesceScena,
-                              0f, 0f, scenaDir + coda, 2, true);
+                if (pesceScena[q] == null || !pesceScena[q].Exists()) continue;
+                float t = (float)(now - scenaDa - scenaRit[q]) / (float)dura;
+                if (t < 1f) finiti = false;
+                if (t < 0f) t = 0f;
+                if (t > 1f) t = 1f;
+                // parte da un capo e arriva all'altro, ondeggiando un po'
+                float avanti = (t - 0.5f) * scenaLung;
+                float px = scenaX + dx * avanti - dy * scenaLato[q];
+                float py = scenaY + dy * avanti + dx * scenaLato[q];
+                float pz = scenaAcquaZ - LeggiF("pesci_scena_giu", 0.45f)
+                         + (float)Math.Sin(now * 0.003 + q) * 0.06f;
+                float coda = (float)Math.Sin(now * 0.012 + q * 2) * 8f;
+                try
+                {
+                    Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, pesceScena[q],
+                                  px, py, pz, false, false, false);
+                    Function.Call(Hash.SET_ENTITY_ROTATION, pesceScena[q],
+                                  0f, 0f, scenaDir + coda, 2, true);
+                }
+                catch { }
             }
-            catch { }
+            if (finiti) ViaPesceScena();
             return;
         }
 
@@ -11291,22 +11312,24 @@ public class Pesca : Script
             int fq = FormaDi(pesci[qui[i]].Nome);
             if (!forme.Contains(fq)) forme.Add(fq);
         }
-        int formaScelta = forme[caso.Next(forme.Count)];
-        List<int> conForma = new List<int>();
-        for (i = 0; i < qui.Count; i++)
-            if (FormaDi(pesci[qui[i]].Nome) == formaScelta) conForma.Add(qui[i]);
-        int sc = conForma[caso.Next(conForma.Count)];
+        // quanti passano stavolta, e per ognuno una forma tirata a sorte
+        int quanti = 1 + caso.Next((int)LeggiF("pesci_scena_gruppo", 3f));
+        if (quanti < 1) quanti = 1;
+        if (quanti > SCENA_MAX) quanti = SCENA_MAX;
+        int[] scelti = new int[SCENA_MAX];
+        int q2;
+        for (q2 = 0; q2 < quanti; q2++)
+        {
+            int formaScelta = forme[caso.Next(forme.Count)];
+            List<int> conForma = new List<int>();
+            for (i = 0; i < qui.Count; i++)
+                if (FormaDi(pesci[qui[i]].Nome) == formaScelta) conForma.Add(qui[i]);
+            scelti[q2] = conForma[caso.Next(conForma.Count)];
+        }
+        int sc = scelti[0];
 
         try
         {
-            Model m = new Model(ModelloDi(pesci[sc].Nome));
-            m.Request(400);
-            if (!m.IsLoaded)
-            {
-                m = new Model("a_c_fish");
-                m.Request(400);
-                if (!m.IsLoaded) return;
-            }
             // DOVE PASSA: attorno all'esca se e' in acqua; se no in un
             // punto d'acqua davanti a te, cercato girando attorno
             float ax, ay, az, baseDir;
@@ -11341,19 +11364,39 @@ public class Pesca : Script
             scenaX = ax + -(float)Math.Sin(rl) * via;
             scenaY = ay + (float)Math.Cos(rl) * via;
             float z0 = az - LeggiF("pesci_scena_giu", 0.45f);
-            pesceScena = World.CreatePed(m, new GTA.Math.Vector3(scenaX, scenaY, z0));
-            m.MarkAsNoLongerNeeded();
-            if (pesceScena == null || !pesceScena.Exists()) { pesceScena = null; return; }
-            Function.Call(Hash.SET_ENTITY_INVINCIBLE, pesceScena, true);
-            Function.Call(Hash.SET_ENTITY_COLLISION, pesceScena, false, false);
-            Function.Call(Hash.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS, pesceScena, true);
-            Function.Call(Hash.SET_PED_CAN_RAGDOLL, pesceScena, false);
-            Function.Call(Hash.SET_ENTITY_CAN_BE_DAMAGED, pesceScena, false);
-            Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, pesceScena, false);
-            Function.Call(Hash.FREEZE_ENTITY_POSITION, pesceScena, true);
-            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pesceScena, true, true);
-            Function.Call(Hash.SET_PED_COMPONENT_VARIATION, pesceScena, 0,
-                          FormaDi(pesci[sc].Nome), 0, 0);
+            scenaN = 0;
+            for (q2 = 0; q2 < quanti; q2++)
+            {
+                sc = scelti[q2];
+                Model m = new Model(ModelloDi(pesci[sc].Nome));
+                m.Request(400);
+                if (!m.IsLoaded)
+                {
+                    m = new Model("a_c_fish");
+                    m.Request(400);
+                    if (!m.IsLoaded) continue;
+                }
+                Ped pz2 = World.CreatePed(m, new GTA.Math.Vector3(scenaX, scenaY, z0));
+                m.MarkAsNoLongerNeeded();
+                if (pz2 == null || !pz2.Exists()) continue;
+                Function.Call(Hash.SET_ENTITY_INVINCIBLE, pz2, true);
+                Function.Call(Hash.SET_ENTITY_COLLISION, pz2, false, false);
+                Function.Call(Hash.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS, pz2, true);
+                Function.Call(Hash.SET_PED_CAN_RAGDOLL, pz2, false);
+                Function.Call(Hash.SET_ENTITY_CAN_BE_DAMAGED, pz2, false);
+                Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, pz2, false);
+                Function.Call(Hash.FREEZE_ENTITY_POSITION, pz2, true);
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pz2, true, true);
+                Function.Call(Hash.SET_PED_COMPONENT_VARIATION, pz2, 0,
+                              FormaDi(pesci[sc].Nome), 0, 0);
+                pesceScena[scenaN] = pz2;
+                // il primo in mezzo, gli altri di lato e un po' indietro
+                scenaLato[scenaN] = (scenaN == 0) ? 0f
+                                  : ((scenaN == 1) ? 1f : -1f) * LeggiF("pesci_scena_lato", 0.7f);
+                scenaRit[scenaN] = (scenaN == 0) ? 0 : (int)(dura * (0.08f + 0.10f * scenaN));
+                scenaN++;
+            }
+            if (scenaN == 0) return;
             scenaDa = now;
         }
         catch { ViaPesceScena(); }
