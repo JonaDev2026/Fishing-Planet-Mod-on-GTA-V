@@ -7377,7 +7377,8 @@ public class Pesca : Script
         if (fase != FASE_FERMO)
         {
             // destra e sinistra girano la frizione del mulinello
-            if (now > tastoFriz)
+            // (non con la ruota aperta: li' destra e sinistra sono suoi)
+            if (now > tastoFriz && !ruotaAperta)
             {
                 bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 174)
                        || Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 174);
@@ -7543,6 +7544,9 @@ public class Pesca : Script
             BarraCanna(0f, 130, 225, 180);
             TacchePrizione();
             PosaFerma(p);
+            // CON LA RUOTA APERTA NON SI FA ALTRO: niente lancio, niente
+            // cambio esca, niente riporre. I tasti sono della ruota.
+            if (ruotaAperta) return;
             Aiuto("Tieni ~INPUT_ATTACK~ per caricare il lancio - ~INPUT_FRONTEND_X~ per riporre - ~INPUT_COVER~ esca");
             if (now > tastoDa && TastoCanna())
             {
