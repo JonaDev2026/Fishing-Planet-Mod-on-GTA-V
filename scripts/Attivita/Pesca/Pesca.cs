@@ -5341,18 +5341,16 @@ public class Pesca : Script
         for (q = 0; q < qs; q++)
             if (presoQui.ContainsKey(arNome[a] + "|" + arPesci[a][q])) scoperte++;
         int pct = (qs > 0) ? (int)(100f * scoperte / qs + 0.5f) : 0;
-        // OGNI PEZZO HA LA SUA POSIZIONE, in pixel su 1280x720: il nome
-        // (posto_y), la riga dell'esplorazione (esplora_y), la licenza
-        // (licenza_y) e il grafico (attivita_y). Si spostano uno per uno.
         DisegnaTestoSinistra(arNome[a], px, py, 0.30f, 245, 245, 250);
-        float by = LeggiF("esplora_y", 325f);
+        float by = py + LeggiF("posto_barra_giu", 20f);
         DisegnaRett(px, by, bw, 2f, 255, 255, 255, 45);
         DisegnaRett(px, by, bw * pct / 100f, 2f, 255, 255, 255, 210);
         DisegnaTestoSinistra(pct + "%  " + scoperte + "/" + qs, px + bw + 8f, by - 8f, 0.20f, 200, 202, 210);
         if (licGiorni > 0)
             DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
-                                 px, LeggiF("licenza_y", 410f), 0.22f, 200, 202, 210);
-        DisegnaAttivita(a, px, LeggiF("attivita_y", 355f), LeggiF("attivita_larga", bw));
+                                 px, by + LeggiF("posto_lic_giu", 6f), 0.22f, 200, 202, 210);
+        // il grafico sotto la riga dell'esplorazione, di attivita_giu pixel
+        DisegnaAttivita(a, px, by + LeggiF("attivita_giu", 30f), LeggiF("attivita_larga", bw));
     }
 
     // L'ATTIVITA' DELLA GIORNATA, stilizzata come nel wiki: una riga base
