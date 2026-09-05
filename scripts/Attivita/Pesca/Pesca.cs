@@ -10098,13 +10098,21 @@ public class Pesca : Script
         v.Add(r);
     }
 
-    // le voci di uno spicchio: prima quello che c'e' montato, poi la borsa
+    // le voci di uno spicchio: prima "Vuoto" - il posto senza niente,
+    // ci lasci LB e quello che c'era torna in borsa - poi quello che c'e'
+    // montato, poi la borsa
     List<VoceRuota> VociRuota(int sp)
     {
         List<VoceRuota> v = new List<VoceRuota>();
         if (sp < 0 || sp >= RUOTA_CAT.Length) return v;
         string cat = RUOTA_CAT[sp];
         if (cat.Length == 0 || cat == "pesca") return v;
+        VoceRuota vuoto = new VoceRuota();
+        vuoto.Cat = cat; vuoto.Id = -1; vuoto.Bob = -1;
+        vuoto.Nome = "Vuoto"; vuoto.Dett = "";
+        // l'ombra del posto, se c'e' il PNG (img/ruota/vuoto_<categoria>.png)
+        vuoto.Img = "img/ruota/vuoto_" + cat + ".png";
+        v.Add(vuoto);
         bool term = (cat == "terminale" || cat == "leader" || cat == "piombo");
         string casella = cat;
         if (term)
@@ -10136,7 +10144,20 @@ public class Pesca : Script
         for (i = 0; i < ids.Count; i++) AggVoce(v, cat, ids[i], -1, false);
         if (cat == "lenza")
             for (i = 0; i < bobine.Count; i++) AggVoce(v, "lenza", BobinaId(i), i, false);
+        // "Vuoto" e' quello montato se non c'e' montato niente
+        bool qualcosa = false;
+        for (i = 1; i < v.Count; i++) if (v[i].Montata) qualcosa = true;
+        vuoto.Montata = !qualcosa;
         return v;
+    }
+
+    // dove sta il cursore quando apri: sul pezzo montato
+    int PosMontata(int sp)
+    {
+        List<VoceRuota> v = VociRuota(sp);
+        int i;
+        for (i = 0; i < v.Count; i++) if (v[i].Montata) return i;
+        return 0;
     }
 
     void Ruota()
@@ -10168,7 +10189,7 @@ public class Pesca : Script
             ruotaAperta = true;
             ruotaSpicchio = -1;
             int k;
-            for (k = 0; k < RUOTA_N; k++) ruotaPos[k] = 0;
+            for (k = 0; k < RUOTA_N; k++) ruotaPos[k] = PosMontata(k);
             Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
         }
         // la levetta destra sceglie lo spicchio, non gira la telecamera
@@ -10218,6 +10239,23 @@ public class Pesca : Script
         if (v.Count == 0 || pos >= v.Count) return;
         VoceRuota r = v[pos];
         if (r.Montata) return;
+        if (r.Id < 0)
+        {
+            // VUOTO: quello che c'era torna in borsa
+            bool via = false;
+            if (r.Cat == "esca") { escaMontata = -1; via = true; }
+            else if (r.Cat == "lenza") { DisarmaLenza(); via = true; }
+            else if (r.Cat == "terminale" || r.Cat == "leader" || r.Cat == "piombo")
+            { if (Armato(r.Cat) >= 0) via = Arma("terminale", Armato(r.Cat)); }
+            else if (InUso(r.Cat) >= 0) via = Arma(r.Cat, InUso(r.Cat));
+            if (via)
+            {
+                Messaggio(RUOTA_NOME[ruotaSpicchio] + ": smontato");
+                Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                SalvaStato();
+            }
+            return;
+        }
         // SI SCACCIANO DA SOLI: il cucchiaino manda via galleggiante e
         // amo, e loro mandano via il cucchiaino. Arma() da solo si
         // rifiuterebbe e direbbe "prima smonta": qui lo smonta lei.
@@ -10302,7 +10340,8 @@ public class Pesca : Script
         if (vs.Count > 1) nome += "  " + (ps + 1) + "/" + vs.Count;
         DisegnaTesto(nome, cx, cy - 8f, 0.28f, 255, 255, 255);
         string sotto = r.Dett;
-        if (r.Montata) sotto = (sotto.Length > 0) ? sotto + "  -  montato" : "montato";
+        if (r.Montata) sotto = (sotto.Length > 0) ? sotto + "  -  montato"
+                                                 : (r.Id < 0 ? "niente montato" : "montato");
         if (sotto.Length > 0) DisegnaTesto(sotto, cx, cy + 12f, 0.22f, 200, 200, 200);
     }
 
