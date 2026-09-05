@@ -1998,8 +1998,12 @@ public class Pesca : Script
     // temp_fuori gradi. Pesce senza dati: 1, come prima. temp_pesi=0 spegne.
     float QuantoValeTemperatura(Specie s)
     {
+        return QuantoValeTemperaturaA(s, GradiAcqua());
+    }
+
+    float QuantoValeTemperaturaA(Specie s, float t)
+    {
         if (s.TMin < 0f || LeggiF("temp_pesi", 1f) < 0.5f) return 1f;
-        float t = GradiAcqua();
         float bordo = LeggiF("temp_bordo", 0.4f);
         float fuori = LeggiF("temp_fuori", 4f);
         if (t >= s.TMin && t <= s.TMax)
@@ -5346,6 +5350,72 @@ public class Pesca : Script
         if (licGiorni > 0)
             DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
                                  px, by + LeggiF("posto_lic_giu", 6f), 0.22f, 200, 202, 210);
+        DisegnaAttivita(a, px, by + LeggiF("attivita_giu", 46f), bw);
+    }
+
+    // L'ATTIVITA' DELLA GIORNATA, stilizzata come nel wiki: una riga base
+    // larga come quella dell'esplorazione, sotto le ore, sopra la curva
+    // di quanto e' viva l'acqua ora per ora (dalle nostre regole: la
+    // temperatura dell'acqua a quell'ora col meteo di adesso, e l'ora in
+    // cui i pesci del posto mangiano). Un puntino segna l'ora di adesso.
+    float[] attivCurva = new float[24];
+    int attivCalcolata = 0;
+    int attivArea = -1;
+
+    void DisegnaAttivita(int a, float px, float py, float bw)
+    {
+        if (LeggiF("attivita", 1f) < 0.5f) return;
+        int now = Game.GameTime;
+        if (a != attivArea || now - attivCalcolata > 5000)
+        {
+            attivArea = a; attivCalcolata = now;
+            int h, i;
+            for (h = 0; h < 24; h++)
+            {
+                float aria = GradiAriaAlle(h + 0.5f);
+                float acqua = 16f + (aria - 20f) * 0.45f;
+                float best = 0f;
+                for (i = 0; i < pesci.Count; i++)
+                {
+                    Specie sp = pesci[i];
+                    if (sp.Zone != null && !PesceQui(sp, a)) continue;
+                    float v = QuantoValeTemperaturaA(sp, acqua) * QuantoValeOraAlle(sp.Quando, h);
+                    if (v > best) best = v;
+                }
+                attivCurva[h] = best;
+            }
+        }
+        float alt = LeggiF("attivita_alt", 26f);
+        float basso = py + alt;
+        // la riga base e le ore
+        DisegnaRett(px, basso, bw, 1f, 255, 255, 255, 120);
+        int k;
+        for (k = 0; k <= 24; k += 6)
+        {
+            float xk = px + bw * k / 24f;
+            DisegnaRett(xk, basso, 1f, 3f, 255, 255, 255, 120);
+            DisegnaTesto("" + (k % 24), xk, basso + 3f, 0.17f, 200, 202, 210);
+        }
+        // la curva: un pezzetto ogni due pixel, interpolando fra le ore
+        float passo = 2f;
+        float x;
+        for (x = 0f; x < bw; x += passo)
+        {
+            float ora = x / bw * 24f - 0.5f;
+            if (ora < 0f) ora += 24f;
+            int h0 = (int)ora; float u = ora - h0;
+            float v = attivCurva[h0 % 24] * (1f - u) + attivCurva[(h0 + 1) % 24] * u;
+            float y = basso - v * alt;
+            DisegnaRett(px + x, y - 1f, passo, 2f, 255, 255, 255, 210);
+        }
+        // l'ora di adesso
+        int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
+        int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
+        float xo = px + bw * (hh + mi / 60f) / 24f;
+        float oraF = hh + mi / 60f - 0.5f; if (oraF < 0f) oraF += 24f;
+        int ho = (int)oraF; float uo = oraF - ho;
+        float vo = attivCurva[ho % 24] * (1f - uo) + attivCurva[(ho + 1) % 24] * uo;
+        DisegnaRett(xo - 2f, basso - vo * alt - 2f, 5f, 5f, 255, 255, 255, 255);
     }
 
     // QUANTO MANCA ALLA FINE DELLA LICENZA, in tempo VERO.
@@ -7206,7 +7276,11 @@ public class Pesca : Script
     // l'ora del giorno secondo l'abitudine vera della specie
     float QuantoValeOra(string quando)
     {
-        int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
+        return QuantoValeOraAlle(quando, Function.Call<int>(Hash.GET_CLOCK_HOURS));
+    }
+
+    float QuantoValeOraAlle(string quando, int hh)
+    {
         bool notte = (hh >= 21 || hh < 5);
         bool piena = (hh >= 8 && hh < 18);
         bool mezza = (!notte && !piena);          // 5-8 e 18-21
@@ -7225,7 +7299,12 @@ public class Pesca : Script
     {
         int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
         int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
-        float ora = hh + mi / 60f;
+        return GradiAriaAlle(hh + mi / 60f);
+    }
+
+    // la stessa cosa, a un'ora qualunque: serve al grafico della giornata
+    float GradiAriaAlle(float ora)
+    {
         float fase = (ora - 4f) / 24f * 6.2831853f;
         float t = 20f + 7f * (-(float)Math.Cos(fase));
         t += GradiDelMeteoPesca();
