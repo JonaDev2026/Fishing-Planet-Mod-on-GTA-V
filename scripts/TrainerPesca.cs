@@ -9382,7 +9382,7 @@ public class TrainerPesca : Script
                 string liv = suo.Substring(0, sp3);
                 string xp = suo.Substring(sp3 + 3);
                 DrawText(liv, sx, y + 3f, 0.25f, Color.FromArgb(255, 245, 205, 80));
-                DrawText(xp, sx + TextWidth(liv, 0.25f) + 14f, y + 3f,
+                DrawText(xp, sx + TextWidth(liv + "   ", 0.25f), y + 3f,
                          0.25f, Color.FromArgb(255, 130, 200, 245));
             }
             else
