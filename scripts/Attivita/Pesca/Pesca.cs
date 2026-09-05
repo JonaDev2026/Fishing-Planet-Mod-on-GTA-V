@@ -8188,6 +8188,21 @@ public class Pesca : Script
             string img = (i < accese) ? "img\\hud\\friz_on.png" : "img\\hud\\friz_off.png";
             SpriteInclinata(img, fcx - S * 0.5f, fcy - S * 0.5f, S, S, i * 30f * LeggiF("ruota_verso", 1f));
         }
+        // IN MEZZO IL MULINELLO, e sotto i suoi dati: frizione e metri
+        int idm; string imm, nmm;
+        if (Montato("mulinello", out idm, out imm, out nmm))
+        {
+            float mw = LeggiF("friz_mul", 46f);
+            Sprite(imm, fcx - mw * 0.5f, fcy - mw * 0.5f, mw, mw);
+            float fr = FrizioneMul(idm);
+            int metri = MetriSuQuestoMulinello(idm);
+            string rm = "";
+            if (fr > 0f) rm = fr.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+            if (metri > 0) rm = (rm.Length > 0) ? (rm + "  " + metri + " m") : (metri + " m");
+            if (rm.Length > 0)
+                DisegnaTesto(rm, fcx, fcy + fd * 0.5f + LeggiF("friz_testo_giu", 4f),
+                             0.19f, 245, 245, 250);
+        }
     }
 
     // LA BARRA A TACCHE.
@@ -9062,24 +9077,10 @@ public class Pesca : Script
         // Le scritte stanno a sinistra dell'icona, tutte incolonnate.
         float tx = mx + 9f;
 
-        if (Montato("mulinello", out id, out img, out nome))
-        {
-            float ry = my - piano * 54f;
-            // il mulinello un po' piu' grande degli altri: e' il pezzo
-            // che si guarda di piu'. Resta dentro i 54 di passo della fila.
-            Sprite(img, mx - 8f, ry - 3f, 128f, 50f);
-            // la frizione e i metri: i due numeri che guardi mentre lotti
-            float fr = FrizioneMul(id);
-            int metri = MetriSuQuestoMulinello(id);
-            string rm = "";
-            if (fr > 0f) rm = fr.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
-            if (metri > 0) rm = (rm.Length > 0) ? (rm + "  " + metri + " m") : (metri + " m");
-            // i dati del mulinello stanno quattro pixel piu' a sinistra
-            // degli altri: l'icona e' piu' larga e ci finivano sotto
-            if (rm.Length > 0)
-                DisegnaTesto(rm, tx - 7f, ry + 15f, 0.19f, 245, 245, 250);
-            piano++;
-        }
+        // IL MULINELLO NON STA PIU' QUI: sta in mezzo al cerchio della
+        // frizione, coi suoi dati sotto (TacchePrizione). Il posto in
+        // colonna resta vuoto, gli altri pezzi non si spostano.
+        if (Montato("mulinello", out id, out img, out nome)) piano++;
 
         if (Montato("lenza", out id, out img, out nome))
         {
