@@ -9370,10 +9370,24 @@ public class TrainerPesca : Script
         DrawText(gradi, ix + 11f, y + 3f, 0.25f, Color.FromArgb(255, 245, 205, 80));
 
         // e dopo la temperatura, la riga della mod che hai aperto
+        // "Liv. 2   1060 XP": il livello in giallo come la temperatura,
+        // gli XP in blu. Si spezza sui tre spazi.
         string suo = TestaDellaMod();
         if (suo.Length > 0)
-            DrawText(suo, ix + 11f + TextWidth(gradi, 0.25f) + 14f, y + 3f,
-                     0.25f, Color.FromArgb(255, 130, 200, 245));
+        {
+            float sx = ix + 11f + TextWidth(gradi, 0.25f) + 14f;
+            int sp3 = suo.IndexOf("   ");
+            if (sp3 > 0)
+            {
+                string liv = suo.Substring(0, sp3);
+                string xp = suo.Substring(sp3 + 3);
+                DrawText(liv, sx, y + 3f, 0.25f, Color.FromArgb(255, 245, 205, 80));
+                DrawText(xp, sx + TextWidth(liv, 0.25f) + 14f, y + 3f,
+                         0.25f, Color.FromArgb(255, 130, 200, 245));
+            }
+            else
+                DrawText(suo, sx, y + 3f, 0.25f, Color.FromArgb(255, 130, 200, 245));
+        }
 
         DrawTextRight("$" + Game.Player.Money.ToString("N0", CultureInfo.InvariantCulture),
                       x + w - 9f, y + 3f, 0.25f, Color.FromArgb(255, 130, 225, 180));
