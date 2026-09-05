@@ -7517,8 +7517,8 @@ public class Pesca : Script
             if (now > tastoDa && TastoCanna())
             {
                 // niente suono qui: sembrava fosse successo qualcosa di grave.
-                // Il messaggio basta.
-                ViaPesceScena();
+                // Il messaggio basta. I pesci che passano restano: non
+                // dipendono dalla canna.
                 ViaRoba();
                 robaOra = -1;
                 Messaggio("~y~Canna ritirata.");
@@ -10200,7 +10200,6 @@ public class Pesca : Script
                 if (cannaSu && fase == FASE_FERMO) Esegui("pesca_via");
                 else if (!cannaSu && fase == FASE_PRONTO)
                 {
-                    ViaPesceScena();
                     ViaRoba();
                     robaOra = -1;
                     ScenaGiu(p);
