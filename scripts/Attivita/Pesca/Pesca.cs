@@ -2610,6 +2610,8 @@ public class Pesca : Script
                 presoSu[c[1].Trim()] = 1;
             else if (k == "bobina" && c.Length > 2)
                 MettiBobina(Numero(c[1]), Numero(c[2]));
+            else if (k == "bobina_casa" && c.Length > 2 && Numero(c[2]) > 0)
+                bobineCasa.Add(Numero(c[1]) + "|" + Numero(c[2]));
             else if (k == "imbobinato" && c.Length > 1)
                 metriInBobina = Numero(c[1]);
             else if (k == "casa" && c.Length > 2)
@@ -2741,6 +2743,8 @@ public class Pesca : Script
         int qbo;
         for (qbo = 0; qbo < bobine.Count; qbo++)
             v.Add("bobina|" + bobine[qbo]);
+        for (qbo = 0; qbo < bobineCasa.Count; qbo++)
+            v.Add("bobina_casa|" + bobineCasa[qbo]);
         v.Add("imbobinato|" + metriInBobina);
         try { File.WriteAllLines(Path.Combine(MY_DIR, "stato.txt"), v.ToArray()); }
         catch { }
@@ -4403,6 +4407,9 @@ public class Pesca : Script
         if (cmd == "disarma_lenza") { DisarmaLenza(); return true; }
         if (cmd == "arma_bob") { return ArmaLenzaBobina(Numero(arg)); }
         if (cmd == "butta_bob") { return ButtaBobina(Numero(arg)); }
+        if (cmd == "bob_casa") { return BobinaACasa(Numero(arg)); }
+        if (cmd == "bob_borsa") { return BobinaInBorsa(Numero(arg)); }
+        if (cmd == "butta_bobc") { return ButtaBobinaCasa(Numero(arg)); }
         if (cmd == "butta")
         {
             string[] ab = arg.Split(' ');
@@ -5898,6 +5905,27 @@ public class Pesca : Script
                       + "|||butta " + cc[0] + " " + cc[1] + " casa");
                 quanti++;
             }
+            // le bobine tagliate lasciate a casa, con i loro metri
+            if (CAT_COD[ic] == "lenza")
+            {
+                int qbc;
+                for (qbc = 0; qbc < bobineCasa.Count; qbc++)
+                {
+                    string[] cbc = bobineCasa[qbc].Split('|');
+                    int idc2 = Numero(cbc[0]);
+                    int mc3 = (cbc.Length > 1) ? Numero(cbc[1]) : 0;
+                    string nc2, ic2; int pc2, lc2;
+                    if (!Articolo("lenza", idc2, out nc2, out ic2, out pc2, out lc2)) continue;
+                    v.Add("pannello_sx_k|" + ch + "|" + nc2 + "|" + ic2
+                          + "|" + DettaglioBobina(idc2, mc3)
+                          + "|bob_borsa " + qbc
+                          + "|" + mc3 + " m"
+                          + "||"
+                          + "|Tagliata|190,195,205"
+                          + "|butta_bobc " + qbc);
+                    quanti++;
+                }
+            }
             // il cassetto vuoto lo dice, ma non ci si va sopra
             if (quanti == 0)
                 v.Add("pannello_sx_k|" + ch + "|Niente in casa");
@@ -5970,7 +5998,7 @@ public class Pesca : Script
                     if (!Articolo("lenza", idb2, out nb2, out ib3, out pb2, out lb2)) continue;
                     v.Add("pannello_k|" + chb + "|" + nb2 + "|" + ib3
                           + "|" + DettaglioBobina(idb2, BobinaMetri(qbo))
-                          + "|niente|"
+                          + "|" + (inPesca ? "niente" : ("bob_casa " + qbo)) + "|"
                           + "||"
                           + "|Tagliata|190,195,205"
                           + "|butta_bob " + qbo + "");
@@ -9080,6 +9108,66 @@ public class Pesca : Script
     {
         if (id < 0 || metri <= 0) return;
         bobine.Add(id + "|" + metri);
+    }
+
+    // LE BOBINE TAGLIATE LASCIATE A CASA: stessa forma "id|metri".
+    // Da casa alla borsa e ritorno con A, come il resto.
+    List<string> bobineCasa = new List<string>();
+
+    bool BobinaACasa(int i)
+    {
+        if (i < 0 || i >= bobine.Count) return false;
+        if (inPesca)
+        {
+            Avviso("~r~Sei fuori: la borsa e' quella che ti sei portato.");
+            return false;
+        }
+        string b = bobine[i];
+        bobine.RemoveAt(i);
+        bobineCasa.Add(b);
+        string nome, img; int prezzo, liv;
+        if (!Articolo("lenza", Numero(b.Split('|')[0]), out nome, out img, out prezzo, out liv)) nome = "bobina";
+        Avviso("~y~Rimessa a casa: ~s~" + nome);
+        return true;
+    }
+
+    bool BobinaInBorsa(int i)
+    {
+        if (i < 0 || i >= bobineCasa.Count) return false;
+        if (inPesca)
+        {
+            Avviso("~r~Sei fuori: la borsa e' quella che ti sei portato.");
+            return false;
+        }
+        if (!CiSta("lenza"))
+        {
+            Avviso("~r~Non ci sta piu': guarda cassetta e portacanne.");
+            return false;
+        }
+        string b = bobineCasa[i];
+        bobineCasa.RemoveAt(i);
+        bobine.Add(b);
+        string nome, img; int prezzo, liv;
+        if (!Articolo("lenza", Numero(b.Split('|')[0]), out nome, out img, out prezzo, out liv)) nome = "bobina";
+        Avviso("~g~Equipaggiata: ~s~" + nome);
+        return true;
+    }
+
+    bool ButtaBobinaCasa(int i)
+    {
+        if (i < 0 || i >= bobineCasa.Count) return false;
+        string[] c = bobineCasa[i].Split('|');
+        int id = Numero(c[0]);
+        int m = (c.Length > 1) ? Numero(c[1]) : 0;
+        string nome, img; int prezzo, liv;
+        if (!Articolo("lenza", id, out nome, out img, out prezzo, out liv)) return false;
+        if (!ChiediDueVolte("bobc" + i,
+                "Premi ancora (Y) per gettare " + nome + " (" + m + " m)"))
+            return true;
+        if (i >= bobineCasa.Count) return true;
+        bobineCasa.RemoveAt(i);
+        Messaggio("Gettata: " + nome + "   " + m + " m");
+        return true;
     }
 
     // TAGLIA: dal rotolo al mulinello. Torna quanto ha tagliato.
