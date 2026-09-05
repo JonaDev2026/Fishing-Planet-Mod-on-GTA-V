@@ -8258,15 +8258,18 @@ public class Pesca : Script
         float larga = LeggiF("barra_larga", 18f);
         float spazio = LeggiF("barra_spazio", 2f);
         float x = BAR_X + BAR_W * 0.5f - larga * 0.5f;
-        float y0 = BarY();
-        float th = (BAR_H - spazio * (n - 1)) / n;
+        // LA TACCA E' ALTA COME CON 24 TACCHE IN 240 PX: se ne metti di
+        // piu', la barra cresce verso l'alto, il fondo resta dov'e'.
+        float th = (BAR_H - spazio * 23f) / 24f;
+        float altezza = n * th + (n - 1) * spazio;
+        float y0 = BarY() + BAR_H - altezza;
         // NIENTE CORNICE, NIENTE FONDO: solo le tacche, trasparenti.
         int accese = (int)(fill01 * n + 0.5f);
         int i;
         for (i = 0; i < n; i++)
         {
             // i = 0 e' in basso
-            float y = y0 + BAR_H - (i + 1) * th - i * spazio;
+            float y = y0 + altezza - (i + 1) * th - i * spazio;
             if (i >= accese)
             {
                 DisegnaRett(x, y, larga, th, 210, 215, 220, (int)LeggiF("barra_alfa_spenta", 55f));
