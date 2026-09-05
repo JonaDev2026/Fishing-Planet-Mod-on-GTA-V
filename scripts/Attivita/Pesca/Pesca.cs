@@ -7534,7 +7534,11 @@ public class Pesca : Script
         // ---- canna in mano, pronta a lanciare ----
         if (fase == FASE_PRONTO)
         {
+            // CON LA CANNA IN MANO L'HUD C'E' GIA' TUTTO: barra, frizione
+            // col mulinello, armatura. Non si aspetta il lancio.
             HudPesca();
+            BarraCanna(0f, 130, 225, 180);
+            TacchePrizione();
             PosaFerma(p);
             Aiuto("Tieni ~INPUT_ATTACK~ per caricare il lancio - ~INPUT_FRONTEND_X~ per riporre - ~INPUT_COVER~ esca");
             if (now > tastoDa && TastoCanna())
