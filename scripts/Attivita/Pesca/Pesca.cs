@@ -8314,9 +8314,17 @@ public class Pesca : Script
                 DisegnaTesto(rm, fcx, ty, 0.19f, 245, 245, 250);
             // la profondita' dell'esca, sotto il quadrante: si regola con
             // SU e GIU' della croce
+            float tyE = BarY() - 50f + LeggiF("caldo_giu", 8f) + LeggiF("prof_testo_giu", 14f);
             DisegnaTesto(L("Bait ", "Esca ") + profondita.ToString("0.00", CultureInfo.InvariantCulture) + " m",
-                         QuadX(), BarY() - 50f + LeggiF("caldo_giu", 8f) + LeggiF("prof_testo_giu", 14f),
-                         0.22f, 245, 245, 250);
+                         QuadX(), tyE, 0.22f, 245, 245, 250);
+            // LA CROCE COI TASTI: su e giu' accesi accanto all'esca,
+            // destra e sinistra accesi (la stessa PNG girata) accanto alla
+            // frizione, cosi' si capisce cosa si preme.
+            float cl = LeggiF("croce_lato", 22f);
+            Sprite("img\\hud\\croce_sugiu.png",
+                   QuadX() + LeggiF("croce_esca_dx", 38f), tyE + LeggiF("croce_esca_dy", -3f), cl, cl);
+            SpriteInclinata("img\\hud\\croce_sugiu.png",
+                            fcx + LeggiF("croce_friz_dx", -60f), fcy + LeggiF("croce_friz_dy", -11f), cl, cl, 90f);
             // sotto: la frizione inserita, in percentuale della massima
             int pct = (int)(100f * frizione / PosFrizione() + 0.5f);
             DisegnaTesto(L("drag ", "frizione ") + pct + "%", fcx, ty + LeggiF("friz_riga2", 12f),
