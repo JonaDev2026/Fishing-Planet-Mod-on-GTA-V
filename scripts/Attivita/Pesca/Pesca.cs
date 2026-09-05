@@ -10253,7 +10253,9 @@ public class Pesca : Script
             float rr = R * 0.78f;
             float px = cx + rr * (float)Math.Sin(a);
             float py = cy - rr * (float)Math.Cos(a);
-            Sprite(v[pos].Img, px - ic * 0.5f, py - ic * 0.5f, ic, ic);
+            // ruota_icona_<categoria> in config, se c'e', vince sulla misura generale
+            float ici = LeggiF("ruota_icona_" + RUOTA_CAT[i], ic);
+            Sprite(v[pos].Img, px - ici * 0.5f, py - ici * 0.5f, ici, ici);
         }
         // in mezzo niente sfondo: solo le scritte
         if (ruotaSpicchio < 0 || RUOTA_CAT[ruotaSpicchio].Length == 0) return;
