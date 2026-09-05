@@ -8180,7 +8180,9 @@ public class Pesca : Script
     //    barra verticale                  1012, 420   8x120
     //    metri sopra la barra, galleggiante in colonna
     // ============================================================
-    const float BAR_X = 1012f;
+    // "barra_x": dove sta la barra; con lei si spostano frizione, mulinello
+    // e quadrante. La colonna e la canna hanno le loro voci in config.
+    float BAR_X { get { return LeggiF("barra_x", 1012f); } }
     const float BAR_W = 8f;
     const float BAR_H = 240f;   // il doppio di prima: era troppo corta
 
@@ -9170,7 +9172,7 @@ public class Pesca : Script
             for (ig = 0; ig < galleggianti.Count; ig++)
                 if (galleggianti[ig].Id == id && galleggianti[ig].Portata.Length > 0)
                 {
-                    DisegnaTesto("piombo " + PortataIt(galleggianti[ig].Portata),
+                    DisegnaTesto(PortataIt(galleggianti[ig].Portata),
                                  tx, ryG + 15f, 0.19f, 245, 245, 250);
                     break;
                 }
