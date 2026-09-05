@@ -2624,6 +2624,11 @@ public class Pesca : Script
                 int v = Numero(c[2]);
                 if (v > 0) quaderno[c[1].Trim()] = v;
             }
+            else if (k == "presoqui" && c.Length > 3)
+            {
+                int v = Numero(c[3]);
+                if (v > 0) presoQui[c[1].Trim() + "|" + c[2].Trim()] = v;
+            }
             else if (k == "borsa" && c.Length > 2)
             {
                 int v = Numero(c[2]);
@@ -2711,6 +2716,8 @@ public class Pesca : Script
             v.Add("borsa|" + kv.Key + "|" + kv.Value);
         foreach (KeyValuePair<string, int> kv in quaderno)
             v.Add("preso|" + kv.Key + "|" + kv.Value);
+        foreach (KeyValuePair<string, int> kv in presoQui)
+            v.Add("presoqui|" + kv.Key + "|" + kv.Value);
         v.Add("imp|avvisa_zona|" + (avvisaZona ? "1" : "0"));
         v.Add("imp|gall_zoom|" + gallZoom);
         v.Add("imp|profondita_cm|" + (int)(profondita * 100f + 0.5f));
@@ -4143,6 +4150,7 @@ public class Pesca : Script
             }
             diarioChiesto = false;
             quaderno.Clear();
+            presoQui.Clear();
             record.Clear();
             dovePreso.Clear();
             recEsca.Clear();
@@ -4166,6 +4174,7 @@ public class Pesca : Script
             FinePesca(false);
             fase = FASE_FERMO;
             quaderno.Clear();
+            presoQui.Clear();
             record.Clear();
             dovePreso.Clear();
             recEsca.Clear();
@@ -5327,7 +5336,7 @@ public class Pesca : Script
         int qs = (a < arPesci.Count) ? arPesci[a].Count : 0;
         int scoperte = 0, q;
         for (q = 0; q < qs; q++)
-            if (quaderno.ContainsKey(arPesci[a][q])) scoperte++;
+            if (presoQui.ContainsKey(arNome[a] + "|" + arPesci[a][q])) scoperte++;
         int pct = (qs > 0) ? (int)(100f * scoperte / qs + 0.5f) : 0;
         DisegnaTestoSinistra(arNome[a], px, py, 0.30f, 245, 245, 250);
         float by = py + LeggiF("posto_barra_giu", 20f);
@@ -10297,6 +10306,10 @@ public class Pesca : Script
         int vale = Dollari((int)(tariffa * pesceKg + 0.5f));
 
         Aggiungi(quaderno, s.Nome, 1);
+        {
+            int aq = LuogoQui();
+            if (aq >= 0 && aq < arNome.Count) Aggiungi(presoQui, arNome[aq] + "|" + s.Nome, 1);
+        }
         // il diario tiene il piu' grosso, non l'ultimo
         float vecchio = record.ContainsKey(s.Nome) ? record[s.Nome] : 0f;
         if (pesceKg > vecchio)
@@ -10365,6 +10378,9 @@ public class Pesca : Script
     Dictionary<string, int> usati = new Dictionary<string, int>();
 
     Dictionary<string, int> quaderno = new Dictionary<string, int>();
+    // E PER POSTO: "area|specie" -> quante volte l'hai presa PROPRIO LI'.
+    // L'esplorazione di un posto conta solo queste, non il quaderno.
+    Dictionary<string, int> presoQui = new Dictionary<string, int>();
     Dictionary<string, float> record = new Dictionary<string, float>();
     Dictionary<string, string> dovePreso = new Dictionary<string, string>();
     // e con cosa l'hai preso, quando hai fatto quel record
