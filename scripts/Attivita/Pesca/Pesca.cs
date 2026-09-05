@@ -8256,7 +8256,7 @@ public class Pesca : Script
         float x = LeggiF("consigli_x", 470f);
         float sc = LeggiF("consigli_testo", 0.24f);
         float gap = LeggiF("consigli_gap", 30f);
-        float ty = y + lato * 0.5f - 9f;
+        float ty = y + lato * 0.5f - 9f + LeggiF("consigli_testo_giu", 1f);
         SpriteInclinata("img\\hud\\croce_sugiu.png", x, y, lato, lato, 90f);
         x += lato + 6f;
         DisegnaTestoSinistra(L("Drag", "Frizione"), x, ty, sc, 245, 245, 250);
