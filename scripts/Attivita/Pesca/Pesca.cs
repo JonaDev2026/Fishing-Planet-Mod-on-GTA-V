@@ -5349,9 +5349,8 @@ public class Pesca : Script
         if (licGiorni > 0)
             DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
                                  px, by + LeggiF("posto_lic_giu", 6f), 0.22f, 200, 202, 210);
-        // il grafico sta per conto suo, in alto a sinistra
-        DisegnaAttivita(a, LeggiF("attivita_x", 24f), LeggiF("attivita_y", 40f),
-                        LeggiF("attivita_larga", bw));
+        // il grafico sotto la riga dell'esplorazione, di attivita_giu pixel
+        DisegnaAttivita(a, px, by + LeggiF("attivita_giu", 30f), LeggiF("attivita_larga", bw));
     }
 
     // L'ATTIVITA' DELLA GIORNATA, stilizzata come nel wiki: una riga base
