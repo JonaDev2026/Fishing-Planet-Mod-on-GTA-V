@@ -7400,7 +7400,9 @@ public class Pesca : Script
                     if (fase == FASE_PRONTO || fase == FASE_CARICA)
                     {
                         // canna fuori dall'acqua: miri dove ti pare
-                        Function.Call(Hash.SET_ENTITY_HEADING, p, p.Heading - g);
+                        // (se cammini ti giri camminando, qui non si tocca)
+                        if (!(Cammina() && fase == FASE_PRONTO))
+                            Function.Call(Hash.SET_ENTITY_HEADING, p, p.Heading - g);
                     }
                     else
                     {
@@ -7470,8 +7472,20 @@ public class Pesca : Script
                                     140, 141, 142, 143, 263, 264, 45,
                                     27, 172, 176 };
             int qv;
+            bool gambe = Cammina() && FaseDiCammino();
             for (qv = 0; qv < via.Length; qv++)
+            {
+                if (gambe && (via[qv] == 30 || via[qv] == 31)) continue;
                 Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, via[qv], true);
+            }
+            if (gambe)
+            {
+                // al passo: la levetta a fondo non fa correre
+                Function.Call(Hash.SET_PED_MAX_MOVE_BLEND_RATIO, p, 1.0f);
+                // l'esca segue il pescatore, a "metriLenza" da lui
+                if (fase == FASE_ACQUA || fase == FASE_ABBOCCA)
+                    AggiornaEsca(p, metriLenza);
+            }
         }
 
         // ---- fermo: si comincia ----
@@ -11304,6 +11318,29 @@ public class Pesca : Script
     // cosi' si puo' cambiare clip quando si tira
     const string DIZ_PESCA = "amb@world_human_stand_fishing@idle_a";
 
+    // SI CAMMINA MENTRE SI PESCA.
+    // Con "pesca_cammina" la posa della canna prende solo il busto
+    // (flag 49: busto + ciclo + secondaria) e le gambe restano al gioco:
+    // la levetta sinistra fa camminare - al passo, niente corsa - e nel
+    // frattempo fa le stesse cose di prima, gira la canna e da' la
+    // strappata. L'esca sta a "metriLenza" dal pescatore, quindi
+    // camminando si porta dietro anche lei. Con 0 torna tutto com'era:
+    // posa a corpo intero e gambe bloccate.
+    bool Cammina()
+    {
+        return LeggiF("pesca_cammina", 1f) > 0.5f;
+    }
+
+    int FlagPosa()
+    {
+        return Cammina() ? 49 : 1;
+    }
+
+    bool FaseDiCammino()
+    {
+        return fase == FASE_PRONTO || fase == FASE_ACQUA || fase == FASE_ABBOCCA;
+    }
+
     void Posa(Ped p, string clip)
     {
         Posa(p, clip, 0.10f);
@@ -11325,7 +11362,7 @@ public class Pesca : Script
             while (!Function.Call<bool>(Hash.HAS_ANIM_DICT_LOADED, DIZ_PESCA) && w < 1000)
             { Script.Wait(50); w += 50; }
             Function.Call(Hash.TASK_PLAY_ANIM, p, DIZ_PESCA, clip,
-                          8.0f, -8.0f, -1, 1, 0.0f, false, false, false);
+                          8.0f, -8.0f, -1, FlagPosa(), 0.0f, false, false, false);
             try { Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, velocita); }
             catch { }
             clipInCorso = clip;
@@ -11372,7 +11409,7 @@ public class Pesca : Script
             while (!Function.Call<bool>(Hash.HAS_ANIM_DICT_LOADED, DIZ_PESCA) && w < 1000)
             { Script.Wait(50); w += 50; }
             Function.Call(Hash.TASK_PLAY_ANIM, p, DIZ_PESCA, clip,
-                          fusione, -8.0f, -1, 1, f, false, false, false);
+                          fusione, -8.0f, -1, FlagPosa(), f, false, false, false);
             Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, 0.0f);
             Function.Call(Hash.SET_ENTITY_ANIM_CURRENT_TIME, p, DIZ_PESCA, clip, f);
             clipInCorso = clip;
