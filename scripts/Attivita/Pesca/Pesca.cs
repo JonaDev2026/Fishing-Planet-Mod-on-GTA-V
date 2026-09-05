@@ -2640,7 +2640,6 @@ public class Pesca : Script
                 if (c[1].Trim() == "avvisa_zona") avvisaZona = (Numero(c[2]) != 0);
                 if (c[1].Trim() == "gall_zoom") gallZoom = Numero(c[2]);
                 if (c[1].Trim() == "profondita_cm") profondita = Numero(c[2]) / 100f;
-                if (c[1].Trim() == "regole_vere") regoleVere = (Numero(c[2]) != 0);
                 if (c[1].Trim() == "minuti") minutiFatti = Numero(c[2]);
                 if (c[1].Trim() == "frizione")
                 {
@@ -2698,7 +2697,6 @@ public class Pesca : Script
         v.Add("imp|avvisa_zona|" + (avvisaZona ? "1" : "0"));
         v.Add("imp|gall_zoom|" + gallZoom);
         v.Add("imp|profondita_cm|" + (int)(profondita * 100f + 0.5f));
-        v.Add("imp|regole_vere|" + (regoleVere ? "1" : "0"));
         v.Add("imp|frizione|" + frizione);
         v.Add("imp|minuti|" + minutiFatti);
         {
@@ -4368,13 +4366,6 @@ public class Pesca : Script
             avvisaZona = !avvisaZona;
             Avviso(avvisaZona ? "~g~Zone di pesca: acceso"
                               : "~y~Zone di pesca: spento");
-            return true;
-        }
-        if (cmd == "imp_regole")
-        {
-            regoleVere = !regoleVere;
-            Avviso(regoleVere ? "~g~Regole vere: acceso.  Ora contano esca, amo, ora e rarita'."
-                              : "~y~Regole vere: spento.  Abbocca di tutto, come prima.");
             return true;
         }
         if (cmd == "usa_esca")
@@ -6435,9 +6426,6 @@ public class Pesca : Script
               + (avvisaZona ? "Acceso" : "Spento")
               + "||Ti avvisa quando passi su un'acqua dove si pesca."
               + "|" + (avvisaZona ? "130,225,180" : "150,155,165"));
-        // LE REGOLE VERE NON SI VEDONO PIU'.
-        // Il comando "imp_regole" c'e' ancora e l'interruttore funziona:
-        // e' solo sparito dal menu, si riaccende quando e' il momento.
         v.Add((diarioChiesto ? "Sicuro? Premi ancora" : "Azzera il diario")
               + "|imp_diario||" + Quanti0(quaderno) + " specie"
               + "||Cancella tutto quello che hai pescato finora."
@@ -6969,23 +6957,18 @@ public class Pesca : Script
 
     // ==================================================================
     //  LE REGOLE VERE DELL'ABBOCCATA
-    //  Si accendono da Impostazioni. Spente, il pesce lo sceglie il caso
-    //  fra quelli della zona, come prima.
-    //  Accese, per abboccare devono tornare tutte queste:
+    //  Sono sempre accese (il modo arcade "abbocca di tutto" non c'e' piu').
+    //  Per il sorteggio del pesce contano:
     //    1. il pesce vive in questa zona                (dato vero, wiki)
-    //    2. l'esca montata e' una delle sue             (dato vero, wiki)
-    //    3. la misura dell'amo e' la sua, o vicina      (dato vero, wiki)
-    //    4. la tua lenza lo regge
-    //    5. e' l'ora in cui quel pesce mangia           (biologia reale)
-    //    6. quanto e' raro                              (dato vero, wiki)
-    //    7. la canna e l'amo giusti per la sua famiglia
-    //  Temperatura e meteo non scelgono il pesce: allungano o accorciano
-    //  l'attesa di tutta l'acqua.
+    //    2. la misura dell'amo e' la sua, o vicina      (dato vero, wiki)
+    //    3. la tua lenza lo regge
+    //    4. e' l'ora in cui quel pesce mangia           (biologia reale)
+    //    5. quanto e' raro                              (dato vero, wiki)
+    //    6. la canna e l'amo giusti per la sua famiglia
+    //    7. la temperatura dell'acqua per quel pesce    (numeri nostri, temperature_pesci.txt)
+    //  L'esca non scarta: pesce estratto con esca non sua abbocca 1 su 3.
+    //  L'amo decide anche la taglia (comune / trofeo / unico).
     // ==================================================================
-    // Le regole vere dell'abboccata: pronte ma SPENTE.
-    // Non c'e' nessuna voce nel menu, si accendono solo da qui
-    // quando lo decidi tu.
-    bool regoleVere = false;
 
     // la scala degli ami, dal piu' piccolo al piu' grosso.
     // Sono le 27 misure che il negozio vende davvero.
@@ -7197,7 +7180,6 @@ public class Pesca : Script
     int AttesaAbboccata(float potenza)
     {
         int attesa = (int)LeggiF("attesa_base", 60000f);
-        if (!regoleVere) return attesa + caso.Next(4000);
         float att = AttivitaAcqua();
         attesa = (int)(attesa / att);
         return attesa + caso.Next((int)LeggiF("attesa_caso", 6000f));
@@ -7496,66 +7478,6 @@ public class Pesca : Script
         if (s == null || s.Denti == 0) return false;
         // il leader ha la sua casella: o c'e' o non c'e'
         return Armato("leader") < 0;
-    }
-
-    // sceglie un pesce fra quelli di questa acqua che l'attrezzatura regge
-    int PescaUnPesce(float tenuta, out float kg)
-    {
-        if (regoleVere) return PescaUnPesceVero(tenuta, out kg);
-        kg = 0f;
-        int lu = LuogoQui();
-        List<int> buoni = new List<int>();
-        int i;
-        for (i = 0; i < pesci.Count; i++)
-        {
-            Specie s = pesci[i];
-            if (s.KgC > tenuta) continue;
-            if (lu >= 0 && s.Zone != null)
-            {
-                if (!PesceQui(s, lu)) continue;
-            }
-            buoni.Add(i);
-        }
-        if (buoni.Count == 0) return -1;
-
-        // IL PUNTO CALDO.
-        // Se l'esca e' finita su un punto a specie, quel pesce pesa sei
-        // volte tanto nel sorteggio: non e' garantito, e' molto piu'
-        // probabile. Sul punto profondo la specie non cambia, cambia la
-        // taglia: si pesca piu' verso l'alto della forbice.
-        int cal = CaldoDellEsca();
-        string spCal = (cal >= 0) ? pcSpecie[cal] : "";
-        float bonusTaglia = (cal >= 0) ? pcBonus[cal] : 1f;
-
-        int scelto = -1;
-        if (spCal.Length > 0)
-        {
-            List<int> pesi = new List<int>();
-            for (i = 0; i < buoni.Count; i++)
-            {
-                pesi.Add(buoni[i]);
-                if (pesci[buoni[i]].Nome == spCal)
-                {
-                    int r5;
-                    for (r5 = 0; r5 < 5; r5++) pesi.Add(buoni[i]);
-                }
-            }
-            scelto = pesi[caso.Next(pesi.Count)];
-        }
-        else scelto = buoni[caso.Next(buoni.Count)];
-
-        Specie sp = pesci[scelto];
-        // peso fra il comune e il massimo che l'attrezzatura regge
-        float alto = TettoUnico(sp);
-        if (alto > tenuta) alto = tenuta;
-        float basso = sp.KgC * 0.6f;
-        if (basso < 0.05f) basso = 0.05f;
-        float t5 = (float)caso.NextDouble();
-        // sul punto profondo il sorteggio si sposta verso i pesci grossi
-        if (bonusTaglia > 1f) t5 = (float)Math.Pow(t5, 1.0 / bonusTaglia);
-        kg = basso + t5 * (alto - basso);
-        if (kg < 0.05f) kg = 0.05f;
-        return scelto;
     }
 
     Random caso = new Random();
@@ -8037,18 +7959,18 @@ public class Pesca : Script
                 // SENZA NIENTE ALL'AMO NON ABBOCCA NESSUNO: solo robaccia,
                 // una volta su tre circa (robaccia_prob_senza_esca).
                 bool nienteAllAmo = (escaMontata < 0) && (InUso("artificiale") < 0);
-                if (regoleVere && nienteAllAmo)
+                if (nienteAllAmo)
                 {
                     if (caso.Next(100) < (int)LeggiF("robaccia_prob_senza_esca", 35f))
                     { ArrivaRobaccia(now); return; }
                     quandoAbbocca = now + 6000 + caso.Next(8000);
                     return;
                 }
-                pesceQui = PescaUnPesce(tenuta, out pesceKg);
+                pesceQui = PescaUnPesceVero(tenuta, out pesceKg);
                 // L'ESCA NON E' LA SUA: abbocca solo 1 su 3 (ha fame). Le
                 // altre volte se ne va, e una parte di quelle viene su la
                 // robaccia. Con l'esca giusta la robaccia non esce mai.
-                if (regoleVere && pesceQui >= 0 && !EscaGiusta(pesci[pesceQui]))
+                if (pesceQui >= 0 && !EscaGiusta(pesci[pesceQui]))
                 {
                     if (caso.Next(100) >= (int)LeggiF("esca_sbagliata_abbocca", 33f))
                     {
@@ -8061,17 +7983,10 @@ public class Pesca : Script
                 }
                 if (pesceQui < 0)
                 {
-                    // Con le regole vere non e' un errore: e' che con questa
-                    // esca, questo amo e a quest'ora qui non mangia niente.
-                    // La lenza resta in acqua e si continua ad aspettare.
-                    if (regoleVere)
-                    {
-                        quandoAbbocca = now + 6000 + caso.Next(8000);
-                        return;
-                    }
-                    Messaggio("~r~Qui non abbocca niente con questa attrezzatura.");
-                    fase = FASE_PRONTO;
-                    grillettoMollato = false;
+                    // Non e' un errore: con questo amo, a quest'ora e con
+                    // quest'acqua qui non mangia niente. La lenza resta in
+                    // acqua e si continua ad aspettare.
+                    quandoAbbocca = now + 6000 + caso.Next(8000);
                     return;
                 }
                 // e qui si vede: il pesce spunta all'amo
