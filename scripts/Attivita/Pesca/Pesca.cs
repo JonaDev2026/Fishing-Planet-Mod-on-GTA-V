@@ -8272,18 +8272,20 @@ public class Pesca : Script
         }
         else if (fase == FASE_PRONTO)
         {
-            Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Cast", "Lancia"));
-            Voce(ic, tx, "x", L("SPACE", "SPAZIO"), L("Put the rod away", "Riponi la canna"));
-            Voce(ic, tx, "rb", "Q", L("Change bait", "Cambia esca"));
+            // i tasti di sinistra a sinistra, quelli di destra a destra,
+            // X e la croce in mezzo
             Voce(ic, tx, "lb", "TAB", L("Manage tackle", "Gestisci l'armatura"));
+            Voce(ic, tx, "x", L("SPACE", "SPAZIO"), L("Put the rod away", "Riponi la canna"));
             Voce(ic, tx, "croce_sxdx", "< >", L("Drag", "Frizione"));
             Voce(ic, tx, "croce_sugiu", "^ v", L("Bait depth", "Profondita' dell'esca"));
+            Voce(ic, tx, "rb", "Q", L("Change bait", "Cambia esca"));
+            Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Cast", "Lancia"));
         }
         else if (fase == FASE_ACQUA || fase == FASE_ABBOCCA || fase == FASE_LOTTA)
         {
-            Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Reel in", "Recupera la lenza"));
-            Voce(ic, tx, "croce_sxdx", "< >", L("Drag", "Frizione"));
             Voce(ic, tx, "lb", "TAB", L("Manage tackle", "Gestisci l'armatura"));
+            Voce(ic, tx, "croce_sxdx", "< >", L("Drag", "Frizione"));
+            Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Reel in", "Recupera la lenza"));
         }
         else if (fase == FASE_CARD)
         {
