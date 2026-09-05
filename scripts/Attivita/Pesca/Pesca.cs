@@ -11948,11 +11948,11 @@ public class Pesca : Script
             // A GALLEGGIANTE LA CANNA SI TIENE PIU' BASSA: con la lenza in
             // acqua e il galleggiante montato la punta scende di
             // "canna_gall_giu" gradi (a spinning resta com'e').
-            float base = 0f;
+            float giuGall = 0f;
             if ((fase == FASE_ACQUA || fase == FASE_ABBOCCA || fase == FASE_LOTTA)
                 && InUso("galleggiante") >= 0)
-                base = LeggiF("canna_gall_giu", -30f);
-            float rz = LeggiF("canna_rz", 70f) + giro + base;
+                giuGall = LeggiF("canna_gall_giu", -30f);
+            float rz = LeggiF("canna_rz", 70f) + giro + giuGall;
             // SU QUALE ASSE LA CANNA VA DI LATO.
             // Il modello e' gia' girato di novanta gradi in mano, quindi
             // quale dei tre assi porti la punta a destra e a sinistra non
