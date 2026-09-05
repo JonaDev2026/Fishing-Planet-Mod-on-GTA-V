@@ -6767,6 +6767,11 @@ public class Pesca : Script
     //   morbida -> il mulinello canta e lui se ne prende tanti, pero' la
     //              lenza non rischia di spezzarsi.
     int strappoFine = 0;      // fino a quando sta tirando adesso
+    // LE CORSE: ogni tanto il pesce parte e si porta via lenza sul serio,
+    // virando da un lato. Quanto e quanto spesso lo decidono il suo peso
+    // contro la tua attrezzatura, la stanchezza e la frizione.
+    int corsaFine = 0, corsaProssima = 0;
+    float corsaMetriSec = 0f, corsaVerso = 1f;
     int strappoDa = 0;        // quando puo' ripartire
     float strappoForza = 0f;
     float stanchezza = 0f;    // 0..1: quanto si e' consumato il pesce
@@ -8050,6 +8055,8 @@ public class Pesca : Script
                 stanchezza = 0f;
                 strappoFine = 0;
                 strappoDa = 0;
+                corsaFine = 0;
+                corsaProssima = now + 1500 + caso.Next(3000);
                 tastoDa = now + 300;
                 return;
             }
@@ -8278,6 +8285,37 @@ public class Pesca : Script
             tensione += (6f + forza * 30f) * carico * dtL;
             // e sempre un filo di sfogo, tanto piu' quanto meno tiri
             tensione -= 34f * (1f - spinta * 0.7f) * dtL;
+
+            // LA CORSA. Un pesce fresco e pesante parte spesso e lontano,
+            // uno stanco o piccolo quasi mai. Mentre corre si porta via
+            // metri (di piu' con la frizione morbida), vira da un lato e
+            // carica la lenza: con la frizione chiusa e' li' che si rompe.
+            float fresco2 = 1f - stanchezza;
+            if (now > corsaFine && now > corsaProssima)
+            {
+                int ogni = (int)(LeggiF("corsa_ogni", 9f) * 1000f);
+                corsaProssima = now + ogni / 2 + caso.Next(ogni) + (int)(stanchezza * ogni * 2f);
+                if (caso.NextDouble() < (0.25f + 0.75f * forza) * fresco2)
+                {
+                    int duraC = (int)((1000f + caso.Next(2000)) * (0.6f + 0.4f * fresco2));
+                    corsaFine = now + duraC;
+                    float metriC = LeggiF("corsa_metri", 12f) * (0.15f + 0.85f * forza)
+                                 * (0.4f + 0.6f * fresco2) * Friz(FRIZ_MET);
+                    corsaMetriSec = metriC / (duraC / 1000f);
+                    corsaVerso = (caso.Next(2) == 0) ? 1f : -1f;
+                    Vibra(duraC > 2000 ? 600 : 400, 160 + (int)(forza * 90f));
+                }
+            }
+            if (now < corsaFine)
+            {
+                metriLenza += corsaMetriSec * dtL;
+                float tetto = metriInBobina - 1f;
+                if (tetto > 0f && metriLenza > tetto) metriLenza = tetto;
+                pesceVerso = corsaVerso;
+                escaDir += corsaVerso * LeggiF("corsa_angolo", 60f) * 0.5f * dtL;
+                tensione += LeggiF("corsa_tensione", 18f) * (0.3f + 0.7f * forza) * Friz(FRIZ_TEN) * dtL;
+                AggiornaEsca(p, metriLenza);
+            }
 
             // il mulinello: canta quando cede lenza, ticchetta quando ne
             // guadagni, tace quando siete fermi a tirare tutti e due
