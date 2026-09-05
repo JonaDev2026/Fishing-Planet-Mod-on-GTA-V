@@ -12164,20 +12164,13 @@ public class Pesca : Script
         int r = 40, g = 80, b = 130;
         if (c.Length >= 3) { r = Numero(c[0].Trim()); g = Numero(c[1].Trim()); b = Numero(c[2].Trim()); }
         int a = (int)LeggiF("acqua_alfa", 150f);
-        // SFUMATA: chiara in alto, piu' scura verso il fondo, a strisce.
-        // "acqua_fondo_scuro" e' quanto resta di luce in fondo (0..1).
-        int strisce = 16;
-        float scuro = LeggiF("acqua_fondo_scuro", 0.55f);
-        int k;
-        for (k = 0; k < strisce; k++)
-        {
-            float t = (float)k / (float)(strisce - 1);
-            float f = 1f - (1f - scuro) * t;
-            float y0 = top + alt * k / strisce;
-            float y1 = top + alt * (k + 1) / strisce;
-            DisegnaRett(cx - largo * 0.5f, y0, largo, y1 - y0 + 0.5f,
-                        (int)(r * f), (int)(g * f), (int)(b * f), a);
-        }
+        DisegnaRett(cx - largo * 0.5f, top, largo, alt, r, g, b, a);
+        // SFUMATA SENZA RIGHE: sopra il colore pieno si stende un PNG
+        // nero che va da trasparente in alto a coperto in fondo, pixel
+        // per pixel, come la ruota. "acqua_ombra" 0..1 quanto e' scura.
+        float om = LeggiF("acqua_ombra", 1f);
+        if (om > 0.01f)
+            Sprite("img\\hud\\acqua_ombra.png", cx - largo * 0.5f, top, largo, alt);
         // il pelo dell'acqua: lo stesso colore, piu' chiaro
         DisegnaRett(cx - largo * 0.5f, top, largo, 2f,
                     Math.Min(255, r + 110), Math.Min(255, g + 115), Math.Min(255, b + 105), 235);
