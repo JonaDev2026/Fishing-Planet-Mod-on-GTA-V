@@ -9162,7 +9162,20 @@ public class Pesca : Script
             piano++;
         }
         if (Montato("galleggiante", out id, out img, out nome))
-        { Sprite(img, mx, my - piano * 54f, 112f, 44f); piano++; }
+        {
+            float ryG = my - piano * 54f;
+            Sprite(img, mx, ryG, 112f, 44f);
+            // la portata: quanto piombo regge, che e' il dato dell'armatura
+            int ig;
+            for (ig = 0; ig < galleggianti.Count; ig++)
+                if (galleggianti[ig].Id == id && galleggianti[ig].Portata.Length > 0)
+                {
+                    DisegnaTesto("piombo " + PortataIt(galleggianti[ig].Portata),
+                                 tx, ryG + 15f, 0.19f, 245, 245, 250);
+                    break;
+                }
+            piano++;
+        }
 
         if (Montato("terminale", out id, out img, out nome))
         {
