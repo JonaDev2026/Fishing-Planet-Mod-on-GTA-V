@@ -8221,7 +8221,7 @@ public class Pesca : Script
         if (tot > 0) testoM += " / " + tot;
         testoM += " m";
         DisegnaTesto(testoM,
-                     BAR_X + BAR_W * 0.5f, BarY() - 34f, 0.38f, cr, cg, cb);
+                     BAR_X + BAR_W * 0.5f, BarY() - 34f + LeggiF("metri_giu", 11f), 0.38f, cr, cg, cb);
         if (cal >= 0)
             DisegnaTesto(pcSpecie[cal].Length > 0
                          ? L("the water moves", "l'acqua si muove")
