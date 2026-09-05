@@ -2578,7 +2578,6 @@ public class Pesca : Script
                 {
                     frizione = Numero(c[2]);
                     if (frizione < 1) frizione = 1;
-                    if (frizione > 4) frizione = 4;
                 }
             }
             else if (k == "record" && c.Length > 2)
@@ -6592,13 +6591,18 @@ public class Pesca : Script
     int quandoAbbocca = 0;    // GameTime in cui il pesce prende
     int giroMulinello = 0;    // il tic tic del mulinello mentre giri
 
-    // LA FRIZIONE: quattro tacche, si gira con destra e sinistra.
+    // LA FRIZIONE: le tacche del cerchio, si gira con destra e sinistra.
     //   1 tacca accesa = frizione TIRATA: il mulinello non molla, guadagni
     //                    lenza in fretta ma la tensione sale subito.
-    //   4 tacche       = frizione MORBIDA: la tensione sale piano, pero'
+    //   tutte accese   = frizione MORBIDA: la tensione sale piano, pero'
     //                    il pesce si riprende il filo e non finisci mai.
     // Sta a te trovare la via di mezzo col pesce che hai attaccato.
-    int frizione = 2;                 // 1..4
+    // QUANTE POSIZIONI: "friz_posizioni" in config, 12 come le tacche.
+    // (Sul wiki il numero c'e' solo per una ventina di mulinelli, quasi
+    // tutti 12: si usa 12 per tutti.) Le quattro tabelle sotto sono i
+    // punti di riferimento da tirata a morbida: fra un punto e l'altro
+    // si interpola, cosi' le posizioni possono essere quante si vuole.
+    int frizione = 2;                 // 1..PosFrizione()
     static readonly float[] FRIZ_REC = new float[] { 1.45f, 1.15f, 0.90f, 0.65f };
     static readonly float[] FRIZ_TEN = new float[] { 1.65f, 1.25f, 0.95f, 0.70f };
     // i metri che il pesce riesce a portarsi via quando parte:
@@ -6606,6 +6610,25 @@ public class Pesca : Script
     static readonly float[] FRIZ_MET = new float[] { 0.50f, 0.80f, 1.15f, 1.60f };
     // e i metri che guadagni tu quando lo tiri: tirata rende un filo di piu'
     static readonly float[] FRIZ_GUA = new float[] { 1.20f, 1.05f, 0.92f, 0.80f };
+
+    int PosFrizione()
+    {
+        int n = (int)LeggiF("friz_posizioni", 12f);
+        return (n < 2) ? 2 : n;
+    }
+
+    // il valore di una tabella alla posizione di frizione attuale
+    float Friz(float[] tab)
+    {
+        int n = PosFrizione();
+        if (frizione < 1) frizione = 1;
+        if (frizione > n) frizione = n;
+        float f = (float)(frizione - 1) / (float)(n - 1) * 3f;   // 0..3
+        int k = (int)f;
+        if (k > 2) k = 2;
+        float u = f - k;
+        return tab[k] + (tab[k + 1] - tab[k]) * u;
+    }
     int tastoFriz = 0;
 
     // LO STRAPPO DEL PESCE.
@@ -7359,12 +7382,12 @@ public class Pesca : Script
                        || Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 175);
                 if (sx && frizione > 1)
                 {
-                    frizione--; tastoFriz = now + 220;
+                    frizione--; tastoFriz = now + 160;
                     Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 }
-                else if (dx && frizione < 4)
+                else if (dx && frizione < PosFrizione())
                 {
-                    frizione++; tastoFriz = now + 220;
+                    frizione++; tastoFriz = now + 160;
                     Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 }
             }
@@ -8019,9 +8042,6 @@ public class Pesca : Script
             if (spinta < 0.1f) spinta = 0f;
             if (spinta > 1f) spinta = 1f;
 
-            int fz = frizione - 1;
-            if (fz < 0) fz = 0;
-            if (fz > 3) fz = 3;
             float dtL = Game.LastFrameTime;
 
             // ---- ogni tanto il pesce parte ----
@@ -8062,19 +8082,19 @@ public class Pesca : Script
                 if (netto > 0.05f) Posa(p, ClipMulinello(), 0.6f + netto * 0.9f);
                 else Posa(p, LeggiS("anim_tira", "idle_b"), 0.25f);
             }
-            float mFriz = (netto < 0f) ? FRIZ_MET[fz] : FRIZ_GUA[fz];
+            float mFriz = (netto < 0f) ? Friz(FRIZ_MET) : Friz(FRIZ_GUA);
             metriLenza -= 3.0f * netto * mFriz * dtL;
             // ANCHE IN LOTTA L'ESCA SI MUOVE.
             // Qui non si aggiornava: i metri scendevano ma il punto restava
             // piantato dove aveva abboccato, e la lenza sembrava bloccata.
             AggiornaEsca(p, metriLenza);
-            recuperato += 16f * FRIZ_REC[fz] * netto * dtL;
+            recuperato += 16f * Friz(FRIZ_REC) * netto * dtL;
 
             // LA TENSIONE: la somma. Quanto tiro io, piu' quanto tira lui
             // filtrato dalla frizione - tirata trasmette tutto, morbida
             // lascia scorrere. E pesa di piu' se il pesce e' grosso per la
             // lenza che hai montato: e' li' che si spezza.
-            float caricoLui = forzaPesce * FRIZ_TEN[fz];
+            float caricoLui = forzaPesce * Friz(FRIZ_TEN);
             float carico = spinta + caricoLui;
             tensione += (6f + forza * 30f) * carico * dtL;
             // e sempre un filo di sfogo, tanto piu' quanto meno tiri
@@ -8169,8 +8189,7 @@ public class Pesca : Script
     // Accese dal basso: una sola = tirata, tutte e quattro = morbida.
     // LA FRIZIONE E' UN CERCHIO A TACCHE, come in Fishing Planet: dodici
     // tacche attorno a un disco scuro, accese in senso orario dall'alto.
-    // Quattro posizioni di frizione = tre tacche ciascuna. In mezzo, per
-    // ora, niente: le frecce vengono dopo.
+    // Ogni tacca e' una posizione di frizione. In mezzo il mulinello.
     //   friz_cx / friz_cy   centro
     //   friz_diam           diametro
     void TacchePrizione()
@@ -8181,12 +8200,17 @@ public class Pesca : Script
         // nel PNG il raggio esterno e' 248 su una meta' lato di 256
         float S = fd * 256f / 248f;
         Sprite("img\\hud\\friz_disco.png", fcx - S * 0.5f, fcy - S * 0.5f, S, S);
-        int accese = frizione * 3;
+        int n = PosFrizione();
+        if (frizione > n) frizione = n;
         int i;
-        for (i = 0; i < 12; i++)
+        for (i = 0; i < n; i++)
         {
-            string img = (i < accese) ? "img\\hud\\friz_on.png" : "img\\hud\\friz_off.png";
-            SpriteInclinata(img, fcx - S * 0.5f, fcy - S * 0.5f, S, S, i * 30f * LeggiF("ruota_verso", 1f));
+            // il PNG della tacca e' fatto per 12: con altre posizioni si
+            // usa friz_on_<n>.png / friz_off_<n>.png se ci sono
+            string suf = (n == 12) ? "" : ("_" + n);
+            string img = (i < frizione) ? ("img\\hud\\friz_on" + suf + ".png")
+                                        : ("img\\hud\\friz_off" + suf + ".png");
+            SpriteInclinata(img, fcx - S * 0.5f, fcy - S * 0.5f, S, S, i * (360f / n) * LeggiF("ruota_verso", 1f));
         }
         // IN MEZZO IL MULINELLO, e sotto i suoi dati: frizione e metri
         int idm; string imm, nmm;
