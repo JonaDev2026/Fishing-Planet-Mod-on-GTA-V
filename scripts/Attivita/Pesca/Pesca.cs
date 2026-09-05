@@ -7483,7 +7483,7 @@ public class Pesca : Script
                 // al passo: la levetta a fondo non fa correre
                 Function.Call(Hash.SET_PED_MAX_MOVE_BLEND_RATIO, p, 1.0f);
                 // l'esca segue il pescatore, a "metriLenza" da lui
-                if (fase == FASE_ACQUA || fase == FASE_ABBOCCA)
+                if (fase == FASE_ACQUA || fase == FASE_ABBOCCA || fase == FASE_LOTTA)
                     AggiornaEsca(p, metriLenza);
             }
         }
@@ -11336,9 +11336,12 @@ public class Pesca : Script
         return Cammina() ? 49 : 1;
     }
 
+    // sempre: canna in mano, lenza in acqua e anche durante la lotta,
+    // che spostandosi si fa leva
     bool FaseDiCammino()
     {
-        return fase == FASE_PRONTO || fase == FASE_ACQUA || fase == FASE_ABBOCCA;
+        return fase == FASE_PRONTO || fase == FASE_ACQUA
+            || fase == FASE_ABBOCCA || fase == FASE_LOTTA;
     }
 
     void Posa(Ped p, string clip)
