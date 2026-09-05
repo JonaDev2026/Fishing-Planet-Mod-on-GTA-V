@@ -5441,7 +5441,7 @@ public class Pesca : Script
         float yo = basso - ValoreCurva(hh + mi / 60f) * alt;
         DisegnaRett(xo, yo, 1f, basso - yo, 255, 255, 255, 230);
         // sotto le ore, in piccolo, cos'e'
-        DisegnaTestoSinistra(L("Daily activity", "Attivita' della giornata"), px,
+        DisegnaTestoSinistra(L("Fish activity in this area", "Attivita' dei pesci in questa zona"), px,
                              basso + LeggiF("attivita_titolo_giu", 14f), 0.17f, 200, 202, 210);
     }
 
