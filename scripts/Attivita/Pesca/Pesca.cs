@@ -5101,10 +5101,11 @@ public class Pesca : Script
     // o tre, sempre quello scomparto e'. Due misure diverse invece sono
     // due scomparti. Contando i pezzi ci vorrebbe un camion per portarsi
     // cento vermi.
+    // la nassa NON sta in cassetta: si porta a parte, come le canne
     int RobaMinuta()
     {
         return TipiInBorsa("terminale") + TipiInBorsa("galleggiante")
-             + TipiInBorsa("artificiale") + TipiInBorsa("esca") + TipiInBorsa("nassa");
+             + TipiInBorsa("artificiale") + TipiInBorsa("esca");
     }
 
     bool CiSta(string cat)
@@ -5120,6 +5121,8 @@ public class Pesca : Script
     {
         // i contenitori si portano sempre: sono loro a fare il posto
         if (cat == "cassetta" || cat == "portacanne") return true;
+        // LA NASSA VA A PARTE, non in cassetta: ma una sola alla volta
+        if (cat == "nassa") return InBorsa("nassa") < 1;
         int mc, mm, ml, mr;
         Capienza(out mc, out mm, out ml, out mr);
         if (cat == "canna") return InBorsa("canna") < mc;
