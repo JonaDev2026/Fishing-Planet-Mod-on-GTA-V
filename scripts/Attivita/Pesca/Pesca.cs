@@ -9118,7 +9118,7 @@ public class Pesca : Script
         //   lenza     -> i chili che regge prima di spezzarsi
         //   amo       -> la misura
         // Le scritte stanno a sinistra dell'icona, tutte incolonnate.
-        float tx = mx + 9f;
+        float tx = mx + 9f + LeggiF("colonna_testo_dx", 8f);
 
         // IL MULINELLO NON STA PIU' QUI: sta in mezzo al cerchio della
         // frizione, coi suoi dati sotto (TacchePrizione). Il posto in
