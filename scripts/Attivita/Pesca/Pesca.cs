@@ -788,8 +788,18 @@ public class Pesca : Script
             // scendendo vedi il banner di ogni acqua.
             string imgZ = BannerArea(a);
             if (imgZ.Length == 0) imgZ = Banner();
+            // L'ESPLORAZIONE: quante specie di questo posto hai gia'
+            // preso, in percento. Nel trainer diventa la barretta sotto il nome.
+            int scoperte = 0;
+            if (a < arPesci.Count)
+            {
+                int q3;
+                for (q3 = 0; q3 < arPesci[a].Count; q3++)
+                    if (quaderno.ContainsKey(arPesci[a][q3])) scoperte++;
+            }
+            int esplora = (qs > 0) ? (int)(100f * scoperte / qs + 0.5f) : 0;
             v.Add("sottofile|" + et
-                  + "|z_zona_" + a + ".txt||" + imgZ + "|" + d);
+                  + "|z_zona_" + a + ".txt||" + imgZ + "|" + d + "||" + esplora);
             ScriviUnaZona(a);
         }
         ScriviVoci("zone_voci.txt", v);
@@ -5210,6 +5220,7 @@ public class Pesca : Script
             if (oraMia >= 24) oraMia = 0;
             prossimoMinuto += MS_PER_MINUTO;
             minutiFatti++;
+            ScriviTesta();
         }
         try
         {
@@ -6454,9 +6465,13 @@ public class Pesca : Script
     {
         try
         {
+            // terzo pezzo, solo con la licenza attiva: quanto manca
+            string lic = "";
+            if (inPesca && licGiorni > 0)
+                lic = "   " + L("License ", "Licenza ") + TempoCheResta();
             File.WriteAllText(Path.Combine(MY_DIR, "header.txt"),
                               "Liv. " + livelloPescatore
-                              + "   " + xpTot + " XP");
+                              + "   " + xpTot + " XP" + lic);
         }
         catch { }
     }
