@@ -11218,6 +11218,7 @@ public class Pesca : Script
     const int SCENA_MAX = 3;
     Ped[] pesceScena = new Ped[SCENA_MAX];
     float[] scenaLato = new float[SCENA_MAX];
+    float[] scenaDirQ = new float[SCENA_MAX];   // ognuno la sua rotta
     int[] scenaRit = new int[SCENA_MAX];
     int scenaN = 0;
     int scenaProssimo = 0, scenaDa = 0;
@@ -11277,8 +11278,6 @@ public class Pesca : Script
         // quelli che stanno passando adesso: li si porta avanti
         if (scenaN > 0)
         {
-            double rad = scenaDir * Math.PI / 180.0;
-            float dx = -(float)Math.Sin(rad), dy = (float)Math.Cos(rad);
             bool finiti = true;
             int q;
             for (q = 0; q < scenaN; q++)
@@ -11288,7 +11287,10 @@ public class Pesca : Script
                 if (t < 1f) finiti = false;
                 if (t < 0f) t = 0f;
                 if (t > 1f) t = 1f;
-                // parte da un capo e arriva all'altro, ondeggiando un po'
+                // ognuno sulla sua rotta: parte lontano da un lato, passa
+                // vicino all'esca e se ne va lontano dall'altro
+                double rad = scenaDirQ[q] * Math.PI / 180.0;
+                float dx = -(float)Math.Sin(rad), dy = (float)Math.Cos(rad);
                 float avanti = (t - 0.5f) * scenaLung;
                 float px = scenaX + dx * avanti - dy * scenaLato[q];
                 float py = scenaY + dy * avanti + dx * scenaLato[q];
@@ -11300,7 +11302,7 @@ public class Pesca : Script
                     Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, pesceScena[q],
                                   px, py, pz, false, false, false);
                     Function.Call(Hash.SET_ENTITY_ROTATION, pesceScena[q],
-                                  0f, 0f, scenaDir + coda, 2, true);
+                                  0f, 0f, scenaDirQ[q] + coda, 2, true);
                 }
                 catch { }
             }
@@ -11413,6 +11415,11 @@ public class Pesca : Script
                 scenaLato[scenaN] = (scenaN == 0) ? 0f
                                   : ((scenaN == 1) ? 1f : -1f) * LeggiF("pesci_scena_lato", 0.7f);
                 scenaRit[scenaN] = (scenaN == 0) ? 0 : (int)(dura * (0.08f + 0.10f * scenaN));
+                // il primo tiene la rotta del gruppo, gli altri sbandano
+                // di qualche grado, ognuno per conto suo
+                float sband = LeggiF("pesci_scena_sbanda", 25f);
+                scenaDirQ[scenaN] = (scenaN == 0) ? scenaDir
+                                  : scenaDir + (caso.Next(2) == 0 ? 1f : -1f) * (8f + caso.Next((int)sband));
                 scenaN++;
             }
             if (scenaN == 0) return;
