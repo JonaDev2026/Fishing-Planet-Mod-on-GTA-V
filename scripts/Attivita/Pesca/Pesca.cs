@@ -10032,9 +10032,11 @@ public class Pesca : Script
     // Tieni premuto LB, con la levetta destra scegli lo spicchio, con
     // SINISTRA e DESTRA della croce giri fra i pezzi di quella categoria
     // che hai in borsa - come si cambia arma dentro uno spicchio - lasci
-    // LB e il pezzo si monta. Otto spicchi in senso orario dall'alto;
-    // quello in basso e' vuoto apposta: ci lasci la levetta e chiudi
-    // senza montare niente. La nassa non c'e': e' una sola, sta fissa.
+    // LB e il pezzo si monta. Dodici spicchi in senso orario dall'alto,
+    // uno per ogni posto dell'armatura; i tre in basso sono vuoti
+    // apposta: ci lasci la levetta e chiudi senza montare niente. La
+    // nassa non c'e': e' una sola, sta fissa. Cucchiaino e galleggiante/
+    // amo si scacciano da soli: montando uno si smonta l'altro.
     //   ruota_x / ruota_y   centro, in pixel su 1280x720
     //   ruota_raggio        raggio esterno
     //   ruota_icona         lato del riquadro delle icone
@@ -10043,13 +10045,16 @@ public class Pesca : Script
     //   ruota_soglia        quanto va spinta la levetta (0..1)
     bool ruotaAperta = false;
     int ruotaSpicchio = -1;
-    int[] ruotaPos = new int[8];
+    const int RUOTA_N = 12;
+    int[] ruotaPos = new int[RUOTA_N];
+    // "terminale" qui e' la casella dell'amo; leader e piombo sono le
+    // altre due caselle dei terminali, con la stessa categoria in borsa
     static readonly string[] RUOTA_CAT = new string[] {
-        "canna", "mulinello", "lenza", "terminale",
-        "", "galleggiante", "artificiale", "esca" };
+        "canna", "mulinello", "lenza", "leader", "piombo", "",
+        "", "", "terminale", "galleggiante", "esca", "artificiale" };
     static readonly string[] RUOTA_NOME = new string[] {
-        "Canna", "Mulinello", "Lenza", "Amo e terminali",
-        "", "Galleggiante", "Cucchiaino", "Esca" };
+        "Canna", "Mulinello", "Lenza", "Leader", "Piombo", "",
+        "", "", "Amo", "Galleggiante", "Esca", "Cucchiaino" };
 
     class VoceRuota
     {
@@ -10085,12 +10090,12 @@ public class Pesca : Script
         if (sp < 0 || sp >= RUOTA_CAT.Length) return v;
         string cat = RUOTA_CAT[sp];
         if (cat.Length == 0) return v;
-        if (cat == "terminale")
+        bool term = (cat == "terminale" || cat == "leader" || cat == "piombo");
+        string casella = cat;
+        if (term)
         {
-            string[] cas = new string[] { "terminale", "leader", "piombo" };
-            int k;
-            for (k = 0; k < cas.Length; k++)
-                if (Armato(cas[k]) >= 0) AggVoce(v, "terminale", Armato(cas[k]), -1, true);
+            if (Armato(casella) >= 0) AggVoce(v, "terminale", Armato(casella), -1, true);
+            cat = "terminale";
         }
         else if (cat == "esca")
         {
@@ -10106,7 +10111,10 @@ public class Pesca : Script
         {
             string[] c = kv.Key.Split(':');
             if (c.Length < 2 || c[0] != cat || kv.Value <= 0) continue;
-            ids.Add(Numero(c[1]));
+            int idb = Numero(c[1]);
+            // nello spicchio dell'amo solo gli ami, in quello del leader solo i leader
+            if (term && CasellaTerm(SottoTerm(idb)) != casella) continue;
+            ids.Add(idb);
         }
         ids.Sort();
         int i;
@@ -10145,7 +10153,7 @@ public class Pesca : Script
             ruotaAperta = true;
             ruotaSpicchio = -1;
             int k;
-            for (k = 0; k < 8; k++) ruotaPos[k] = 0;
+            for (k = 0; k < RUOTA_N; k++) ruotaPos[k] = 0;
             Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
         }
         // la levetta destra sceglie lo spicchio, non gira la telecamera
@@ -10159,7 +10167,8 @@ public class Pesca : Script
         {
             float ang = (float)(Math.Atan2(sx, -sy) * 180.0 / Math.PI);
             if (ang < 0f) ang += 360f;
-            int sp = ((int)((ang + 22.5f) / 45f)) % 8;
+            float passo = 360f / RUOTA_N;
+            int sp = ((int)((ang + passo * 0.5f) / passo)) % RUOTA_N;
             if (sp != ruotaSpicchio)
             {
                 ruotaSpicchio = sp;
@@ -10192,6 +10201,19 @@ public class Pesca : Script
         if (v.Count == 0 || pos >= v.Count) return;
         VoceRuota r = v[pos];
         if (r.Montata) return;
+        // SI SCACCIANO DA SOLI: il cucchiaino manda via galleggiante e
+        // amo, e loro mandano via il cucchiaino. Arma() da solo si
+        // rifiuterebbe e direbbe "prima smonta": qui lo smonta lei.
+        if (r.Cat == "artificiale")
+        {
+            if (InUso("galleggiante") >= 0) Arma("galleggiante", InUso("galleggiante"));
+            if (Armato("terminale") >= 0) Arma("terminale", Armato("terminale"));
+        }
+        if (r.Cat == "galleggiante" || (r.Cat == "terminale"
+            && CasellaTerm(SottoTerm(r.Id)) == "terminale"))
+        {
+            if (InUso("artificiale") >= 0) Arma("artificiale", InUso("artificiale"));
+        }
         bool ok;
         if (r.Cat == "esca") { escaMontata = r.Id; ok = true; }
         else if (r.Bob >= 0) ok = ArmaLenzaBobina(r.Bob);
@@ -10213,20 +10235,21 @@ public class Pesca : Script
         float ic = LeggiF("ruota_icona", 64f);
         // nel PNG il raggio esterno e' 120 su una meta' lato di 128
         float S = R * 2f * (128f / 120f);
+        float passo = 360f / RUOTA_N;
         int i;
-        for (i = 0; i < 8; i++)
+        for (i = 0; i < RUOTA_N; i++)
         {
             string img = (i == ruotaSpicchio) ? "img/ruota/spicchio_sel.png"
                                               : "img/ruota/spicchio.png";
-            SpriteInclinata(img, cx - S * 0.5f, cy - S * 0.5f, S, S, i * 45f * verso);
+            SpriteInclinata(img, cx - S * 0.5f, cy - S * 0.5f, S, S, i * passo * verso);
         }
-        for (i = 0; i < 8; i++)
+        for (i = 0; i < RUOTA_N; i++)
         {
             List<VoceRuota> v = VociRuota(i);
             if (v.Count == 0) continue;
             int pos = ruotaPos[i];
             if (pos >= v.Count) pos = 0;
-            double a = i * 45.0 * Math.PI / 180.0;
+            double a = i * passo * Math.PI / 180.0;
             float rr = R * 0.78f;
             float px = cx + rr * (float)Math.Sin(a);
             float py = cy - rr * (float)Math.Cos(a);
