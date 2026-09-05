@@ -7593,6 +7593,7 @@ public class Pesca : Script
 
             HudPesca();
             BarraCanna(potenza / 100f, 165, 95, 235);   // viola: stai caricando
+            TacchePrizione();
             Metri(MetriDelLancio(potenza));
             Aiuto("Rilascia ~INPUT_ATTACK~ per lanciare");
             // il corpo si piega indietro e la canna va indietro con lui,
@@ -7858,6 +7859,7 @@ public class Pesca : Script
         {
             HudPesca();
             BarraCanna(0f, 250, 210, 90);
+            TacchePrizione();
             Metri(metriLenza);
             DisegnaLenza(now, true);
             if (QuadranteGall()) DisegnaGalleggiante(now, 14f, 2.2f);
@@ -7892,6 +7894,8 @@ public class Pesca : Script
         {
             PosaFerma(p);
             HudPesca();
+            BarraCanna(0f, 130, 225, 180);
+            TacchePrizione();
             AggiornaPesce(p, now, false);
             DisegnaFiloAppeso();
             Specie sc = pesci[cardPesce];
