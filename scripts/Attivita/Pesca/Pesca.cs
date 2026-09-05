@@ -12154,6 +12154,13 @@ public class Pesca : Script
         else if (tipo == "fiume" || tipo == "torrente") img = "img\\hud\\fondo_fiume.png";
         float fh = LeggiF("fondale_alt", 6f);
         Sprite(img, cx - largo * 0.5f, top + alt - fh, largo, fh);
+        // "fondale_tutti=1": gli altri due accanto, per vederli insieme
+        if (LeggiF("fondale_tutti", 0f) > 0.5f)
+        {
+            Sprite("img\\hud\\fondo_mare.png", cx - largo * 1.5f - 4f, top + alt - fh, largo, fh);
+            Sprite("img\\hud\\fondo_lago.png", cx + largo * 0.5f + 4f, top + alt - fh, largo, fh);
+            Sprite("img\\hud\\fondo_fiume.png", cx + largo * 1.5f + 8f, top + alt - fh, largo, fh);
+        }
     }
 
     void DisegnaGalleggiante(int now, float giu, float scossa)
