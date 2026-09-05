@@ -4227,8 +4227,7 @@ public class Pesca : Script
             // e in punta ci vuole qualcosa che agganci
             string mancaQui = CosaMancaPerLanciare();
             if (mancaQui.Length > 0) { Messaggio(mancaQui); return true; }
-            if (escaMontata < 0) CambiaEsca();
-            if (escaMontata < 0) Avviso("~y~Senza esca peschi solo robaccia.");
+            if (escaMontata < 0 && InUso("artificiale") < 0) CambiaEsca();
             fase = FASE_PRONTO;
             grillettoMollato = false;
             ScenaSu(Game.Player.Character);
@@ -5374,16 +5373,23 @@ public class Pesca : Script
             {
                 float aria = GradiAriaAlle(h + 0.5f);
                 float acqua = 16f + (aria - 20f) * 0.45f;
-                float best = 0f;
+                // LA MEDIA DEI PESCI DEL POSTO: quanto mangiano tutti
+                // insieme a quell'ora. Il "meglio messo" da solo faceva una
+                // riga piatta in cima: c'e' sempre qualcuno nella sua ora.
+                float somma = 0f; int quanti = 0;
                 for (i = 0; i < pesci.Count; i++)
                 {
                     Specie sp = pesci[i];
                     if (sp.Zone != null && !PesceQui(sp, a)) continue;
-                    float v = QuantoValeTemperaturaA(sp, acqua) * QuantoValeOraAlle(sp.Quando, h);
-                    if (v > best) best = v;
+                    somma += QuantoValeTemperaturaA(sp, acqua) * QuantoValeOraAlle(sp.Quando, h);
+                    quanti++;
                 }
-                attivCurva[h] = best;
+                attivCurva[h] = (quanti > 0) ? somma / quanti : 0f;
             }
+            // in scala: il momento migliore della giornata tocca il tetto
+            float top = 0f;
+            for (h = 0; h < 24; h++) if (attivCurva[h] > top) top = attivCurva[h];
+            if (top > 0f) for (h = 0; h < 24; h++) attivCurva[h] = attivCurva[h] / top;
             // NON E' UNA TELEMETRIA: la curva si ammorbidisce, ogni ora
             // pesa con le due vicine, cosi' restano solo le onde grandi
             float[] lisc = new float[24];
@@ -5395,6 +5401,12 @@ public class Pesca : Script
         }
         float alt = LeggiF("attivita_alt", 26f);
         float basso = py + alt;
+        // LA COLLINETTA: il PNG fatto da gen_attivita.py per questo posto e
+        // questo meteo (area sfumata dal blu al giallo con la linea sopra).
+        // Se manca, la curva si disegna a pezzetti.
+        string png = "img\\attivita\\" + a + "_" + ClasseMeteo() + ".png";
+        bool conPng = File.Exists(Path.Combine(MY_DIR, png));
+        if (conPng) Sprite(png, px, basso - alt, bw, alt);
         // la riga base e le ore
         DisegnaRett(px, basso, bw, 1f, 255, 255, 255, 120);
         // la giornata di pesca parte alle 5: la riga va dalle 5 alle 5
@@ -5410,11 +5422,12 @@ public class Pesca : Script
         // (coseno) fra un'ora e l'altra
         float passo = 2f;
         float x;
-        for (x = 0f; x < bw; x += passo)
-        {
-            float y = basso - ValoreCurva(inizio + x / bw * 24f) * alt;
-            DisegnaRett(px + x, y - 1f, passo, 2f, 255, 255, 255, 210);
-        }
+        if (!conPng)
+            for (x = 0f; x < bw; x += passo)
+            {
+                float y = basso - ValoreCurva(inizio + x / bw * 24f) * alt;
+                DisegnaRett(px + x, y - 1f, passo, 2f, 255, 255, 255, 210);
+            }
         // l'ora di adesso
         int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
         int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
@@ -7335,7 +7348,7 @@ public class Pesca : Script
         return t;
     }
 
-    float GradiDelMeteoPesca()
+    string MeteoOra()
     {
         string m = "CLEAR";
         try
@@ -7351,6 +7364,23 @@ public class Pesca : Script
                 { m = w[i]; break; }
         }
         catch { }
+        return m;
+    }
+
+    // i meteo di GTA raggruppati in cinque, per i grafici (gen_attivita.py)
+    string ClasseMeteo()
+    {
+        string m = MeteoOra();
+        if (m == "EXTRASUNNY") return "sole";
+        if (m == "CLEAR" || m == "CLEARING" || m == "SMOG" || m == "NEUTRAL") return "sereno";
+        if (m == "RAIN" || m == "THUNDER") return "pioggia";
+        if (m == "SNOW" || m == "SNOWLIGHT" || m == "BLIZZARD" || m == "XMAS") return "neve";
+        return "nuvole";
+    }
+
+    float GradiDelMeteoPesca()
+    {
+        string m = MeteoOra();
         if (m == "EXTRASUNNY") return 4f;
         if (m == "CLEAR") return 2f;
         if (m == "CLEARING" || m == "SMOG") return 1f;
