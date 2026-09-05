@@ -11854,9 +11854,15 @@ public class Pesca : Script
     // faceva trin-trin dall'inizio alla fine. Adesso da fermo si tiene
     // "idle_a" quasi congelata - respira e basta - e il mulinello lo si
     // gira solo quando lo giri davvero.
+    int flagInCorso = -1;   // con che flag e' partita la clip in corso
+
     void Posa(Ped p, string clip, float velocita)
     {
-        if (clipInCorso == clip) return;
+        // STESSA CLIP MA FLAG DIVERSO = SI RIFA'. Dopo una rottura o un
+        // pesce perso si torna con la canna in mano: la posa era partita
+        // a corpo intero (lotta) e va rifatta a solo busto, se no le
+        // gambe restano inchiodate e non si cammina piu'.
+        if (clipInCorso == clip && flagInCorso == FlagPosa()) return;
         faseInCorso = -1f;
         try
         {
@@ -11872,6 +11878,7 @@ public class Pesca : Script
             try { Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, velocita); }
             catch { }
             clipInCorso = clip;
+            flagInCorso = FlagPosa();
         }
         catch { }
     }
@@ -11920,6 +11927,7 @@ public class Pesca : Script
             Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, 0.0f);
             Function.Call(Hash.SET_ENTITY_ANIM_CURRENT_TIME, p, DIZ_PESCA, clip, f);
             clipInCorso = clip;
+            flagInCorso = FlagPosa();
             faseInCorso = f;
         }
         catch { }
