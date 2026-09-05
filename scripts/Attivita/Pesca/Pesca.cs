@@ -5437,7 +5437,9 @@ public class Pesca : Script
         while (oraOra < 0f) oraOra += 24f;
         while (oraOra >= 24f) oraOra -= 24f;
         float xo = px + bw * oraOra / 24f;
-        DisegnaRett(xo - 2f, basso - ValoreCurva(hh + mi / 60f) * alt - 2f, 5f, 5f, 255, 255, 255, 255);
+        // una riga fine verticale, dalla base fino alla curva
+        float yo = basso - ValoreCurva(hh + mi / 60f) * alt;
+        DisegnaRett(xo, yo, 1f, basso - yo, 255, 255, 255, 230);
         // sotto le ore, in piccolo, cos'e'
         DisegnaTestoSinistra(L("Daily activity", "Attivita' della giornata"), px,
                              basso + LeggiF("attivita_titolo_giu", 14f), 0.17f, 200, 202, 210);
