@@ -6610,8 +6610,9 @@ public class Pesca : Script
 
     void RegolaProfondita(int now)
     {
+        // solo con la canna in mano, che senza l'HUD non lo vedi
         if (!inPesca || !inRivaOra || ruotaAperta) return;
-        if (fase != FASE_FERMO && fase != FASE_PRONTO) return;
+        if (fase != FASE_PRONTO) return;
         // su e giu' della croce sono nostri qui (27 e' il telefono, 19 la ruota dei personaggi)
         Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 27, true);
         Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 19, true);
@@ -8260,7 +8261,6 @@ public class Pesca : Script
         if (fase == FASE_FERMO)
         {
             ic.Add("lb"); tx.Add(L("Manage tackle", "Gestisci l'armatura"));
-            ic.Add("croce_sugiu"); tx.Add(L("Bait depth", "Profondita' dell'esca"));
         }
         else if (fase == FASE_PRONTO)
         {
