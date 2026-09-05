@@ -9814,15 +9814,21 @@ public class Pesca : Script
             // faceva perdere il senso della canna.
             //   canna_righe   quante righe affiancate (1 = una sola)
             //   canna_passo   quanto sono distanti in metri
-            int righe = (int)LeggiF("canna_righe", 7f);
-            if (righe < 1) righe = 1;
-            // IL PASSO LO DECIDE LA TELECAMERA.
-            // In metri il passo e' sbagliato quasi sempre: da vicino le
-            // righe si sovrappongono, da lontano si aprono e si vedono
-            // le fessure. Un metro a dieci metri di distanza copre meno
-            // pixel che a due. Quindi il passo si misura in DISTANZA:
-            // piu' e' lontana la canna, piu' le righe vanno staccate per
-            // restare a un pixel l'una dall'altra.
+            // PIENA, NON A RIGHE.
+            // Affiancando le righe solo in orizzontale e in verticale
+            // veniva fuori una croce vuota in mezzo, e si vedevano le
+            // fessure. Adesso le righe riempiono un CERCHIO attorno
+            // all'asse: per ogni pezzo di canna si prendono due
+            // direzioni perpendicolari e ci si mette dentro una griglia
+            // di righe, tenendo solo quelle che stanno nel cerchio.
+            // Il passo lo detta la telecamera, cosi' restano attaccate
+            // sia da vicino che da lontano.
+            //   canna_pieno   raggio della griglia: 1 sottile, 3 grossa
+            int pieno = (int)LeggiF("canna_pieno", 2f);
+            if (pieno < 0) pieno = 0;
+            if (pieno > 4) pieno = 4;
+            bool prova = LeggiF("canna_prova_rossa", 0f) > 0.5f;
+
             float dist = 2f;
             try
             {
@@ -9834,14 +9840,25 @@ public class Pesca : Script
             }
             catch { }
             float passo = dist * LeggiF("canna_passo_k", 0.0011f);
-            bool prova = LeggiF("canna_prova_rossa", 0f) > 0.5f;
 
             GTA.Math.Vector3 prec = PuntoSullaCanna(b, t, 0f);
-            int i, k;
+            int i, gi, gj;
             for (i = 1; i <= n; i++)
             {
                 float u = (float)i / (float)n;
                 GTA.Math.Vector3 q = PuntoSullaCanna(b, t, u);
+
+                GTA.Math.Vector3 d = q - prec;
+                float ld = d.Length();
+                if (ld < 0.0001f) { prec = q; continue; }
+                d = d / ld;
+                GTA.Math.Vector3 su = new GTA.Math.Vector3(0f, 0f, 1f);
+                if (Math.Abs(d.Z) > 0.9f) su = new GTA.Math.Vector3(1f, 0f, 0f);
+                GTA.Math.Vector3 e1 = GTA.Math.Vector3.Cross(d, su);
+                float l1 = e1.Length();
+                if (l1 < 0.0001f) { prec = q; continue; }
+                e1 = e1 / l1;
+                GTA.Math.Vector3 e2 = GTA.Math.Vector3.Cross(d, e1);
 
                 int col = (int)LeggiF("canna_col_giu", 22f)
                         + (int)(LeggiF("canna_col_su", 60f) * u);
@@ -9849,17 +9866,19 @@ public class Pesca : Script
                 int gg = prova ? 40 : col;
                 int bb = prova ? 40 : (col + 8);
 
-                // in punta si assottiglia: una riga sola
-                int quante = 1 + (int)((righe - 1) * (1f - u));
-                for (k = 0; k < quante; k++)
+                // in punta si assottiglia fino a una riga sola
+                int rag = (int)(pieno * (1f - u * 0.8f));
+                for (gi = -rag; gi <= rag; gi++)
                 {
-                    float off = (k - (quante - 1) * 0.5f) * passo;
-                    Function.Call(Hash.DRAW_LINE,
-                                  prec.X + off, prec.Y, prec.Z,
-                                  q.X + off, q.Y, q.Z, rr, gg, bb, 255);
-                    Function.Call(Hash.DRAW_LINE,
-                                  prec.X, prec.Y + off, prec.Z,
-                                  q.X, q.Y + off, q.Z, rr, gg, bb, 255);
+                    for (gj = -rag; gj <= rag; gj++)
+                    {
+                        if (gi * gi + gj * gj > rag * rag + 1) continue;
+                        GTA.Math.Vector3 off = e1 * (gi * passo) + e2 * (gj * passo);
+                        Function.Call(Hash.DRAW_LINE,
+                                      prec.X + off.X, prec.Y + off.Y, prec.Z + off.Z,
+                                      q.X + off.X, q.Y + off.Y, q.Z + off.Z,
+                                      rr, gg, bb, 255);
+                    }
                 }
                 prec = q;
             }
