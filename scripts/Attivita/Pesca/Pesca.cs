@@ -2112,7 +2112,7 @@ public class Pesca : Script
                            + tenutaKg.ToString("0.##", CultureInfo.InvariantCulture)
                            + " kg di tenuta) ne prendi " + presi;
             else
-                conteggio += ".  Non hai ancora montato niente.";
+                conteggio += ".  Monta un'armatura e qui vedi quali riesci a prendere";
             // la prima riga e' quella del conteggio: senza immagine lasciava
             // il buco del banner, quindi ci mettiamo lo stemma
             // e il banner e' quello del lago, non lo stemma: lo stemma
