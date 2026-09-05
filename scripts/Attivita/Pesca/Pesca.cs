@@ -2206,6 +2206,8 @@ public class Pesca : Script
             }
         }
         DisegnaMessaggio();
+        // LB: la ruota degli attrezzi al posto di quella delle armi
+        Ruota();
         // mentre guardi l'inventario, l'HUD dell'attrezzatura: la stessa
         // roba che vedi quando peschi, cosi' si controlla com'e' armata
         if (fase == FASE_FERMO && Game.GameTime < hudCasaFino)
@@ -10022,6 +10024,224 @@ public class Pesca : Script
                           false, false, 2, false, 0, 0, false);
             prec = q;
         }
+    }
+
+    // ---- LA RUOTA DEGLI ATTREZZI ----
+    // Mentre peschi LB non apre piu' la ruota delle armi: apre questa.
+    // Tieni premuto LB, con la levetta destra scegli lo spicchio, con
+    // SU e GIU' della croce giri fra i pezzi di quella categoria che hai
+    // in borsa, lasci LB e il pezzo si monta. Otto spicchi, come quella
+    // delle armi, in senso orario dall'alto.
+    //   ruota_x / ruota_y   centro, in pixel su 1280x720
+    //   ruota_raggio        raggio esterno
+    //   ruota_icona         lato del riquadro delle icone
+    //   ruota_centro        diametro del disco in mezzo
+    //   ruota_verso         1 o -1 se gli spicchi girano al contrario
+    //   ruota_soglia        quanto va spinta la levetta (0..1)
+    bool ruotaAperta = false;
+    int ruotaSpicchio = -1;
+    int[] ruotaPos = new int[8];
+    static readonly string[] RUOTA_CAT = new string[] {
+        "canna", "mulinello", "lenza", "terminale",
+        "galleggiante", "artificiale", "esca", "nassa" };
+    static readonly string[] RUOTA_NOME = new string[] {
+        "Canna", "Mulinello", "Lenza", "Amo e terminali",
+        "Galleggiante", "Cucchiaino", "Esca", "Nassa" };
+
+    class VoceRuota
+    {
+        public string Cat; public int Id; public int Bob;
+        public string Nome; public string Img; public string Dett;
+        public bool Montata;
+    }
+
+    void AggVoce(List<VoceRuota> v, string cat, int id, int bob, bool montata)
+    {
+        if (id < 0) return;
+        int i;
+        for (i = 0; i < v.Count; i++)
+            if (v[i].Cat == cat && v[i].Id == id && v[i].Bob == bob) return;
+        string nome, img; int prezzo, liv;
+        if (!Articolo(cat, id, out nome, out img, out prezzo, out liv)) return;
+        VoceRuota r = new VoceRuota();
+        r.Cat = cat; r.Id = id; r.Bob = bob; r.Nome = nome; r.Img = img;
+        r.Montata = montata; r.Dett = "";
+        if (bob >= 0) r.Dett = BobinaMetri(bob) + " m";
+        else if (cat == "terminale" || cat == "galleggiante" || cat == "esca")
+        {
+            int q = QuantiPezzi(cat, id);
+            if (q > 0) r.Dett = "x" + q;
+        }
+        v.Add(r);
+    }
+
+    // le voci di uno spicchio: prima quello che c'e' montato, poi la borsa
+    List<VoceRuota> VociRuota(int sp)
+    {
+        List<VoceRuota> v = new List<VoceRuota>();
+        if (sp < 0 || sp >= RUOTA_CAT.Length) return v;
+        string cat = RUOTA_CAT[sp];
+        if (cat == "terminale")
+        {
+            string[] cas = new string[] { "terminale", "leader", "piombo" };
+            int k;
+            for (k = 0; k < cas.Length; k++)
+                if (Armato(cas[k]) >= 0) AggVoce(v, "terminale", Armato(cas[k]), -1, true);
+        }
+        else if (cat == "esca")
+        {
+            if (escaMontata >= 0) AggVoce(v, "esca", escaMontata, -1, true);
+        }
+        else
+        {
+            int idm = InUso(cat);
+            if (idm >= 0) AggVoce(v, cat, idm, -1, true);
+        }
+        List<int> ids = new List<int>();
+        foreach (KeyValuePair<string, int> kv in borsa)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length < 2 || c[0] != cat || kv.Value <= 0) continue;
+            ids.Add(Numero(c[1]));
+        }
+        ids.Sort();
+        int i;
+        for (i = 0; i < ids.Count; i++) AggVoce(v, cat, ids[i], -1, false);
+        if (cat == "lenza")
+            for (i = 0; i < bobine.Count; i++) AggVoce(v, "lenza", BobinaId(i), i, false);
+        return v;
+    }
+
+    void Ruota()
+    {
+        Ped p = Game.Player.Character;
+        if (!inPesca || p.IsInVehicle()) { ruotaAperta = false; return; }
+        // niente ruota delle armi mentre peschi
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 37, true);
+        if (fase != FASE_FERMO) { ruotaAperta = false; return; }
+
+        bool lb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 37);
+        if (!lb)
+        {
+            if (ruotaAperta)
+            {
+                ruotaAperta = false;
+                MontaDallaRuota();
+            }
+            return;
+        }
+        if (!ruotaAperta)
+        {
+            ruotaAperta = true;
+            ruotaSpicchio = -1;
+            int k;
+            for (k = 0; k < 8; k++) ruotaPos[k] = 0;
+            Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+        }
+        // la levetta destra sceglie lo spicchio, non gira la telecamera
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 1, true);
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 2, true);
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 27, true);
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 19, true);
+        float sx = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 1);
+        float sy = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 2);
+        if (Math.Sqrt(sx * sx + sy * sy) > LeggiF("ruota_soglia", 0.5f))
+        {
+            float ang = (float)(Math.Atan2(sx, -sy) * 180.0 / Math.PI);
+            if (ang < 0f) ang += 360f;
+            int sp = ((int)((ang + 22.5f) / 45f)) % 8;
+            if (sp != ruotaSpicchio)
+            {
+                ruotaSpicchio = sp;
+                Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            }
+        }
+        if (ruotaSpicchio >= 0)
+        {
+            bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27);
+            bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 19);
+            if (su || giu)
+            {
+                int n = VociRuota(ruotaSpicchio).Count;
+                if (n > 1)
+                {
+                    ruotaPos[ruotaSpicchio] = (ruotaPos[ruotaSpicchio] + (giu ? 1 : n - 1)) % n;
+                    Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                }
+            }
+        }
+        DisegnaRuota();
+    }
+
+    // LB lasciato: quello che c'e' sotto il cursore si monta
+    void MontaDallaRuota()
+    {
+        if (ruotaSpicchio < 0) return;
+        List<VoceRuota> v = VociRuota(ruotaSpicchio);
+        int pos = ruotaPos[ruotaSpicchio];
+        if (v.Count == 0 || pos >= v.Count) return;
+        VoceRuota r = v[pos];
+        if (r.Montata) return;
+        bool ok;
+        if (r.Cat == "esca") { escaMontata = r.Id; ok = true; }
+        else if (r.Bob >= 0) ok = ArmaLenzaBobina(r.Bob);
+        else ok = Arma(r.Cat, r.Id);
+        if (ok)
+        {
+            Messaggio(RUOTA_NOME[ruotaSpicchio] + ": " + r.Nome);
+            Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            SalvaStato();
+        }
+    }
+
+    void DisegnaRuota()
+    {
+        float cx = LeggiF("ruota_x", 640f);
+        float cy = LeggiF("ruota_y", 360f);
+        float R = LeggiF("ruota_raggio", 170f);
+        float verso = LeggiF("ruota_verso", 1f);
+        float ic = LeggiF("ruota_icona", 64f);
+        // nel PNG il raggio esterno e' 120 su una meta' lato di 128
+        float S = R * 2f * (128f / 120f);
+        int i;
+        for (i = 0; i < 8; i++)
+        {
+            string img = (i == ruotaSpicchio) ? "img/ruota/spicchio_sel.png"
+                                              : "img/ruota/spicchio.png";
+            SpriteInclinata(img, cx - S * 0.5f, cy - S * 0.5f, S, S, i * 45f * verso);
+        }
+        for (i = 0; i < 8; i++)
+        {
+            List<VoceRuota> v = VociRuota(i);
+            if (v.Count == 0) continue;
+            int pos = ruotaPos[i];
+            if (pos >= v.Count) pos = 0;
+            double a = i * 45.0 * Math.PI / 180.0;
+            float rr = R * 0.78f;
+            float px = cx + rr * (float)Math.Sin(a);
+            float py = cy - rr * (float)Math.Cos(a);
+            Sprite(v[pos].Img, px - ic * 0.5f, py - ic * 0.5f, ic, ic);
+            if (v.Count > 1)
+                DisegnaTesto((pos + 1) + "/" + v.Count, px, py + ic * 0.5f - 2f,
+                             0.2f, 255, 255, 255);
+        }
+        float cs = LeggiF("ruota_centro", 120f);
+        Sprite("img/ruota/centro.png", cx - cs * 0.5f, cy - cs * 0.5f, cs, cs);
+        if (ruotaSpicchio < 0) return;
+        DisegnaTesto(RUOTA_NOME[ruotaSpicchio].ToUpper(), cx, cy - 28f, 0.24f, 200, 200, 200);
+        List<VoceRuota> vs = VociRuota(ruotaSpicchio);
+        if (vs.Count == 0)
+        {
+            DisegnaTesto("Niente in borsa", cx, cy - 8f, 0.26f, 255, 255, 255);
+            return;
+        }
+        int ps = ruotaPos[ruotaSpicchio];
+        if (ps >= vs.Count) ps = 0;
+        VoceRuota r = vs[ps];
+        DisegnaTesto(r.Nome, cx, cy - 8f, 0.28f, 255, 255, 255);
+        string sotto = r.Dett;
+        if (r.Montata) sotto = (sotto.Length > 0) ? sotto + "  -  montato" : "montato";
+        if (sotto.Length > 0) DisegnaTesto(sotto, cx, cy + 12f, 0.22f, 200, 200, 200);
     }
 
     // IL PELO DELL'ACQUA DOVE STA L'ESCA.
