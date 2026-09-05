@@ -9882,6 +9882,13 @@ public class Pesca : Script
             int n = (int)LeggiF("canna_tratti", 14f);
             if (n < 4) n = 4;
 
+            // A MARKER INVECE CHE A RIGHE (prova): un cilindro per tratto.
+            if (LeggiF("canna_marker", 0f) > 0.5f)
+            {
+                DisegnaCannaMarker(b, t, n);
+                return;
+            }
+
             // LO SPESSORE E' FINTO.
             // DRAW_LINE fa sempre una riga da un pixel, non si puo'
             // ingrossare. L'unico modo e' affiancarne qualcuna a un
@@ -9960,6 +9967,61 @@ public class Pesca : Script
             }
         }
         catch { }
+    }
+
+    // LA CANNA A CILINDRI.
+    // DRAW_MARKER tipo 1 e' un cilindro verticale con la base nel punto
+    // dato: lo si ruota perche' stia lungo il tratto di canna e lo si
+    // allunga quanto il tratto. Il diametro si assottiglia verso la
+    // punta. Le rotazioni seguono la convenzione delle entita' di GTA
+    // (asse su = Z ruotato di rx attorno a X e di rz attorno a Z).
+    //   canna_marker        1 accende i cilindri, 0 torna alle righe
+    //   canna_marker_diam   diametro al calcio in metri
+    //   canna_marker_punta  diametro in punta, in frazione del calcio
+    //   canna_marker_dir    1 passa la direzione al marker invece
+    //                       delle rotazioni (se le rotazioni sbagliano)
+    void DisegnaCannaMarker(GTA.Math.Vector3 b, GTA.Math.Vector3 t, int n)
+    {
+        float diam = LeggiF("canna_marker_diam", 0.014f);
+        float fPunta = LeggiF("canna_marker_punta", 0.25f);
+        bool usaDir = LeggiF("canna_marker_dir", 0f) > 0.5f;
+        bool prova = LeggiF("canna_prova_rossa", 0f) > 0.5f;
+        GTA.Math.Vector3 prec = PuntoSullaCanna(b, t, 0f);
+        int i;
+        for (i = 1; i <= n; i++)
+        {
+            float u = (float)i / (float)n;
+            GTA.Math.Vector3 q = PuntoSullaCanna(b, t, u);
+            GTA.Math.Vector3 d = q - prec;
+            float ld = d.Length();
+            if (ld < 0.0001f) { prec = q; continue; }
+            d = d / ld;
+
+            int col = (int)LeggiF("canna_col_giu", 22f)
+                    + (int)(LeggiF("canna_col_su", 60f) * u);
+            int rr = prova ? 250 : col;
+            int gg = prova ? 40 : col;
+            int bb = prova ? 40 : (col + 8);
+
+            float dm = diam * (1f - (1f - fPunta) * u);
+            float rx = 0f, rz = 0f;
+            if (!usaDir)
+            {
+                float dz = d.Z;
+                if (dz > 1f) dz = 1f;
+                if (dz < -1f) dz = -1f;
+                rx = (float)(Math.Acos(dz) * 180.0 / Math.PI);
+                rz = (float)(Math.Atan2(d.X, -d.Y) * 180.0 / Math.PI);
+            }
+            Function.Call(Hash.DRAW_MARKER, 1,
+                          prec.X, prec.Y, prec.Z,
+                          usaDir ? d.X : 0f, usaDir ? d.Y : 0f, usaDir ? d.Z : 0f,
+                          rx, 0f, rz,
+                          dm, dm, ld,
+                          rr, gg, bb, 255,
+                          false, false, 2, false, 0, 0, false);
+            prec = q;
+        }
     }
 
     // IL PELO DELL'ACQUA DOVE STA L'ESCA.
