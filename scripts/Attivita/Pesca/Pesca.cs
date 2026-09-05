@@ -12177,17 +12177,26 @@ public class Pesca : Script
         string[] terreni = new string[] { "img\\hud\\fondo_mare.png", "img\\hud\\fondo_lago.png", "img\\hud\\fondo_fiume.png" };
         float x0 = x - largo * 0.5f;
         Sprite(terreni[quale], x0, y, largo, fh);
-        if (quale == 1)
+        if (quale == 0)
         {
-            // le alghe: alte "alghe_alt", ondeggiano piano
+            // il mare: due coralli, rosa e violetto
+            float ch = LeggiF("coralli_alt", 14f);
+            Sprite("img\\hud\\coralli.png", x0, y - ch + 1f, largo, ch);
+        }
+        else if (quale == 1)
+        {
+            // il lago: sassolini sul fondo e le alghe che ondeggiano
+            float sh = LeggiF("sassi_alt", 7f);
+            Sprite("img\\hud\\sassi.png", x0, y - sh + 1f, largo, sh);
             float ah = LeggiF("alghe_alt", 20f);
             float onda = (float)Math.Sin(Game.GameTime * 0.0025) * LeggiF("alghe_onda", 5f);
             SpriteInclinata("img\\hud\\alghe.png", x0, y - ah, largo, ah, onda);
         }
         else if (quale == 2)
         {
-            float sh = LeggiF("sassi_alt", 7f);
-            Sprite("img\\hud\\sassi.png", x0, y - sh + 1f, largo, sh);
+            // il fiume: sassi grossi
+            float sg = LeggiF("sassi_grandi_alt", 11f);
+            Sprite("img\\hud\\sassi_grandi.png", x0, y - sg + 1f, largo, sg);
         }
     }
 
