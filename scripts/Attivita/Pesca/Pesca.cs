@@ -8267,8 +8267,8 @@ public class Pesca : Script
         // ogni voce: icona del pad | tasto di tastiera | testo
         if (fase == FASE_FERMO)
         {
-            Voce(ic, tx, "rb+croce_dx", "F7", L("Fishing menu", "Menu della pesca"));
             Voce(ic, tx, "lb", "TAB", L("Manage tackle", "Gestisci l'armatura"));
+            Voce(ic, tx, "rb+croce_dx", "F7", L("Fishing menu", "Menu della pesca"));
         }
         else if (fase == FASE_PRONTO)
         {
