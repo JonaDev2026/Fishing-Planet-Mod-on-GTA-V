@@ -10726,7 +10726,22 @@ public class Pesca : Script
         for (i = 0; i < pesci.Count; i++)
             if (lu < 0 || PesceQui(pesci[i], lu)) qui.Add(i);
         if (qui.Count == 0) return;
-        int sc = qui[caso.Next(qui.Count)];
+        // NON SEMPRE LA STESSA SAGOMA.
+        // A pescare a caso fra le specie del posto usciva quasi sempre la
+        // stessa forma, perche' in un laghetto i panfish sono la meta'.
+        // Allora prima si tira a sorte la FORMA fra quelle che ci sono
+        // qui, e poi una specie con quella forma: cosi' si alternano.
+        List<int> forme = new List<int>();
+        for (i = 0; i < qui.Count; i++)
+        {
+            int fq = FormaDi(pesci[qui[i]].Nome);
+            if (!forme.Contains(fq)) forme.Add(fq);
+        }
+        int formaScelta = forme[caso.Next(forme.Count)];
+        List<int> conForma = new List<int>();
+        for (i = 0; i < qui.Count; i++)
+            if (FormaDi(pesci[qui[i]].Nome) == formaScelta) conForma.Add(qui[i]);
+        int sc = conForma[caso.Next(conForma.Count)];
 
         try
         {
