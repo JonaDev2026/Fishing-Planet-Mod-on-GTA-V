@@ -12157,9 +12157,16 @@ public class Pesca : Script
         // "fondale_tutti=1": gli altri due accanto, per vederli insieme
         if (LeggiF("fondale_tutti", 0f) > 0.5f)
         {
-            Sprite("img\\hud\\fondo_mare.png", cx - largo * 1.5f - 4f, top + alt - fh, largo, fh);
-            Sprite("img\\hud\\fondo_lago.png", cx + largo * 0.5f + 4f, top + alt - fh, largo, fh);
-            Sprite("img\\hud\\fondo_fiume.png", cx + largo * 1.5f + 8f, top + alt - fh, largo, fh);
+            // gli altri due, non quello che c'e' gia' in mezzo
+            string[] tutti = new string[] { "img\\hud\\fondo_mare.png", "img\\hud\\fondo_lago.png", "img\\hud\\fondo_fiume.png" };
+            int lato = 0, q;
+            for (q = 0; q < 3; q++)
+            {
+                if (tutti[q] == img) continue;
+                float qx = (lato == 0) ? (cx - largo * 1.5f - 4f) : (cx + largo * 0.5f + 4f);
+                Sprite(tutti[q], qx, top + alt - fh, largo, fh);
+                lato++;
+            }
         }
     }
 
