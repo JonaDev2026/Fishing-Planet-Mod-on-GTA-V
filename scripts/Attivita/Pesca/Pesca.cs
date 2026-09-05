@@ -6791,6 +6791,13 @@ public class Pesca : Script
 
     bool TastoPremuto() { return rtFronte; }
 
+    // A / INVIO: la ferrata quando il pesce morde
+    static bool TastoFerra()
+    {
+        return Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 201)
+            || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201);
+    }
+
     // X: prende la canna in mano. Niente B, che nel menu torna indietro.
     static bool TastoCanna()
     {
@@ -7911,7 +7918,9 @@ public class Pesca : Script
             else DisegnaSpinning(now, 2.2f);
             GalleggianteInAcqua(now, 1f, 1f, 1f);
             AggiornaPesce(p, now, true);
-            if (TastoPremuto())
+            // LA FERRATA E' A (INVIO da tastiera): quando morde si ferra
+            // con un tasto suo, non col grilletto del lancio e del recupero
+            if (TastoFerra())
             {
                 fase = FASE_LOTTA;
                 tensione = 30f;
@@ -8281,7 +8290,11 @@ public class Pesca : Script
             Voce(ic, tx, "rb", "Q", L("Change bait", "Cambia esca"));
             Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Cast", "Lancia"));
         }
-        else if (fase == FASE_ACQUA || fase == FASE_ABBOCCA || fase == FASE_LOTTA)
+        else if (fase == FASE_ABBOCCA)
+        {
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Strike!", "Ferra!"));
+        }
+        else if (fase == FASE_ACQUA || fase == FASE_LOTTA)
         {
             Voce(ic, tx, "lb", "TAB", L("Manage tackle", "Gestisci l'armatura"));
             Voce(ic, tx, "croce_sxdx", "< >", L("Drag", "Frizione"));
