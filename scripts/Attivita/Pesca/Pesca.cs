@@ -6388,7 +6388,7 @@ public class Pesca : Script
         {
             File.WriteAllText(Path.Combine(MY_DIR, "header.txt"),
                               "Liv. " + livelloPescatore
-                              + "   " + XpCorto(xpTot) + " XP");
+                              + "   " + xpTot + " XP");
         }
         catch { }
     }

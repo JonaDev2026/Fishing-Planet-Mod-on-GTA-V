@@ -9355,7 +9355,10 @@ public class TrainerPesca : Script
         int dw = Function.Call<int>(Hash.GET_CLOCK_DAY_OF_WEEK);
         if (dw < 0 || dw > 6) dw = 0;
 
-        string left = hh.ToString("00") + ":" + mm.ToString("00") + "  " + (lang == 1 ? DAYS_IT[dw] : DAYS_EN[dw]);
+        // il giorno a tre lettere: lascia spazio ai punti XP
+        string giorno = (lang == 1 ? DAYS_IT[dw] : DAYS_EN[dw]);
+        if (giorno.Length > 3) giorno = giorno.Substring(0, 3);
+        string left = hh.ToString("00") + ":" + mm.ToString("00") + "  " + giorno;
         DrawText(left, x + 9f, y + 3f, 0.25f, Color.FromArgb(255, 235, 235, 240));
 
         // dopo il giorno: l'icona del meteo e la temperatura
