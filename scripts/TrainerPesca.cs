@@ -8759,6 +8759,8 @@ public class TrainerPesca : Script
         if (qta) return Color.FromArgb(255, 245, 150, 195);
         if (kg) return Color.FromArgb(255, 140, 225, 175);
         if (mis) return Color.FromArgb(255, 130, 200, 245);
+        // i punti esperienza hanno il loro azzurro, sempre lo stesso
+        if (b.EndsWith("xp")) return Color.FromArgb(255, 130, 200, 245);
         return Color.FromArgb(255, 235, 210, 130);
     }
 
@@ -12423,8 +12425,24 @@ public class TrainerPesca : Script
                 float rx = MX + MW - 9f - riservaDx;
                 if (dpr.Length > 0)
                 {
-                    DrawTextRight(dpr, rx, y + (rigaSotto ? 4f : 8f), 0.22f, cPr);
-                    rx -= TextWidth(dpr, 0.22f) + 10f;
+                    // GLI XP NON SONO SOLDI.
+                    // Dal dollaro in poi era tutto verde e i punti
+                    // finivano verdi anche loro: si staccano e vanno
+                    // nell'azzurro che hanno dappertutto.
+                    string dxp = "";
+                    int ip = dpr.IndexOf('+');
+                    if (ip > 0) { dxp = dpr.Substring(ip); dpr = dpr.Substring(0, ip).TrimEnd(); }
+                    if (dxp.Length > 0)
+                    {
+                        DrawTextRight(dxp, rx, y + (rigaSotto ? 4f : 8f), 0.22f,
+                                      Color.FromArgb(255, 130, 200, 245));
+                        rx -= TextWidth(dxp, 0.22f) + 10f;
+                    }
+                    if (dpr.Length > 0)
+                    {
+                        DrawTextRight(dpr, rx, y + (rigaSotto ? 4f : 8f), 0.22f, cPr);
+                        rx -= TextWidth(dpr, 0.22f) + 10f;
+                    }
                 }
                 if (dliv.Length > 0)
                     DrawTextRight(dliv, rx, y + (rigaSotto ? 4f : 8f), 0.22f, cLiv);

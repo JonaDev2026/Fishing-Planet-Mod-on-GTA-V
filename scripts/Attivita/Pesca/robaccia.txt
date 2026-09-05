@@ -1,0 +1,17 @@
+# nome|modello|dollari|kg
+# LA ROBACCIA: quello che ogni tanto viene su al posto del pesce.
+# I nomi dei modelli sono prop veri di GTA V, ma NON sono presi da una
+# tabella ufficiale: li ho scelti io fra quelli noti, e vanno provati in
+# gioco. Se un modello non si carica la mod lo salta e ne prende un
+# altro, quindi al massimo quella riga non si vede mai.
+# Per toglierne uno basta cancellare la riga.
+Vecchia scarpa|prop_ld_shoe_01|1|0.4
+Sacchetto di plastica|prop_cs_rub_binbag_01|0|0.2
+Cono stradale|prop_roadcone02a|2|1.5
+Pianta acquatica|prop_bush_lrg_01|0|0.6
+Bottiglia vuota|prop_beer_bottle|1|0.3
+Lattina|prop_beer_am_1|1|0.1
+Copertone|prop_wheel_tyre|3|6
+Sportello di un'auto|prop_car_door_01|5|12
+Barattolo di vernice|prop_paint_can01|1|1
+Valigetta|prop_ld_case_01|4|2

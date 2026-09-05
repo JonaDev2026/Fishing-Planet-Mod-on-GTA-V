@@ -967,6 +967,7 @@ public class Pesca : Script
         CaricaPortacanne();
         CaricaNasse();
         CaricaGalleggianti();
+        CaricaRobaccia();
         ScriviProvaGall();
         CaricaArtificiali();
         CaricaTornei();
@@ -2134,27 +2135,27 @@ public class Pesca : Script
             if (Quanti(quaderno, s.Nome) <= 0) continue;
 
             float kg = record.ContainsKey(s.Nome) ? record[s.Nome] : 0f;
+            // la classe del TUO record, non quella del catalogo
+            string clas = ClasseDi(kg, s.KgT, s.KgU);
+
             string d = kg.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
-
-            // la taglia del TUO record, non quella del catalogo
-            if (s.KgU > 0f && kg >= s.KgU) d += "  unico";
-            else if (s.KgT > 0f && kg >= s.KgT) d += "  trofeo";
-            else d += "  comune";
-
-            // dal dollaro in poi va tutto in verde: prezzo e punti insieme
             int vl = recVale.ContainsKey(s.Nome) ? recVale[s.Nome] : 0;
             int xp = recXp.ContainsKey(s.Nome) ? recXp[s.Nome] : 0;
             if (vl > 0) d += "   $" + vl;
-            if (xp > 0) d += (vl > 0 ? "  " : "   $0  ") + "+" + xp + " XP";
+            if (xp > 0) d += "   +" + xp + " XP";
 
             // le esche vanno a capo da sole, l'amo torna su in azzurro
             string es = recEsca.ContainsKey(s.Nome) ? recEsca[s.Nome] : "";
             if (es.Length == 0) es = "-"; else es = EscheIt(es);
-            d += "  Esche: " + es + ".";
+            string sotto = "Esche: " + es + ".";
             string am = recAmo.ContainsKey(s.Nome) ? recAmo[s.Nome] : "";
-            if (am.Length > 0) d += "  Amo: " + am + ".";
+            if (am.Length > 0) sotto += "  Amo: " + am + ".";
 
-            r.Add((r.Count + 1) + ". " + s.Nome + "|niente|" + s.Img + "|" + d);
+            // testo|comando|img|destra|colore|sotto|colDestra|colSotto
+            r.Add((r.Count + 1) + ". " + s.Nome + "|niente|" + s.Img
+                  + "|" + clas + "   " + d
+                  + "||" + sotto
+                  + "|" + ColoreClasse(clas));
         }
         ScriviVoci("diario_voci.txt", r);
     }
@@ -2163,6 +2164,18 @@ public class Pesca : Script
     {
         // la pescata gira a ogni frame: le barre devono essere fluide
         Pescata();
+        // la robaccia appena tirata su penzola dalla canna un momento
+        if (robaOra >= 0)
+        {
+            if (robaAppesaFino > 0 && Game.GameTime < robaAppesaFino)
+                MuoviRoba(Game.GameTime, true);
+            else if (robaAppesaFino > 0)
+            {
+                ViaRoba();
+                robaOra = -1;
+                robaAppesaFino = 0;
+            }
+        }
         DisegnaMessaggio();
         // mentre guardi l'inventario, l'HUD dell'attrezzatura: la stessa
         // roba che vedi quando peschi, cosi' si controlla com'e' armata
@@ -5854,11 +5867,11 @@ public class Pesca : Script
                 string[] rn = nassaOggi[qn].Split('|');
                 if (rn.Length < 6) continue;
                 v.Add("pannello_k|" + PESCATO + "|" + rn[0] + "|" + rn[2]
-                      + "|" + rn[5]                    // peso e valore
+                      + "|" + rn[5]                    // peso, valore, XP
                       + "|niente|"                     // A non fa niente
                       + "||"                           // colore, comando X
-                      + "|" + rn[3]                    // a destra gli XP
-                      + "|130,200,245");
+                      + "|" + rn[3]                    // a destra che pesce e'
+                      + "|" + (rn.Length > 6 ? rn[6] : "190,195,205"));
             }
             if (nassaOggi.Count == 0)
                 v.Add("pannello_k|" + PESCATO + "|Nassa vuota");
@@ -6598,6 +6611,24 @@ public class Pesca : Script
     float cardKg = 0f;
     int cardXp = 0, cardVale = 0;
     string cardTaglia = "";
+
+    // CHE PESCE E': comune, trofeo o unico. Nome e colore stanno qui,
+    // in un posto solo, cosi' la finestra della cattura, la nassa e il
+    // diario dicono la stessa cosa nello stesso colore.
+    //   comune  bianco     trofeo  verde     unico  oro
+    static string ClasseDi(float kg, float kgT, float kgU)
+    {
+        if (kgU > 0f && kg >= kgU) return "UNICO";
+        if (kgT > 0f && kg >= kgT) return "TROFEO";
+        return "COMUNE";
+    }
+
+    static string ColoreClasse(string clas)
+    {
+        if (clas == "TROFEO") return "130,225,180";
+        if (clas == "UNICO") return "245,205,80";
+        return "245,245,250";
+    }
     string cardPerche = "";
     bool cardPuoTenere = false;
     int prossimoTocco = 0;    // quando il pesce assaggia
@@ -7454,6 +7485,9 @@ public class Pesca : Script
             {
                 // niente suono qui: sembrava fosse successo qualcosa di grave.
                 // Il messaggio basta.
+                ViaPesceScena();
+                ViaRoba();
+                robaOra = -1;
                 Messaggio("~y~Canna ritirata.");
                 ScenaGiu(p);
                 fase = FASE_FERMO;
@@ -7714,6 +7748,7 @@ public class Pesca : Script
                     Messaggio("~y~Hai tirato troppo presto: se n'e' andato.");
                 }
             }
+            PesceDiPassaggio(now);
             if (QuadranteGall())
                 DisegnaGalleggiante(now, assaggio ? 5f : 0f, assaggio ? 1f : 0f);
             else DisegnaSpinning(now, assaggio ? 1f : 0f);
@@ -7827,9 +7862,9 @@ public class Pesca : Script
             Sprite(sc.Img, x + 7f * k, y + 25f * k, w - 14f * k, 112f * k);
 
             // comune, trofeo o esemplare unico
-            int cr = 200, cg = 225, cb = 210;
-            if (cardTaglia == "TROFEO") { cr = 245; cg = 205; cb = 80; }
-            else if (cardTaglia == "ESEMPLARE UNICO") { cr = 210; cg = 160; cb = 250; }
+            int cr = 245, cg = 245, cb = 250;                        // comune
+            if (cardTaglia == "TROFEO") { cr = 130; cg = 225; cb = 180; }
+            else if (cardTaglia == "ESEMPLARE UNICO") { cr = 245; cg = 205; cb = 80; }
             DisegnaRett(x, y + 142f * k, w, 16f * k, 20, 46, 40, 245);
             DisegnaTesto(cardTaglia, cx, y + 143f * k, 0.26f * kt, cr, cg, cb);
 
@@ -7878,11 +7913,19 @@ public class Pesca : Script
                 // e non vale un soldo: di quella pescata ti restano gli XP,
                 // che quelli te li sei guadagnati lo stesso.
                 if (inRete)
+                {
+                    // A DESTRA CHE PESCE E'.
+                    // Comune, trofeo o unico: e' il dato che guardi per
+                    // primo, e va nella colonna. Peso, valore e XP
+                    // stanno insieme sulla riga sotto, in quest'ordine.
+                    string clas = (cardTaglia == "ESEMPLARE UNICO") ? "UNICO" : cardTaglia;
+                    string colClas = ColoreClasse(clas);
                     nassaOggi.Add(sc.Nome + "|niente|" + sc.Img
-                                  + "|+" + cardXp + " XP"
+                                  + "|" + clas
                                   + "||" + cardKg.ToString("0.##", CultureInfo.InvariantCulture)
-                                  + " kg   $" + cardVale
-                                  + "|130,200,245|245,205,80");
+                                  + " kg   $" + cardVale + "   +" + cardXp + " XP"
+                                  + "|" + colClas + "|245,205,80");
+                }
 
                 cardPesce = -1;
                 // nella rete o rimesso in acqua, dalla lenza sparisce
@@ -10085,6 +10128,234 @@ public class Pesca : Script
     // non ce l'ha: chiamarla a mano col numero, senza esserne sicuri,
     // vuol dire rischiare di far crashare il gioco. Quindi il pesce
     // resta della sua misura, e la taglia si vede dal modello.
+    // ============================================================
+    //  IL PESCE DI PASSAGGIO
+    // ============================================================
+    // Ogni tanto, mentre aspetti, un pesce attraversa il campo vicino
+    // all'esca e se ne va. Non abbocca e non c'entra niente con la
+    // pescata: serve a far vedere che sotto c'e' vita. E' una specie di
+    // quelle che vivono davvero in quell'acqua, presa da pesci_aree.
+    //   pesci_scena       1 acceso, 0 spento
+    //   pesci_scena_ogni  ogni quanti secondi ci prova
+    //   pesci_scena_dura  quanti secondi ci mette ad attraversare
+    //   pesci_scena_via   a quanti metri dall'esca passa
+    Ped pesceScena = null;
+    int scenaProssimo = 0, scenaDa = 0;
+    float scenaX, scenaY, scenaDir, scenaLung;
+
+    void ViaPesceScena()
+    {
+        try
+        {
+            if (pesceScena != null && pesceScena.Exists())
+            {
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pesceScena, true, true);
+                Function.Call(Hash.FREEZE_ENTITY_POSITION, pesceScena, false);
+                pesceScena.Delete();
+            }
+        }
+        catch { }
+        pesceScena = null;
+        scenaDa = 0;
+    }
+
+    void PesceDiPassaggio(int now)
+    {
+        if (LeggiF("pesci_scena", 1f) < 0.5f) { ViaPesceScena(); return; }
+        if (!escaInAcqua) { ViaPesceScena(); return; }
+
+        int dura = (int)(LeggiF("pesci_scena_dura", 7f) * 1000f);
+
+        // quello che sta passando adesso: lo si porta avanti
+        if (pesceScena != null && pesceScena.Exists())
+        {
+            float t = (float)(now - scenaDa) / (float)dura;
+            if (t >= 1f) { ViaPesceScena(); return; }
+            double rad = scenaDir * Math.PI / 180.0;
+            float dx = -(float)Math.Sin(rad), dy = (float)Math.Cos(rad);
+            // parte da un capo e arriva all'altro, ondeggiando un po'
+            float avanti = (t - 0.5f) * scenaLung;
+            float px = scenaX + dx * avanti;
+            float py = scenaY + dy * avanti;
+            float pz = AcquaSottoEsca() - LeggiF("pesci_scena_giu", 0.45f)
+                     + (float)Math.Sin(now * 0.003) * 0.06f;
+            float coda = (float)Math.Sin(now * 0.012) * 8f;
+            try
+            {
+                Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, pesceScena,
+                              px, py, pz, false, false, false);
+                Function.Call(Hash.SET_ENTITY_ROTATION, pesceScena,
+                              0f, 0f, scenaDir + coda, 2, true);
+            }
+            catch { }
+            return;
+        }
+
+        // se non ce n'e' uno, ogni tanto se ne manda un altro
+        if (now < scenaProssimo) return;
+        int ogni = (int)(LeggiF("pesci_scena_ogni", 22f) * 1000f);
+        scenaProssimo = now + ogni + caso.Next(ogni);
+
+        // una specie di questa acqua, se no niente
+        int lu = LuogoQui();
+        List<int> qui = new List<int>();
+        int i;
+        for (i = 0; i < pesci.Count; i++)
+            if (lu < 0 || PesceQui(pesci[i], lu)) qui.Add(i);
+        if (qui.Count == 0) return;
+        int sc = qui[caso.Next(qui.Count)];
+
+        try
+        {
+            Model m = new Model(ModelloDi(pesci[sc].Nome));
+            m.Request(400);
+            if (!m.IsLoaded)
+            {
+                m = new Model("a_c_fish");
+                m.Request(400);
+                if (!m.IsLoaded) return;
+            }
+            // passa di fianco all'esca, non addosso
+            float via = LeggiF("pesci_scena_via", 2.2f);
+            scenaLung = LeggiF("pesci_scena_lungo", 14f);
+            scenaDir = escaDir + 90f + caso.Next(60) - 30f;
+            if (caso.Next(2) == 0) scenaDir += 180f;
+            double rl = (escaDir + (caso.Next(2) == 0 ? 90f : -90f)) * Math.PI / 180.0;
+            scenaX = escaX + -(float)Math.Sin(rl) * via;
+            scenaY = escaY + (float)Math.Cos(rl) * via;
+            float z0 = AcquaSottoEsca() - LeggiF("pesci_scena_giu", 0.45f);
+            pesceScena = World.CreatePed(m, new GTA.Math.Vector3(scenaX, scenaY, z0));
+            m.MarkAsNoLongerNeeded();
+            if (pesceScena == null || !pesceScena.Exists()) { pesceScena = null; return; }
+            Function.Call(Hash.SET_ENTITY_INVINCIBLE, pesceScena, true);
+            Function.Call(Hash.SET_ENTITY_COLLISION, pesceScena, false, false);
+            Function.Call(Hash.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS, pesceScena, true);
+            Function.Call(Hash.SET_PED_CAN_RAGDOLL, pesceScena, false);
+            Function.Call(Hash.SET_ENTITY_CAN_BE_DAMAGED, pesceScena, false);
+            Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, pesceScena, false);
+            Function.Call(Hash.FREEZE_ENTITY_POSITION, pesceScena, true);
+            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pesceScena, true, true);
+            Function.Call(Hash.SET_PED_COMPONENT_VARIATION, pesceScena, 0,
+                          FormaDi(pesci[sc].Nome), 0, 0);
+            scenaDa = now;
+        }
+        catch { ViaPesceScena(); }
+    }
+
+    // ============================================================
+    //  LA ROBACCIA
+    // ============================================================
+    // Siamo pur sempre a Los Santos: ogni tanto invece del pesce viene
+    // su una scarpa, un cono, un sacchetto. Vale due lire, non da' punti
+    // e nella nassa non ci va. Le probabilita' salgono se peschi senza
+    // esca. La tabella e' in robaccia.txt.
+    class Roba
+    {
+        public string Nome, Modello;
+        public int Dollari;
+        public float Kg;
+    }
+    List<Roba> robaccia = new List<Roba>();
+    int robaOra = -1;
+    Prop robaProp = null;
+
+    void CaricaRobaccia()
+    {
+        robaccia.Clear();
+        string[] rows = LeggiRighe("robaccia.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 4) continue;
+            Roba x = new Roba();
+            x.Nome = c[0].Trim();
+            x.Modello = c[1].Trim();
+            x.Dollari = Numero(c[2]);
+            float k;
+            float.TryParse(c[3].Trim(), NumberStyles.Float,
+                           CultureInfo.InvariantCulture, out k);
+            x.Kg = k;
+            robaccia.Add(x);
+        }
+    }
+
+    // ci prova: torna true se stavolta e' venuta su robaccia
+    bool ProvaRobaccia()
+    {
+        if (robaccia.Count == 0) return false;
+        float pr = LeggiF("robaccia_prob", 6f);
+        if (escaMontata < 0) pr = LeggiF("robaccia_prob_senza_esca", 35f);
+        if (caso.Next(100) >= pr) return false;
+        robaOra = caso.Next(robaccia.Count);
+        return true;
+    }
+
+    void MettiRoba()
+    {
+        ViaRoba();
+        if (robaOra < 0 || robaOra >= robaccia.Count) return;
+        try
+        {
+            Model m = new Model(robaccia[robaOra].Modello);
+            m.Request(500);
+            if (!m.IsLoaded) return;          // modello che non c'e': niente da vedere
+            float z = AcquaSottoEsca();
+            robaProp = World.CreateProp(m, new GTA.Math.Vector3(escaX, escaY, z - 0.2f),
+                                        false, false);
+            m.MarkAsNoLongerNeeded();
+            if (robaProp == null || !robaProp.Exists()) { robaProp = null; return; }
+            Function.Call(Hash.SET_ENTITY_COLLISION, robaProp, false, false);
+            Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, robaProp, false);
+            Function.Call(Hash.FREEZE_ENTITY_POSITION, robaProp, true);
+            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, robaProp, true, true);
+        }
+        catch { ViaRoba(); }
+    }
+
+    void ViaRoba()
+    {
+        try
+        {
+            if (robaProp != null && robaProp.Exists())
+            {
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, robaProp, true, true);
+                Function.Call(Hash.FREEZE_ENTITY_POSITION, robaProp, false);
+                robaProp.Delete();
+            }
+        }
+        catch { }
+        robaProp = null;
+    }
+
+    // mentre la tiri, la roba segue l'esca; alla fine penzola dalla canna
+    void MuoviRoba(int now, bool appesa)
+    {
+        if (robaProp == null || !robaProp.Exists()) return;
+        try
+        {
+            float gradi = (float)(now * 0.06) % 360f;
+            if (appesa)
+            {
+                GTA.Math.Vector3 pt = PuntaCanna();
+                if (pt == GTA.Math.Vector3.Zero) return;
+                float dond = (float)Math.Sin(now * 0.0021) * 0.09f;
+                Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, robaProp,
+                              pt.X + dond, pt.Y + dond, pt.Z - LeggiF("roba_giu", 0.5f),
+                              false, false, false);
+            }
+            else
+            {
+                Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, robaProp,
+                              escaX, escaY, AcquaSottoEsca() - 0.2f, false, false, false);
+            }
+            Function.Call(Hash.SET_ENTITY_ROTATION, robaProp, 0f, 0f, gradi, 2, true);
+        }
+        catch { }
+    }
+
     void PesceInPosa(float px, float py, float pz, float gradi, float rollio)
     {
         if (pescePed == null || !pescePed.Exists()) return;
