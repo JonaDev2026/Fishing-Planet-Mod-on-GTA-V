@@ -9086,11 +9086,16 @@ public class Pesca : Script
         // girata di 90 gradi in orario, poi giu' di 200 e a destra di 50
         if (Montato("canna", out id, out img, out nome))
         {
-            SpriteGirata(img, 1180f, 365f, 270f, 108f, 90f);
+            // "canna_hud_x": il bordo sinistro della striscia girata. La
+            // canna dentro la PNG e' una fascia di 13 px al centro della
+            // striscia (107 px): a 986 sta a 4 px dalla barra a tacche.
+            float chx = LeggiF("canna_hud_x", 986f);
+            float chy = LeggiF("canna_hud_y", 365f);
+            SpriteGirata(img, chx, chy, 270f, 108f, 90f);
             // i chili che regge, 8 pixel sotto la canna
             string kgc = PortataCanna(KgCanna(id));
             if (kgc.Length > 0)
-                DisegnaTesto(kgc, 1180f + 54f, 365f + 270f + 8f,
+                DisegnaTesto(kgc, chx + 54f, chy + 270f + 8f,
                              0.19f, 245, 245, 250);
         }
 
