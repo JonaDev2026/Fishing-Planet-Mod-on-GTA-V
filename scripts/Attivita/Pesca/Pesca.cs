@@ -4486,7 +4486,7 @@ public class Pesca : Script
         // tutto: il limite non e' piu' cosa tengono, e' quanto ti entra
         // in cassetta - quello che compri mentre peschi ce l'hai addosso
         // gia' pronto.
-        if (inPesca && !CiSta(cat))
+        if (inPesca && !CiSta(cat, id))
         {
             Diario("   RIFIUTATO: non ci sta piu' niente in " + cat);
             Avviso("~y~Non ci sta: " + Contatori());
@@ -4635,7 +4635,7 @@ public class Pesca : Script
             Avviso("~r~Sei fuori: la borsa e' quella che ti sei portato.");
             return false;
         }
-        if (versoBorsa && !CiSta(cat))
+        if (versoBorsa && !CiSta(cat, id))
         {
             Avviso("~r~Non ci sta piu': guarda cassetta e portacanne.");
             return false;
@@ -5076,6 +5076,15 @@ public class Pesca : Script
 
     bool CiSta(string cat)
     {
+        return CiSta(cat, -1);
+    }
+
+    // LA CASSETTA CONTA I TIPI, NON I PEZZI: un posto per ogni cosa
+    // diversa, e di quella cosa ce ne stanno quante vuoi. Quindi un
+    // secondo cucchiaino uguale a uno che hai gia' ci sta sempre, anche
+    // a cassetta piena: non prende un posto nuovo.
+    bool CiSta(string cat, int id)
+    {
         // i contenitori si portano sempre: sono loro a fare il posto
         if (cat == "cassetta" || cat == "portacanne") return true;
         int mc, mm, ml, mr;
@@ -5083,6 +5092,7 @@ public class Pesca : Script
         if (cat == "canna") return InBorsa("canna") < mc;
         if (cat == "mulinello") return InBorsa("mulinello") < mm;
         if (cat == "lenza") return InBorsa("lenza") < ml;
+        if (id >= 0 && Quanti(borsa, cat + ":" + id) > 0) return true;
         return RobaMinuta() < mr;
     }
 
