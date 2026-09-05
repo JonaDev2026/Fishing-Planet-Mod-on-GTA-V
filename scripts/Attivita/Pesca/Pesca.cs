@@ -8389,8 +8389,9 @@ public class Pesca : Script
         // I METRI FUORI NON SI SCRIVONO PIU' QUI: stanno sotto il
         // mulinello, nel cerchio della frizione ("8.4 / 65 m").
         metriFuoriHud = mm;
-        // sotto i metri: quant'e' fondo dove sta l'esca
-        float fondo = FondoDellEsca();
+        // quant'e' fondo dove sta l'esca: solo con la lenza in acqua in
+        // attesa, non quando abbocca o durante la lotta
+        float fondo = (fase == FASE_ACQUA) ? FondoDellEsca() : -1f;
         if (fondo >= 0f)
             DisegnaTesto(L("Depth ", "Fondo ") + fondo.ToString("0.0", CultureInfo.InvariantCulture) + " m",
                          QuadX(), BarY() - 50f + LeggiF("caldo_giu", 8f), 0.22f, cr, cg, cb);
