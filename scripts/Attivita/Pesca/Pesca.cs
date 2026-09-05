@@ -9940,7 +9940,7 @@ public class Pesca : Script
                          LeggiF("esca_num_testo", 0.32f), 245, 245, 250);
             // a sinistra: il nome, e sotto l'amo che pesca
             float tx = ecx - ed * 0.5f - tdx;
-            DisegnaTestoDestra(nomeSlot, tx, ecy - 22f, LeggiF("esca_nome_testo", 0.32f), 245, 245, 250);
+            DisegnaTestoDestra(nomeSlot, tx, ecy - 22f, LeggiF("esca_nome_testo", 0.22f), 245, 245, 250);
             if (!conArt)
             {
                 int idT2; string imT2, nmT2;
@@ -9948,9 +9948,21 @@ public class Pesca : Script
                 {
                     string mis = MisuraTerminale(idT2);
                     if (mis.Length > 0)
-                        DisegnaTestoDestra(L("Hook ", "Amo ") + mis, tx, ecy - 2f,
-                                           LeggiF("esca_amo_testo", 0.28f), 245, 245, 250);
+                        DisegnaTestoDestra(L("Hook ", "Amo ") + mis, tx, ecy - 4f,
+                                           LeggiF("esca_amo_testo", 0.22f), 245, 245, 250);
                 }
+            }
+            else
+            {
+                // l'artificiale: la sua misura (grammi, cm) e l'amo che porta
+                int idA2 = InUso("artificiale");
+                string misA = MisuraArtificiale(idA2);
+                int ia2;
+                for (ia2 = 0; ia2 < artificiali.Count; ia2++)
+                    if (artificiali[ia2].Id == idA2 && artificiali[ia2].Amo.Length > 0)
+                    { misA = Unisci(misA, L("hook ", "amo ") + artificiali[ia2].Amo); break; }
+                if (misA.Length > 0)
+                    DisegnaTestoDestra(misA, tx, ecy - 4f, LeggiF("esca_amo_testo", 0.22f), 245, 245, 250);
             }
         }
     }
