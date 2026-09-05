@@ -10071,6 +10071,12 @@ public class Pesca : Script
         VoceRuota r = new VoceRuota();
         r.Cat = cat; r.Id = id; r.Bob = bob; r.Nome = nome; r.Img = img;
         r.Montata = montata; r.Dett = "";
+        // ami, leader e piombi: la forma, come nell'HUD, non la scatola
+        if (cat == "terminale")
+        {
+            string forma = FormaTerminale(id);
+            if (forma.Length > 0) r.Img = forma;
+        }
         if (bob >= 0) r.Dett = BobinaMetri(bob) + " m";
         else if (cat == "terminale" || cat == "galleggiante" || cat == "esca")
         {
@@ -10393,9 +10399,11 @@ public class Pesca : Script
             }
             if (RUOTA_CAT[i] == "nassa")
             {
-                // la stessa nassa dell'HUD
+                // la nassa che porti, con la sua immagine del negozio
+                int idn; string imn, nmn;
+                if (!Montato("nassa", out idn, out imn, out nmn)) imn = "";
                 float icn = LeggiF("ruota_icona_nassa", ic);
-                Sprite("img/nasse/nassa_base.png", px - icn * 0.5f, py - icn * 0.5f, icn, icn);
+                Sprite(imn, px - icn * 0.5f, py - icn * 0.5f, icn, icn);
                 continue;
             }
             if (RUOTA_CAT[i] == "pesci")
