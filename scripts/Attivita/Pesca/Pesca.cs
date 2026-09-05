@@ -8201,9 +8201,11 @@ public class Pesca : Script
         float x = BAR_X + BAR_W * 0.5f - larga * 0.5f;
         float y0 = BarY();
         float th = (BAR_H - spazio * (n - 1)) / n;
-        // cornice: un filo chiaro attorno, e il fondo scuro dentro
-        DisegnaRett(x - 3f, y0 - 3f, larga + 6f, BAR_H + 6f, 200, 205, 210, 170);
-        DisegnaRett(x - 2f, y0 - 2f, larga + 4f, BAR_H + 4f, 20, 22, 26, 200);
+        // QUASI TRASPARENTE, come l'originale: un filo chiaro leggero
+        // attorno, sotto un velo scuro che fa da separatore fra le
+        // tacche, e le tacche spente appena velate di chiaro.
+        DisegnaRett(x - 2f, y0 - 2f, larga + 4f, BAR_H + 4f, 225, 230, 235, 95);
+        DisegnaRett(x - 1f, y0 - 1f, larga + 2f, BAR_H + 2f, 0, 0, 0, 70);
         int accese = (int)(fill01 * n + 0.5f);
         int i;
         for (i = 0; i < n; i++)
@@ -8212,7 +8214,7 @@ public class Pesca : Script
             float y = y0 + BAR_H - (i + 1) * th - i * spazio;
             if (i >= accese)
             {
-                DisegnaRett(x, y, larga, th, 40, 44, 52, 210);
+                DisegnaRett(x, y, larga, th, 210, 215, 220, 40);
                 continue;
             }
             int r = cr, g = cg, b = cb;
@@ -8234,7 +8236,7 @@ public class Pesca : Script
                 g = (int)(gp[k] + (gp[k + 1] - gp[k]) * u);
                 b = (int)(bp[k] + (bp[k + 1] - bp[k]) * u);
             }
-            DisegnaRett(x, y, larga, th, r, g, b, 240);
+            DisegnaRett(x, y, larga, th, r, g, b, 215);
         }
     }
 
