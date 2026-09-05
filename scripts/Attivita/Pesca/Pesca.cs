@@ -9109,7 +9109,9 @@ public class Pesca : Script
 
         // la colonna del montaggio, dal basso in su:
         // mulinello -> bobina di lenza -> terminale -> galleggiante
-        float mx = 1136f, my = 590f;
+        // "colonna_x": la colonna sta in linea sopra il cerchio della
+        // frizione (icone larghe 112, centrate sul cerchio a 952)
+        float mx = LeggiF("colonna_x", 896f), my = LeggiF("colonna_y", 590f);
         int piano = 0;
         // A ogni pezzo la SUA misura, quella che conta guardandolo:
         //   mulinello -> i metri di filo che ci stanno
