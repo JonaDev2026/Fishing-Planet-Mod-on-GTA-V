@@ -8336,6 +8336,41 @@ public class TrainerPesca : Script
         DrawText(Corto(zona, 19), x + 7f, y + 72f, 0.19f, ColoreRotta());   // stesso colore della linea
     }
 
+    // IL BATTITO DELLA MOD.
+    // Pesca.cs riscrive vivo.txt ogni due secondi con la sua versione e
+    // l'ora del gioco. Se il file non c'e' o non cambia da un po', la
+    // mod non sta girando.
+    string versionePesca = "";
+    int vivoQuando = 0;
+    bool vivoOk = false;
+    string vivoTesto = "";
+
+    bool PescaViva()
+    {
+        int ora = Game.GameTime;
+        if (ora - vivoQuando < 2500) return vivoOk;
+        vivoQuando = ora;
+        try
+        {
+            int k;
+            for (k = 0; k < modSubDir.Count; k++)
+            {
+                string f = Path.Combine(modSubDir[k], "vivo.txt");
+                if (!File.Exists(f)) continue;
+                string t = File.ReadAllText(f).Trim();
+                if (t == vivoTesto) { vivoOk = false; return false; }  // fermo
+                vivoTesto = t;
+                string[] c = t.Split('|');
+                if (c.Length > 0) versionePesca = c[0].Trim();
+                vivoOk = true;
+                return true;
+            }
+        }
+        catch { }
+        vivoOk = false;
+        return false;
+    }
+
     void OnTick(object sender, EventArgs e)
     {
         // QUESTO E' IL TRAINER DELLA PESCA E BASTA.
@@ -8359,11 +8394,27 @@ public class TrainerPesca : Script
                 float hy = MY + HEAD_H;
                 if (tBody != null && tBody.On) hy = hy + 24f;
                 DrawRect(MX, hy, MW, 10f, 0, 0, 0, 150);
-                DrawText("PESCA", MX + 9f, hy + 1f, 0.15f,
-                         Color.FromArgb(255, 120, 190, 255));
-                DrawTextRight(L("F7 / RB+RIGHT", "F7 / RB+DESTRA"),
-                              MX + MW - 9f, hy + 1f, 0.15f,
-                              Color.FromArgb(255, 170, 170, 185));
+                // LA MOD C'E' O NON C'E'.
+                // La pesca scrive vivo.txt ogni due secondi: se quel file
+                // e' vecchio o non c'e', la mod non sta girando - di solito
+                // perche' non ha compilato - e il trainer lo dice in rosso
+                // invece di lasciarti a premere tasti che non fanno niente.
+                if (PescaViva())
+                {
+                    DrawText("PESCA " + versionePesca, MX + 9f, hy + 1f, 0.15f,
+                             Color.FromArgb(255, 120, 190, 255));
+                    DrawTextRight(L("F7 / RB+RIGHT", "F7 / RB+DESTRA"),
+                                  MX + MW - 9f, hy + 1f, 0.15f,
+                                  Color.FromArgb(255, 170, 170, 185));
+                }
+                else
+                {
+                    DrawText("PESCA", MX + 9f, hy + 1f, 0.15f,
+                             Color.FromArgb(255, 235, 90, 80));
+                    DrawTextRight(L("MOD NOT COMPILED", "MOD NON COMPILATA"),
+                                  MX + MW - 9f, hy + 1f, 0.15f,
+                                  Color.FromArgb(255, 235, 90, 80));
+                }
             }
         }
 

@@ -983,6 +983,14 @@ public class Pesca : Script
         // alla mano: si toglie all'uscita e si ripulisce all'avvio
         Aborted += OnAborted;
         PulisciCanneRimaste();
+        // SI FA SENTIRE ALL'AVVIO.
+        // Se la mod non compila non lo dice nessuno: resta solo il
+        // trainer e ti chiedi perche' la pesca non risponde. Cosi'
+        // invece all'avvio si presenta, e mentre gira scrive l'ora in
+        // vivo.txt: quel file e' il battito, e il trainer lo guarda per
+        // sapere se la mod c'e' davvero.
+        Avviso("~g~Modulo pesca " + VERSIONE + "~s~  pronto.");
+        Battito();
 
         CaricaStato();
         livelloPescatore = LivelloDa(xpTot);
@@ -2160,8 +2168,29 @@ public class Pesca : Script
         ScriviVoci("diario_voci.txt", r);
     }
 
+    // LA VERSIONE E IL BATTITO.
+    // vivo.txt lo riscriviamo ogni due secondi con l'ora del gioco: se
+    // quel file e' vecchio, la mod non sta girando.
+    const string VERSIONE = "1.0";
+    int prossimoBattito = 0;
+
+    void Battito()
+    {
+        try
+        {
+            File.WriteAllText(Path.Combine(MY_DIR, "vivo.txt"),
+                              VERSIONE + "|" + Game.GameTime);
+        }
+        catch { }
+    }
+
     void OnTick(object sender, EventArgs e)
     {
+        if (Game.GameTime >= prossimoBattito)
+        {
+            prossimoBattito = Game.GameTime + 2000;
+            Battito();
+        }
         // la pescata gira a ogni frame: le barre devono essere fluide
         Pescata();
         // la robaccia appena tirata su penzola dalla canna un momento
@@ -5625,7 +5654,7 @@ public class Pesca : Script
     {
         int id; string img, nome;
         List<string> col = new List<string>();
-        float mx = 1136f, my = 590f;
+        float my = 590f;
         int piano = 0;
 
         // LA CANNA: il rettangolo e' quello vero del disegno, non quello
@@ -10257,6 +10286,7 @@ public class Pesca : Script
     }
     List<Roba> robaccia = new List<Roba>();
     int robaOra = -1;
+    int robaAppesaFino = 0;
     Prop robaProp = null;
 
     void CaricaRobaccia()
