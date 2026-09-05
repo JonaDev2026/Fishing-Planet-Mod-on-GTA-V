@@ -5795,22 +5795,18 @@ public class Pesca : Script
                 v.Add("pannello_sx_k|" + ch + "|Niente in casa");
         }
 
-        // I PEZZI MONTATI: si smontano andando SULL'HUD.
-        // Non stanno in cassetta, stanno sulla canna: per toglierli si va
-        // li' sopra col cursore. La mod passa i rettangoli - le stesse
-        // coordinate con cui li disegna - e il trainer ci mette sopra la
-        // selezione. Ordine: dall'alto in basso, come si vedono.
-        RigheArmatura(v);
+        // L'ARMATURA NON SI TOCCA PIU' DA QUI: si monta e si smonta con
+        // la ruota (LB). L'HUD in basso a destra resta solo da vedere.
 
         // A DESTRA QUELLO CHE PORTI ADESSO, della stessa categoria: il
         // menu in mezzo comanda tutti e due i riquadri.
         int mc2, mm2, ml2, mr2;
         Capienza(out mc2, out mm2, out ml2, out mr2);
         v.Add("pannello|EQUIPAGGIAMENTO");
-        // QUI SI MONTA E BASTA: si smonta andando sulla canna, dove c'e'
-        // gia' scritto (X) SMONTA sotto la colonna dell'armatura.
-        string capX = "(X) monta~   (Y) getta";
-        string colX = "110,175,255;245,205,80";
+        // QUI NON SI MONTA: per quello c'e' la ruota. Resta getta, e lo
+        // stato armato/disarmato in fondo alla riga.
+        string capX = "(Y) getta";
+        string colX = "245,205,80";
         v.Add("pannello|" + (inPesca
               ? ("- " + capX + "|||||" + colX)
               : ("- (A) sposta a casa~   " + capX
@@ -5835,10 +5831,9 @@ public class Pesca : Script
                 string nb, ib2;
                 int pb, lb;
                 if (!Articolo(cb[0], idb, out nb, out ib2, out pb, out lb)) continue;
-                // X arma solo la roba che si monta: esche, nasse,
-                // cassette e portacanne non si armano
+                // X non arma piu' niente: si arma dalla ruota
                 bool siArma = SiArma(cb[0]);
-                string cx = siArma ? ("arma " + cb[0] + " " + cb[1]) : "";
+                string cx = "";
                 // e in fondo alla riga lo stato, come e' sempre stato:
                 // verde se e' montato, grigio se sta in panchina
                 bool suDiTe = siArma && EArmato(cb[0], idb);
@@ -5868,7 +5863,7 @@ public class Pesca : Script
                     v.Add("pannello_k|" + chb + "|" + nb2 + "|" + ib3
                           + "|" + DettaglioBobina(idb2, BobinaMetri(qbo))
                           + "|niente|"
-                          + "||arma_bob " + qbo
+                          + "||"
                           + "|Tagliata|190,195,205"
                           + "|butta_bob " + qbo + "");
                     quantiB++;
