@@ -8520,8 +8520,31 @@ public class TrainerPesca : Script
         // niente qui: F4 gestito a tick per funzionare anche col pad collegato
     }
 
+    // LA RUOTA DELLA PESCA CHIUDE IL MENU.
+    // Quando la mod apre la ruota (LB) scrive "chiudi.txt" nella sua
+    // cartella: se il menu e' aperto si chiude, cosi' non si pestano i
+    // piedi sugli stessi tasti e la ruota ha lo schermo libero.
+    void ChiudiSeChiesto()
+    {
+        try
+        {
+            int k;
+            for (k = 0; k < modSubDir.Count; k++)
+            {
+                string f = Path.Combine(modSubDir[k], "chiudi.txt");
+                if (!File.Exists(f)) continue;
+                try { File.Delete(f); } catch { }
+                open = false;
+                Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET", true);
+                return;
+            }
+        }
+        catch { }
+    }
+
     void HandleOpenClose()
     {
+        if (open) ChiudiSeChiesto();
         // --- tastiera: F7 ---
         // Questo e' il trainer della pesca: sta accanto a quello normale,
         // che tiene F4 e RB+GIU. Qui F7 e RB+DESTRA, cosi' i due non si

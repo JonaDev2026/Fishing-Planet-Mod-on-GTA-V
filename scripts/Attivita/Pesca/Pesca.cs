@@ -10182,6 +10182,13 @@ public class Pesca : Script
             if (ruotaAperta)
             {
                 ruotaAperta = false;
+                // se il trainer non l'ha raccolto, via il file
+                try
+                {
+                    string fc = Path.Combine(MY_DIR, "chiudi.txt");
+                    if (File.Exists(fc)) File.Delete(fc);
+                }
+                catch { }
                 MontaDallaRuota();
                 // CHIUSA LA RUOTA: con una canna armata la prendi in mano
                 // (stessi controlli di "Inizia a pescare": se manca
@@ -10204,6 +10211,10 @@ public class Pesca : Script
         {
             ruotaAperta = true;
             ruotaSpicchio = -1;
+            // il menu del trainer, se e' aperto, si chiude: glielo si
+            // dice con un file, che lui legge e cancella
+            try { File.WriteAllText(Path.Combine(MY_DIR, "chiudi.txt"), "1"); }
+            catch { }
             int k;
             for (k = 0; k < RUOTA_N; k++) ruotaPos[k] = PosMontata(k);
             Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
