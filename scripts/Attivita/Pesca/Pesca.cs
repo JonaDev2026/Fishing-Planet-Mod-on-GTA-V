@@ -7485,9 +7485,6 @@ public class Pesca : Script
             {
                 // al passo: la levetta a fondo non fa correre
                 Function.Call(Hash.SET_PED_MAX_MOVE_BLEND_RATIO, p, 1.0f);
-                // l'esca segue il pescatore, a "metriLenza" da lui
-                if (fase == FASE_ACQUA || fase == FASE_ABBOCCA || fase == FASE_LOTTA)
-                    AggiornaEsca(p, metriLenza);
             }
         }
 
@@ -11321,14 +11318,13 @@ public class Pesca : Script
     // cosi' si puo' cambiare clip quando si tira
     const string DIZ_PESCA = "amb@world_human_stand_fishing@idle_a";
 
-    // SI CAMMINA MENTRE SI PESCA.
-    // Con "pesca_cammina" la posa della canna prende solo il busto
-    // (flag 49: busto + ciclo + secondaria) e le gambe restano al gioco:
-    // la levetta sinistra fa camminare - al passo, niente corsa - e nel
-    // frattempo fa le stesse cose di prima, gira la canna e da' la
-    // strappata. L'esca sta a "metriLenza" dal pescatore, quindi
-    // camminando si porta dietro anche lei. Con 0 torna tutto com'era:
-    // posa a corpo intero e gambe bloccate.
+    // SI CAMMINA CON LA CANNA IN MANO, NON CON LA LENZA IN ACQUA.
+    // Con "pesca_cammina", finche' non hai lanciato la posa della canna
+    // prende solo il busto (flag 49) e le gambe restano al gioco: giri
+    // al lago con la canna in mano, al passo. Appena lanci si sta fermi
+    // come prima, posa a corpo intero: provato a camminare con la lenza
+    // in acqua, il busto secondario mandava in confusione le gambe (si
+    // girava e proseguiva da solo). Con 0 fermo sempre.
     bool Cammina()
     {
         return LeggiF("pesca_cammina", 1f) > 0.5f;
@@ -11336,15 +11332,12 @@ public class Pesca : Script
 
     int FlagPosa()
     {
-        return Cammina() ? 49 : 1;
+        return (Cammina() && fase == FASE_PRONTO) ? 49 : 1;
     }
 
-    // sempre: canna in mano, lenza in acqua e anche durante la lotta,
-    // che spostandosi si fa leva
     bool FaseDiCammino()
     {
-        return fase == FASE_PRONTO || fase == FASE_ACQUA
-            || fase == FASE_ABBOCCA || fase == FASE_LOTTA;
+        return fase == FASE_PRONTO;
     }
 
     void Posa(Ped p, string clip)
