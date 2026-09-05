@@ -5335,10 +5335,12 @@ public class Pesca : Script
         float oy = LeggiF("orario_y", 40f);
         string ora = hh.ToString("00") + ":" + mi.ToString("00");
         DisegnaTestoSinistra(ora, ox, oy, LeggiF("orario_testo", 0.42f), 245, 245, 250);
-        // e sotto, quanto manca alla licenza
+        // sotto, quanto manca alla licenza; piu' staccato, livello e XP
         if (licGiorni > 0)
             DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
-                                 ox, oy + LeggiF("orario_lic_giu", 26f), 0.22f, 200, 202, 210);
+                                 ox, oy + LeggiF("orario_lic_giu", 30f), 0.22f, 200, 202, 210);
+        DisegnaTestoSinistra(L("Level ", "Liv. ") + livelloPescatore + "   " + xpTot + " XP",
+                             ox, oy + LeggiF("orario_liv_giu", 54f), 0.22f, 200, 202, 210);
     }
 
     // IL POSTO SULL'HUD: nome dell'acqua, sotto una riga bianca
