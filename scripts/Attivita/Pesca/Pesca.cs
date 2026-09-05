@@ -4284,6 +4284,10 @@ public class Pesca : Script
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
+        // LE LISTE DEL TRAINER ARRIVANO COME "comando_valore" (imp_fondale_2),
+        // non "comando valore": il valore sta dopo l'ultimo trattino basso.
+        if (cmd.StartsWith("imp_fondale_")) { arg = cmd.Substring(12); cmd = "imp_fondale"; }
+        if (cmd.StartsWith("imp_gall_")) { arg = cmd.Substring(9); cmd = "imp_gall"; }
         if (cmd == "imp_fondale")
         {
             int fp = Numero(arg);
