@@ -7333,8 +7333,8 @@ public class Pesca : Script
             {
                 if (!PesceQui(s, lu)) continue;
             }
-            if (!EscaGiusta(s)) continue;
-
+            // L'ESCA NON SCARTA PIU': il pesce entra lo stesso, e se
+            // l'esca non e' la sua lo decide dopo (abbocca 1 su 3).
             float pa = QuantoValeAmo(s);
             if (pa <= 0f) continue;
             float po = QuantoValeOra(s.Quando);
@@ -7857,7 +7857,8 @@ public class Pesca : Script
                     fase = FASE_PRONTO;
                     grillettoMollato = false;
                     tastoDa = now + 400;
-                    Messaggio("~y~Lenza ritirata.");
+                    if (robaOra >= 0) RobacciaSu(now);
+                    else Messaggio("~y~Lenza ritirata.");
                     return;
                 }
             }
@@ -7906,7 +7907,7 @@ public class Pesca : Script
                 // tecnica, l'artificiale deve muoversi per lavorare, e un
                 // pesce che insegue non si spaventa perche' tiri. Quindi
                 // questa regola vale solo se il galleggiante ce l'hai.
-                if (HoIlGalleggiante() && ritiro > LeggiF("strappa_via", 0.35f))
+                if (robaOra < 0 && HoIlGalleggiante() && ritiro > LeggiF("strappa_via", 0.35f))
                 {
                     // L'ATTESA NUOVA LA DECIDONO LE REGOLE, non un
                     // numero fisso. Il pesce spaventato rimette
@@ -7934,13 +7935,38 @@ public class Pesca : Script
                 DisegnaGalleggiante(now, assaggio ? 5f : 0f, assaggio ? 1f : 0f);
             else DisegnaSpinning(now, assaggio ? 1f : 0f);
             GalleggianteInAcqua(now, 0f, assaggio ? 1f : 0f, ritiro);
+            if (robaOra >= 0) MuoviRoba(now, false);
             Aiuto("~INPUT_ATTACK~ recuperi piano - ~INPUT_COVER~ esca");
 
             if (now >= quandoAbbocca)
             {
                 float tenuta = TenutaBorsa();
                 dentiDa = 0;
+                // SENZA NIENTE ALL'AMO NON ABBOCCA NESSUNO: solo robaccia,
+                // una volta su tre circa (robaccia_prob_senza_esca).
+                bool nienteAllAmo = (escaMontata < 0) && (InUso("artificiale") < 0);
+                if (regoleVere && nienteAllAmo)
+                {
+                    if (caso.Next(100) < (int)LeggiF("robaccia_prob_senza_esca", 35f))
+                    { ArrivaRobaccia(now); return; }
+                    quandoAbbocca = now + 6000 + caso.Next(8000);
+                    return;
+                }
                 pesceQui = PescaUnPesce(tenuta, out pesceKg);
+                // L'ESCA NON E' LA SUA: abbocca solo 1 su 3 (ha fame). Le
+                // altre volte se ne va, e una parte di quelle viene su la
+                // robaccia. Con l'esca giusta la robaccia non esce mai.
+                if (regoleVere && pesceQui >= 0 && !EscaGiusta(pesci[pesceQui]))
+                {
+                    if (caso.Next(100) >= (int)LeggiF("esca_sbagliata_abbocca", 33f))
+                    {
+                        pesceQui = -1;
+                        if (caso.Next(100) < (int)LeggiF("robaccia_prob_esca_sbagliata", 25f))
+                        { ArrivaRobaccia(now); return; }
+                        quandoAbbocca = now + 6000 + caso.Next(8000);
+                        return;
+                    }
+                }
                 if (pesceQui < 0)
                 {
                     // Con le regole vere non e' un errore: e' che con questa
@@ -10652,6 +10678,8 @@ public class Pesca : Script
     {
         if (fase == FASE_FERMO || fase == FASE_PRONTO || fase == FASE_CARD) return;
         TogliPesce();
+        ViaRoba();
+        robaOra = -1;
         metriLenza = 0f;
         escaInAcqua = false;
         fase = FASE_PRONTO;
@@ -11366,15 +11394,36 @@ public class Pesca : Script
         }
     }
 
-    // ci prova: torna true se stavolta e' venuta su robaccia
-    bool ProvaRobaccia()
+    // QUALCOSA HA PRESO ALL'AMO, MA NON E' UN PESCE. La roba si aggancia
+    // sott'acqua dove sta l'esca e segue la lenza mentre recuperi; niente
+    // abboccate finche' non l'hai tirata su.
+    void ArrivaRobaccia(int now)
     {
-        if (robaccia.Count == 0) return false;
-        float pr = LeggiF("robaccia_prob", 6f);
-        if (escaMontata < 0) pr = LeggiF("robaccia_prob_senza_esca", 35f);
-        if (caso.Next(100) >= pr) return false;
+        if (robaccia.Count == 0)
+        {
+            quandoAbbocca = now + 6000 + caso.Next(8000);
+            return;
+        }
         robaOra = caso.Next(robaccia.Count);
-        return true;
+        MettiRoba();
+        quandoAbbocca = now + 3600000;
+        Vibra(200, 120);
+        Messaggio("~y~Qualcosa ha preso: recupera.");
+    }
+
+    // lenza ritirata con la roba attaccata: penzola dalla canna un momento
+    void RobacciaSu(int now)
+    {
+        if (robaOra < 0 || robaOra >= robaccia.Count) return;
+        Roba x = robaccia[robaOra];
+        robaAppesaFino = now + (int)LeggiF("roba_appesa_ms", 2500f);
+        string t = "~y~Hai tirato su: " + x.Nome;
+        if (x.Dollari > 0)
+        {
+            t += "  ~g~$" + x.Dollari;
+            Paga(-x.Dollari);
+        }
+        Messaggio(t);
     }
 
     void MettiRoba()
