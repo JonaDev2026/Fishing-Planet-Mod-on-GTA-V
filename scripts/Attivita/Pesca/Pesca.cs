@@ -5038,6 +5038,7 @@ public class Pesca : Script
               + "   Mulinelli " + InBorsa("mulinello") + "/" + mm
               + "   Lenze " + InBorsa("lenza") + "/" + ml
               + "   Cassetta " + RobaMinuta() + "/" + mr
+              + "   Nassa " + InBorsa("nassa") + "/1"
               + "|||||190,195,205");
         int k;
         for (k = 0; k < CAT_COD.Length; k++)
@@ -5154,7 +5155,8 @@ public class Pesca : Script
         return "Canne " + InBorsa("canna") + "/" + mc
              + "  Mulinelli " + InBorsa("mulinello") + "/" + mm
              + "  Lenze " + InBorsa("lenza") + "/" + ml
-             + "  " + dove + " " + RobaMinuta() + "/" + mr;
+             + "  " + dove + " " + RobaMinuta() + "/" + mr
+             + "  Nassa " + InBorsa("nassa") + "/1";
     }
 
     // ------------------------------------------------------------
@@ -6001,6 +6003,7 @@ public class Pesca : Script
               + "   Mulinelli " + InBorsa("mulinello") + "/" + mm2
               + "   Lenze " + InBorsa("lenza") + "/" + ml2
               + "   Cassetta " + RobaMinuta() + "/" + mr2
+              + "   Nassa " + InBorsa("nassa") + "/1"
               + "|||||190,195,205");
         int qb;
         for (qb = 0; qb < CASA_ORD.Length; qb++)
