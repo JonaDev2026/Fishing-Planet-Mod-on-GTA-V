@@ -8292,7 +8292,7 @@ public class Pesca : Script
         }
         else if (fase == FASE_ABBOCCA)
         {
-            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Strike!", "Ferra!"));
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Hook the fish", "Aggancia il pesce"));
         }
         else if (fase == FASE_ACQUA || fase == FASE_LOTTA)
         {
