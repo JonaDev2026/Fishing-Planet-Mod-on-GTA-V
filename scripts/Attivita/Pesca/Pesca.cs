@@ -5362,14 +5362,16 @@ public class Pesca : Script
             if (presoQui.ContainsKey(arNome[a] + "|" + arPesci[a][q])) scoperte++;
         int pct = (qs > 0) ? (int)(100f * scoperte / qs + 0.5f) : 0;
         DisegnaTestoSinistra(arNome[a], px, py, 0.30f, 245, 245, 250);
-        float by = py + LeggiF("posto_barra_giu", 20f);
+        // la riga dell'esplorazione ha la sua altezza (esplora_y): sta sotto
+        // livello e XP, in alto a sinistra
+        float by = LeggiF("esplora_y", 120f);
         DisegnaRett(px, by, bw, 2f, 255, 255, 255, 45);
         DisegnaRett(px, by, bw * pct / 100f, 2f, 255, 255, 255, 210);
         DisegnaTestoSinistra(pct + "%  " + scoperte + "/" + qs, px + bw + 8f, by - 8f, 0.20f, 200, 202, 210);
         DisegnaTestoSinistra(L("Exploration", "Esplorazione"),
                              px, by + LeggiF("posto_lic_giu", 6f), 0.22f, 200, 202, 210);
-        // il grafico sotto la riga dell'esplorazione, di attivita_giu pixel
-        DisegnaAttivita(a, px, by + LeggiF("attivita_giu", 30f), LeggiF("attivita_larga", bw));
+        // il grafico resta dov'era: sotto il nome del posto (attivita_y)
+        DisegnaAttivita(a, px, LeggiF("attivita_y", 390f), LeggiF("attivita_larga", bw));
     }
 
     // L'ATTIVITA' DELLA GIORNATA, stilizzata come nel wiki: una riga base
