@@ -8226,7 +8226,7 @@ public class Pesca : Script
             DisegnaTesto(pcSpecie[cal].Length > 0
                          ? L("the water moves", "l'acqua si muove")
                          : L("deep down here", "qui sotto e' fondo"),
-                         BAR_X + BAR_W * 0.5f, BarY() - 50f, 0.22f, cr, cg, cb);
+                         BAR_X + BAR_W * 0.5f, BarY() - 50f + LeggiF("caldo_giu", 8f), 0.22f, cr, cg, cb);
     }
 
     // legge larghezza e altezza dall'IHDR del PNG, per non stirare niente
