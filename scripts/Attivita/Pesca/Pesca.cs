@@ -8193,18 +8193,39 @@ public class Pesca : Script
         DisegnaRett(BAR_X, BarY() + BAR_H * (1f - fill01), BAR_W, BAR_H * fill01, cr, cg, cb, 240);
     }
 
+    // QUANT'E' FONDO DOVE STA L'ESCA: pelo dell'acqua meno fondale,
+    // col suolo che il gioco da' anche sott'acqua. Dove la sonda non
+    // risponde torna -1 e non si scrive niente. Si rilegge ogni 300 ms.
+    float fondoEsca = -1f;
+    int fondoEscaQuando = 0;
+
+    float FondoDellEsca()
+    {
+        int ora = Game.GameTime;
+        if (ora - fondoEscaQuando < 300) return fondoEsca;
+        fondoEscaQuando = ora;
+        fondoEsca = -1f;
+        if (!escaInAcqua) return -1f;
+        try
+        {
+            float acqua = AcquaSottoEsca();
+            OutputArgument g = new OutputArgument();
+            if (Function.Call<bool>(Hash.GET_GROUND_Z_FOR_3D_COORD,
+                                    escaX, escaY, acqua + 50f, g, false))
+            {
+                float suolo = g.GetResult<float>();
+                if (acqua > suolo) fondoEsca = acqua - suolo;
+            }
+        }
+        catch { }
+        return fondoEsca;
+    }
+
     void Metri(float m)
     {
-        // sul punto caldo i metri diventano ambrati: e' l'unico segno che
-        // hai messo l'esca dove il pesce c'e'. Non lo dice nessun menu,
-        // te ne accorgi guardando l'acqua e i numeri.
-        int cal = CaldoDellEsca();
+        // NIENTE SEGNI SUL PUNTO CALDO: dove c'e' il pesce lo scopri tu.
+        // Testi bianchi e basta.
         int cr = 245, cg = 245, cb = 250;
-        if (cal >= 0)
-        {
-            if (pcSpecie[cal].Length > 0) { cr = 250; cg = 205; cb = 120; }
-            else { cr = 200; cg = 165; cb = 250; }
-        }
         // UN DECIMALE. Con i metri interi il numero saltava 19, 18, 17 e
         // sembrava che la lenza corresse a scatti: cosi' invece scorre.
         float mm = (m < 0f) ? 0f : m;
@@ -8222,10 +8243,10 @@ public class Pesca : Script
         testoM += " m";
         DisegnaTesto(testoM,
                      BAR_X + BAR_W * 0.5f, BarY() - 34f + LeggiF("metri_giu", 11f), 0.38f, cr, cg, cb);
-        if (cal >= 0)
-            DisegnaTesto(pcSpecie[cal].Length > 0
-                         ? L("the water moves", "l'acqua si muove")
-                         : L("deep down here", "qui sotto e' fondo"),
+        // sotto i metri: quant'e' fondo dove sta l'esca
+        float fondo = FondoDellEsca();
+        if (fondo >= 0f)
+            DisegnaTesto(L("Depth ", "Fondo ") + fondo.ToString("0.0", CultureInfo.InvariantCulture) + " m",
                          BAR_X + BAR_W * 0.5f, BarY() - 50f + LeggiF("caldo_giu", 8f), 0.22f, cr, cg, cb);
     }
 
