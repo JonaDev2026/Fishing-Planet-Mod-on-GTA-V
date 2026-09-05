@@ -1,6 +1,8 @@
 # id|categoria|nome|quantita|peso|prezzo|liv_wiki|amo|pesci|img
 # esche vere dal wiki di Fishing Planet - rifatte dalle pagine Common Baits,
 # Worms e Insects Baits, Fresh Baits e Saltwater Baits del wiki_dump.
+# Tolta la 157 (Tuna Fish Heads): sul wiki sta a livello 1 solo perche' e' l'esca
+# dell'evento del Butcher Shark, che da noi non c'e'. Nessun pesce la cita.
 1|comuni|Bread|50|Light|10|1|#10 - #6|Crappie, Bluegill, Pumpkinseed, Common Shiner, Carp, Thicklip Grey Mullet|Bread.png
 2|comuni|Cheese|50|Light|60|3|#8 - #2|Bluegill, Trout, Catfish, Bullhead|Cheese.png
 3|comuni|Pearl Barley|50|Light|75|3|#10 - #2|Roach|Pearl_Barley.png
@@ -157,7 +159,6 @@
 154|boilies|Spices Pop-up Boilies|10|Med-Heavy|2200|50||Carp|6283.png
 155|boilies|Strawberry Pop-up Boilies|10|Med-Heavy|2200|50||Carp|6274.png
 156|boilies|Tiger Nut Pop-up Boilies|10|Med-Heavy|2200|50||Carp|6277.png
-157|mare|Tuna Fish Heads|15|X Heavy|3930|1||Butcher Shark, Shark|Tuna_Fish_Heads.png
 158|mare|Shrimps|15|Medium|350|30|#6 - #1/0|Bass, Trout, Salmon, Shad, Thicklip Grey Mullet, European Eel|Shrimp1.png
 159|mare|Mussel Meat|15|Heavy|850|47||Permit, Red Drum, Striped Bass, Flounder, Gafftopsail Сatfish|Mussel_Meat.png
 160|mare|Crab|10|Heavy|1900|55||Permit, Red Drum, Striped Bass, Tarpon, Flounder|Crab1.png
