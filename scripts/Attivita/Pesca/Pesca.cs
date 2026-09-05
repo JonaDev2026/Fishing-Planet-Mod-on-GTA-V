@@ -8167,18 +8167,26 @@ public class Pesca : Script
 
     // LE QUATTRO TACCHE DELLA FRIZIONE, in colonna accanto alla barra.
     // Accese dal basso: una sola = tirata, tutte e quattro = morbida.
+    // LA FRIZIONE E' UN CERCHIO A TACCHE, come in Fishing Planet: dodici
+    // tacche attorno a un disco scuro, accese in senso orario dall'alto.
+    // Quattro posizioni di frizione = tre tacche ciascuna. In mezzo, per
+    // ora, niente: le frecce vengono dopo.
+    //   friz_cx / friz_cy   centro
+    //   friz_diam           diametro
     void TacchePrizione()
     {
-        float w = 8f, h = 8f;
-        float x = BAR_X - 14f;
-        float y0 = BarY() + BAR_H - h;
+        float fcx = LeggiF("friz_cx", BAR_X - 40f);
+        float fcy = LeggiF("friz_cy", BarY() + BAR_H - 30f);
+        float fd = LeggiF("friz_diam", 60f);
+        // nel PNG il raggio esterno e' 248 su una meta' lato di 256
+        float S = fd * 256f / 248f;
+        Sprite("img\\hud\\friz_disco.png", fcx - S * 0.5f, fcy - S * 0.5f, S, S);
+        int accese = frizione * 3;
         int i;
-        for (i = 0; i < 4; i++)
+        for (i = 0; i < 12; i++)
         {
-            float y = y0 - i * (h + 4f);
-            DisegnaRett(x - 1f, y - 1f, w + 2f, h + 2f, 0, 0, 0, 150);
-            if (i < frizione) DisegnaRett(x, y, w, h, 130, 200, 245, 240);
-            else DisegnaRett(x, y, w, h, 40, 44, 52, 210);
+            string img = (i < accese) ? "img\\hud\\friz_on.png" : "img\\hud\\friz_off.png";
+            SpriteInclinata(img, fcx - S * 0.5f, fcy - S * 0.5f, S, S, i * 30f * LeggiF("ruota_verso", 1f));
         }
     }
 
