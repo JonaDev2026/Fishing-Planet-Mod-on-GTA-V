@@ -58,7 +58,6 @@ class TItem
     public string[] OptImgs;  // liste delle mod: immagine per opzione
     public string[] OptDescs; // liste delle mod: descrizione per opzione
     public bool FondoPieno;   // tinta come sfondo dell'intera riga, non barretta
-    public int Esplora = -1;  // barretta dell'esplorazione sotto il nome (0-100), -1 niente
     public string Sotto;      // seconda riga piccola sotto il nome (righe icona)
     public int Dr, Dg, Db;    // colore del testo a destra (0,0,0 = quello di sempre)
     public bool DescTinta;
@@ -6453,12 +6452,6 @@ public class TrainerPesca : Script
                     vsub.Sotto = c[6].Trim();
                     m.HaSotto = true;
                 }
-                // ottavo campo: l'esplorazione del posto, 0-100
-                if (c.Length > 7 && vsub != null && c[7].Trim().Length > 0)
-                {
-                    int ex8;
-                    if (int.TryParse(c[7].Trim(), out ex8)) vsub.Esplora = ex8;
-                }
                 continue;
             }
 
@@ -9344,7 +9337,7 @@ public class TrainerPesca : Script
                 modHeadDir = dir;
                 modHeadStamp = st;
                 modHeadTxt = File.ReadAllText(f).Trim();
-                if (modHeadTxt.Length > 60) modHeadTxt = modHeadTxt.Substring(0, 60);
+                if (modHeadTxt.Length > 40) modHeadTxt = modHeadTxt.Substring(0, 40);
             }
             return modHeadTxt;
         }
@@ -9388,17 +9381,10 @@ public class TrainerPesca : Script
             {
                 string liv = suo.Substring(0, sp3);
                 string xp = suo.Substring(sp3 + 3);
-                // terzo pezzo, se c'e': la licenza, in bianco
-                string lic3 = "";
-                int sp3b = xp.IndexOf("   ");
-                if (sp3b > 0) { lic3 = xp.Substring(sp3b + 3); xp = xp.Substring(0, sp3b); }
                 // prima gli XP (blu), poi il livello (giallo) alla loro destra
                 DrawText(xp, sx, y + 3f, 0.25f, Color.FromArgb(255, 130, 200, 245));
                 DrawText(liv, sx + TextWidth(xp + "   ", 0.25f), y + 3f,
                          0.25f, Color.FromArgb(255, 245, 205, 80));
-                if (lic3.Length > 0)
-                    DrawText(lic3, sx + TextWidth(xp + "   " + liv + "   ", 0.25f), y + 3f,
-                             0.25f, Color.FromArgb(255, 235, 235, 240));
             }
             else
                 DrawText(suo, sx, y + 3f, 0.25f, Color.FromArgb(255, 130, 200, 245));
@@ -12529,18 +12515,6 @@ public class TrainerPesca : Script
                 else DrawText(etichetta, tx, ey2, 0.24f, fg);
             }
 
-            // L'ESPLORAZIONE DEL POSTO: una riga sottile sotto il nome,
-            // bianca trasparente, che si riempie con le specie gia' prese,
-            // e la percentuale in fondo.
-            if (rigaIcona && it.Esplora >= 0)
-            {
-                float bw = 130f;
-                float by = y + RH - 6f;
-                DrawRect(tx, by, bw, 2f, 255, 255, 255, 45);
-                DrawRect(tx, by, bw * it.Esplora / 100f, 2f, 255, 255, 255, 210);
-                DrawText(it.Esplora + "%", tx + bw + 6f, by - 7f, 0.17f,
-                         Color.FromArgb(255, 200, 202, 210));
-            }
             // la riga piccola sotto il nome: i dati del pezzo, spenti,
             // cosi' il lato destro resta libero per lo stato
             if (rigaSotto)
