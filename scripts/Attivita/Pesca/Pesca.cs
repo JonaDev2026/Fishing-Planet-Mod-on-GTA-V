@@ -9265,8 +9265,10 @@ public class Pesca : Script
             Sprite(imgSlot, ecx - ew2 * 0.5f, ecy - ew2 * 0.5f, ew2, ew2);
             // il cerchietto col numero
             float ncx = ecx + ndx, ncy = ecy + ndy;
-            Sprite("img\\hud\\cerchio.png", ncx - nd * 0.5f, ncy - nd * 0.5f, nd, nd);
-            DisegnaTesto("" + quanteSlot, ncx, ncy - nd * 0.27f, LeggiF("esca_num_testo", 0.32f), 245, 245, 250);
+            // il cerchietto attorno al numero solo se "esca_num_cerchio" > 0
+            if (nd > 0f)
+                Sprite("img\\hud\\cerchio.png", ncx - nd * 0.5f, ncy - nd * 0.5f, nd, nd);
+            DisegnaTesto("" + quanteSlot, ncx, ncy - 8f, LeggiF("esca_num_testo", 0.32f), 245, 245, 250);
             // a sinistra: il nome, e sotto l'amo che pesca
             float tx = ecx - ed * 0.5f - tdx;
             DisegnaTestoDestra(nomeSlot, tx, ecy - 22f, LeggiF("esca_nome_testo", 0.32f), 245, 245, 250);
