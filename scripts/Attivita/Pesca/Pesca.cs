@@ -8194,6 +8194,9 @@ public class Pesca : Script
     // frizione e i metri: alzando "barra_y" si avvicina tutto all'acqua.
     // Il quadrante invece sta per conto suo, a "quadrante_y".
     float BarY() { return LeggiF("barra_y", 420f); }
+    // il centro del quadrante (galleggiante/spinning) e della scritta del
+    // fondo: "quadrante_x", se manca sta sopra la barra
+    float QuadX() { return LeggiF("quadrante_x", BAR_X + BAR_W * 0.5f); }
 
     // LE QUATTRO TACCHE DELLA FRIZIONE, in colonna accanto alla barra.
     // Accese dal basso: una sola = tirata, tutte e quattro = morbida.
@@ -8354,7 +8357,7 @@ public class Pesca : Script
         float fondo = FondoDellEsca();
         if (fondo >= 0f)
             DisegnaTesto(L("Depth ", "Fondo ") + fondo.ToString("0.0", CultureInfo.InvariantCulture) + " m",
-                         BAR_X + BAR_W * 0.5f, BarY() - 50f + LeggiF("caldo_giu", 8f), 0.22f, cr, cg, cb);
+                         QuadX(), BarY() - 50f + LeggiF("caldo_giu", 8f), 0.22f, cr, cg, cb);
     }
 
     // legge larghezza e altezza dall'IHDR del PNG, per non stirare niente
@@ -12054,7 +12057,7 @@ public class Pesca : Script
 
     void DisegnaSpinning(int now, float scossa)
     {
-        float cx = BAR_X + BAR_W * 0.5f;
+        float cx = QuadX();
         float alt = LeggiF("spin_alt", 62f);
         // IL QUADRANTE STA SOPRA I METRI.
         // Quello del galleggiante e' basso e ci sta; questo e' il doppio
@@ -12146,7 +12149,7 @@ public class Pesca : Script
         // sotto. Il galleggiante si muove come si e' sempre mosso -
         // ondeggia e affonda quando morde - solo che adesso si vede
         // anche dove sta l'esca.
-        float cx = BAR_X + BAR_W * 0.5f;
+        float cx = QuadX();
         float alt = LeggiF("spin_alt", 62f);
         float top = LeggiF("quadrante_y", 296f);
         float largo = 48f;
