@@ -2200,6 +2200,11 @@ public class Pesca : Script
             }
         }
         DisegnaMessaggio();
+        // I PESCI CHE PASSANO NON DIPENDONO DALLA CANNA: finche' hai la
+        // licenza e stai in riva, passano. Con la lenza in acqua girano
+        // attorno all'esca, se no in un punto d'acqua davanti a te.
+        if (inPesca && inRivaOra) PesceDiPassaggio(Game.GameTime);
+        else ViaPesceScena();
         // LB: la ruota degli attrezzi al posto di quella delle armi
         Ruota();
         // mentre guardi l'inventario, l'HUD dell'attrezzatura: la stessa
@@ -7336,6 +7341,7 @@ public class Pesca : Script
 
         int now = Game.GameTime;
         bool inRiva = VicinoAllAcqua();
+        inRivaOra = inRiva;
         LeggiTasto();
         TieniProvaPesce(now);
 
@@ -7775,7 +7781,6 @@ public class Pesca : Script
                     Messaggio("~y~Hai tirato troppo presto: se n'e' andato.");
                 }
             }
-            PesceDiPassaggio(now);
             if (QuadranteGall())
                 DisegnaGalleggiante(now, assaggio ? 5f : 0f, assaggio ? 1f : 0f);
             else DisegnaSpinning(now, assaggio ? 1f : 0f);
@@ -10682,10 +10687,33 @@ public class Pesca : Script
         scenaDa = 0;
     }
 
+    bool inRivaOra = false;
+    float scenaAcquaZ = 0f;   // il pelo dell'acqua dove passa
+
+    // l'acqua in un punto qualsiasi: il pelo, o -9999 se li' non ce n'e'
+    float AcquaA(float x, float y, float zRif)
+    {
+        try
+        {
+            OutputArgument oz = new OutputArgument();
+            if (Function.Call<bool>(Hash.GET_WATER_HEIGHT, x, y, 400f, oz))
+                return oz.GetResult<float>();
+            if (Function.Call<bool>(Hash.GET_WATER_HEIGHT_NO_WAVES, x, y, 400f, oz))
+                return oz.GetResult<float>();
+            OutputArgument oh = new OutputArgument();
+            if (Function.Call<bool>(Hash.TEST_VERTICAL_PROBE_AGAINST_ALL_WATER, x, y, 400f, 0, oh))
+            {
+                float z = oh.GetResult<float>();
+                if (z < zRif + 0.5f) return z;
+            }
+        }
+        catch { }
+        return -9999f;
+    }
+
     void PesceDiPassaggio(int now)
     {
         if (LeggiF("pesci_scena", 1f) < 0.5f) { ViaPesceScena(); return; }
-        if (!escaInAcqua) { ViaPesceScena(); return; }
 
         int dura = (int)(LeggiF("pesci_scena_dura", 7f) * 1000f);
 
@@ -10700,7 +10728,7 @@ public class Pesca : Script
             float avanti = (t - 0.5f) * scenaLung;
             float px = scenaX + dx * avanti;
             float py = scenaY + dy * avanti;
-            float pz = AcquaSottoEsca() - LeggiF("pesci_scena_giu", 0.45f)
+            float pz = scenaAcquaZ - LeggiF("pesci_scena_giu", 0.45f)
                      + (float)Math.Sin(now * 0.003) * 0.06f;
             float coda = (float)Math.Sin(now * 0.012) * 8f;
             try
@@ -10753,15 +10781,40 @@ public class Pesca : Script
                 m.Request(400);
                 if (!m.IsLoaded) return;
             }
-            // passa di fianco all'esca, non addosso
+            // DOVE PASSA: attorno all'esca se e' in acqua; se no in un
+            // punto d'acqua davanti a te, cercato girando attorno
+            float ax, ay, az, baseDir;
+            Ped pp = Game.Player.Character;
+            if (escaInAcqua)
+            {
+                ax = escaX; ay = escaY; az = AcquaSottoEsca(); baseDir = escaDir;
+            }
+            else
+            {
+                float dist = LeggiF("pesci_scena_dist", 8f);
+                ax = 0f; ay = 0f; az = -9999f; baseDir = 0f;
+                int k;
+                for (k = 0; k < 8 && az < -9000f; k++)
+                {
+                    float ang = pp.Heading + k * 45f;
+                    double ra = ang * Math.PI / 180.0;
+                    float qx = pp.Position.X - (float)Math.Sin(ra) * dist;
+                    float qy = pp.Position.Y + (float)Math.Cos(ra) * dist;
+                    float qz = AcquaA(qx, qy, pp.Position.Z);
+                    if (qz > -9000f) { ax = qx; ay = qy; az = qz; baseDir = ang; }
+                }
+                if (az < -9000f) return;
+            }
+            scenaAcquaZ = az;
+            // passa di fianco, non addosso
             float via = LeggiF("pesci_scena_via", 2.2f);
             scenaLung = LeggiF("pesci_scena_lungo", 14f);
-            scenaDir = escaDir + 90f + caso.Next(60) - 30f;
+            scenaDir = baseDir + 90f + caso.Next(60) - 30f;
             if (caso.Next(2) == 0) scenaDir += 180f;
-            double rl = (escaDir + (caso.Next(2) == 0 ? 90f : -90f)) * Math.PI / 180.0;
-            scenaX = escaX + -(float)Math.Sin(rl) * via;
-            scenaY = escaY + (float)Math.Cos(rl) * via;
-            float z0 = AcquaSottoEsca() - LeggiF("pesci_scena_giu", 0.45f);
+            double rl = (baseDir + (caso.Next(2) == 0 ? 90f : -90f)) * Math.PI / 180.0;
+            scenaX = ax + -(float)Math.Sin(rl) * via;
+            scenaY = ay + (float)Math.Cos(rl) * via;
+            float z0 = az - LeggiF("pesci_scena_giu", 0.45f);
             pesceScena = World.CreatePed(m, new GTA.Math.Vector3(scenaX, scenaY, z0));
             m.MarkAsNoLongerNeeded();
             if (pesceScena == null || !pesceScena.Exists()) { pesceScena = null; return; }
