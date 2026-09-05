@@ -10402,11 +10402,9 @@ public class Pesca : Script
             }
             if (RUOTA_CAT[i] == "nassa")
             {
-                // la nassa che porti; senza, l'ombra se c'e' il PNG
-                int idn; string imn, nmn;
-                if (!Montato("nassa", out idn, out imn, out nmn)) imn = "img/ruota/vuoto_nassa.png";
+                // la stessa nassa dell'HUD
                 float icn = LeggiF("ruota_icona_nassa", ic);
-                Sprite(imn, px - icn * 0.5f, py - icn * 0.5f, icn, icn);
+                Sprite("img/nasse/nassa_base.png", px - icn * 0.5f, py - icn * 0.5f, icn, icn);
                 continue;
             }
             if (RUOTA_CAT[i] == "pesci")
