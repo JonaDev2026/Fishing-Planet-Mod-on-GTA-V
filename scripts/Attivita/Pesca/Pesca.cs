@@ -7129,11 +7129,23 @@ public class Pesca : Script
 
     // quanto e' viva l'acqua adesso. Numero nostro: il wiki dice solo che
     // col freddo si pesca meglio a mezzogiorno, non da' una formula.
+    // Quanto e' viva l'acqua adesso = il pesce di questo posto che sta
+    // meglio con la temperatura di adesso (temperature_pesci.txt). Se uno
+    // e' alla sua ottima l'acqua e' viva (1); se tutti stanno ai bordi si
+    // aspetta di piu'; se nessuno e' nel suo intervallo, quasi ferma.
     float AttivitaAcqua()
     {
-        float t = GradiAcqua();
-        float f = 1f - (float)Math.Abs(t - 20f) * 0.045f;
-        if (f < 0.25f) f = 0.25f;
+        int lu = LuogoQui();
+        float f = 0f;
+        int i;
+        for (i = 0; i < pesci.Count; i++)
+        {
+            Specie s = pesci[i];
+            if (lu >= 0 && s.Zone != null && !PesceQui(s, lu)) continue;
+            float v = QuantoValeTemperatura(s);
+            if (v > f) f = v;
+        }
+        if (f < 0.15f) f = 0.15f;
         if (f > 1f) f = 1f;
         return f;
     }
@@ -7154,15 +7166,16 @@ public class Pesca : Script
         return "";
     }
 
+    // L'ATTESA DOPO IL LANCIO. La distanza del lancio non c'entra piu':
+    // base fissa (attesa_base, ms) divisa per quanto e' viva l'acqua, piu'
+    // un pezzo a caso (attesa_caso). Numeri nostri, in config.
     int AttesaAbboccata(float potenza)
     {
-        int attesa = 14000 - (int)(potenza * 90f);
-        if (attesa < 3000) attesa = 3000;
+        int attesa = (int)LeggiF("attesa_base", 14000f);
         if (!regoleVere) return attesa + caso.Next(4000);
         float att = AttivitaAcqua();
-        if (att < 0.15f) att = 0.15f;
-        attesa = (int)(attesa * 1.8f / att);
-        return attesa + caso.Next(6000);
+        attesa = (int)(attesa / att);
+        return attesa + caso.Next((int)LeggiF("attesa_caso", 6000f));
     }
 
     // ---------- LA TECNICA ----------
