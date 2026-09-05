@@ -8175,7 +8175,7 @@ public class Pesca : Script
     //   friz_diam           diametro
     void TacchePrizione()
     {
-        float fcx = LeggiF("friz_cx", BAR_X - 40f);
+        float fcx = LeggiF("friz_cx", BAR_X - 60f);
         float fcy = LeggiF("friz_cy", BarY() + BAR_H - 30f);
         float fd = LeggiF("friz_diam", 60f);
         // nel PNG il raggio esterno e' 248 su una meta' lato di 256
