@@ -10335,6 +10335,34 @@ public class Pesca : Script
         }
     }
 
+    // L'ICONA DELLO ZAINO E' QUELLO CHE PORTI DAVVERO: lo zaino di
+    // partenza finche' non compri niente, poi la cassetta o la borsa
+    // piu' capiente che hai dietro.
+    string ImgZaino()
+    {
+        string img = "img/cassette/Base.png";
+        int meglio = -1;
+        foreach (KeyValuePair<string, int> kv in borsa)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length < 2 || c[0] != "cassetta" || kv.Value <= 0) continue;
+            int id = Numero(c[1]);
+            int i;
+            for (i = 0; i < cassette.Count; i++)
+            {
+                if (cassette[i].Id != id) continue;
+                int cap = Numero(cassette[i].Attrezzi);
+                string nome, im; int pr, lv;
+                if (cap > meglio && Articolo("cassetta", id, out nome, out im, out pr, out lv))
+                {
+                    meglio = cap;
+                    img = im;
+                }
+            }
+        }
+        return img;
+    }
+
     void DisegnaRuota()
     {
         float cx = LeggiF("ruota_x", 640f);
@@ -10361,7 +10389,7 @@ public class Pesca : Script
             if (RUOTA_CAT[i] == "zaino")
             {
                 float icz = LeggiF("ruota_icona_zaino", ic);
-                Sprite("img/cassette/Base.png", px - icz * 0.5f, py - icz * 0.5f, icz, icz);
+                Sprite(ImgZaino(), px - icz * 0.5f, py - icz * 0.5f, icz, icz);
                 continue;
             }
             List<VoceRuota> v = VociRuota(i);
