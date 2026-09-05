@@ -10075,7 +10075,7 @@ public class Pesca : Script
     {
         public string Cat; public int Id; public int Bob;
         public string Nome; public string Img; public string Dett;
-        public bool Montata;
+        public bool Montata; public int Sp;
     }
 
     void AggVoce(List<VoceRuota> v, string cat, int id, int bob, bool montata)
@@ -10148,6 +10148,7 @@ public class Pesca : Script
         bool qualcosa = false;
         for (i = 1; i < v.Count; i++) if (v[i].Montata) qualcosa = true;
         vuoto.Montata = !qualcosa;
+        for (i = 0; i < v.Count; i++) v[i].Sp = sp;
         return v;
     }
 
@@ -10234,15 +10235,36 @@ public class Pesca : Script
         DisegnaRuota();
     }
 
-    // LB lasciato: quello che c'e' sotto il cursore si monta
+    // LB LASCIATO: SI APPLICA TUTTO QUELLO CHE HAI SCELTO, in ogni
+    // spicchio, non solo quello sotto il cursore. Prima si leggono tutte
+    // le scelte e poi si applicano - applicandone una cambiano le liste
+    // delle altre - e prima gli smonta, poi i monta.
     void MontaDallaRuota()
     {
-        if (ruotaSpicchio < 0) return;
-        List<VoceRuota> v = VociRuota(ruotaSpicchio);
-        int pos = ruotaPos[ruotaSpicchio];
-        if (v.Count == 0 || pos >= v.Count) return;
-        VoceRuota r = v[pos];
-        if (r.Montata) return;
+        List<VoceRuota> scelte = new List<VoceRuota>();
+        int k;
+        for (k = 0; k < RUOTA_N; k++)
+        {
+            List<VoceRuota> v = VociRuota(k);
+            int pos = ruotaPos[k];
+            if (v.Count == 0 || pos >= v.Count) continue;
+            if (v[pos].Montata) continue;
+            scelte.Add(v[pos]);
+        }
+        int giro;
+        for (giro = 0; giro < 2; giro++)
+        {
+            for (k = 0; k < scelte.Count; k++)
+            {
+                bool smonta = scelte[k].Id < 0;
+                if (smonta == (giro == 0)) ApplicaVoce(scelte[k]);
+            }
+        }
+    }
+
+    void ApplicaVoce(VoceRuota r)
+    {
+        string nomeSp = RUOTA_NOME[r.Sp];
         if (r.Id < 0)
         {
             // VUOTO: quello che c'era torna in borsa
@@ -10254,7 +10276,7 @@ public class Pesca : Script
             else if (InUso(r.Cat) >= 0) via = Arma(r.Cat, InUso(r.Cat));
             if (via)
             {
-                Messaggio(RUOTA_NOME[ruotaSpicchio] + ": smontato");
+                Messaggio(nomeSp + ": smontato");
                 Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 SalvaStato();
             }
@@ -10279,7 +10301,7 @@ public class Pesca : Script
         else ok = Arma(r.Cat, r.Id);
         if (ok)
         {
-            Messaggio(RUOTA_NOME[ruotaSpicchio] + ": " + r.Nome);
+            Messaggio(nomeSp + ": " + r.Nome);
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             SalvaStato();
         }
