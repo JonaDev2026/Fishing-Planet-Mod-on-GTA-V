@@ -5438,6 +5438,9 @@ public class Pesca : Script
         while (oraOra >= 24f) oraOra -= 24f;
         float xo = px + bw * oraOra / 24f;
         DisegnaRett(xo - 2f, basso - ValoreCurva(hh + mi / 60f) * alt - 2f, 5f, 5f, 255, 255, 255, 255);
+        // sotto le ore, in piccolo, cos'e'
+        DisegnaTestoSinistra(L("Daily activity", "Attivita' della giornata"), px,
+                             basso + LeggiF("attivita_titolo_giu", 14f), 0.17f, 200, 202, 210);
     }
 
     // il valore della curva a un'ora con i decimali, fuso col coseno
