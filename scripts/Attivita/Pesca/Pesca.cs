@@ -8245,6 +8245,41 @@ public class Pesca : Script
     // Ogni tacca e' una posizione di frizione. In mezzo il mulinello.
     //   friz_cx / friz_cy   centro
     //   friz_diam           diametro
+    // I CONSIGLI DEI TASTI: una riga in basso al centro dello schermo, a
+    // "consigli_y" dal fondo. Da sinistra: la croce con destra/sinistra
+    // accesi e "Frizione", poi la croce con su/giu' accesi e "Profondita'
+    // dell'esca". Ci si aggiunge altro man mano.
+    void Consigli()
+    {
+        float lato = LeggiF("consigli_lato", 22f);
+        float y = 720f - LeggiF("consigli_dal_fondo", 20f) - lato;
+        float x = LeggiF("consigli_x", 470f);
+        float sc = LeggiF("consigli_testo", 0.24f);
+        float gap = LeggiF("consigli_gap", 30f);
+        float ty = y + lato * 0.5f - 9f;
+        SpriteInclinata("img\\hud\\croce_sugiu.png", x, y, lato, lato, 90f);
+        x += lato + 6f;
+        DisegnaTestoSinistra(L("Drag", "Frizione"), x, ty, sc, 245, 245, 250);
+        x += LeggiF("consigli_larga1", 62f) + gap;
+        Sprite("img\\hud\\croce_sugiu.png", x, y, lato, lato);
+        x += lato + 6f;
+        DisegnaTestoSinistra(L("Bait depth", "Profondita' dell'esca"), x, ty, sc, 245, 245, 250);
+    }
+
+    void DisegnaTestoSinistra(string txt, float x, float y, float scala, int r, int g, int b)
+    {
+        try
+        {
+            TextElement el = new TextElement(txt, new PointF(x, y), scala);
+            el.Color = Color.FromArgb(255, r, g, b);
+            el.Font = GTA.UI.Font.ChaletLondon;
+            el.Alignment = Alignment.Left;
+            el.Outline = true;
+            el.Draw();
+        }
+        catch { }
+    }
+
     void TacchePrizione()
     {
         float fcx = LeggiF("friz_cx", BAR_X - 142f);
@@ -8317,14 +8352,8 @@ public class Pesca : Script
             float tyE = BarY() - 50f + LeggiF("caldo_giu", 8f) + LeggiF("prof_testo_giu", 14f);
             DisegnaTesto(L("Bait ", "Esca ") + profondita.ToString("0.00", CultureInfo.InvariantCulture) + " m",
                          QuadX(), tyE, 0.22f, 245, 245, 250);
-            // LA CROCE COI TASTI: su e giu' accesi accanto all'esca,
-            // destra e sinistra accesi (la stessa PNG girata) accanto alla
-            // frizione, cosi' si capisce cosa si preme.
-            float cl = LeggiF("croce_lato", 22f);
-            Sprite("img\\hud\\croce_sugiu.png",
-                   QuadX() + LeggiF("croce_esca_dx", 38f), tyE + LeggiF("croce_esca_dy", -3f), cl, cl);
-            SpriteInclinata("img\\hud\\croce_sugiu.png",
-                            fcx + LeggiF("croce_friz_dx", -60f), fcy + LeggiF("croce_friz_dy", -11f), cl, cl, 90f);
+            // i consigli dei tasti, in basso al centro
+            Consigli();
             // sotto: la frizione inserita, in percentuale della massima
             int pct = (int)(100f * frizione / PosFrizione() + 0.5f);
             DisegnaTesto(L("drag ", "frizione ") + pct + "%", fcx, ty + LeggiF("friz_riga2", 12f),
