@@ -195,6 +195,7 @@ public class Pesca : Script
         public string Quando;                // notte/alba_tramonto/giorno/sempre
         public int Rarita;                   // 1 comunissimo ... 5 rarissimo
         public int Pred;                     // 1 = la sua pagina elenca artificiali
+        public float TMin, TMax, TOtt;       // gradi dell'acqua (temperature_pesci.txt), -1 = non noti
     }
     List<Specie> pesci = new List<Specie>();
 
@@ -1953,10 +1954,63 @@ public class Pesca : Script
                 if (c.Length > 16) { int rr; if (int.TryParse(c[16].Trim(), out rr) && rr >= 1 && rr <= 5) s.Rarita = rr; }
                 s.Pred = 0;
                 if (c.Length > 17 && c[17].Trim() == "1") s.Pred = 1;
+                s.TMin = -1f; s.TMax = -1f; s.TOtt = -1f;
                 pesci.Add(s);
             }
         }
         catch { }
+        CaricaTemperature();
+    }
+
+    // temperature_pesci.txt: nome|min|max|ottimo, gradi dell'acqua.
+    // Numeri nostri, indicativi (vedi l'intestazione del file).
+    void CaricaTemperature()
+    {
+        try
+        {
+            string f = Path.Combine(MY_DIR, "temperature_pesci.txt");
+            if (!File.Exists(f)) return;
+            string[] rows = File.ReadAllLines(f);
+            int i, k;
+            for (i = 0; i < rows.Length; i++)
+            {
+                string r = rows[i].Trim();
+                if (r.Length == 0 || r[0] == '#') continue;
+                string[] c = r.Split('|');
+                if (c.Length < 4) continue;
+                float a, b, o;
+                if (!float.TryParse(c[1], NumberStyles.Float, CultureInfo.InvariantCulture, out a)) continue;
+                if (!float.TryParse(c[2], NumberStyles.Float, CultureInfo.InvariantCulture, out b)) continue;
+                if (!float.TryParse(c[3], NumberStyles.Float, CultureInfo.InvariantCulture, out o)) continue;
+                string n = c[0].Trim();
+                for (k = 0; k < pesci.Count; k++)
+                    if (pesci[k].Nome == n) { pesci[k].TMin = a; pesci[k].TMax = b; pesci[k].TOtt = o; }
+            }
+        }
+        catch { }
+    }
+
+    // QUANTO VALE LA TEMPERATURA PER QUESTO PESCE.
+    // 1 alla sua temperatura ottima, scende fino a temp_bordo ai bordi del
+    // suo intervallo, e fuori dall'intervallo cala ancora fino a zero dopo
+    // temp_fuori gradi. Pesce senza dati: 1, come prima. temp_pesi=0 spegne.
+    float QuantoValeTemperatura(Specie s)
+    {
+        if (s.TMin < 0f || LeggiF("temp_pesi", 1f) < 0.5f) return 1f;
+        float t = GradiAcqua();
+        float bordo = LeggiF("temp_bordo", 0.4f);
+        float fuori = LeggiF("temp_fuori", 4f);
+        if (t >= s.TMin && t <= s.TMax)
+        {
+            float meta = (t < s.TOtt) ? (s.TOtt - s.TMin) : (s.TMax - s.TOtt);
+            if (meta < 0.5f) meta = 0.5f;
+            float d = Math.Abs(t - s.TOtt) / meta;
+            if (d > 1f) d = 1f;
+            return 1f - (1f - bordo) * d;
+        }
+        float oltre = (t < s.TMin) ? (s.TMin - t) : (t - s.TMax);
+        if (oltre >= fuori) return 0f;
+        return bordo * (1f - oltre / fuori);
     }
 
     void CaricaEsche()
@@ -7276,7 +7330,9 @@ public class Pesca : Script
             if (pt <= 0f) continue;
             int r = s.Rarita;
             if (r < 1 || r > 5) r = 3;
-            float peso = PESO_RARITA[r] * pa * po * pt;
+            float ptemp = QuantoValeTemperatura(s);
+            if (ptemp <= 0f) continue;
+            float peso = PESO_RARITA[r] * pa * po * pt * ptemp;
             // il punto caldo vale anche con le regole vere: se l'esca sta
             // sopra il posto di quella specie, quel pesce pesa sei volte
             if (spCal.Length > 0 && s.Nome == spCal) peso = peso * 6f;

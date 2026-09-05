@@ -4,7 +4,8 @@
 # messi da noi per gruppi dalla biologia generale: trote e salmerini acqua
 # fredda, carpe e pesci gatto acqua calda, Amazzonia e Africa tropicale,
 # mare di Norvegia freddo, Maldive caldo. Da correggere pesce per pesce
-# se si trova un dato vero. Il codice per ora NON legge questo file.
+# se si trova un dato vero. Il codice lo usa nel sorteggio del pesce
+# (vedi temp_* in config.ini).
 # gruppo usato: min|max|ottimo
 #   artico: 1|10|6
 #   freddo: 4|16|10
