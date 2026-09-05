@@ -10029,9 +10029,11 @@ public class Pesca : Script
     // ---- LA RUOTA DEGLI ATTREZZI ----
     // Mentre peschi LB non apre piu' la ruota delle armi: apre questa.
     // Tieni premuto LB, con la levetta destra scegli lo spicchio, con
-    // SU e GIU' della croce giri fra i pezzi di quella categoria che hai
-    // in borsa, lasci LB e il pezzo si monta. Otto spicchi, come quella
-    // delle armi, in senso orario dall'alto.
+    // SINISTRA e DESTRA della croce giri fra i pezzi di quella categoria
+    // che hai in borsa - come si cambia arma dentro uno spicchio - lasci
+    // LB e il pezzo si monta. Otto spicchi in senso orario dall'alto;
+    // quello in basso e' vuoto apposta: ci lasci la levetta e chiudi
+    // senza montare niente. La nassa non c'e': e' una sola, sta fissa.
     //   ruota_x / ruota_y   centro, in pixel su 1280x720
     //   ruota_raggio        raggio esterno
     //   ruota_icona         lato del riquadro delle icone
@@ -10043,10 +10045,10 @@ public class Pesca : Script
     int[] ruotaPos = new int[8];
     static readonly string[] RUOTA_CAT = new string[] {
         "canna", "mulinello", "lenza", "terminale",
-        "galleggiante", "artificiale", "esca", "nassa" };
+        "", "galleggiante", "artificiale", "esca" };
     static readonly string[] RUOTA_NOME = new string[] {
         "Canna", "Mulinello", "Lenza", "Amo e terminali",
-        "Galleggiante", "Cucchiaino", "Esca", "Nassa" };
+        "", "Galleggiante", "Cucchiaino", "Esca" };
 
     class VoceRuota
     {
@@ -10081,6 +10083,7 @@ public class Pesca : Script
         List<VoceRuota> v = new List<VoceRuota>();
         if (sp < 0 || sp >= RUOTA_CAT.Length) return v;
         string cat = RUOTA_CAT[sp];
+        if (cat.Length == 0) return v;
         if (cat == "terminale")
         {
             string[] cas = new string[] { "terminale", "leader", "piombo" };
@@ -10141,8 +10144,8 @@ public class Pesca : Script
         // la levetta destra sceglie lo spicchio, non gira la telecamera
         Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 1, true);
         Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 2, true);
-        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 27, true);
-        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 19, true);
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 174, true);
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 175, true);
         float sx = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 1);
         float sy = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 2);
         if (Math.Sqrt(sx * sx + sy * sy) > LeggiF("ruota_soglia", 0.5f))
@@ -10158,14 +10161,14 @@ public class Pesca : Script
         }
         if (ruotaSpicchio >= 0)
         {
-            bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27);
-            bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 19);
-            if (su || giu)
+            bool croceSx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174);
+            bool croceDx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 175);
+            if (croceSx || croceDx)
             {
                 int n = VociRuota(ruotaSpicchio).Count;
                 if (n > 1)
                 {
-                    ruotaPos[ruotaSpicchio] = (ruotaPos[ruotaSpicchio] + (giu ? 1 : n - 1)) % n;
+                    ruotaPos[ruotaSpicchio] = (ruotaPos[ruotaSpicchio] + (croceDx ? 1 : n - 1)) % n;
                     Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 }
             }
@@ -10227,7 +10230,7 @@ public class Pesca : Script
         }
         float cs = LeggiF("ruota_centro", 120f);
         Sprite("img/ruota/centro.png", cx - cs * 0.5f, cy - cs * 0.5f, cs, cs);
-        if (ruotaSpicchio < 0) return;
+        if (ruotaSpicchio < 0 || RUOTA_CAT[ruotaSpicchio].Length == 0) return;
         DisegnaTesto(RUOTA_NOME[ruotaSpicchio].ToUpper(), cx, cy - 28f, 0.24f, 200, 200, 200);
         List<VoceRuota> vs = VociRuota(ruotaSpicchio);
         if (vs.Count == 0)
