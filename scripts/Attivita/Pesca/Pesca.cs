@@ -10028,6 +10028,7 @@ public class Pesca : Script
 
     // ---- LA RUOTA DEGLI ATTREZZI ----
     // Mentre peschi LB non apre piu' la ruota delle armi: apre questa.
+    // Se la lenza e' in acqua, LB prima ritira la canna e poi apre.
     // Tieni premuto LB, con la levetta destra scegli lo spicchio, con
     // SINISTRA e DESTRA della croce giri fra i pezzi di quella categoria
     // che hai in borsa - come si cambia arma dentro uno spicchio - lasci
@@ -10121,9 +10122,15 @@ public class Pesca : Script
         if (!inPesca || p.IsInVehicle()) { ruotaAperta = false; return; }
         // niente ruota delle armi mentre peschi
         Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 37, true);
-        if (fase != FASE_FERMO) { ruotaAperta = false; return; }
-
         bool lb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 37);
+        // CON LA LENZA IN ACQUA LB RITIRA LA CANNA, come quando apri
+        // l'equipaggiamento: non si cambia il mulinello col filo fuori.
+        if (lb && fase != FASE_FERMO)
+        {
+            ScenaGiu(p);
+            fase = FASE_FERMO;
+            Messaggio("Canna ritirata");
+        }
         if (!lb)
         {
             if (ruotaAperta)
