@@ -4277,6 +4277,14 @@ public class Pesca : Script
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
+        if (cmd == "imp_fondale")
+        {
+            int fp = Numero(arg);
+            if (fp < 0 || fp > 3) fp = 0;
+            fondaleProva = fp;
+            ScriviImpostazioni();
+            return true;
+        }
         if (cmd == "imp_gall")
         {
             int gz = Numero(arg);
@@ -6355,6 +6363,9 @@ public class Pesca : Script
         //   lista|etichetta|comando|valori|scritte|scelto
         v.Add("lista|Grandezza del galleggiante|imp_gall|0;1;2;3;4"
               + "|Vera;x1.3;x1.6;x2.0;x2.6|" + gallZoom);
+        // PROVA DEL FONDALE (sviluppo): forza il fondale del quadrante
+        v.Add("lista|Fondale di prova|imp_fondale|0;1;2;3"
+              + "|Vero;Mare;Lago;Fiume|" + fondaleProva);
         v.Add("Consiglia zone di pesca|imp_zone||"
               + (avvisaZona ? "Acceso" : "Spento")
               + "||Ti avvisa quando passi su un'acqua dove si pesca."
@@ -12144,14 +12155,17 @@ public class Pesca : Script
     // IL FONDALE DEL QUADRANTE: sabbia in mare, fango e alghe nel lago e
     // in palude, sassi nel fiume e nel torrente. Prende spazio verso
     // l'alto, il bordo sotto resta dov'era. "fondale_alt" e' l'altezza.
+    int fondaleProva = 0;   // 0 vero, 1 mare, 2 lago, 3 fiume (solo per provare)
+
     void DisegnaFondale(float cx, float largo, float top, float alt)
     {
         string tipo = "";
         int lu = LuogoQui();
         if (lu >= 0 && lu < arTipo.Count) tipo = arTipo[lu];
-        // prova: "fondale_prova=lago" (o mare, fiume) lo forza; vuoto = automatico
-        string prova = LeggiS("fondale_prova", "");
-        if (prova.Length > 0) tipo = prova;
+        // prova dal menu (Impostazioni > Fondale di prova): 1 mare, 2 lago, 3 fiume
+        if (fondaleProva == 1) tipo = "mare";
+        else if (fondaleProva == 2) tipo = "lago";
+        else if (fondaleProva == 3) tipo = "fiume";
         string img = "img\\hud\\fondo_mare.png";
         if (tipo == "lago" || tipo == "palude") img = "img\\hud\\fondo_lago.png";
         else if (tipo == "fiume" || tipo == "torrente") img = "img\\hud\\fondo_fiume.png";
