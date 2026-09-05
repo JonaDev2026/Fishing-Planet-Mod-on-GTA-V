@@ -10033,9 +10033,10 @@ public class Pesca : Script
     // SINISTRA e DESTRA della croce giri fra i pezzi di quella categoria
     // che hai in borsa - come si cambia arma dentro uno spicchio - lasci
     // LB e il pezzo si monta. Dodici spicchi in senso orario dall'alto,
-    // uno per ogni posto dell'armatura; i tre in basso sono vuoti
-    // apposta: ci lasci la levetta e chiudi senza montare niente. La
-    // nassa non c'e': e' una sola, sta fissa. Cucchiaino e galleggiante/
+    // uno per ogni posto dell'armatura; quello in basso e' "Pesca":
+    // ci lasci LB e prendi la canna in mano, come "Inizia a pescare"
+    // dal menu. I due accanto sono vuoti: ci lasci la levetta e chiudi
+    // senza fare niente. La nassa non c'e': e' una sola, sta fissa. Cucchiaino e galleggiante/
     // amo si scacciano da soli: montando uno si smonta l'altro.
     //   ruota_x / ruota_y   centro, in pixel su 1280x720
     //   ruota_raggio        raggio esterno
@@ -10051,10 +10052,10 @@ public class Pesca : Script
     // altre due caselle dei terminali, con la stessa categoria in borsa
     static readonly string[] RUOTA_CAT = new string[] {
         "canna", "mulinello", "lenza", "leader", "piombo", "",
-        "", "", "terminale", "galleggiante", "esca", "artificiale" };
+        "pesca", "", "terminale", "galleggiante", "esca", "artificiale" };
     static readonly string[] RUOTA_NOME = new string[] {
         "Canna", "Mulinello", "Lenza", "Leader", "Piombo", "",
-        "", "", "Amo", "Galleggiante", "Esca", "Cucchiaino" };
+        "Pesca", "", "Amo", "Galleggiante", "Esca", "Cucchiaino" };
 
     class VoceRuota
     {
@@ -10089,7 +10090,7 @@ public class Pesca : Script
         List<VoceRuota> v = new List<VoceRuota>();
         if (sp < 0 || sp >= RUOTA_CAT.Length) return v;
         string cat = RUOTA_CAT[sp];
-        if (cat.Length == 0) return v;
+        if (cat.Length == 0 || cat == "pesca") return v;
         bool term = (cat == "terminale" || cat == "leader" || cat == "piombo");
         string casella = cat;
         if (term)
@@ -10196,6 +10197,8 @@ public class Pesca : Script
     void MontaDallaRuota()
     {
         if (ruotaSpicchio < 0) return;
+        // lo spicchio in basso: canna in mano, come dal menu
+        if (RUOTA_CAT[ruotaSpicchio] == "pesca") { Esegui("pesca_via"); return; }
         List<VoceRuota> v = VociRuota(ruotaSpicchio);
         int pos = ruotaPos[ruotaSpicchio];
         if (v.Count == 0 || pos >= v.Count) return;
@@ -10245,14 +10248,21 @@ public class Pesca : Script
         }
         for (i = 0; i < RUOTA_N; i++)
         {
-            List<VoceRuota> v = VociRuota(i);
-            if (v.Count == 0) continue;
-            int pos = ruotaPos[i];
-            if (pos >= v.Count) pos = 0;
             double a = i * passo * Math.PI / 180.0;
             float rr = R * 0.78f;
             float px = cx + rr * (float)Math.Sin(a);
             float py = cy - rr * (float)Math.Cos(a);
+            if (RUOTA_CAT[i] == "pesca")
+            {
+                // l'icona di "Pesca", se c'e' il PNG
+                float icp = LeggiF("ruota_icona_pesca", ic);
+                Sprite("img/ruota/pesca.png", px - icp * 0.5f, py - icp * 0.5f, icp, icp);
+                continue;
+            }
+            List<VoceRuota> v = VociRuota(i);
+            if (v.Count == 0) continue;
+            int pos = ruotaPos[i];
+            if (pos >= v.Count) pos = 0;
             // ruota_icona_<categoria> in config, se c'e', vince sulla misura generale
             float ici = LeggiF("ruota_icona_" + RUOTA_CAT[i], ic);
             Sprite(v[pos].Img, px - ici * 0.5f, py - ici * 0.5f, ici, ici);
@@ -10260,6 +10270,11 @@ public class Pesca : Script
         // in mezzo niente sfondo: solo le scritte
         if (ruotaSpicchio < 0 || RUOTA_CAT[ruotaSpicchio].Length == 0) return;
         DisegnaTesto(RUOTA_NOME[ruotaSpicchio].ToUpper(), cx, cy - 28f, 0.24f, 200, 200, 200);
+        if (RUOTA_CAT[ruotaSpicchio] == "pesca")
+        {
+            DisegnaTesto("Prendi la canna in mano", cx, cy - 8f, 0.26f, 255, 255, 255);
+            return;
+        }
         List<VoceRuota> vs = VociRuota(ruotaSpicchio);
         if (vs.Count == 0)
         {
