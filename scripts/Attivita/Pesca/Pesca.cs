@@ -788,18 +788,8 @@ public class Pesca : Script
             // scendendo vedi il banner di ogni acqua.
             string imgZ = BannerArea(a);
             if (imgZ.Length == 0) imgZ = Banner();
-            // L'ESPLORAZIONE: quante specie di questo posto hai gia'
-            // preso, in percento. Nel trainer diventa la barretta sotto il nome.
-            int scoperte = 0;
-            if (a < arPesci.Count)
-            {
-                int q3;
-                for (q3 = 0; q3 < arPesci[a].Count; q3++)
-                    if (quaderno.ContainsKey(arPesci[a][q3])) scoperte++;
-            }
-            int esplora = (qs > 0) ? (int)(100f * scoperte / qs + 0.5f) : 0;
             v.Add("sottofile|" + et
-                  + "|z_zona_" + a + ".txt||" + imgZ + "|" + d + "||" + esplora);
+                  + "|z_zona_" + a + ".txt||" + imgZ + "|" + d);
             ScriviUnaZona(a);
         }
         ScriviVoci("zone_voci.txt", v);
@@ -2273,6 +2263,8 @@ public class Pesca : Script
         // riva, in ogni fase (anche senza canna in mano)
         if (inPesca && inRivaOra && !ruotaAperta
             && !Game.Player.Character.IsInVehicle()) Consigli();
+        // il posto, l'esplorazione e la licenza
+        if (!ruotaAperta) DisegnaPosto();
         // LB: la ruota degli attrezzi al posto di quella delle armi
         Ruota();
         // mentre guardi l'inventario, l'HUD dell'attrezzatura: la stessa
@@ -5220,7 +5212,6 @@ public class Pesca : Script
             if (oraMia >= 24) oraMia = 0;
             prossimoMinuto += MS_PER_MINUTO;
             minutiFatti++;
-            ScriviTesta();
         }
         try
         {
@@ -5245,6 +5236,34 @@ public class Pesca : Script
     }
 
     // la giornata di pesca finisce alle 21
+    // IL POSTO SULL'HUD: nome dell'acqua, sotto una riga bianca
+    // trasparente che si riempie con le specie del posto gia' prese
+    // (l'esplorazione, in percento), e quanto manca alla licenza.
+    //   posto_x / posto_y   dove sta (in alto a sinistra del blocco)
+    //   posto_barra         larghezza della riga
+    void DisegnaPosto()
+    {
+        if (!inPesca) return;
+        int a = LuogoQui();
+        if (a < 0 || a >= arNome.Count) return;
+        float px = LeggiF("posto_x", 24f);
+        float py = LeggiF("posto_y", 40f);
+        float bw = LeggiF("posto_barra", 160f);
+        int qs = (a < arPesci.Count) ? arPesci[a].Count : 0;
+        int scoperte = 0, q;
+        for (q = 0; q < qs; q++)
+            if (quaderno.ContainsKey(arPesci[a][q])) scoperte++;
+        int pct = (qs > 0) ? (int)(100f * scoperte / qs + 0.5f) : 0;
+        DisegnaTestoSinistra(arNome[a], px, py, 0.30f, 245, 245, 250);
+        float by = py + LeggiF("posto_barra_giu", 20f);
+        DisegnaRett(px, by, bw, 2f, 255, 255, 255, 45);
+        DisegnaRett(px, by, bw * pct / 100f, 2f, 255, 255, 255, 210);
+        DisegnaTestoSinistra(pct + "%  " + scoperte + "/" + qs, px + bw + 8f, by - 8f, 0.20f, 200, 202, 210);
+        if (licGiorni > 0)
+            DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
+                                 px, by + LeggiF("posto_lic_giu", 6f), 0.22f, 200, 202, 210);
+    }
+
     // QUANTO MANCA ALLA FINE DELLA LICENZA, in tempo VERO.
     // Un minuto di gioco vale 5 secondi veri, una giornata sono 24 ore di
     // gioco: quindi due ore scarse di orologio da polso. Dire "resta un
@@ -6465,13 +6484,9 @@ public class Pesca : Script
     {
         try
         {
-            // terzo pezzo, solo con la licenza attiva: quanto manca
-            string lic = "";
-            if (inPesca && licGiorni > 0)
-                lic = "   " + L("License ", "Licenza ") + TempoCheResta();
             File.WriteAllText(Path.Combine(MY_DIR, "header.txt"),
                               "Liv. " + livelloPescatore
-                              + "   " + xpTot + " XP" + lic);
+                              + "   " + xpTot + " XP");
         }
         catch { }
     }
@@ -6509,7 +6524,6 @@ public class Pesca : Script
     // a ogni pesce preso sono quattrocento scritture su disco e si sente.
     // Cambiano solo col livello, col posto o con un torneo, quindi si
     // ricordano com'erano l'ultima volta.
-    int zoneScritteSpecie = -1;
     int zoneScritteLiv = -1, zoneScritteQui = -2;
     int torneiScrittiLiv = -1, torneiScrittiOra = -2;
     int quadernoScrittoLiv = -1;
@@ -6538,13 +6552,10 @@ public class Pesca : Script
         ScriviNassa();
 
         int quiOra = LuogoQui();
-        // e anche quando il quaderno cresce: l'esplorazione cambia
-        if (livelloPescatore != zoneScritteLiv || quiOra != zoneScritteQui
-            || quaderno.Count != zoneScritteSpecie)
+        if (livelloPescatore != zoneScritteLiv || quiOra != zoneScritteQui)
         {
             zoneScritteLiv = livelloPescatore;
             zoneScritteQui = quiOra;
-            zoneScritteSpecie = quaderno.Count;
             ScriviZone();
         }
         if (livelloPescatore != torneiScrittiLiv || torneoOra != torneiScrittiOra)
