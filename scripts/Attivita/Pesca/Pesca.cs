@@ -4037,12 +4037,8 @@ public class Pesca : Script
         }
         if (cmd == "apri")
         {
-            if (arg == "casa_voci.txt" && fase != FASE_FERMO)
-            {
-                ScenaGiu(Game.Player.Character);
-                fase = FASE_FERMO;
-                Avviso("~y~Canna ritirata.");
-            }
+            // la canna resta in mano: rientra solo la lenza
+            if (arg == "casa_voci.txt") RitiraLenza();
             return true;
         }
         // azzera il diario: due pressioni, che e' roba che non torna
@@ -10042,7 +10038,8 @@ public class Pesca : Script
     // SINISTRA e DESTRA della croce giri fra i pezzi di quella categoria
     // che hai in borsa - come si cambia arma dentro uno spicchio - lasci
     // LB e il pezzo si monta. Dodici spicchi in senso orario dall'alto,
-    // uno per ogni posto dell'armatura; i tre in basso sono vuoti: ci
+    // uno per ogni posto dell'armatura; in basso lo ZAINO: ci lasci LB
+    // e si apre l'equipaggiamento nel menu. I due accanto sono vuoti: ci
     // lasci la levetta e chiudi senza fare niente. La nassa non c'e':
     // e' una sola, sta fissa. La canna resta in mano: LB con la lenza
     // in acqua la ritira e basta, a riporre la canna ci pensa X. Cucchiaino e galleggiante/
@@ -10061,10 +10058,10 @@ public class Pesca : Script
     // altre due caselle dei terminali, con la stessa categoria in borsa
     static readonly string[] RUOTA_CAT = new string[] {
         "canna", "mulinello", "lenza", "leader", "piombo", "",
-        "", "", "terminale", "galleggiante", "esca", "artificiale" };
+        "zaino", "", "terminale", "galleggiante", "esca", "artificiale" };
     static readonly string[] RUOTA_NOME = new string[] {
         "Canna", "Mulinello", "Lenza", "Leader", "Piombo", "",
-        "", "", "Amo", "Galleggiante", "Esca", "Cucchiaino" };
+        "Zaino", "", "Amo", "Galleggiante", "Esca", "Cucchiaino" };
 
     class VoceRuota
     {
@@ -10101,7 +10098,7 @@ public class Pesca : Script
         List<VoceRuota> v = new List<VoceRuota>();
         if (sp < 0 || sp >= RUOTA_CAT.Length) return v;
         string cat = RUOTA_CAT[sp];
-        if (cat.Length == 0) return v;
+        if (cat.Length == 0 || cat == "zaino") return v;
         VoceRuota vuoto = new VoceRuota();
         vuoto.Cat = cat; vuoto.Id = -1; vuoto.Bob = -1;
         vuoto.Nome = "Vuoto"; vuoto.Dett = "";
@@ -10156,6 +10153,19 @@ public class Pesca : Script
         return 0;
     }
 
+    // la lenza rientra e la canna resta in mano
+    void RitiraLenza()
+    {
+        if (fase == FASE_FERMO || fase == FASE_PRONTO || fase == FASE_CARD) return;
+        TogliPesce();
+        metriLenza = 0f;
+        escaInAcqua = false;
+        fase = FASE_PRONTO;
+        grillettoMollato = false;
+        tastoDa = Game.GameTime + 400;
+        Messaggio("Lenza ritirata");
+    }
+
     void Ruota()
     {
         Ped p = Game.Player.Character;
@@ -10167,16 +10177,7 @@ public class Pesca : Script
         // non si cambia il mulinello col filo fuori. Col pesce in mano
         // (la scheda) non si apre: prima decidi se tenerlo.
         if (fase == FASE_CARD) { ruotaAperta = false; return; }
-        if (lb && fase != FASE_FERMO && fase != FASE_PRONTO)
-        {
-            TogliPesce();
-            metriLenza = 0f;
-            escaInAcqua = false;
-            fase = FASE_PRONTO;
-            grillettoMollato = false;
-            tastoDa = Game.GameTime + 400;
-            Messaggio("Lenza ritirata");
-        }
+        if (lb && fase != FASE_FERMO && fase != FASE_PRONTO) RitiraLenza();
         if (!lb)
         {
             if (ruotaAperta)
@@ -10261,6 +10262,13 @@ public class Pesca : Script
     // delle altre - e prima gli smonta, poi i monta.
     void MontaDallaRuota()
     {
+        // ZAINO: si apre l'equipaggiamento nel menu. Glielo si dice al
+        // trainer con un file, come per chiudere.
+        if (ruotaSpicchio >= 0 && RUOTA_CAT[ruotaSpicchio] == "zaino")
+        {
+            try { File.WriteAllText(Path.Combine(MY_DIR, "apri.txt"), "casa_voci.txt"); }
+            catch { }
+        }
         List<VoceRuota> scelte = new List<VoceRuota>();
         int k;
         for (k = 0; k < RUOTA_N; k++)
@@ -10350,6 +10358,12 @@ public class Pesca : Script
             float rr = R * 0.78f;
             float px = cx + rr * (float)Math.Sin(a);
             float py = cy - rr * (float)Math.Cos(a);
+            if (RUOTA_CAT[i] == "zaino")
+            {
+                float icz = LeggiF("ruota_icona_zaino", ic);
+                Sprite("img/cassette/Base.png", px - icz * 0.5f, py - icz * 0.5f, icz, icz);
+                continue;
+            }
             List<VoceRuota> v = VociRuota(i);
             if (v.Count == 0) continue;
             int pos = ruotaPos[i];
@@ -10361,6 +10375,11 @@ public class Pesca : Script
         // in mezzo niente sfondo: solo le scritte
         if (ruotaSpicchio < 0 || RUOTA_CAT[ruotaSpicchio].Length == 0) return;
         DisegnaTesto(RUOTA_NOME[ruotaSpicchio].ToUpper(), cx, cy - 28f, 0.24f, 200, 200, 200);
+        if (RUOTA_CAT[ruotaSpicchio] == "zaino")
+        {
+            DisegnaTesto("Apri l'equipaggiamento", cx, cy - 8f, 0.26f, 255, 255, 255);
+            return;
+        }
         List<VoceRuota> vs = VociRuota(ruotaSpicchio);
         if (vs.Count == 0)
         {

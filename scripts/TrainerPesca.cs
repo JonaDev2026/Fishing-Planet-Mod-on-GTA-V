@@ -8542,9 +8542,43 @@ public class TrainerPesca : Script
         catch { }
     }
 
+    // LA RUOTA APRE UNA PAGINA: la mod scrive "apri.txt" col nome del
+    // file della pagina (casa_voci.txt = equipaggiamento). Si apre il
+    // menu direttamente su quella, e alla mod si manda "apri" come se ci
+    // fossi entrato tu.
+    void ApriSeChiesto()
+    {
+        try
+        {
+            int k;
+            for (k = 0; k < modSubDir.Count; k++)
+            {
+                string f = Path.Combine(modSubDir[k], "apri.txt");
+                if (!File.Exists(f)) continue;
+                string nome = File.ReadAllText(f).Trim();
+                try { File.Delete(f); } catch { }
+                int ks;
+                for (ks = 0; ks < modSubMenu.Count; ks++)
+                {
+                    if (Path.GetFileName(modSubFile[ks]) != nome) continue;
+                    open = true;
+                    cur = modSubMenu[ks];
+                    menus[cur].Sel = FirstSelectable(cur);
+                    menus[cur].Top = 0;
+                    ComandoMod(modSubDir[ks], "apri " + nome);
+                    Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", true);
+                    return;
+                }
+                return;
+            }
+        }
+        catch { }
+    }
+
     void HandleOpenClose()
     {
         if (open) ChiudiSeChiesto();
+        else ApriSeChiesto();
         // --- tastiera: F7 ---
         // Questo e' il trainer della pesca: sta accanto a quello normale,
         // che tiene F4 e RB+GIU. Qui F7 e RB+DESTRA, cosi' i due non si
