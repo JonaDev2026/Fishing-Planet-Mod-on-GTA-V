@@ -4585,6 +4585,7 @@ public class Pesca : Script
         if (!ChiediDueVolte(k + (daCasa ? "c" : "b"),
                 "Premi ancora (Y) per gettare " + nome))
             return true;
+        if (!daCasa && Quanti(d, k) <= 1) SeArmatoSmonta(cat, id);
         Aggiungi(d, k, -1);
         Messaggio("Gettato: " + nome);
         return true;
@@ -4673,6 +4674,8 @@ public class Pesca : Script
                 }
             }
         }
+        // verso casa: se era sulla canna, prima si smonta
+        if (!versoBorsa && Quanti(borsa, k) <= 1) SeArmatoSmonta(cat, id);
         Aggiungi(da, k, -1);
         Aggiungi(a, k, 1);
         string nome, img;
@@ -5302,6 +5305,8 @@ public class Pesca : Script
         licGiorni = 0;
         ViaCampo();
         campoMesso = false;
+        // REGOLA: a fine giornata si smonta tutto, torna tutto in borsa
+        DisarmaTutto();
         TempoNormale();
         if (avvisa) Avviso("~y~Giornata finita. Si torna a casa.");
         return true;
@@ -9370,6 +9375,40 @@ public class Pesca : Script
     {
         if (armato.ContainsKey(cat)) return armato[cat];
         return -1;
+    }
+
+    // SMONTA TUTTO: la lenza torna bobina, ami e galleggianti tornano in
+    // cassetta, il resto si stacca dalla canna. A fine giornata si
+    // riparte da zero: cosi' sulla canna non resta roba che poi vendi.
+    void DisarmaTutto()
+    {
+        DisarmaLenza();
+        string[] cas = new string[] { "terminale", "leader", "piombo", "galleggiante" };
+        int i;
+        for (i = 0; i < cas.Length; i++)
+        {
+            int id = Armato(cas[i]);
+            if (id >= 0 && presoSu.ContainsKey(cas[i]))
+            {
+                Rimetti(cas[i] == "galleggiante" ? "galleggiante" : "terminale", id);
+                presoSu.Remove(cas[i]);
+            }
+        }
+        List<string> chiavi = new List<string>(armato.Keys);
+        for (i = 0; i < chiavi.Count; i++) armato[chiavi[i]] = -1;
+        escaMontata = -1;
+    }
+
+    // Un pezzo che se ne va dalla borsa (a casa, venduto, gettato) non
+    // puo' restare sulla canna: prima si smonta.
+    void SeArmatoSmonta(string cat, int id)
+    {
+        if (cat == "terminale") cat = CasellaTerm(SottoTerm(id));
+        if (!SiArma(cat) && cat != "leader" && cat != "piombo") return;
+        if (Armato(cat) != id) return;
+        if (cat == "mulinello" || cat == "lenza") DisarmaLenza();
+        if (presoSu.ContainsKey(cat)) presoSu.Remove(cat);
+        armato[cat] = -1;
     }
 
     // Quello che sta pescando DAVVERO, ripiego compreso: se non hai mai
