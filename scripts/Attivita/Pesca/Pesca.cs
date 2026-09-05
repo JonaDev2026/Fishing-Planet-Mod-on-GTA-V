@@ -2034,9 +2034,6 @@ public class Pesca : Script
         return t;
     }
 
-    // quanto pesa il pesce piu' grosso che l'attrezzatura montata riesce a tenere:
-    // e' il piu' debole dei tre pezzi (canna, mulinello, lenza)
-    float tenutaKg = 0f;
 
     string Scheda(Specie s)
     {
@@ -2098,28 +2095,21 @@ public class Pesca : Script
         for (lu = 0; lu < arNome.Count; lu++)
         {
             List<string> r = new List<string>();
-            int presi = 0, i;
+            int i;
             for (i = 0; i < pesci.Count; i++)
             {
                 Specie s = pesci[i];
                 if (!PesceQui(s, lu)) continue;
-                if (tenutaKg >= s.KgC) presi++;
                 r.Add((r.Count + 1) + ". " + s.Nome + "|niente|" + s.Img + "|" + Scheda(s));
             }
             string conteggio = r.Count + " specie";
-            if (tenutaKg > 0f)
-                conteggio += ".  Con l'attrezzatura che hai montato ("
-                           + tenutaKg.ToString("0.##", CultureInfo.InvariantCulture)
-                           + " kg di tenuta) ne prendi " + presi;
-            else
-                conteggio += ".  Monta un'armatura e qui vedi quali riesci a prendere";
             // la prima riga e' quella del conteggio: senza immagine lasciava
             // il buco del banner, quindi ci mettiamo lo stemma
             // e il banner e' quello del lago, non lo stemma: lo stemma
             // resta solo per i posti che un banner non ce l'hanno
             string bnL = BannerArea(lu);
             if (bnL.Length == 0) bnL = Banner();
-            r.Insert(0, "- " + r.Count + " specie -|niente|" + bnL + "|" + conteggio + ".");
+            r.Insert(0, "- " + r.Count + " specie -|niente|" + bnL + "|" + conteggio);
             ScriviVoci(FileLuogo(lu), r);
             menu.Add("sottofile|" + NomeLuogo(lu) + " (" + (r.Count - 1) + ")|" + FileLuogo(lu)
                      + "||" + bnL + "|" + conteggio);
@@ -6439,7 +6429,6 @@ public class Pesca : Script
     int zoneScritteLiv = -1, zoneScritteQui = -2;
     int torneiScrittiLiv = -1, torneiScrittiOra = -2;
     int quadernoScrittoLiv = -1;
-    float quadernoScrittoKg = -1f;
 
     void RiscriviTutto()
     {
@@ -6480,11 +6469,9 @@ public class Pesca : Script
         // il quaderno scrive anche il diario: quello va rifatto a ogni
         // pesce, le trentasette pagine dello studio no
         ScriviDiario();
-        if (livelloPescatore != quadernoScrittoLiv
-            || tenutaKg != quadernoScrittoKg)
+        if (livelloPescatore != quadernoScrittoLiv)
         {
             quadernoScrittoLiv = livelloPescatore;
-            quadernoScrittoKg = tenutaKg;
             ScriviQuaderno();
         }
     }
