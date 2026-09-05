@@ -10817,11 +10817,19 @@ public class Pesca : Script
             string forma = FormaTerminale(id);
             if (forma.Length > 0) r.Img = forma;
         }
-        if (bob >= 0) r.Dett = BobinaMetri(bob) + " m";
-        else if (cat == "terminale" || cat == "galleggiante" || cat == "esca")
+        // I DATI, NON LA MARCA: nella ruota si sceglie per quello che il
+        // pezzo fa. Lenza: mm, kg e metri (la bobina tagliata coi suoi);
+        // canna, mulinello, nassa: i loro dati dell'inventario; ami,
+        // galleggianti ed esche: i dati piu' quanti ne hai.
+        if (bob >= 0) r.Dett = DettaglioBobina(id, BobinaMetri(bob));
+        else
         {
-            int q = QuantiPezzi(cat, id);
-            if (q > 0) r.Dett = "x" + q;
+            r.Dett = Dettaglio(cat, id);
+            if (cat == "terminale" || cat == "galleggiante" || cat == "esca")
+            {
+                int q = QuantiPezzi(cat, id);
+                if (q > 0) r.Dett = (r.Dett.Length > 0 ? r.Dett + "   " : "") + "x" + q;
+            }
         }
         v.Add(r);
     }
