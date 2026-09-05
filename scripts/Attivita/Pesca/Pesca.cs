@@ -5338,9 +5338,9 @@ public class Pesca : Script
         // sotto, quanto manca alla licenza; piu' staccato, livello e XP
         if (licGiorni > 0)
             DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
-                                 ox, oy + LeggiF("orario_lic_giu", 30f), 0.22f, 200, 202, 210);
+                                 ox, oy + LeggiF("orario_lic_giu", 24f), 0.22f, 200, 202, 210);
         DisegnaTestoSinistra(L("Level ", "Liv. ") + livelloPescatore + "   " + xpTot + " XP",
-                             ox, oy + LeggiF("orario_liv_giu", 54f), 0.22f, 200, 202, 210);
+                             ox, oy + LeggiF("orario_liv_giu", 46f), 0.22f, 200, 202, 210);
     }
 
     // IL POSTO SULL'HUD: nome dell'acqua, sotto una riga bianca
