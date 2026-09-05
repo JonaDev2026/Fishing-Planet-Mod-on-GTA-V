@@ -88,7 +88,7 @@
 83|Ragworms|naturale|Ragworms.png|
 84|Razor Shell|naturale|Razor_Shell.png|
 85|Red Worms|naturale|Red_Worms.png|Light
-86|Rotten Minnows|naturale|Rotten_Minnows.png|
+86|Rotten Minnows|naturale|Rotten_Minnows.png|X Heavy
 87|Rubber Tree Seeds|naturale|Rubber_Tree_Seeds.png|Medium
 88|Sand Fleas|naturale|Sand_Fleas.png|Medium
 89|Scaled Sardines|naturale|Scaled_Sardines.png|X Heavy
