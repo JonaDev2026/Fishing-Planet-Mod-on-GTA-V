@@ -1,0 +1,258 @@
+# nome|min|max|ottimo   - gradi dell'acqua in cui il pesce mangia
+# ATTENZIONE: questi numeri NON vengono dal wiki di Fishing Planet (le pagine
+# dei pesci non hanno la temperatura) e non da fishbase. Sono INDICATIVI,
+# messi da noi per gruppi dalla biologia generale: trote e salmerini acqua
+# fredda, carpe e pesci gatto acqua calda, Amazzonia e Africa tropicale,
+# mare di Norvegia freddo, Maldive caldo. Da correggere pesce per pesce
+# se si trova un dato vero. Il codice per ora NON legge questo file.
+# gruppo usato: min|max|ottimo
+#   artico: 1|10|6
+#   freddo: 4|16|10
+#   fresco: 8|20|14
+#   temperato: 12|24|18
+#   caldo: 15|28|22
+#   tropicale: 24|32|28
+#   mare_nord: 3|12|8
+#   mare_pelag: 8|16|12
+#   mare_temp: 12|22|17
+#   mare_subtr: 18|28|23
+#   mare_trop: 24|30|27
+African Big Eye Catfish|24|32|28
+African Pike|24|32|28
+African Sharptooth Catfish|24|32|28
+African Tigerfish|24|32|28
+Alaska Blackfish|1|10|6
+Albacore|12|22|17
+Alligator Gar|15|28|22
+American Gizzard Shad|8|20|14
+American Shad|8|20|14
+Amur Bitterling|12|24|18
+Apapa|24|32|28
+Arapaima|24|32|28
+Arctic Char|1|10|6
+Arctic Grayling|1|10|6
+Asp|8|20|14
+Atlantic Cod|3|12|8
+Atlantic Halibut|3|12|8
+Atlantic Herring|8|16|12
+Atlantic Horse Mackerel|8|16|12
+Atlantic Mackerel|8|16|12
+Atlantic Salmon|4|16|10
+Atlantic Saury|8|16|12
+Atlantic Wolffish|3|12|8
+Azov Shad|8|20|14
+Baikal Omul|1|10|6
+Banded Aracu|24|32|28
+Banded Tilapia|24|32|28
+Beluga|8|20|14
+Biara|24|32|28
+Bicuda|24|32|28
+Bigeye Tuna|18|28|23
+Bigfin Reef Squid|18|28|23
+Bighead Carp|15|28|22
+Bigmouth Buffalo|12|24|18
+Black Bullhead Catfish|15|28|22
+Black Crappie|12|24|18
+Black Drum|15|28|22
+Black Marlin|24|30|27
+Black Sea Roach|12|24|18
+Blacktail Shiner|8|20|14
+Blacktip Reef Shark|24|30|27
+Blue Bream|12|24|18
+Blue Catfish|15|28|22
+Bluegill|15|28|22
+Bluntnose Minnow|8|20|14
+Bonefish|18|28|23
+Bowfin|12|24|18
+Brill|3|12|8
+Brook Trout|4|16|10
+Brown Bullhead Catfish|15|28|22
+Brown Trout|4|16|10
+Brycon|24|32|28
+Bull Shark|18|28|23
+Bull Trout|1|10|6
+Bulldog Fish|24|32|28
+Burbot|1|10|6
+Butterfly Peacock Bass|15|28|22
+California Roach|12|24|18
+Chain Pickerel|8|20|14
+Channel Catfish|15|28|22
+Chinese Sleeper|8|20|14
+Chinook Salmon|4|16|10
+Chub|8|20|14
+Chum Salmon|4|16|10
+Clear Muskie|8|20|14
+Coalfish|3|12|8
+Coho Salmon|4|16|10
+Colorado Golden Trout|4|16|10
+Common Barbel|12|24|18
+Common Bleak|12|24|18
+Common Bream|12|24|18
+Common Carp|15|28|22
+Common Dace|8|20|14
+Common Ling|3|12|8
+Common Minnow|8|20|14
+Common Nase|8|20|14
+Common Roach|12|24|18
+Common Rudd|12|24|18
+Common Shiner|8|20|14
+Common Snook|15|28|22
+Congo Yellowfish|24|32|28
+Cornish Jack|24|32|28
+Creek Brown Trout|4|16|10
+Crucian Carp|15|28|22
+Cusk|3|12|8
+Cutthroat Trout|4|16|10
+Dogtooth Tuna|24|30|27
+Dolly Varden|1|10|6
+Electric Eel|24|32|28
+Elephant Fish|24|32|28
+Eurasian Ruffe|8|20|14
+European Angler|3|12|8
+European Bitterling|12|24|18
+European Brown Trout|4|16|10
+European Eel|12|24|18
+European Flounder|12|24|18
+European Grayling|4|16|10
+European Hake|3|12|8
+European Perch|8|20|14
+European Sea Sturgeon|8|20|14
+European Weatherfish|4|16|10
+Flag-Tailed Prochilodus|24|32|28
+Flathead Catfish|15|28|22
+Flatwhiskered Catfish|24|32|28
+Florida Gar|15|28|22
+Freshwater Drum|12|24|18
+Gafftopsail Catfish|15|28|22
+Ghost Carp|15|28|22
+Giant Grouper|24|30|27
+Giant Sweetlips|24|30|27
+Giant Trevally|24|30|27
+Gilded Catfish|24|32|28
+Giraffe Catfish|24|32|28
+Golden Shiner|8|20|14
+Golden Tench|15|28|22
+Goliath Tigerfish|24|32|28
+Gorgeous Swallowtail|24|30|27
+Grass Carp|15|28|22
+Grass Pickerel|8|20|14
+Great Barracuda|18|28|23
+Greater Amberjack|18|28|23
+Green Jobfish|24|30|27
+Green Sunfish|15|28|22
+Greenland Halibut|1|10|6
+Greenland Shark|1|10|6
+Gudgeon|8|20|14
+Haddock|3|12|8
+Humpback Whitefish|1|10|6
+Hybrid F1 Carp|15|28|22
+Ide|8|20|14
+Indo-Pacific King Mackerel|24|30|27
+Jacunda|24|32|28
+Japanese Amberjack|18|28|23
+Japanese Anchovy|12|22|17
+Japanese Jack Mackerel|12|22|17
+Kamba Catfish|24|32|28
+Lake Chub|4|16|10
+Lake Sturgeon|8|20|14
+Lake Trout|1|10|6
+Lake Whitefish|1|10|6
+Largemouth Bass|15|28|22
+Leather Carp|15|28|22
+Lenok|4|16|10
+Longnose Gar|15|28|22
+Longnose Sucker|4|16|10
+Mahi-Mahi|18|28|23
+Marble Trout|4|16|10
+Meagre|3|12|8
+Mirror Carp|15|28|22
+Monkey Goby|8|20|14
+Muskellunge|8|20|14
+Narrow-Barred Mackerel|24|30|27
+Nile Perch|24|32|28
+Nile Tilapia|24|32|28
+Northern Pike|8|20|14
+Norway Atlantic Salmon|4|16|10
+Norway Seaperch|4|16|10
+Oregon Redband Trout|4|16|10
+Orinoco Peacock Bass|24|32|28
+Oscar|24|32|28
+Pacific Bluefin Tuna|12|22|17
+Payara|24|32|28
+Permit|18|28|23
+Pink Salmon|4|16|10
+Piraiba|24|32|28
+Porbeagle Shark|3|12|8
+Prussian Carp|15|28|22
+Pumpkinseed|15|28|22
+Purple Labeo|24|32|28
+Rainbow Trout|4|16|10
+Red Drum|15|28|22
+Red Peacock Bass|24|32|28
+Red Tail Barracuda|24|32|28
+Red-Bellied Piranha|24|32|28
+Redbreast Sunfish|15|28|22
+Redear Sunfish|15|28|22
+Redeye Piranha|24|32|28
+Redfin Pickerel|8|20|14
+Rednose Labeo|24|32|28
+Redtail Catfish|24|32|28
+Ripsaw Catfish|24|32|28
+Rock Bass|8|20|14
+Round Goby|8|20|14
+Ruby Snapper|24|30|27
+Sailfish|18|28|23
+Sauger|8|20|14
+Sea Trout|4|16|10
+Shoal Bass|12|24|18
+Siberian Taimen|4|16|10
+Sickle Pomfret|24|30|27
+Silver Arowana|24|32|28
+Silver Bream|12|24|18
+Silver Carp|15|28|22
+Silver Croaker|15|28|22
+Skipjack Tuna|18|28|23
+Sleek Unicornfish|24|30|27
+Smallmouth Bass|8|20|14
+Smallmouth Buffalo|12|24|18
+Sockeye Salmon|4|16|10
+Sorubim Catfish|24|32|28
+Southern Flounder|15|28|22
+Speckled Peacock Bass|24|32|28
+Spiny Dogfish|3|12|8
+Splake|4|16|10
+Spotfin Flyingfish|18|28|23
+Spotted Aracu|24|32|28
+Spotted Bass|12|24|18
+Spotted Gar|15|28|22
+Steelhead|4|16|10
+Sterlet|8|20|14
+Striped Bass|12|24|18
+Striped Bonito|12|22|17
+Striped Marlin|12|22|17
+Swordfish|12|22|17
+Tambaqui|24|32|28
+Tarpon|18|28|23
+Tench|15|28|22
+Thicklip Grey Mullet|12|24|18
+Tiger Muskie|8|20|14
+Tiger Trout|4|16|10
+Trahira|24|32|28
+Two-Spot Red Snapper|24|30|27
+Vundu Catfish|24|32|28
+Wahoo|24|30|27
+Walleye|8|20|14
+Warmouth|15|28|22
+Wels Catfish|15|28|22
+White Bass|12|24|18
+White Catfish|15|28|22
+White Crappie|12|24|18
+White Sturgeon|8|20|14
+White Sucker|8|20|14
+White-Eye Bream|12|24|18
+Whiting|3|12|8
+Yellow Perch|8|20|14
+Yellowfin Tuna|18|28|23
+Yellowstripe Scad|18|28|23
+Zander|8|20|14
+Ziege|8|20|14
