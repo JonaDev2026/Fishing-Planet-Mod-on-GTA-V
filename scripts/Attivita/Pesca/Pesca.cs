@@ -5323,27 +5323,18 @@ public class Pesca : Script
     }
 
     // la giornata di pesca finisce alle 21
-    // DATA E ORA DEL GIOCO, in alto a sinistra (orario_x / orario_y)
-    static readonly string[] GIORNI_IT = { "Domenica", "Lunedi'", "Martedi'", "Mercoledi'", "Giovedi'", "Venerdi'", "Sabato" };
-    static readonly string[] GIORNI_EN = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+    // L'ORA DEL GIOCO, in alto a sinistra (orario_x / orario_y)
 
     void DisegnaOrario()
     {
         if (!inPesca) return;
         int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
         int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
-        int dw = Function.Call<int>(Hash.GET_CLOCK_DAY_OF_WEEK);
-        if (dw < 0 || dw > 6) dw = 0;
-        // il giorno a tre lettere accanto all'ora: il giorno del mese e il
-        // mese nel gioco non vogliono dire niente (niente stagioni)
-        string giorno = L(GIORNI_EN[dw], GIORNI_IT[dw]);
-        if (giorno.Length > 3) giorno = giorno.Substring(0, 3);
+        // solo l'ora: il giorno nel gioco non vuol dire niente
         float ox = LeggiF("orario_x", 24f);
         float oy = LeggiF("orario_y", 40f);
         string ora = hh.ToString("00") + ":" + mi.ToString("00");
         DisegnaTestoSinistra(ora, ox, oy, LeggiF("orario_testo", 0.42f), 245, 245, 250);
-        DisegnaTestoSinistra(giorno, ox + LeggiF("orario_giorno_dx", 76f), oy + LeggiF("orario_giorno_giu", 8f),
-                             LeggiF("orario_data_testo", 0.28f), 200, 202, 210);
         // e sotto, quanto manca alla licenza
         if (licGiorni > 0)
             DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
