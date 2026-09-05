@@ -5371,6 +5371,10 @@ public class Pesca : Script
         DisegnaTestoSinistra(pct + "%  " + scoperte + "/" + qs, px + bw + 8f, by - 8f, 0.20f, 200, 202, 210);
         DisegnaTestoSinistra(L("Exploration", "Esplorazione"),
                              px, by + LeggiF("posto_lic_giu", 6f), 0.22f, 200, 202, 210);
+        // sopra il grafico: la temperatura dell'aria e dell'acqua (le nostre)
+        DisegnaTestoSinistra(L("Air ", "Aria ") + GradiAria().ToString("0", CultureInfo.InvariantCulture) + "\u00B0"
+                             + "   " + L("Water ", "Acqua ") + GradiAcqua().ToString("0", CultureInfo.InvariantCulture) + "\u00B0",
+                             px, LeggiF("temp_y", 370f), 0.22f, 245, 245, 250);
         // il grafico resta dov'era: sotto il nome del posto (attivita_y)
         DisegnaAttivita(a, px, LeggiF("attivita_y", 390f), LeggiF("attivita_larga", bw));
     }
@@ -8874,9 +8878,6 @@ public class Pesca : Script
             float tyE = BarY() - 50f + LeggiF("caldo_giu", 8f) + LeggiF("prof_testo_giu", 14f);
             DisegnaTesto(L("Bait ", "Esca ") + profondita.ToString("0.00", CultureInfo.InvariantCulture) + " m",
                          QuadX(), tyE, 0.22f, 245, 245, 250);
-            // la temperatura dell'acqua (la nostra: ora, meteo, quota)
-            DisegnaTesto(L("Water ", "Acqua ") + GradiAcqua().ToString("0", CultureInfo.InvariantCulture) + "\u00B0",
-                         QuadX(), tyE + LeggiF("temp_testo_giu", 14f), 0.22f, 245, 245, 250);
             // sotto: la frizione inserita, in percentuale della massima
             int pct = (int)(100f * frizione / PosFrizione() + 0.5f);
             DisegnaTesto(L("drag ", "frizione ") + pct + "%", fcx, ty + LeggiF("friz_riga2", 12f),
