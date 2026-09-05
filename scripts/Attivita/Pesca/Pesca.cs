@@ -9128,7 +9128,10 @@ public class Pesca : Script
         if (Montato("lenza", out id, out img, out nome))
         {
             float ry = my - piano * 54f;
-            Sprite(img, mx, ry, 112f, 44f);
+            // la bobina un filo piu' piccola degli altri ("colonna_lenza"),
+            // centrata nella stessa casella
+            float ll = LeggiF("colonna_lenza", 38f);
+            Sprite(img, mx + (112f - ll) * 0.5f, ry + (44f - ll) * 0.5f, ll, ll);
             float kg = KgLenza(id);
             if (kg > 0f)
                 DisegnaTesto(kg.ToString("0.##", CultureInfo.InvariantCulture) + " kg",
