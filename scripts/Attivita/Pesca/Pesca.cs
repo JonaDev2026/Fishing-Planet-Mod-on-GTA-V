@@ -8256,31 +8256,39 @@ public class Pesca : Script
     // (la larghezza del testo e' stimata: "consigli_car" pixel a lettera).
     void Consigli()
     {
+        // TASTIERA O PAD: come fa GTA, si guarda l'ultimo input usato.
+        // Con la tastiera le icone diventano riquadri col tasto scritto.
+        bool tastiera = false;
+        try { tastiera = Function.Call<bool>((Hash)0xA571D46727E2B718, 0); }
+        catch { }
+
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
+        // ogni voce: icona del pad | tasto di tastiera | testo
         if (fase == FASE_FERMO)
         {
-            ic.Add("lb"); tx.Add(L("Manage tackle", "Gestisci l'armatura"));
+            Voce(ic, tx, "rb+croce_dx", "F7", L("Fishing menu", "Menu della pesca"));
+            Voce(ic, tx, "lb", "TAB", L("Manage tackle", "Gestisci l'armatura"));
         }
         else if (fase == FASE_PRONTO)
         {
-            ic.Add("rt"); tx.Add(L("Cast", "Lancia"));
-            ic.Add("x"); tx.Add(L("Put the rod away", "Riponi la canna"));
-            ic.Add("rb"); tx.Add(L("Change bait", "Cambia esca"));
-            ic.Add("lb"); tx.Add(L("Manage tackle", "Gestisci l'armatura"));
-            ic.Add("croce_sxdx"); tx.Add(L("Drag", "Frizione"));
-            ic.Add("croce_sugiu"); tx.Add(L("Bait depth", "Profondita' dell'esca"));
+            Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Cast", "Lancia"));
+            Voce(ic, tx, "x", L("SPACE", "SPAZIO"), L("Put the rod away", "Riponi la canna"));
+            Voce(ic, tx, "rb", "Q", L("Change bait", "Cambia esca"));
+            Voce(ic, tx, "lb", "TAB", L("Manage tackle", "Gestisci l'armatura"));
+            Voce(ic, tx, "croce_sxdx", "< >", L("Drag", "Frizione"));
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Bait depth", "Profondita' dell'esca"));
         }
         else if (fase == FASE_ACQUA || fase == FASE_ABBOCCA || fase == FASE_LOTTA)
         {
-            ic.Add("rt"); tx.Add(L("Reel in", "Recupera la lenza"));
-            ic.Add("croce_sxdx"); tx.Add(L("Drag", "Frizione"));
-            ic.Add("lb"); tx.Add(L("Retrieve line", "Ritira la lenza"));
+            Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Reel in", "Recupera la lenza"));
+            Voce(ic, tx, "croce_sxdx", "< >", L("Drag", "Frizione"));
+            Voce(ic, tx, "lb", "TAB", L("Retrieve line", "Ritira la lenza"));
         }
         else if (fase == FASE_CARD)
         {
-            ic.Add("a"); tx.Add(L("Keep", "Tieni"));
-            ic.Add("b"); tx.Add(L("Release", "Ributta"));
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Keep", "Tieni"));
+            Voce(ic, tx, "b", "ESC", L("Release", "Ributta"));
         }
         if (ic.Count == 0) return;
 
@@ -8290,18 +8298,51 @@ public class Pesca : Script
         float gap = LeggiF("consigli_gap", 30f);
         float car = LeggiF("consigli_car", 6.2f);
         float ty = y + lato * 0.5f - 9f + LeggiF("consigli_testo_giu", 1f);
-        // larghezza totale, per centrare
+        // larghezza di ogni icona (o riquadro del tasto), e totale per centrare
+        float[] wi = new float[ic.Count];
         float tot = 0f;
         int i;
-        for (i = 0; i < ic.Count; i++) tot += lato + 6f + tx[i].Length * car + (i < ic.Count - 1 ? gap : 0f);
+        for (i = 0; i < ic.Count; i++)
+        {
+            string[] pz = ic[i].Split('|');
+            if (tastiera) wi[i] = pz[1].Length * car + 10f;
+            else wi[i] = pz[0].Contains("+") ? (lato * 2f + 14f) : lato;
+            tot += wi[i] + 6f + tx[i].Length * car + (i < ic.Count - 1 ? gap : 0f);
+        }
         float x = LeggiF("consigli_centro", 640f) - tot * 0.5f;
         for (i = 0; i < ic.Count; i++)
         {
-            Sprite("img\\hud\\tasti\\" + ic[i] + ".png", x, y, lato, lato);
-            x += lato + 6f;
+            string[] pz = ic[i].Split('|');
+            if (tastiera)
+            {
+                // il tasto di tastiera: un riquadro chiaro col nome dentro
+                DisegnaRett(x, y + 1f, wi[i], lato - 2f, 210, 215, 220, 70);
+                DisegnaRett(x, y + 1f, wi[i], 1f, 235, 238, 242, 200);
+                DisegnaTesto(pz[1], x + wi[i] * 0.5f, ty + 1f, sc * 0.85f, 245, 245, 250);
+            }
+            else
+            {
+                // "rb+croce_dx": due icone con un + in mezzo
+                string[] due = pz[0].Split('+');
+                float xi = x;
+                int k;
+                for (k = 0; k < due.Length; k++)
+                {
+                    if (k > 0) { DisegnaTesto("+", xi + 7f, ty, sc, 245, 245, 250); xi += 14f; }
+                    Sprite("img\\hud\\tasti\\" + due[k] + ".png", xi, y, lato, lato);
+                    xi += lato;
+                }
+            }
+            x += wi[i] + 6f;
             DisegnaTestoSinistra(tx[i], x, ty, sc, 245, 245, 250);
             x += tx[i].Length * car + gap;
         }
+    }
+
+    static void Voce(List<string> ic, List<string> tx, string pad, string tasto, string testo)
+    {
+        ic.Add(pad + "|" + tasto);
+        tx.Add(testo);
     }
 
     void DisegnaTestoSinistra(string txt, float x, float y, float scala, int r, int g, int b)
