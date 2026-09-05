@@ -11997,8 +11997,11 @@ public class Pesca : Script
             sx = (float)Math.Sin(now * 0.055) * amp;
             ay += (float)Math.Sin(now * 0.041) * amp * 0.8f;
         }
-        SpriteInclinata("img\\terminali\\amo_base.png",
-                        cx - aw * 0.5f + sx, ay, aw, ah, sx * 2.2f);
+        // COL GALLEGGIANTE L'AMO NON SI DISEGNA: si vede il galleggiante e
+        // basta ("gall_amo=1" in config lo rimette).
+        if (LeggiF("gall_amo", 0f) > 0.5f)
+            SpriteInclinata("img\\terminali\\amo_base.png",
+                            cx - aw * 0.5f + sx, ay, aw, ah, sx * 2.2f);
 
         // IL GALLEGGIANTE, a galla sul pelo dell'acqua. Ondeggio e
         // affondata sono quelli di sempre: "giu" e' quanto e' sotto.
