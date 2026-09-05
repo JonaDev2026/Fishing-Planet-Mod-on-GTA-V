@@ -2572,6 +2572,7 @@ public class Pesca : Script
             {
                 if (c[1].Trim() == "avvisa_zona") avvisaZona = (Numero(c[2]) != 0);
                 if (c[1].Trim() == "gall_zoom") gallZoom = Numero(c[2]);
+                if (c[1].Trim() == "profondita_cm") profondita = Numero(c[2]) / 100f;
                 if (c[1].Trim() == "regole_vere") regoleVere = (Numero(c[2]) != 0);
                 if (c[1].Trim() == "minuti") minutiFatti = Numero(c[2]);
                 if (c[1].Trim() == "frizione")
@@ -2629,6 +2630,7 @@ public class Pesca : Script
             v.Add("preso|" + kv.Key + "|" + kv.Value);
         v.Add("imp|avvisa_zona|" + (avvisaZona ? "1" : "0"));
         v.Add("imp|gall_zoom|" + gallZoom);
+        v.Add("imp|profondita_cm|" + (int)(profondita * 100f + 0.5f));
         v.Add("imp|regole_vere|" + (regoleVere ? "1" : "0"));
         v.Add("imp|frizione|" + frizione);
         v.Add("imp|minuti|" + minutiFatti);
@@ -6591,6 +6593,36 @@ public class Pesca : Script
     int quandoAbbocca = 0;    // GameTime in cui il pesce prende
     int giroMulinello = 0;    // il tic tic del mulinello mentre giri
 
+    // LA PROFONDITA' DELL'ESCA sotto il galleggiante: quanto filo c'e'
+    // fra galleggiante e amo. Come in Fishing Planet si regola a passi di
+    // 5 pollici (12,7 cm), da 5 a 99 pollici (2,50 m), con SU e GIU'
+    // della croce, senza la lenza in acqua (canna in mano o in riva).
+    // Se e' piu' del fondo l'esca tocca terra e il galleggiante si sdraia.
+    float profondita = 1.0f;
+    const float PROF_PASSO = 0.127f;
+    const float PROF_MIN = 0.127f;
+    const float PROF_MAX = 2.515f;
+    int tastoProf = 0;
+
+    void RegolaProfondita(int now)
+    {
+        if (!inPesca || !inRivaOra || ruotaAperta) return;
+        if (fase != FASE_FERMO && fase != FASE_PRONTO) return;
+        // su e giu' della croce sono nostri qui (27 e' il telefono, 19 la ruota dei personaggi)
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 27, true);
+        Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, 19, true);
+        if (now < tastoProf) return;
+        bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 27);
+        bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 19);
+        if (!su && !giu) return;
+        profondita += su ? PROF_PASSO : -PROF_PASSO;
+        if (profondita < PROF_MIN) profondita = PROF_MIN;
+        if (profondita > PROF_MAX) profondita = PROF_MAX;
+        tastoProf = now + 160;
+        Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+        SalvaStato();
+    }
+
     // LA FRIZIONE: le tacche del cerchio, si gira con destra e sinistra.
     // COME IN FISHING PLANET: piu' tacche accese = piu' frizione = piu'
     // freno sulla bobina.
@@ -7368,6 +7400,7 @@ public class Pesca : Script
         int now = Game.GameTime;
         bool inRiva = VicinoAllAcqua();
         inRivaOra = inRiva;
+        RegolaProfondita(now);
         LeggiTasto();
         TieniProvaPesce(now);
 
@@ -8279,6 +8312,11 @@ public class Pesca : Script
             float ty = fcy + fd * 0.5f + LeggiF("friz_testo_giu", 4f);
             if (rm.Length > 0)
                 DisegnaTesto(rm, fcx, ty, 0.19f, 245, 245, 250);
+            // la profondita' dell'esca, sotto il quadrante: si regola con
+            // SU e GIU' della croce
+            DisegnaTesto(L("Bait ", "Esca ") + profondita.ToString("0.00", CultureInfo.InvariantCulture) + " m",
+                         QuadX(), BarY() - 50f + LeggiF("caldo_giu", 8f) + LeggiF("prof_testo_giu", 14f),
+                         0.22f, 245, 245, 250);
             // sotto: la frizione inserita, in percentuale della massima
             int pct = (int)(100f * frizione / PosFrizione() + 0.5f);
             DisegnaTesto(L("drag ", "frizione ") + pct + "%", fcx, ty + LeggiF("friz_riga2", 12f),
@@ -12311,7 +12349,18 @@ public class Pesca : Script
         float eh = LeggiF("spin_esca_h", 16f);
         float ah = eh * 1.3f;
         float aw = eh * 1.15f;
+        // IN SCALA COL FONDO VERO: l'esca sta a "profondita" metri sotto il
+        // galleggiante; se il fondo lo sappiamo, nel quadrante sta in
+        // proporzione. Piu' lungo del fondo = tocca terra.
         float prof = LeggiF("gall_prof", 0.62f);
+        float fondoQ = (fase == FASE_ACQUA || fase == FASE_ABBOCCA || fase == FASE_LOTTA) ? FondoDellEsca() : -1f;
+        float gradiGall = 0f;
+        if (fondoQ > 0.05f)
+        {
+            prof = profondita / fondoQ;
+            if (profondita > fondoQ * 1.05f) gradiGall = LeggiF("gall_sdraiato", 80f);
+            else if (profondita > fondoQ * 0.9f) gradiGall = 45f;
+        }
         if (prof < 0f) prof = 0f;
         if (prof > 1f) prof = 1f;
         float ay = top + 6f + prof * (alt - 12f - ah);
@@ -12334,8 +12383,9 @@ public class Pesca : Script
         float gh = 29f;
         float gw = gh * 440f / 175f;      // proporzioni vere della PNG
         float gy = top - gh * 0.62f + ondeggio + giu;
-        Sprite("img\\galleggianti\\galleggiante_base.png",
-               cx - gw * 0.5f, gy, gw, gh);
+        // sdraiato se il filo e' piu' lungo del fondo, a 45 se lo sfiora
+        SpriteInclinata("img\\galleggianti\\galleggiante_base.png",
+                        cx - gw * 0.5f, gy, gw, gh, gradiGall);
     }
 
 
