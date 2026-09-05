@@ -11447,9 +11447,8 @@ public class Pesca : Script
         string nome = r.Nome;
         if (vs.Count > 1) nome += "  " + (ps + 1) + "/" + vs.Count;
         DisegnaTesto(nome, cx, cy - 8f, 0.28f, 255, 255, 255);
+        // sotto solo i dati: "montato" non serve, e' la ruota della montatura
         string sotto = r.Dett;
-        if (r.Montata) sotto = (sotto.Length > 0) ? sotto + "  -  montato"
-                                                 : (r.Id < 0 ? "niente montato" : "montato");
         if (sotto.Length > 0) DisegnaTesto(sotto, cx, cy + 12f, 0.22f, 200, 200, 200);
     }
 
