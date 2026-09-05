@@ -12149,24 +12149,45 @@ public class Pesca : Script
         string tipo = "";
         int lu = LuogoQui();
         if (lu >= 0 && lu < arTipo.Count) tipo = arTipo[lu];
-        string img = "img\\hud\\fondo_mare.png";
-        if (tipo == "lago" || tipo == "palude") img = "img\\hud\\fondo_lago.png";
-        else if (tipo == "fiume" || tipo == "torrente") img = "img\\hud\\fondo_fiume.png";
+        int quale = 0;   // 0 mare, 1 lago, 2 fiume
+        if (tipo == "lago" || tipo == "palude") quale = 1;
+        else if (tipo == "fiume" || tipo == "torrente") quale = 2;
         float fh = LeggiF("fondale_alt", 6f);
-        Sprite(img, cx - largo * 0.5f, top + alt - fh, largo, fh);
-        // "fondale_tutti=1": gli altri due accanto, per vederli insieme
+        float y = top + alt - fh;
+        UnFondale(quale, cx, largo, y, fh);
+        // "fondale_tutti=1": gli altri due a sinistra, verso il centro
+        // dello schermo, per vederli insieme
         if (LeggiF("fondale_tutti", 0f) > 0.5f)
         {
-            // gli altri due, non quello che c'e' gia' in mezzo
-            string[] tutti = new string[] { "img\\hud\\fondo_mare.png", "img\\hud\\fondo_lago.png", "img\\hud\\fondo_fiume.png" };
             int lato = 0, q;
             for (q = 0; q < 3; q++)
             {
-                if (tutti[q] == img) continue;
-                float qx = (lato == 0) ? (cx - largo * 1.5f - 4f) : (cx + largo * 0.5f + 4f);
-                Sprite(tutti[q], qx, top + alt - fh, largo, fh);
+                if (q == quale) continue;
+                float qx = cx - largo * 1.5f - 50f - lato * (largo + 6f);
+                UnFondale(q, qx, largo, y, fh);
                 lato++;
             }
+        }
+    }
+
+    // un fondale: la striscia di terreno, e SOPRA le alghe che
+    // ondeggiano (lago) o i sassi appoggiati (fiume)
+    void UnFondale(int quale, float x, float largo, float y, float fh)
+    {
+        string[] terreni = new string[] { "img\\hud\\fondo_mare.png", "img\\hud\\fondo_lago.png", "img\\hud\\fondo_fiume.png" };
+        float x0 = x - largo * 0.5f;
+        Sprite(terreni[quale], x0, y, largo, fh);
+        if (quale == 1)
+        {
+            // le alghe: alte "alghe_alt", ondeggiano piano
+            float ah = LeggiF("alghe_alt", 20f);
+            float onda = (float)Math.Sin(Game.GameTime * 0.0025) * LeggiF("alghe_onda", 5f);
+            SpriteInclinata("img\\hud\\alghe.png", x0, y - ah, largo, ah, onda);
+        }
+        else if (quale == 2)
+        {
+            float sh = LeggiF("sassi_alt", 7f);
+            Sprite("img\\hud\\sassi.png", x0, y - sh + 1f, largo, sh);
         }
     }
 
