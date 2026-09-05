@@ -12067,9 +12067,7 @@ public class Pesca : Script
         float largo = 48f;
 
         // l'acqua fra il pelo e il fondo
-        DisegnaRett(cx - largo * 0.5f, top, largo, alt, 40, 80, 130, 150);
-        // il pelo dell'acqua
-        DisegnaRett(cx - largo * 0.5f, top, largo, 2f, 150, 195, 235, 235);
+        DisegnaAcqua(QualeAcqua(), cx, largo, top, alt);
         // il fondo
         DisegnaFondale(cx, largo, top, alt);
 
@@ -12144,14 +12142,37 @@ public class Pesca : Script
     // IL FONDALE DEL QUADRANTE: sabbia in mare, fango e alghe nel lago e
     // in palude, sassi nel fiume e nel torrente. Prende spazio verso
     // l'alto, il bordo sotto resta dov'era. "fondale_alt" e' l'altezza.
-    void DisegnaFondale(float cx, float largo, float top, float alt)
+    // che acqua e': 0 mare, 1 lago (e palude), 2 fiume (e torrente)
+    int QualeAcqua()
     {
         string tipo = "";
         int lu = LuogoQui();
         if (lu >= 0 && lu < arTipo.Count) tipo = arTipo[lu];
-        int quale = 0;   // 0 mare, 1 lago, 2 fiume
-        if (tipo == "lago" || tipo == "palude") quale = 1;
-        else if (tipo == "fiume" || tipo == "torrente") quale = 2;
+        if (tipo == "lago" || tipo == "palude") return 1;
+        if (tipo == "fiume" || tipo == "torrente") return 2;
+        return 0;
+    }
+
+    // L'ACQUA DEL QUADRANTE, col suo colore: mare verde cristallino,
+    // lago blu, fiume piu' chiaro. In config "acqua_mare", "acqua_lago",
+    // "acqua_fiume" come r,g,b; "acqua_alfa" la trasparenza.
+    void DisegnaAcqua(int quale, float cx, float largo, float top, float alt)
+    {
+        string[] chiavi = new string[] { "acqua_mare", "acqua_lago", "acqua_fiume" };
+        string[] dif = new string[] { "45,150,140", "40,80,130", "85,120,150" };
+        string[] c = LeggiS(chiavi[quale], dif[quale]).Split(',');
+        int r = 40, g = 80, b = 130;
+        if (c.Length >= 3) { r = Numero(c[0].Trim()); g = Numero(c[1].Trim()); b = Numero(c[2].Trim()); }
+        int a = (int)LeggiF("acqua_alfa", 150f);
+        DisegnaRett(cx - largo * 0.5f, top, largo, alt, r, g, b, a);
+        // il pelo dell'acqua: lo stesso colore, piu' chiaro
+        DisegnaRett(cx - largo * 0.5f, top, largo, 2f,
+                    Math.Min(255, r + 110), Math.Min(255, g + 115), Math.Min(255, b + 105), 235);
+    }
+
+    void DisegnaFondale(float cx, float largo, float top, float alt)
+    {
+        int quale = QualeAcqua();
         float fh = LeggiF("fondale_alt", 6f);
         float y = top + alt - fh;
         UnFondale(quale, cx, largo, y, fh);
@@ -12164,6 +12185,7 @@ public class Pesca : Script
             {
                 if (q == quale) continue;
                 float qx = cx - largo * 1.5f - 50f - lato * (largo + 6f);
+                DisegnaAcqua(q, qx, largo, top, alt);
                 UnFondale(q, qx, largo, y, fh);
                 lato++;
             }
@@ -12213,8 +12235,7 @@ public class Pesca : Script
         float top = LeggiF("quadrante_y", 296f);
         float largo = 48f;
 
-        DisegnaRett(cx - largo * 0.5f, top, largo, alt, 40, 80, 130, 150);
-        DisegnaRett(cx - largo * 0.5f, top, largo, 2f, 150, 195, 235, 235);
+        DisegnaAcqua(QualeAcqua(), cx, largo, top, alt);
         DisegnaFondale(cx, largo, top, alt);
 
         // L'AMO CON L'ESCA, appeso sotto: sta a mezz'acqua, alla
