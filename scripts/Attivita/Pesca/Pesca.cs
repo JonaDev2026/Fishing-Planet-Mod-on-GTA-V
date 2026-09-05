@@ -8065,7 +8065,9 @@ public class Pesca : Script
             // i testi hanno un loro moltiplicatore: la finestra si puo'
             // stringere senza che le scritte diventino illeggibili
             float kt = k * LeggiF("card_testi", 1f);
-            float h = 200f * k;
+            // senza la riga dei tasti (quelli stanno nella barra in basso);
+            // se non puoi tenerlo, una riga in piu' col perche'
+            float h = (cardPuoTenere ? 178f : 200f) * k;
             float x = LeggiF("card_x", 1280f - 300f - 24f);
             float y = LeggiF("card_y", 60f);
             float cx = x + w * 0.5f;
@@ -8094,20 +8096,13 @@ public class Pesca : Script
             DisegnaTesto("$" + cardVale, cx, y + 160f * k, 0.29f * kt, 130, 225, 180);
             DisegnaTesto("+" + cardXp + " XP", x + w - 72f * k, y + 160f * k, 0.29f * kt, 130, 200, 245);
 
-            // LE DUE SCELTE SU UNA RIGA SOLA: a sinistra tieni, a destra molla.
-            // I tasti si scrivono a lettere: qui il testo e' quello semplice,
-            // e i simboli ~INPUT_~ li sa espandere solo l'aiuto in basso.
-            DisegnaRett(x, y + 178f * k, w, 22f * k, 10, 22, 20, 250);
-            DisegnaRett(x + w * 0.5f - 1f, y + 180f * k, 2f, 18f * k, 60, 90, 80, 200);
-            if (cardPuoTenere)
-                DisegnaTesto("A   mettilo nella rete", x + w * 0.25f, y + 181f * k,
-                             0.25f * kt, 150, 235, 180);
-            else
-                DisegnaTesto(cardPerche, x + w * 0.25f, y + 181f * k, 0.23f * kt, 245, 205, 80);
-            // rosso come il tasto B: cosi' si capisce a colpo d'occhio
-            // che quello e' il pesce che se ne va
-            DisegnaTesto("B   ributtalo in acqua", x + w * 0.75f, y + 181f * k,
-                         0.25f * kt, 235, 90, 80);
+            // I TASTI NON STANNO PIU' QUI: li dice la barra in basso.
+            // Se il pesce non si puo' tenere, una riga col perche'.
+            if (!cardPuoTenere)
+            {
+                DisegnaRett(x, y + 178f * k, w, 22f * k, 10, 22, 20, 250);
+                DisegnaTesto(cardPerche, cx, y + 181f * k, 0.23f * kt, 245, 205, 80);
+            }
             bool tieni = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201)
                       || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 201);
             bool ributta = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 202)
@@ -11968,6 +11963,36 @@ public class Pesca : Script
             }
             catch { }
 
+            // E SI CORICA SE IL TERMINALE E' PIU' LUNGO DEL FONDO, come nel
+            // quadrante: 45 gradi quando l'esca tocca quasi, sdraiato
+            // (gall_sdraiato) quando la profondita' impostata supera il fondo.
+            float gradiAcqua = 0f;
+            float fondoG = FondoDellEsca();
+            if (fondoG > 0.05f)
+            {
+                if (profondita > fondoG * 1.05f) gradiAcqua = LeggiF("gall_sdraiato", 80f);
+                else if (profondita > fondoG * 0.9f) gradiAcqua = 45f;
+            }
+            if (gradiAcqua > 0f)
+            {
+                // si corica di lato rispetto a chi guarda: verso il pescatore,
+                // come quando tira, cosi' la direzione e' una sola
+                float rad = gradiAcqua * 3.1415926f / 180f;
+                float dl2 = 0f, dx2 = 0f, dy2 = 0f;
+                try
+                {
+                    Ped pg2 = Game.Player.Character;
+                    dx2 = pg2.Position.X - escaX; dy2 = pg2.Position.Y - escaY;
+                    dl2 = (float)Math.Sqrt(dx2 * dx2 + dy2 * dy2);
+                }
+                catch { }
+                if (dl2 > 0.01f)
+                {
+                    float lato = ant * (float)Math.Sin(rad);
+                    verso = new GTA.Math.Vector3(dx2 / dl2 * lato, dy2 / dl2 * lato, 0f);
+                    ant = ant * (float)Math.Cos(rad);
+                }
+            }
             GTA.Math.Vector3 basso = new GTA.Math.Vector3(escaX, escaY, zc);
             GTA.Math.Vector3 cima = new GTA.Math.Vector3(escaX + verso.X,
                                                          escaY + verso.Y, zc + ant);
