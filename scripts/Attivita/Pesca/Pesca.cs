@@ -2205,6 +2205,10 @@ public class Pesca : Script
         // attorno all'esca, se no in un punto d'acqua davanti a te.
         if (inPesca && inRivaOra) PesceDiPassaggio(Game.GameTime);
         else ViaPesceScena();
+        // i consigli dei tasti in basso: finche' hai la licenza e sei in
+        // riva, in ogni fase (anche senza canna in mano)
+        if (inPesca && inRivaOra && !ruotaAperta
+            && !Game.Player.Character.IsInVehicle()) Consigli();
         // LB: la ruota degli attrezzi al posto di quella delle armi
         Ruota();
         // mentre guardi l'inventario, l'HUD dell'attrezzatura: la stessa
@@ -8246,26 +8250,58 @@ public class Pesca : Script
     //   friz_cx / friz_cy   centro
     //   friz_diam           diametro
     // I CONSIGLI DEI TASTI: una riga in basso al centro dello schermo, a
-    // "consigli_y" dal fondo. Da sinistra: la croce con destra/sinistra
-    // accesi e "Frizione", poi la croce con su/giu' accesi e "Profondita'
-    // dell'esca". Ci si aggiunge altro man mano.
+    // "consigli_dal_fondo" dal fondo, che cambia con quello che stai
+    // facendo. Ogni consiglio e' icona + testo; la riga si centra da sola
+    // (la larghezza del testo e' stimata: "consigli_car" pixel a lettera).
     void Consigli()
     {
+        List<string> ic = new List<string>();
+        List<string> tx = new List<string>();
+        if (fase == FASE_FERMO)
+        {
+            ic.Add("lb"); tx.Add(L("Manage tackle", "Gestisci l'armatura"));
+            ic.Add("croce_sugiu"); tx.Add(L("Bait depth", "Profondita' dell'esca"));
+        }
+        else if (fase == FASE_PRONTO)
+        {
+            ic.Add("rt"); tx.Add(L("Cast", "Lancia"));
+            ic.Add("x"); tx.Add(L("Put the rod away", "Riponi la canna"));
+            ic.Add("rb"); tx.Add(L("Change bait", "Cambia esca"));
+            ic.Add("lb"); tx.Add(L("Manage tackle", "Gestisci l'armatura"));
+            ic.Add("croce_sxdx"); tx.Add(L("Drag", "Frizione"));
+            ic.Add("croce_sugiu"); tx.Add(L("Bait depth", "Profondita' dell'esca"));
+        }
+        else if (fase == FASE_ACQUA || fase == FASE_ABBOCCA || fase == FASE_LOTTA)
+        {
+            ic.Add("rt"); tx.Add(L("Reel in", "Recupera la lenza"));
+            ic.Add("croce_sxdx"); tx.Add(L("Drag", "Frizione"));
+            ic.Add("lb"); tx.Add(L("Retrieve line", "Ritira la lenza"));
+        }
+        else if (fase == FASE_CARD)
+        {
+            ic.Add("a"); tx.Add(L("Keep", "Tieni"));
+            ic.Add("b"); tx.Add(L("Release", "Ributta"));
+        }
+        if (ic.Count == 0) return;
+
         float lato = LeggiF("consigli_lato", 22f);
         float y = 720f - LeggiF("consigli_dal_fondo", 20f) - lato;
-        float x = LeggiF("consigli_x", 470f);
         float sc = LeggiF("consigli_testo", 0.24f);
         float gap = LeggiF("consigli_gap", 30f);
+        float car = LeggiF("consigli_car", 6.2f);
         float ty = y + lato * 0.5f - 9f + LeggiF("consigli_testo_giu", 1f);
-        // le icone dei tasti stanno in img/hud/tasti (a, b, x, y, lb, rb,
-        // lt, rt, l, r, pad, croce, croce_sugiu, croce_sxdx), bianche
-        Sprite("img\\hud\\tasti\\croce_sxdx.png", x, y, lato, lato);
-        x += lato + 6f;
-        DisegnaTestoSinistra(L("Drag", "Frizione"), x, ty, sc, 245, 245, 250);
-        x += LeggiF("consigli_larga1", 62f) + gap;
-        Sprite("img\\hud\\tasti\\croce_sugiu.png", x, y, lato, lato);
-        x += lato + 6f;
-        DisegnaTestoSinistra(L("Bait depth", "Profondita' dell'esca"), x, ty, sc, 245, 245, 250);
+        // larghezza totale, per centrare
+        float tot = 0f;
+        int i;
+        for (i = 0; i < ic.Count; i++) tot += lato + 6f + tx[i].Length * car + (i < ic.Count - 1 ? gap : 0f);
+        float x = LeggiF("consigli_centro", 640f) - tot * 0.5f;
+        for (i = 0; i < ic.Count; i++)
+        {
+            Sprite("img\\hud\\tasti\\" + ic[i] + ".png", x, y, lato, lato);
+            x += lato + 6f;
+            DisegnaTestoSinistra(tx[i], x, ty, sc, 245, 245, 250);
+            x += tx[i].Length * car + gap;
+        }
     }
 
     void DisegnaTestoSinistra(string txt, float x, float y, float scala, int r, int g, int b)
@@ -8354,8 +8390,6 @@ public class Pesca : Script
             float tyE = BarY() - 50f + LeggiF("caldo_giu", 8f) + LeggiF("prof_testo_giu", 14f);
             DisegnaTesto(L("Bait ", "Esca ") + profondita.ToString("0.00", CultureInfo.InvariantCulture) + " m",
                          QuadX(), tyE, 0.22f, 245, 245, 250);
-            // i consigli dei tasti, in basso al centro
-            Consigli();
             // sotto: la frizione inserita, in percentuale della massima
             int pct = (int)(100f * frizione / PosFrizione() + 0.5f);
             DisegnaTesto(L("drag ", "frizione ") + pct + "%", fcx, ty + LeggiF("friz_riga2", 12f),
