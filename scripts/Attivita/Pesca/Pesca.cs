@@ -12207,6 +12207,10 @@ public class Pesca : Script
             // la posa "solo busto" del cammino (secondaria) resterebbe
             // sopra le braccia anche dopo: via, prima di una posa intera
             if (FlagPosa() == 1) Function.Call(Hash.CLEAR_PED_SECONDARY_TASK, p);
+            // E IL CONTRARIO: la posa a corpo intero (scheda, lotta) e' un
+            // task che non finisce mai; se le si mette sopra la posa solo
+            // busto, le gambe restano inchiodate. Prima si toglie.
+            else if (flagInCorso == 1) Function.Call(Hash.CLEAR_PED_TASKS, p);
             Function.Call(Hash.TASK_PLAY_ANIM, p, DIZ_PESCA, clip,
                           8.0f, -8.0f, -1, FlagPosa(), 0.0f, false, false, false);
             try { Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, velocita); }
@@ -12247,7 +12251,7 @@ public class Pesca : Script
     {
         if (f < 0f) f = 0f;
         if (f > 0.99f) f = 0.99f;
-        if (clipInCorso == clip && faseInCorso >= 0f
+        if (clipInCorso == clip && faseInCorso >= 0f && flagInCorso == FlagPosa()
             && f - faseInCorso < 0.002f && faseInCorso - f < 0.002f) return;
         try
         {
@@ -12256,6 +12260,7 @@ public class Pesca : Script
             while (!Function.Call<bool>(Hash.HAS_ANIM_DICT_LOADED, DIZ_PESCA) && w < 1000)
             { Script.Wait(50); w += 50; }
             if (FlagPosa() == 1) Function.Call(Hash.CLEAR_PED_SECONDARY_TASK, p);
+            else if (flagInCorso == 1) Function.Call(Hash.CLEAR_PED_TASKS, p);
             Function.Call(Hash.TASK_PLAY_ANIM, p, DIZ_PESCA, clip,
                           fusione, -8.0f, -1, FlagPosa(), f, false, false, false);
             Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, 0.0f);
