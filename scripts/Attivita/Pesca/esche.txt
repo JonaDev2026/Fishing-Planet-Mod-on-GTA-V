@@ -1,0 +1,206 @@
+# id|nome|tipo|immagine   - nomi veri dal wiki di Fishing Planet
+0|African Giant Water Bug|naturale|African_Giant_Water_Bug.png
+1|Amazonian Sardine|naturale|Amazonian_Sardine.png
+2|Aracu Minnow|naturale|Aracu_Minnow.png
+3|Artificial Salmon Eggs|naturale|Artificial_Salmon_Eggs.png
+4|Atlantic Herring|naturale|Atlantic_Herring.png
+5|Atlantic Mackerel ut Baits|naturale|Atlantic_Mackerel_ut_Baits.png
+6|Banana Bread|naturale|Banana_Bread.png
+7|Banded Aracu Minnow|naturale|Banded_Aracu_Minnow.png
+8|Bark Beetle Larva|naturale|Bark_Beetle_Larva.png
+9|Black Lugworms|naturale|Black_Lugworms.png
+10|Blood|naturale|Blood.png
+11|Bloodworms|naturale|Bloodworms.png
+12|Bluey|naturale|Bluey.png
+13|Boiled Red Roe|naturale|Boiled_Red_Roe.png
+14|Boilies|naturale|Boilies.png
+15|Bread|naturale|Bread.png
+16|Bread with Honey|naturale|Bread_with_Honey.png
+17|Buffalo Kidneys|naturale|Buffalo_Kidneys.png
+18|Caddis Larva|naturale|Caddis_Larva.png
+19|Camu-Camu|naturale|Camu-Camu.png
+20|Canned Meat|naturale|Canned_Meat.png
+21|Caster Maggots|naturale|Caster_Maggots.png
+22|Centipedes|naturale|Centipedes.png
+23|Cheese|naturale|Cheese.png
+24|Chicken Liver|naturale|Chicken_Liver.png
+25|Clam Meat|naturale|Clam_Meat.png
+26|Cockchafer|naturale|Cockchafer.png
+27|Common Minnow|naturale|Common_Minnow.png
+28|Corn|naturale|Corn.png
+29|Crab|naturale|Crab.png
+30|Crawfish|naturale|Crawfish.png
+31|Crawfish Cut|naturale|Crawfish_Cut.png
+32|Crickets|naturale|Crickets.png
+33|Dead Lambari Fish|naturale|Dead_Lambari_Fish.png
+34|Dobsonfly|naturale|Dobsonfly.png
+35|Dobsonfly Larva|naturale|Dobsonfly_Larva.png
+36|Dough Balls|naturale|Dough_Balls.png
+37|Dragonflies|naturale|Dragonflies.png
+38|Duck Mussel Meat|naturale|Duck_Mussel_Meat.png
+39|Finger Mullets|naturale|Finger_Mullets.png
+40|Fish Head|naturale|Fish_Head.png
+41|Flies|naturale|Flies.png
+42|Freshwater Crab|naturale|Freshwater_Crab.png
+43|Freshwater Prawns|naturale|Freshwater_Prawns.png
+44|Frog|naturale|Frog.png
+45|Giant Silk Moth Larva|naturale|Giant_Silk_Moth_Larva.png
+46|Giant Tiger Prawn|naturale|Giant_Tiger_Prawn.png
+47|Grasshoppers|naturale|Grasshoppers.png
+48|Gulf Shrimp|naturale|Gulf_Shrimp.png
+49|Gutted Fish|naturale|Gutted_Fish.png
+50|Huge Cutbait|naturale|Huge_Cutbait.png
+51|Indo-Pacific Swimming Crab|naturale|Indo-Pacific_Swimming_Crab.png
+52|Japanese Anchovy|naturale|Japanese_Anchovy.png
+53|Japanese Flying Squid|naturale|Japanese_Flying_Squid.png
+54|Japanese Jack Mackerel|naturale|Japanese_Jack_Mackerel.png
+55|Japanese Spiny Lobster|naturale|Japanese_Spiny_Lobster.png
+56|Jauari Palm Fruit|naturale|Jauari_Palm_Fruit.png
+57|Large Cutbait|naturale|Large_Cutbait.png
+58|Large Fish Strips|naturale|Large_Fish_Strips.png
+59|Large Liver|naturale|Large_Liver.png
+60|Large Minnow|naturale|Large_Minnow.png
+61|Leeches|naturale|Leeches.png
+62|Lesser Sand Eel|naturale|Lesser_Sand_Eel.png
+63|Maggots|naturale|Maggots.png
+64|Marshmallows|naturale|Marshmallows.png
+65|Mayflies|naturale|Mayflies.png
+66|Meat Chunk|naturale|Meat_Chunk.png
+67|Medium Cutbait|naturale|Medium_Cutbait.png
+68|Medium Fish Strips|naturale|Medium_Fish_Strips.png
+69|Mole Cricket Larva|naturale|Mole_Cricket_Larva.png
+70|Moriche Palm Fruit|naturale|Moriche_Palm_Fruit.png
+71|Mussel Meat|naturale|Mussel_Meat.png
+72|Natal Rock Oyster Meat|naturale|Natal_Rock_Oyster_Meat.png
+73|Natural Eggs|naturale|Natural_Eggs.png
+74|Night Crawler|naturale|Night_Crawler.png
+75|Oat-flakes|naturale|Oat-flakes.png
+76|Pea dough|naturale|Pea_dough.png
+77|Pearl Barley|naturale|Pearl_Barley.png
+78|Peas|naturale|Peas.png
+79|Peeler Crab|naturale|Peeler_Crab.png
+80|Pellets|naturale|Pellets.png
+81|Pet Food|naturale|Pet_Food.png
+82|Pinkies|naturale|Pinkies.png
+83|Ragworms|naturale|Ragworms.png
+84|Razor Shell|naturale|Razor_Shell.png
+85|Red Worms|naturale|Red_Worms.png
+86|Rotten Minnows|naturale|Rotten_Minnows.png
+87|Rubber Tree Seeds|naturale|Rubber_Tree_Seeds.png
+88|Sand Fleas|naturale|Sand_Fleas.png
+89|Scaled Sardines|naturale|Scaled_Sardines.png
+90|Sea Worms|naturale|Sea_Worms.png
+91|Seal Blubber|naturale|Seal_Blubber.png
+92|Semolina Balls|naturale|Semolina_Balls.png
+93|Shiners|naturale|Shiners.png
+94|Shrimp|naturale|Shrimp.png
+95|Sideswimmers|naturale|Sideswimmers.png
+96|Small Cutbait|naturale|Small_Cutbait.png
+97|Small Flying Fish|naturale|Small_Flying_Fish.png
+98|Small Minnows|naturale|Small_Minnows.png
+99|Small Tilapia|naturale|Small_Tilapia.png
+100|Spawn Sack|naturale|Spawn_Sack.png
+101|Split Tail Mullet|naturale|Split_Tail_Mullet.png
+102|Sweet Corn|naturale|Sweet_Corn.png
+103|Sweet Peas|naturale|Sweet_Peas.png
+104|Technoplankton|naturale|Technoplankton.png
+105|Torch Flashlight|naturale|Torch_Flashlight.png
+106|Vegetables|naturale|Vegetables.png
+107|Wax Worms|naturale|Wax_Worms.png
+108|Yellow Maggots|naturale|Yellow_Maggots.png
+109|Baby Halibuts|artificiale|Baby_Halibuts.png
+110|Barbless Nano Spoon|artificiale|Barbless_Nano_Spoon.png
+111|Bucktails|artificiale|Bucktails.png
+112|Bullet Spinner|artificiale|Bullet_Spinner.png
+113|Bullet Spinners|artificiale|Bullet_Spinners.png
+114|Bullet spinners|artificiale|Bullet_spinners.png
+115|Buzzbaits|artificiale|Buzzbaits.png
+116|Casting Spoon|artificiale|Casting_Spoon.png
+117|Casting Spoons|artificiale|Casting_Spoons.png
+118|Crankbait|artificiale|Crankbait.png
+119|Crankbaits|artificiale|Crankbaits.png
+120|Craws|artificiale|Craws.png
+121|Craws)|artificiale|Craws).png
+122|Crayfish|artificiale|Crayfish.png
+123|Crayfish)|artificiale|Crayfish).png
+124|Crayfishs|artificiale|Crayfishs.png
+125|Fish Pilkers|artificiale|Fish_Pilkers.png
+126|Flat Spoon|artificiale|Flat_Spoon.png
+127|Freaky Walkers|artificiale|Freaky_Walkers.png
+128|Frogs|artificiale|Frogs.png
+129|Glowing Squids|artificiale|Glowing_Squids.png
+130|Glowing Trolling Octopuses|artificiale|Glowing_Trolling_Octopuses.png
+131|Grubs|artificiale|Grubs.png
+132|Grubs)|artificiale|Grubs).png
+133|Jerkbaits|artificiale|Jerkbaits.png
+134|Larva|artificiale|Larva.png
+135|Larva)|artificiale|Larva).png
+136|Larvae)|artificiale|Larvae).png
+137|Medium Spoon|artificiale|Medium_Spoon.png
+138|Medium Spoons|artificiale|Medium_Spoons.png
+139|Mini Crank|artificiale|Mini_Crank.png
+140|Mini Cranks|artificiale|Mini_Cranks.png
+141|Mini Pilkers|artificiale|Mini_Pilkers.png
+142|Minnow|artificiale|Minnow.png
+143|Mouse Lure|artificiale|Mouse_Lure.png
+144|Nano Spinner|artificiale|Nano_Spinner.png
+145|Nano Spinners|artificiale|Nano_Spinners.png
+146|Nano Spoon|artificiale|Nano_Spoon.png
+147|Nano Spoons|artificiale|Nano_Spoons.png
+148|Narrow Spoon|artificiale|Narrow_Spoon.png
+149|Narrow Spoons|artificiale|Narrow_Spoons.png
+150|Newts|artificiale|Newts.png
+151|Newts)|artificiale|Newts).png
+152|Nordic Pilkers|artificiale|Nordic_Pilkers.png
+153|Nymphes|artificiale|Nymphes.png
+154|Nymphes)|artificiale|Nymphes).png
+155|Pilkers|artificiale|Pilkers.png
+156|Plugs|artificiale|Plugs.png
+157|Popper|artificiale|Popper.png
+158|Poppers|artificiale|Poppers.png
+159|Saltwater Poppers|artificiale|Saltwater_Poppers.png
+160|Saltwater Slugs|artificiale|Saltwater_Slugs.png
+161|Saltwater Spoons|artificiale|Saltwater_Spoons.png
+162|Saltwater Twisters|artificiale|Saltwater_Twisters.png
+163|Shads|artificiale|Shads.png
+164|Shads)|artificiale|Shads).png
+165|Single Spoon|artificiale|Single_Spoon.png
+166|Single Spoons|artificiale|Single_Spoons.png
+167|Slop Spoons|artificiale|Slop_Spoons.png
+168|Slugs|artificiale|Slugs.png
+169|Slugs)|artificiale|Slugs).png
+170|Soft Baits (Craws|artificiale|Soft_Baits_(Craws.png
+171|Soft Baits (Craws)|artificiale|Soft_Baits_(Craws).png
+172|Soft Baits (Grubs|artificiale|Soft_Baits_(Grubs.png
+173|Soft Baits (Grubs)|artificiale|Soft_Baits_(Grubs).png
+174|Soft Baits (Shads|artificiale|Soft_Baits_(Shads.png
+175|Soft Baits (Shads)|artificiale|Soft_Baits_(Shads).png
+176|Soft Baits (Tubes|artificiale|Soft_Baits_(Tubes.png
+177|Soft Baits (Worms|artificiale|Soft_Baits_(Worms.png
+178|Soft Baits (Worms)|artificiale|Soft_Baits_(Worms).png
+179|Softbaits|artificiale|Softbaits.png
+180|Softbaits (Craws|artificiale|Softbaits_(Craws.png
+181|Softbaits (Shads|artificiale|Softbaits_(Shads.png
+182|Softbaits (Shads)|artificiale|Softbaits_(Shads).png
+183|Softbaits (Worms|artificiale|Softbaits_(Worms.png
+184|Softbaits (grubs|artificiale|Softbaits_(grubs.png
+185|Softbaits (shads|artificiale|Softbaits_(shads.png
+186|Spinnerbaits|artificiale|Spinnerbaits.png
+187|Spinners|artificiale|Spinners.png
+188|Spinners with tails|artificiale|Spinners_with_tails.png
+189|Squid Chain|artificiale|Squid_Chain.png
+190|Squid Jigs|artificiale|Squid_Jigs.png
+191|Swimbaits|artificiale|Swimbaits.png
+192|Trolling Octopuses|artificiale|Trolling_Octopuses.png
+193|Trolling Skirts|artificiale|Trolling_Skirts.png
+194|Tubes)|artificiale|Tubes).png
+195|Walker|artificiale|Walker.png
+196|Walkers|artificiale|Walkers.png
+197|Worms|artificiale|Worms.png
+198|Worms)|artificiale|Worms).png
+199|craws|artificiale|craws.png
+200|craws)|artificiale|craws).png
+201|grubs|artificiale|grubs.png
+202|shads|artificiale|shads.png
+203|slugs)|artificiale|slugs).png
+204|worms|artificiale|worms.png

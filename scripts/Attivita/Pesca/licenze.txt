@@ -1,0 +1,38 @@
+# zona|nome|tipo|giorni|prezzo
+# LICENZE. Una per ACQUA, non per singolo tratto: paghi 'Alamo Sea' e
+# peschi in tutti i suoi undici tratti di riva.
+# Prezzi NOSTRI: partono dal tipo d'acqua e salgono con quanti tratti
+# comprende la licenza. Il taglio da tre giorni costa 2.85 volte quello
+# da uno, il rapporto vero di Fishing Planet.
+alamosea|Alamo Sea|unica|1g|49
+alamosea|Alamo Sea|unica|3g|140
+cassidy|Cassidy|unica|1g|40
+cassidy|Cassidy|unica|3g|114
+chumash|Chumash|unica|1g|34
+chumash|Chumash|unica|3g|97
+elgordo|El Gordo|unica|1g|34
+elgordo|El Gordo|unica|3g|97
+golf|Golf|unica|1g|26
+golf|Golf|unica|3g|74
+landact|Land Act|unica|1g|31
+landact|Land Act|unica|3g|88
+mirrorpark|Mirror Park|unica|1g|26
+mirrorpark|Mirror Park|unica|3g|74
+pacificbluffs|Pacific Bluffs|unica|1g|34
+pacificbluffs|Pacific Bluffs|unica|3g|97
+paletobay|Paleto Bay|unica|1g|37
+paletobay|Paleto Bay|unica|3g|105
+paletocove|Paleto Cove|unica|1g|34
+paletocove|Paleto Cove|unica|3g|97
+palomino|Palomino|unica|1g|34
+palomino|Palomino|unica|3g|97
+sanchianski|San Chianski|unica|1g|34
+sanchianski|San Chianski|unica|3g|97
+tongva|Tongva|unica|1g|33
+tongva|Tongva|unica|3g|94
+vespucci|Vespucci|unica|1g|34
+vespucci|Vespucci|unica|3g|97
+vinewood|Vinewood|unica|1g|26
+vinewood|Vinewood|unica|3g|74
+zancudo|Zancudo|unica|1g|30
+zancudo|Zancudo|unica|3g|86

@@ -1,0 +1,245 @@
+# I NOMI DEI PESCI IN ITALIANO.
+# nome_inglese|nome_italiano
+# Sono i nomi comuni italiani veri della specie. Dove la specie
+# non ha un nome comune italiano (quasi tutte le americane, le
+# africane e le amazzoniche) il nome resta quello inglese, che e'
+# anche il nome con cui la si chiama qui: non ne inventiamo.
+African Big Eye Catfish|African Big Eye Catfish
+African Pike|African Pike
+African Sharptooth Catfish|pesce gatto africano
+African Tigerfish|pesce tigre africano
+Alaska Blackfish|Alaska Blackfish
+Albacore|alalunga
+Alligator Gar|lepisosteo alligatore
+American Gizzard Shad|American Gizzard Shad
+American Shad|alosa americana
+Amur Bitterling|rodeo dell'Amur
+Apapa|Apapa
+Arapaima|arapaima
+Arctic Char|salmerino artico
+Arctic Grayling|temolo artico
+Asp|aspio
+Atlantic Cod|merluzzo nordico
+Atlantic Halibut|ippoglosso atlantico
+Atlantic Herring|aringa atlantica
+Atlantic Horse Mackerel|sugarello
+Atlantic Mackerel|sgombro
+Atlantic Salmon|salmone atlantico
+Atlantic Saury|costardella
+Atlantic Wolffish|pesce lupo
+Azov Shad|cheppia d'Azov
+Baikal Omul|omul del Bajkal
+Banded Aracu|Banded Aracu
+Banded Tilapia|Banded Tilapia
+Beluga|storione beluga
+Biara|Biara
+Bicuda|Bicuda
+Bigeye Tuna|tonno obeso
+Bigfin Reef Squid|calamaro di scogliera
+Bighead Carp|carpa testa grossa
+Bigmouth Buffalo|Bigmouth Buffalo
+Black Bullhead Catfish|pesce gatto
+Black Crappie|Black Crappie
+Black Drum|Black Drum
+Black Marlin|marlin nero
+Black Sea Roach|Black Sea Roach
+Blacktail Shiner|Blacktail Shiner
+Blacktip Reef Shark|squalo pinna nera del reef
+Blue Bream|Blue Bream
+Blue Catfish|Blue Catfish
+Bluegill|Bluegill
+Bluntnose Minnow|Bluntnose Minnow
+Bonefish|pesce signora
+Bowfin|amia
+Brill|rombo liscio
+Brook Trout|salmerino di fonte
+Brown Bullhead Catfish|pesce gatto bruno
+Brown Trout|trota fario
+Brycon|Brycon
+Bull Shark|squalo leuca
+Bull Trout|Bull Trout
+Bulldog Fish|Bulldog Fish
+Burbot|bottatrice
+Butterfly Peacock Bass|Butterfly Peacock Bass
+California Roach|California Roach
+Chain Pickerel|Chain Pickerel
+Channel Catfish|pesce gatto punteggiato
+Chinese Sleeper|Chinese Sleeper
+Chinook Salmon|salmone reale
+Chub|cavedano
+Chum Salmon|salmone keta
+Clear Muskie|Clear Muskie
+Coalfish|merluzzo carbonaro
+Coho Salmon|salmone argentato
+Colorado Golden Trout|Colorado Golden Trout
+Common Barbel|barbo
+Common Bleak|alborella
+Common Bream|abramide
+Common Carp|carpa
+Common Dace|leucisco
+Common Ling|molva
+Common Minnow|sanguinerola
+Common Nase|naso
+Common Roach|rutilo
+Common Rudd|scardola
+Common Shiner|Common Shiner
+Common Snook|Common Snook
+Congo Yellowfish|Congo Yellowfish
+Cornish Jack|Cornish Jack
+Creek Brown Trout|trota fario di torrente
+Crucian Carp|carassio
+Cusk|brosme
+Cutthroat Trout|Cutthroat Trout
+Dogtooth Tuna|tonno dente di cane
+Dolly Varden|salmerino Dolly Varden
+Electric Eel|anguilla elettrica
+Elephant Fish|pesce elefante
+Eurasian Ruffe|acerina
+European Angler|rana pescatrice
+European Bitterling|rodeo amaro
+European Brown Trout|trota fario europea
+European Eel|anguilla europea
+European Flounder|passera
+European Grayling|temolo
+European Hake|nasello
+European Perch|persico reale
+European Sea Sturgeon|storione comune
+European Weatherfish|cobite di stagno
+Flag-Tailed Prochilodus|Flag-Tailed Prochilodus
+Flathead Catfish|Flathead Catfish
+Flatwhiskered Catfish|Flatwhiskered Catfish
+Florida Gar|Florida Gar
+Freshwater Drum|Freshwater Drum
+Gafftopsail Catfish|Gafftopsail Catfish
+Ghost Carp|carpa fantasma
+Giant Grouper|cernia gigante
+Giant Sweetlips|Giant Sweetlips
+Giant Trevally|carangide gigante
+Gilded Catfish|Gilded Catfish
+Giraffe Catfish|Giraffe Catfish
+Golden Shiner|Golden Shiner
+Golden Tench|tinca dorata
+Goliath Tigerfish|pesce tigre golia
+Gorgeous Swallowtail|Gorgeous Swallowtail
+Grass Carp|carpa erbivora
+Grass Pickerel|Grass Pickerel
+Great Barracuda|barracuda
+Greater Amberjack|ricciola
+Green Jobfish|Green Jobfish
+Green Sunfish|Green Sunfish
+Greenland Halibut|ippoglosso nero
+Greenland Shark|squalo della Groenlandia
+Gudgeon|gobione
+Haddock|eglefino
+Humpback Whitefish|coregone
+Hybrid F1 Carp|carpa ibrida F1
+Ide|ido
+Indo-Pacific King Mackerel|Indo-Pacific King Mackerel
+Jacunda|Jacunda
+Japanese Amberjack|ricciola giapponese
+Japanese Anchovy|acciuga giapponese
+Japanese Jack Mackerel|sugarello giapponese
+Kamba Catfish|Kamba Catfish
+Lake Chub|Lake Chub
+Lake Sturgeon|storione di lago
+Lake Trout|trota di lago
+Lake Whitefish|coregone di lago
+Largemouth Bass|persico trota
+Leather Carp|carpa cuoio
+Lenok|lenok
+Longnose Gar|lepisosteo
+Longnose Sucker|Longnose Sucker
+Mahi-Mahi|lampuga
+Marble Trout|trota marmorata
+Meagre|ombrina bocca d'oro
+Mirror Carp|carpa a specchio
+Monkey Goby|Monkey Goby
+Muskellunge|Muskellunge
+Narrow-Barred Mackerel|maccarello reale
+Nile Perch|persico del Nilo
+Nile Tilapia|tilapia del Nilo
+Northern Pike|luccio
+Norway Atlantic Salmon|salmone atlantico norvegese
+Norway Seaperch|scorfano norvegese
+Oregon Redband Trout|Oregon Redband Trout
+Orinoco Peacock Bass|Orinoco Peacock Bass
+Oscar|oscar
+Pacific Bluefin Tuna|tonno rosso del Pacifico
+Payara|Payara
+Permit|Permit
+Pink Salmon|salmone rosa
+Piraiba|Piraiba
+Porbeagle Shark|smeriglio
+Prussian Carp|carassio prussiano
+Pumpkinseed|persico sole
+Purple Labeo|Purple Labeo
+Rainbow Trout|trota iridea
+Red Drum|ombrina ocellata
+Red Peacock Bass|Red Peacock Bass
+Red Tail Barracuda|Red Tail Barracuda
+Red-Bellied Piranha|piranha dal ventre rosso
+Redbreast Sunfish|Redbreast Sunfish
+Redear Sunfish|Redear Sunfish
+Redeye Piranha|piranha occhio rosso
+Redfin Pickerel|Redfin Pickerel
+Rednose Labeo|Rednose Labeo
+Redtail Catfish|pesce gatto dalla coda rossa
+Ripsaw Catfish|Ripsaw Catfish
+Rock Bass|persico delle rocce
+Round Goby|ghiozzo tondo
+Ruby Snapper|Ruby Snapper
+Sailfish|pesce vela
+Sauger|Sauger
+Sea Trout|trota di mare
+Shoal Bass|Shoal Bass
+Siberian Taimen|taimen siberiano
+Sickle Pomfret|Sickle Pomfret
+Silver Arowana|arowana argentata
+Silver Bream|blicca
+Silver Carp|carpa argentata
+Silver Croaker|Silver Croaker
+Skipjack Tuna|tonnetto striato
+Sleek Unicornfish|Sleek Unicornfish
+Smallmouth Bass|boccapiccola
+Smallmouth Buffalo|Smallmouth Buffalo
+Sockeye Salmon|salmone rosso
+Sorubim Catfish|Sorubim Catfish
+Southern Flounder|Southern Flounder
+Speckled Peacock Bass|Speckled Peacock Bass
+Spiny Dogfish|spinarolo
+Splake|Splake
+Spotfin Flyingfish|pesce volante
+Spotted Aracu|Spotted Aracu
+Spotted Bass|Spotted Bass
+Spotted Gar|Spotted Gar
+Steelhead|trota steelhead
+Sterlet|sterleto
+Striped Bass|spigola striata
+Striped Bonito|palamita striata
+Striped Marlin|marlin striato
+Swordfish|pesce spada
+Tambaqui|tambaqui
+Tarpon|tarpone
+Tench|tinca
+Thicklip Grey Mullet|cefalo bosega
+Tiger Muskie|Tiger Muskie
+Tiger Trout|trota tigre
+Trahira|Trahira
+Two-Spot Red Snapper|Two-Spot Red Snapper
+Vundu Catfish|Vundu Catfish
+Wahoo|Wahoo
+Walleye|Walleye
+Warmouth|Warmouth
+Wels Catfish|siluro
+White Bass|White Bass
+White Catfish|White Catfish
+White Crappie|White Crappie
+White Sturgeon|storione bianco
+White Sucker|White Sucker
+White-Eye Bream|White-Eye Bream
+Whiting|merlano
+Yellow Perch|persico giallo
+Yellowfin Tuna|tonno albacora
+Yellowstripe Scad|Yellowstripe Scad
+Zander|lucioperca
+Ziege|pesce sciabola

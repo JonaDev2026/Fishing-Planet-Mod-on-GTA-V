@@ -1,0 +1,386 @@
+# id|categoria|marca|modello|misura|mm|kg|pezzi|prezzo|liv_wiki|img|grammi|forma
+# ami, jig head, rig, leader e piombi - dati veri dal wiki di Fishing Planet
+# grammi = peso reale del piombo/testina, dalle tabelle del wiki. Ami, rig e leader sul wiki non hanno peso.
+# forma = il disegno grande dell'amo/piombo, quello che sul wiki sta
+# sotto le scatoline nella riga "Hook". Va accanto alla scatolina.
+1|amo|MagFin|Kirby|#10|||10|20|1|Kirby10.png||Kirby.png
+2|amo|MagFin|Kirby|#8|||10|20|1|Kirby8.png||Kirby.png
+3|amo|MagFin|Kirby|#6|||10|60|2|Kirby6.png||Kirby.png
+4|amo|MagFin|Kirby|#4|||10|60|3|Kirby4.png||Kirby.png
+5|amo|MagFin|Kirby|#2|||10|60|3|Kirby2.png||Kirby.png
+6|amo|MagFin|Octopus|#1|||10|140|4|Octopus1.png||Octopus.png
+7|amo|MagFin|Octopus|#1/0|||10|140|7|Octopus1-0.png||Octopus.png
+8|amo|MagFin|Offset Hook|#4|||5|200|8|7475.png||7451.png
+9|amo|MagFin|Offset Hook|#2|||5|235|8|7467.png||7451.png
+10|amo|MagFin|Offset Hook|#1|||5|275|9|7469.png||7451.png
+11|amo|MagFin|Octopus|#2/0|||10|150|10|Octopus2-0.png||Octopus.png
+12|amo|MagFin|Offset Hook|#1/0|||5|290|10|7471.png||7451.png
+13|amo|MagFin|Kirby|#12|||10|30|12|Kirby12.png||Kirby.png
+14|amo|MagFin|Octopus|#3/0|||10|150|12|Octopus3-0.png||Octopus.png
+15|amo|MagFin|Offset Hook|#2/0|||5|300|12|7473.png||7451.png
+16|amo|MagFin|Kirby|#14|||10|30|15|Kirby14.png||Kirby.png
+17|amo|MagFin|Offset Hook|#3/0|||5|330|15|7477.png||7451.png
+18|amo|RIVERTEX|Catfish|#4/0|||10|220|18|Catfish4-0.png||Catfish.png
+19|amo|RIVERTEX|Catfish|#9/0|||10|220|19|Catfish9-0.png||Catfish.png
+20|amo|RIVERTEX|Catfish|#5/0|||10|220|20|Catfish5-0.png||Catfish.png
+21|amo|MagFin|Kirby|#16|||10|30|20|Kirby16.png||Kirby.png
+22|amo|MagFin|Offset Hook|#4/0|||5|420|20|7479.png||7451.png
+23|amo|MagFin|Offset Hook|#5/0|||5|440|25|7481.png||7451.png
+24|amo|RIVERTEX|Catfish|#6/0|||10|300|30|Catfish6-0.png||Catfish.png
+25|amo|MagFin|Offset Hook|#6/0|||5|475|30|7483.png||7451.png
+26|amo|RIVERTEX|Catfish|#7/0|||10|300|31|Catfish7-0.png||Catfish.png
+27|amo|RIVERTEX|Catfish|#10/0|||10|300|32|Catfish10-0.png||Catfish.png
+28|amo|RIVERTEX|Catfish|#8/0|||10|300|33|Catfish8-0.png||Catfish.png
+29|amo|UL-CHUBER|Carp Hook|#2|||10|330|34|5907.png||5908.png
+30|amo|UL-CHUBER|Carp Hook|#1|||10|330|35|5949.png||5908.png
+31|amo|MagFin|Offset Hook|#8/0|||5|595|35|7485.png||7451.png
+32|amo|UL-CHUBER|Carp Hook|#1/0|||10|420|42|5956.png||5908.png
+33|amo|UL-CHUBER|Carp Hook|#2/0|||10|420|44|5958.png||5908.png
+34|amo|UL-CHUBER|Carp Hook|#3/0|||10|550|46|5960.png||5908.png
+35|amo|UL-CHUBER|Carp Hook|#4/0|||10|550|48|5962.png||5908.png
+36|amo|UL-CHUBER|Carp Hook|#6/0|||10|660|50|5964.png||5908.png
+37|amo|UL-CHUBER|Carp Hook|#8/0|||10|660|50|5966.png||5908.png
+38|amo|UL-CHUBER|Carp Hook|#10/0|||10|660|50|5968.png||5908.png
+39|amo|MagFin|Cap'n Hook|#7/0|||5|360|61|10524.png||10525.png
+40|amo|MagFin|Cap'n Hook|#8/0|||5|360|62|10526.png||10525.png
+41|amo|MagFin|Cap'n Hook|#9/0|||5|360|63|10528.png||10525.png
+42|amo|MagFin|Cap'n Hook|#10/0|||5|360|64|10530.png||10525.png
+43|amo|MagFin|Cap'n Hook|#11/0|||3|420|65|10532.png||10525.png
+44|amo|MagFin|Cap'n Hook|#12/0|||3|420|66|10534.png||10525.png
+45|amo|MagFin|Cap'n Hook|#13/0|||3|420|67|10536.png||10525.png
+46|amo|MagFin|Cap'n Hook|#14/0|||3|420|68|10538.png||10525.png
+47|amo|MagFin|Offset Hook|#9/0|||5|655|71|10959.png||7451.png
+48|amo|MagFin|Offset Hook|#10/0|||5|725|73|10958.png||7451.png
+49|amo|MagFin|Offset Hook|#11/0|||5|790|75|10966.png||7451.png
+50|amo|MagFin|Offset Hook|#12/0|||5|860|77|10964.png||7451.png
+51|amo|MagFin|Offset Hook|#13/0|||5|920|78|10962.png||7451.png
+52|amo|MagFin|Offset Hook|#14/0|||5|995|80|10960.png||7451.png
+53|amo|Fletch and Bradford|Fabulous Point Hook|#10/0|||5|1420|81|12527.png||12528.png
+54|amo|Fletch and Bradford|Fabulous Point Hook|#11/0|||5|1485|82|12833.png||12528.png
+55|amo|Fletch and Bradford|Fabulous Point Hook|#12/0|||5|1525|83|12834.png||12528.png
+56|amo|Fletch and Bradford|Fabulous Point Hook|#13/0|||5|1590|84|12835.png||12528.png
+57|amo|Fletch and Bradford|Fabulous Point Hook|#14/0|||5|1630|85|12836.png||12528.png
+58|amo|Fletch and Bradford|Fabulous Point Hook|#15/0|||5|1675|86|12837.png||12528.png
+59|amo|Fletch and Bradford|Livebait Trolling Hook|#2/0|||3|2415|86|12573.png||12574.png
+60|amo|Fletch and Bradford|Livebait Trolling Hook|#3/0|||3|2550|86|12575.png||12574.png
+61|amo|Fletch and Bradford|Livebait Trolling Hook|#5/0|||3|2685|86|12576.png||12574.png
+62|amo|Fletch and Bradford|Fabulous Point Hook|#16/0|||5|1715|87|12838.png||12528.png
+63|amo|Fletch and Bradford|Fabulous Point Hook|#17/0|||5|1855|88|12839.png||12528.png
+64|amo|Fletch and Bradford|Livebait Trolling Hook|#7/0|||3|2760|88|12577.png||12574.png
+65|amo|Fletch and Bradford|Livebait Trolling Hook|#8/0|||3|2855|88|12578.png||12574.png
+66|amo|Fletch and Bradford|Fabulous Point Hook|#18/0|||5|1940|89|12840.png||12528.png
+67|amo|Fletch and Bradford|Livebait Trolling Hook|#10/0|||3|2930|89|12579.png||12574.png
+68|jig||Common Jig Heads|5 g||#1||40|4|1606.png|5|
+69|jig||Common Jig Heads|7 g||#1||40|4|1606.png|7|
+70|jig||Common Jig Heads|2 g||#4||35|5|1606.png|2|
+71|jig||Common Jig Heads|3 g||#2||40|5|1606.png|3|
+72|jig||Common Jig Heads|4 g||#4||35|5|1606.png|4|
+73|jig||Common Jig Heads|5 g||#2||35|5|1606.png|5|
+74|jig||Common Jig Heads|1.5 g||#1||45|6|1606.png|1.5|
+75|jig||Common Jig Heads|3 g||#1||40|6|1606.png|3|
+76|jig||Common Jig Heads|3 g||#1/0||45|7|1606.png|3|
+77|jig||Common Jig Heads|5 g||#1/0||50|7|1606.png|5|
+78|jig||Common Jig Heads|9 g||#1/0||50|7|1100.png|9|
+79|jig||Common Jig Heads|7 g||#2/0||55|9|1606.png|7|
+80|jig||Common Jig Heads|9 g||#2/0||55|10|1100.png|9|
+81|jig||Common Jig Heads|14 g||#2/0||60|10|1099.png|14|
+82|jig||Common Jig Heads|5 g||#3/0||65|12|217.png|5|
+83|jig||Common Jig Heads|9 g||#3/0||65|12|1100.png|9|
+84|jig||Common Jig Heads|14 g||#3/0||70|13|1099.png|14|
+85|jig||Common Jig Heads|21 g||#3/0||70|13|1099.png|21|
+86|jig||Common Jig Heads|14 g||#4/0||75|18|1099.png|14|
+87|jig||Common Jig Heads|25 g||#4/0||80|18|1099.png|25|
+88|jig||Common Jig Heads|42 g||#4/0||80|19|1099.png|42|
+89|jig||Thorn JigHead|18 g||#3/0||85|20|13230.png|18|
+90|jig||Thorn JigHead|18 g||#3/0||85|20|13231.png|18|
+91|jig||Thorn JigHead|18 g||#4/0||90|22|13230.png|18|
+92|jig||Thorn JigHead|18 g||#4/0||90|22|13231.png|18|
+93|jig||Common Jig Heads|48 g||#4/0||85|23|1099.png|48|
+94|jig||Common Jig Heads|56 g||#4/0||85|23|1099.png|56|
+95|jig||Thorn JigHead|25 g||#3/0||95|25|13230.png|25|
+96|jig||Thorn JigHead|25 g||#3/0||95|25|13231.png|25|
+97|jig||Common Jig Heads|9 g||#6/0||90|26|1099.png|9|
+98|jig||Common Jig Heads|18 g||#6/0||90|26|1099.png|18|
+99|jig||Common Jig Heads|30 g||#6/0||95|27|1099.png|30|
+100|jig||Common Jig Heads|48 g||#6/0||100|28|1099.png|48|
+101|jig||Common Jig Heads|56 g||#6/0||105|28|1099.png|56|
+102|jig||Thorn JigHead|25 g||#4/0||115|28|13230.png|25|
+103|jig||Thorn JigHead|25 g||#4/0||115|28|13231.png|25|
+104|jig||Thorn JigHead|30 g||#3/0||100|31|13147.png|30|
+105|jig||Thorn JigHead|30 g||#3/0||100|31|13148.png|30|
+106|jig||Common Jig Heads|7 g||#8/0||110|32|1099.png|7|
+107|jig||Common Jig Heads|14 g||#8/0||115|32|1099.png|14|
+108|jig||Thorn JigHead|18 g||#6/0||110|32|13230.png|18|
+109|jig||Thorn JigHead|18 g||#6/0||110|32|13231.png|18|
+110|jig||Common Jig Heads|25 g||#8/0||120|33|1099.png|25|
+111|jig||Common Jig Heads|42 g||#8/0||125|33|1099.png|42|
+112|jig||Thorn JigHead|30 g||#4/0||110|33|13147.png|30|
+113|jig||Thorn JigHead|30 g||#4/0||110|33|13148.png|30|
+114|jig||Thorn JigHead|42 g||#3/0||117|37|13147.png|42|
+115|jig||Thorn JigHead|42 g||#3/0||117|37|13148.png|42|
+116|jig||Thorn JigHead|25 g||#6/0||120|39|13230.png|25|
+117|jig||Thorn JigHead|25 g||#6/0||120|39|13231.png|25|
+118|jig||Thorn JigHead|42 g||#4/0||122|41|13147.png|42|
+119|jig||Thorn JigHead|42 g||#4/0||122|41|13148.png|42|
+120|jig||Thorn JigHead|30 g||#6/0||115|44|13147.png|30|
+121|jig||Thorn JigHead|30 g||#6/0||115|44|13148.png|30|
+122|jig||Thorn JigHead|56 g||#3/0||120|46|13147.png|56|
+123|jig||Thorn JigHead|56 g||#3/0||120|46|13148.png|56|
+124|jig||Thorn JigHead|56 g||#4/0||125|47|13147.png|56|
+125|jig||Thorn JigHead|56 g||#4/0||125|47|13148.png|56|
+126|jig||Thorn JigHead|42 g||#6/0||130|51|13147.png|42|
+127|jig||Thorn JigHead|42 g||#6/0||130|51|13148.png|42|
+128|jig||Thorn JigHead|56 g||#6/0||135|57|13147.png|56|
+129|jig||Thorn JigHead|56 g||#6/0||135|57|13148.png|56|
+130|jig||Common Jig Heads|64 g||#4/0||112|58|1099.png|64|
+131|jig||Common Jig Heads|71 g||#4/0||116|59|1099.png|71|
+132|jig||Common Jig Heads|64 g||#6/0||124|60|1099.png|64|
+133|jig||Common Jig Heads|71 g||#6/0||127|60|1099.png|71|
+134|jig||Common Jig Heads|84 g||#4/0||112|64|1099.png|84|
+135|jig||Common Jig Heads|84 g||#6/0||127|65|1099.png|84|
+136|jig||Tungsten JigHead|60 g||#4/0||1210|101|14402.png|60|
+137|jig||Tungsten JigHead|100 g||#4/0||1350|101|14404.png|100|
+138|jig||Tungsten JigHead|200 g||#3/0||1170|101|14406.png|200|
+139|jig||Tungsten JigHead|60 g||#5/0||1440|102|14402.png|60|
+140|jig||Tungsten JigHead|80 g||#5/0||1470|102|14403.png|80|
+141|jig||Tungsten JigHead|250 g||#4/0||1430|102|14407.png|250|
+142|jig||Tungsten JigHead|60 g||#6/0||1550|103|14402.png|60|
+143|jig||Tungsten JigHead|300 g||#5/0||1510|103|14407.png|300|
+144|jig||Tungsten JigHead|80 g||#7/0||1660|104|14403.png|80|
+145|jig||Tungsten JigHead|200 g||#7/0||1720|104|14406.png|200|
+146|jig||Tungsten JigHead|100 g||#8/0||1790|105|14404.png|100|
+147|jig||Tungsten JigHead|150 g||#8/0||1860|105|14405.png|150|
+148|jig||Tungsten JigHead|300 g||#8/0||1890|106|14407.png|300|
+149|jig||Tungsten JigHead|200 g||#9/0||1920|107|14406.png|200|
+150|jig||Tungsten JigHead|200 g||#11/0||2250|108|14406.png|200|
+151|jig||Tungsten JigHead|250 g||#10/0||2120|108|14407.png|250|
+152|jig||Tungsten JigHead|300 g||#10/0||2190|108|14407.png|300|
+153|jig||Tungsten JigHead|100 g||#12/0||2380|109|14404.png|100|
+154|jig||Tungsten JigHead|150 g||#12/0||2440|109|14405.png|150|
+155|jig||Tungsten JigHead|250 g||#13/0||2630|109|14407.png|250|
+156|jig||Tungsten JigHead|300 g||#12/0||2510|109|14407.png|300|
+157|jig||Tungsten JigHead|80 g||#6/0||2070|110|14403.png|80|
+158|jig||Tungsten JigHead|150 g||#14/0||2710|110|14405.png|150|
+159|jig||Tungsten JigHead|250 g||#16/0||3250|110|14407.png|250|
+160|jig||Tungsten JigHead|300 g||#14/0||2840|110|14407.png|300|
+161|jig||Tungsten JigHead|300 g||#16/0||3380|110|14407.png|300|
+162|rig|MagFin|Three-way Rig||0.2|2.70|5|15|12|7624.png||7461.png
+163|rig|MagFin|Texas Rig||0.2|2.70|5|17|13|7600.png||7457.png
+164|rig|MagFin|Carolina Rig||0.2|2.70|5|20|14|7554.png||7459.png
+165|rig|MagFin|Three-way Rig||0.23|3.60|5|20|16|7622.png||7461.png
+166|rig|MagFin|Texas Rig||0.23|3.60|5|22|17|7598.png||7457.png
+167|rig|MagFin|Carolina Rig||0.23|3.60|5|25|18|7556.png||7459.png
+168|rig|MagFin|Three-way Rig||0.28|4.50|5|30|19|7620.png||7461.png
+169|rig|MagFin|Texas Rig||0.28|4.50|5|32|20|7596.png||7457.png
+170|rig|MagFin|Carolina Rig||0.28|4.50|5|35|21|7558.png||7459.png
+171|rig|MagFin|Three-way Rig||0.3|5.50|5|40|21|7618.png||7461.png
+172|rig|MagFin|Texas Rig||0.3|5.50|5|42|22|7594.png||7457.png
+173|rig|MagFin|Carolina Rig||0.3|5.50|5|45|24|7560.png||7459.png
+174|rig|MagFin|Three-way Rig||0.35|6.80|5|50|25|7616.png||7461.png
+175|rig|MagFin|Texas Rig||0.35|6.80|5|52|26|7593.png||7457.png
+176|rig|MagFin|Carolina Rig||0.35|6.80|5|55|27|7562.png||7459.png
+177|rig|MagFin|Three-way Rig||0.38|8.20|5|60|30|7614.png||7461.png
+178|rig|MagFin|Texas Rig||0.38|8.20|5|62|31|7590.png||7457.png
+179|rig|MagFin|Carolina Rig||0.38|8.20|5|65|32|7564.png||7459.png
+180|rig|MagFin|Three-way Rig||0.4|9.10|5|65|32|7612.png||7461.png
+181|rig|MagFin|Texas Rig||0.4|9.10|5|67|33|7588.png||7457.png
+182|rig|MagFin|Carolina Rig||0.4|9.10|5|70|34|7566.png||7459.png
+183|rig|MagFin|Three-way Rig||0.45|11.30|5|75|35|7610.png||7461.png
+184|rig|MagFin|Texas Rig||0.45|11.30|5|77|36|7586.png||7457.png
+185|rig|MagFin|Three-way Rig||0.5|12.70|5|95|36|7608.png||7461.png
+186|rig|MagFin|Carolina Rig||0.45|11.30|5|80|37|7568.png||7459.png
+187|rig|MagFin|Texas Rig||0.5|12.70|5|97|37|7584.png||7457.png
+188|rig|MagFin|Carolina Rig||0.5|12.70|5|100|38|7570.png||7459.png
+189|rig|MagFin|Three-way Rig||0.54|15.20|5|100|40|7606.png||7461.png
+190|rig|MagFin|Three-way Rig||0.6|18.10|5|120|40|7604.png||7461.png
+191|rig|MagFin|Texas Rig||0.54|15.20|5|110|41|7582.png||7457.png
+192|rig|MagFin|Carolina Rig||0.54|15.20|5|115|42|7572.png||7459.png
+193|rig|MagFin|Texas Rig||0.6|18.10|5|125|45|7580.png||7457.png
+194|rig|MagFin|Carolina Rig||0.6|18.10|5|130|46|7574.png||7459.png
+195|rig|MagFin|Three-way Rig||0.65|20.0|5|130|46|7602.png||7461.png
+196|rig|MagFin|Texas Rig||0.65|20.0|5|135|47|7578.png||7457.png
+197|rig|MagFin|Three-way Rig||0.7|24.0|5|170|47|8449.png||7461.png
+198|rig|MagFin|Carolina Rig||0.65|20.0|5|140|48|7576.png||7459.png
+199|rig|MagFin|Texas Rig||0.7|24.0|5|175|48|8460.png||7457.png
+200|rig|MagFin|Carolina Rig||0.7|24.0|5|180|49|8436.png||7459.png
+201|rig|MagFin|Three-way Rig||0.75|27.50|5|200|51|8453.png||7461.png
+202|rig|MagFin|Texas Rig||0.75|27.50|5|200|52|8465.png||7457.png
+203|rig|MagFin|Carolina Rig||0.75|27.50|5|210|53|8443.png||7459.png
+204|rig|MagFin|Carolina Rig||0.8|32.0|5|250|55|8446.png||7459.png
+205|rig|MagFin|Texas Rig||0.8|32.0|5|245|55|8469.png||7457.png
+206|rig|MagFin|Three-way Rig||0.8|32.0|5|240|55|8457.png||7461.png
+207|rig|MagFin|Texas Rig||0.85|36.0|5|275|72|10925.png||7457.png
+208|rig|MagFin|Carolina Rig||0.85|36.0|5|285|73|10935.png||7459.png
+209|rig|MagFin|Three-way Rig||0.85|36.0|5|270|74|10944.png||7461.png
+210|rig|MagFin|Texas Rig||0.9|40.0|5|320|75|10928.png||7457.png
+211|rig|MagFin|Carolina Rig||0.9|40.0|5|325|76|10936.png||7459.png
+212|rig|MagFin|Three-way Rig||0.9|40.0|5|300|77|10946.png||7461.png
+213|rig|MagFin|Texas Rig||0.92|44.0|5|345|78|10932.png||7457.png
+214|rig|MagFin|Carolina Rig||0.92|44.0|5|355|79|10937.png||7459.png
+215|rig|MagFin|Three-way Rig||0.92|44.0|5|340|80|10948.png||7461.png
+216|leader|UL-CHUBER|Carp Leader|||7.70|20|55|1|6789.png||6214.png
+217|leader|UL-CHUBER|Carp Leader|||11.35|20|75|1|6791.png||6214.png
+218|leader|MagFin|Fluorocarbon Leader|0.82|0.2|2.70|10|36|1|7968.png||7915.png
+219|leader|MagFin|Fluorocarbon Leader|1.64|0.2|2.70|10|39|1|7966.png||7915.png
+220|leader|MagFin|Fluorocarbon Leader|0.82|0.28|4.50|10|58|1|7976.png||7915.png
+221|leader|MagFin|Fluorocarbon Leader|1.64|0.28|4.50|10|63|1|7974.png||7915.png
+222|leader|MagFin|Fluorocarbon Leader|0.82|0.35|6.80|10|100|1|7984.png||7915.png
+223|leader|MagFin|Fluorocarbon Leader|0.82|0.45|11.30|10|186|1|7992.png||7915.png
+224|leader|MagFin|Fluorocarbon Leader|1.64|0.45|11.30|10|197|1|7990.png||7915.png
+225|leader|UL-CHUBER|Mono Leader||0.1|1.20|30|7|1|6026.png||5219.png
+226|leader|UL-CHUBER|Mono Leader||0.14|2.50|30|21|1|6030.png||5219.png
+227|leader|UL-CHUBER|Mono Leader||0.16|3.15|30|28|1|6032.png||5219.png
+228|leader|UL-CHUBER|Mono Leader||0.25|6.50|30|42|1|6040.png||5219.png
+229|leader|UL-CHUBER|Mono Leader||0.3|9.00|30|69|1|6042.png||5219.png
+230|leader|MagFin|Titanium Leader|0.82|0.1|3.20|10|56|1|7863.png||7800.png
+231|leader|MagFin|Titanium Leader|1.64|0.1|3.20|10|61|1|7861.png||7800.png
+232|leader|MagFin|Titanium Leader|0.82|0.13|5.80|10|90|1|7869.png||7800.png
+233|leader|MagFin|Titanium Leader|1.64|0.13|5.80|10|98|1|7871.png||7800.png
+234|leader|MagFin|Titanium Leader|0.82|0.18|8.50|10|155|1|7881.png||7800.png
+235|leader|MagFin|Titanium Leader|1.64|0.18|8.50|10|162|1|7880.png||7800.png
+236|leader|MagFin|Titanium Leader|0.82|0.22|11.80|10|222|1|7889.png||7800.png
+237|leader|MagFin|Titanium Leader|1.64|0.22|11.80|10|230|1|7887.png||7800.png
+238|leader|UL-CHUBER|Mono Leader||0.09|0.90|15|5|3|6018.png||5219.png
+239|leader|UL-CHUBER|Mono Leader||0.1|1.20|15|6|3|6020.png||5219.png
+240|leader|UL-CHUBER|Mono Leader||0.09|0.90|15|10|4|6016.png||5219.png
+241|leader|UL-CHUBER|Mono Leader||0.09|0.90|15|12|5|5208.png||5219.png
+242|leader|UL-CHUBER|Mono Leader||0.1|1.20|15|12|5|5210.png||5219.png
+243|leader|UL-CHUBER|Mono Leader||0.1|1.20|15|15|6|5210.png||5219.png
+244|leader|UL-CHUBER|Mono Leader||0.12|1.85|15|14|7|6022.png||5219.png
+245|leader|UL-CHUBER|Mono Leader||0.12|1.85|15|17|8|6024.png||5219.png
+246|leader|MagFin|Fluorocarbon Leader|0.82|0.2|2.70|5|21|10|7911.png||7915.png
+247|leader|MagFin|Titanium Leader|0.82|0.1|3.20|5|33|10|7812.png||7800.png
+248|leader|MagFin|Fluorocarbon Leader|1.64|0.2|2.70|5|25|12|7914.png||7915.png
+249|leader|UL-CHUBER|Mono Leader||0.14|2.50|15|19|12|5214.png||5219.png
+250|leader|MagFin|Titanium Leader|1.64|0.1|3.20|5|39|12|7814.png||7800.png
+251|leader|UL-CHUBER|Mono Leader||0.16|3.15|15|25|14|5216.png||5219.png
+252|leader|UL-CHUBER|Mono Leader||0.18|3.80|15|30|15|5220.png||5219.png
+253|leader|MagFin|Fluorocarbon Leader|0.82|0.28|4.50|5|47|19|7920.png||7915.png
+254|leader|MagFin|Fluorocarbon Leader|1.64|0.28|4.50|5|51|20|7922.png||7915.png
+255|leader|MagFin|Fluorocarbon Leader|1.64|0.35|6.80|10|116|21|7982.png||7915.png
+256|leader|MagFin|Titanium Leader|0.82|0.13|5.80|5|73|22|7820.png||7800.png
+257|leader|UL-CHUBER|Mono Leader||0.25|6.50|15|36|23|5404.png||5219.png
+258|leader|MagFin|Titanium Leader|1.64|0.13|5.80|5|80|24|7822.png||7800.png
+259|leader|MagFin|Fluorocarbon Leader|0.82|0.35|6.80|5|77|25|7934.png||7915.png
+260|leader|MagFin|Fluorocarbon Leader|1.64|0.35|6.80|5|89|25|7932.png||7915.png
+261|leader|MagFin|Fluorocarbon Leader|0.82|0.38|8.20|5|121|26|7938.png||7915.png
+262|leader|MagFin|Fluorocarbon Leader|1.64|0.38|8.20|5|143|27|7936.png||7915.png
+263|leader|UL-CHUBER|Mono Leader||0.3|9.00|15|58|27|5402.png||5219.png
+264|leader|MagFin|Titanium Leader|0.82|0.18|8.50|5|120|30|7828.png||7800.png
+265|leader|MagFin|Titanium Leader|1.64|0.18|8.50|5|138|32|7830.png||7800.png
+266|leader|MagFin|Fluorocarbon Leader|0.82|0.45|11.30|5|158|33|7948.png||7915.png
+267|leader|UL-CHUBER|Mono Leader||0.35|12.50|15|77|33|5403.png||5219.png
+268|leader|UL-CHUBER|Carp Leader|||7.70|10|40|35|6176.png||6214.png
+269|leader|MagFin|Fluorocarbon Leader|1.64|0.45|11.30|5|172|35|7946.png||7915.png
+270|leader|MagFin|Titanium Leader|0.82|0.22|11.80|5|180|36|7836.png||7800.png
+271|leader|MagFin|Fluorocarbon Leader|0.82|0.54|15.20|10|232|38|8000.png||7915.png
+272|leader|MagFin|Fluorocarbon Leader|1.64|0.54|15.20|10|244|38|7998.png||7915.png
+273|leader|MagFin|Titanium Leader|1.64|0.22|11.80|5|192|38|7838.png||7800.png
+274|leader|MagFin|Fluorocarbon Leader|0.82|0.54|15.20|5|212|40|7956.png||7915.png
+275|leader|UL-CHUBER|Carp Leader|||11.35|10|62|42|6181.png||6214.png
+276|leader|MagFin|Fluorocarbon Leader|1.64|0.54|15.20|5|220|42|7954.png||7915.png
+277|leader|MagFin|Fluorocarbon Leader|0.82|0.65|20.00|10|331|42|8008.png||7915.png
+278|leader|MagFin|Fluorocarbon Leader|1.64|0.65|20.00|10|345|42|8006.png||7915.png
+279|leader|UL-CHUBER|Mono Leader||0.5|19.50|30|115|42|6050.png||5219.png
+280|leader|MagFin|Titanium Leader|0.82|0.3|18.60|5|255|42|7844.png||7800.png
+281|leader|MagFin|Titanium Leader|0.82|0.3|18.60|10|299|42|7897.png||7800.png
+282|leader|MagFin|Titanium Leader|1.64|0.3|18.60|10|299|42|7895.png||7800.png
+283|leader|UL-CHUBER|Carp Leader|||13.60|10|90|45|6783.png||6214.png
+284|leader|MagFin|Titanium Leader|1.64|0.3|18.60|5|260|45|7844.png||7800.png
+285|leader|UL-CHUBER|Carp Leader|||20.40|20|125|46|6795.png||6214.png
+286|leader|UL-CHUBER|Mono Leader||0.55|23.30|30|153|46|8364.png||5219.png
+287|leader|UL-CHUBER|Carp Leader|||23.60|20|190|48|6797.png||6214.png
+288|leader|UL-CHUBER|Carp Leader|||20.40|10|110|49|6185.png||6214.png
+289|leader|UL-CHUBER|Carp Leader|||23.60|10|142|50|6186.png||6214.png
+290|leader|UL-CHUBER|Mono Leader||0.5|19.50|15|96|50|5401.png||5219.png
+291|leader|MagFin|Titanium Leader|0.82|0.4|31.60|10|427|50|7905.png||7800.png
+292|leader|MagFin|Titanium Leader|1.64|0.4|31.60|10|408|50|7903.png||7800.png
+293|leader|UL-CHUBER|Mono Leader||0.55|23.30|15|152|51|8366.png||5219.png
+294|leader|MagFin|Fluorocarbon Leader|0.82|0.65|20.00|5|281|52|7964.png||7915.png
+295|leader|MagFin|Titanium Leader|0.82|0.4|31.60|5|354|52|7852.png||7800.png
+296|leader|MagFin|Fluorocarbon Leader|1.64|0.65|20.00|5|294|53|7962.png||7915.png
+297|leader|UL-CHUBER|Mono Leader||0.6|27.50|15|200|53|8368.png||5219.png
+298|leader|MagFin|Titanium Leader|1.64|0.4|31.60|5|337|53|7854.png||7800.png
+299|leader|MagFin|Fluorocarbon Leader|0.82|0.75|27.50|10|436|54|8578.png||7915.png
+300|leader|MagFin|Fluorocarbon Leader|1.64|0.75|27.50|10|420|54|8579.png||7915.png
+301|leader|MagFin|Fluorocarbon Leader|0.82|0.75|27.50|5|378|55|8576.png||7915.png
+302|leader|MagFin|Fluorocarbon Leader|1.64|0.75|27.50|5|397|55|8577.png||7915.png
+303|leader|UL-CHUBER|Mono Leader||0.7|37.00|30|310|58|10589.png||5219.png
+304|leader|UL-CHUBER|Mono Leader||0.7|37.00|15|275|61|10587.png||5219.png
+305|leader|MagFin|Fluorocarbon Leader|0.82|0.85|37.00|10|655|63|10593.png||7915.png
+306|leader|MagFin|Fluorocarbon Leader|1.64|0.85|37.00|10|671|63|10597.png||7915.png
+307|leader|MagFin|Fluorocarbon Leader|0.82|0.85|37.00|5|542|66|10591.png||7915.png
+308|leader|MagFin|Fluorocarbon Leader|1.64|0.85|37.00|5|558|66|10595.png||7915.png
+309|leader|MagFin|Titanium Leader|0.82|0.47|39.50|10|612|68|10601.png||7800.png
+310|leader|MagFin|Titanium Leader|1.64|0.47|39.50|10|624|68|10599.png||7800.png
+311|leader|MagFin|Titanium Leader|0.82|0.47|39.50|5|547|70|10605.png||7800.png
+312|leader|MagFin|Titanium Leader|1.64|0.47|39.50|5|534|70|10603.png||7800.png
+313|leader|MagFin|Titanium Leader|0.82|0.49|43.50|5|705|79|10910.png||7800.png
+314|leader|MagFin|Titanium Leader|1.64|0.49|43.50|5|717|79|10912.png||7800.png
+315|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|0.8|35.00|3|1210|83|12517.png||7915.png
+316|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|0.8|35.00|6|1285|83|12518.png||7915.png
+317|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|0.8|35.00|3|1325|83|12519.png||7915.png
+318|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|0.8|35.00|6|1375|83|12521.png||7915.png
+319|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|0.9|45.00|6|1620|83|12479.png||7915.png
+320|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|0.9|45.00|6|2230|83|12481.png||7915.png
+321|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|1.0|55.00|6|2310|83|12487.png||7915.png
+322|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|1.0|55.00|6|2640|83|12489.png||7915.png
+323|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|1.1|65.00|6|2925|83|12495.png||7915.png
+324|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|1.1|65.00|6|3365|83|12497.png||7915.png
+325|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|1.2|75.00|6|3810|83|12503.png||7915.png
+326|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|1.2|75.00|6|4350|83|12505.png||7915.png
+327|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|1.3|85.00|6|5650|83|12515.png||7915.png
+328|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|0.9|45.00|3|1550|84|12478.png||7915.png
+329|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|0.9|45.00|3|1890|84|12480.png||7915.png
+330|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|1.0|55.00|3|2230|85|12486.png||7915.png
+331|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|1.0|55.00|3|2570|85|12488.png||7915.png
+332|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|1.1|65.00|3|2810|87|12494.png||7915.png
+333|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|1.1|65.00|3|3215|87|12496.png||7915.png
+334|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|1.2|75.00|3|3740|88|12502.png||7915.png
+335|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|4.11|1.2|75.00|3|4200|88|12504.png||7915.png
+336|leader|Tsurihito|HinomaruClear Fluorocarbon Leader|3.3|1.3|85.00|3|5215|90|12513.png||7915.png
+337|piombo||Sinker|1/2||||20|3|5112.png|15|
+338|piombo||Sinker|7/8||||35|5|5112.png|25|
+339|piombo||Sinker|1 3/4||||75|7|5112.png|50|
+340|piombo||Drop Sinker|1/16|||4|40|12|7541.png|2|
+341|piombo||Drop Sinker|1/8|||4|50|12|7541.png|4|
+342|piombo||Bullet Sinker|1/16|||4|45|13|7454.png|2|
+343|piombo||Bullet Sinker|1/8|||4|55|13|7454.png|4|
+344|piombo||Drop Sinker|1/5|||4|60|14|7541.png|6|
+345|piombo||Sinker|2 3/4||||90|14|5112.png|75|
+346|piombo||Bullet Sinker|1/5|||4|65|15|7454.png|6|
+347|piombo||Drop Sinker|1/3|||4|70|16|7541.png|8|
+348|piombo||Sinker|3 1/2||||120|16|5112.png|100|
+349|piombo||Bullet Sinker|1/3|||4|75|17|7454.png|8|
+350|piombo||Drop Sinker|3/8|||4|80|18|7541.png|10|
+351|piombo||Bullet Sinker|3/8|||4|90|19|7454.png|10|
+352|piombo||Drop Sinker|1/2|||4|100|20|7541.png|14|
+353|piombo||Bullet Sinker|1/2|||4|115|21|7454.png|14|
+354|piombo||Drop Sinker|5/8|||4|125|22|7541.png|18|
+355|piombo||Bullet Sinker|5/8|||4|135|23|7454.png|18|
+356|piombo||Sinker|4 1/4||||145|23|5112.png|125|
+357|piombo||Bullet Sinker|3/4|||4|165|24|7454.png|21|
+358|piombo||Drop Sinker|3/4|||4|155|25|7541.png|21|
+359|piombo||Sinker|5 1/2||||175|27|5112.png|150|
+360|piombo||Drop Sinker|6/7|||2|100|30|7541.png|24|
+361|piombo||Bullet Sinker|6/7|||2|100|31|7454.png|24|
+362|piombo||Drop Sinker|1|||2|110|32|7541.png|28|
+363|piombo||Bullet Sinker|1|||2|120|33|7454.png|28|
+364|piombo|UL-CHUBER|Carp Camouflage Sinker|2 3/10||||120|34|6052.png|65|
+365|piombo||Sinker|6||||190|35|5112.png|175|
+366|piombo||Drop Sinker|1 1/4|||2|130|36|7541.png|36|
+367|piombo||Bullet Sinker|1 1/4|||2|140|37|7454.png|36|
+368|piombo||Bullet Sinker|1 1/2|||2|170|38|7454.png|42|
+369|piombo||Drop Sinker|1 1/2|||2|160|38|7541.png|42|
+370|piombo||Bullet Sinker|2|||2|190|40|7454.png|56|
+371|piombo|UL-CHUBER|Carp Camouflage Sinker|3||||170|40|6052.png|85|
+372|piombo||Drop Sinker|2|||2|180|40|7541.png|56|
+373|piombo|UL-CHUBER|Carp Camouflage Sinker|4 1/16||||200|42|6052.png|115|
+374|piombo||Sinker|7||||210|44|5112.png|200|
+375|piombo|UL-CHUBER|Carp Camouflage Sinker|4 3/4||||225|46|6052.png|135|
+376|piombo||Sinker|8||||235|48|5112.png|225|
+377|piombo|UL-CHUBER|Carp Camouflage Sinker|5 5/6||||275|50|6052.png|165|
+378|piombo|UL-CHUBER|Carp Camouflage Sinker|6 5/9||||300|50|6052.png|185|
+379|piombo||Sinker|8 4/5||||265|52|5112.png|250|
+380|piombo||Bullet Sinker|2 1/2|||2|215|76|7454.png|70|
+381|piombo||Drop Sinker|2 1/2|||2|225|76|7541.png|70|

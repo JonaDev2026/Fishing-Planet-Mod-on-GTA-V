@@ -1,0 +1,11 @@
+# id|nome|canne|prezzo|liv_wiki|img
+# ATTENZIONE: i portacanne NON esistono sul wiki di Fishing Planet.
+# La', il numero di canne e' fisso e non si compra. Questi li abbiamo
+# inventati noi, seguendo la stessa curva di livelli e prezzi delle
+# cassette vere (dal livello 1 al 75, da 200 a 30000 crediti).
+1|Fodero singolo|1|200|1|
+2|Fodero doppio|2|900|12|
+3|Portacanne da tre|3|2600|25|
+4|Portacanne da quattro|4|7000|40|
+5|Rod pod da cinque|5|16000|60|
+6|Rod pod da sei|6|30000|75|

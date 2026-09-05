@@ -1,0 +1,247 @@
+# nome|quando|prova|quanto e' sicuro|fonte
+# QUANDO MANGIA OGNI PESCE - biologia reale, cercata sul web.
+# Il wiki di Fishing Planet questo dato non lo pubblica: qui non c'e' niente
+# copiato da la', e niente inventato. Ogni riga ha la sua fonte.
+# quando: notte / alba_tramonto / giorno / sempre
+# sicurezza: alta = studio sulla specie; media = studio sul genere vicino;
+#            bassa = solo la famiglia, o niente di solido (allora e' sempre).
+
+African Big Eye Catfish|notte|Related family Bagridae (Bagrus) mostly active night/twilight|bassa|https://www.scotcat.com/factsheets/bagrus_docmak.htm
+African Pike|alba_tramonto|Pike-convergent ambush characin, no direct diel study|bassa|https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1095-8649.1994.tb01301.x
+African Sharptooth Catfish|notte|Feeding peaks 20:00-23:00 and 06:00-08:00, tactile nocturnal feeder|alta|https://www.researchgate.net/figure/Feeding-activity-of-African-catfish-Clarias-gariepinus-recorded-as-number-of-feeding_fig4_229958407
+African Tigerfish|giorno|Hydrocynus, visual pack hunter active near surface by day|media|https://animalia.bio/hydrocynus-vittatus
+Alaska Blackfish|sempre|No documented diel feeding-time pattern found|bassa|https://www.adfg.alaska.gov/static/education/wns/alaska_blackfish.pdf
+Albacore|giorno|Thunnus tuna, visual predator feeding mainly in daylight|media|https://www.sciencedirect.com/science/article/abs/pii/S0967064514000757
+Alligator Gar|notte|Lepisosteidae ambush predator, related gar shown nocturnal|media|https://academic.oup.com/tafs/article/128/1/144/7891271
+American Gizzard Shad|alba_tramonto|Clupeid filter-feeder, peaks dusk and night on plankton|bassa|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+American Shad|notte|Anadromous clupeid, DVM zooplanktivore feeding at night|media|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+Amur Bitterling|giorno|Genus Rhodeus; congener fed mainly in daylight hours|media|https://eurekamag.com/research/033/756/033756345.php
+Apapa|giorno|Wikipedia: Alestes baremoze is mainly diurnal|alta|https://en.wikipedia.org/wiki/Alestes_baremoze
+Arapaima|sempre|Air-breathing surface predator, no strong diel pattern|bassa|https://www.researchgate.net/publication/308018912
+Arctic Char|sempre|Study documents both diurnal and nocturnal feeding activity|media|https://cdnsciencepub.com/doi/10.1139/f97-187
+Arctic Grayling|giorno|Daytime dry-fly insect sight-feeder in clear rivers|bassa|https://www.adfg.alaska.gov/index.cfm?adfg=arcticgrayling.main
+Asp|alba_tramonto|Field study: movement higher at dawn/dusk than day/night|alta|https://link.springer.com/article/10.1007/s10641-022-01298-6
+Atlantic Cod|sempre|Opportunistic feeder day and night|media|http://journal.nafo.int/Portals/0/1992-2/keats.pdf
+Atlantic Halibut|alba_tramonto|Large ambush predator, best bite at dawn and dusk|bassa|https://blog.baityourhook.com/life-history-of-a-fish-atlantic-halibut/
+Atlantic Herring|notte|Undergoes DVM, rises to feed on zooplankton at night|alta|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+Atlantic Horse Mackerel|alba_tramonto|Trachurus, DVM feeder tracking plankton at dusk|bassa|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+Atlantic Mackerel|giorno|Schools feed visually on plankton and fish mainly by day|media|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+Atlantic Salmon|giorno|Juveniles normally diurnal, nocturnal only in cold water|media|https://cdnsciencepub.com/doi/10.1139/z95-051
+Atlantic Saury|notte|Surface schooler, family drawn to light, active at night|bassa|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+Atlantic Wolffish|sempre|Benthic shell-crushing predator, no strong diel pattern|bassa|https://www.fishbase.se/summary/Anarhichas-lupus.html
+Azov Shad|notte|Alosa shad, family pattern nocturnal-crepuscular plankton feeding|bassa|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+Baikal Omul|alba_tramonto|Coregonid tracking zooplankton migration at low light|bassa|https://gambusia.zo.ncsu.edu/readings/Mehner%202012.pdf
+Banded Aracu|sempre|No documented diel feeding-time evidence found|bassa|https://www.researchgate.net/publication/261590083
+Banded Tilapia|giorno|Tilapiine cichlids documented diurnal|media|https://pubmed.ncbi.nlm.nih.gov/20382252/
+Beluga|notte|Acipenseridae benthic barbel feeder, nocturnal foraging|bassa|https://pondinformer.com/sturgeon-feeding-guide/
+Biara|giorno|Rhaphiodon, schooling open-water sight hunter by day|bassa|https://en.wikipedia.org/wiki/Rhaphiodon
+Bicuda|giorno|Boulengerella pike-characin, diurnal ambush sight hunter|bassa|https://en.wikipedia.org/wiki/Boulengerella
+Bigeye Tuna|alba_tramonto|Deep-diving tuna feeds on prey rising at dusk and night|media|https://link.springer.com/article/10.1007/s00227-004-1480-x
+Bigfin Reef Squid|notte|Moves onto coral reefs specifically at night to feed|alta|https://australian.museum/learn/animals/molluscs/bigfin-reef-squid-sepioteuthis-lessoniana-lesson-1830/
+Bighead Carp|giorno|Same genus as silver carp, documented more active by day|media|https://animaldiversity.org/accounts/Hypophthalmichthys_molitrix/
+Bigmouth Buffalo|alba_tramonto|Catostomidae; sucker relatives feed at dawn/dusk|bassa|https://www.fishbase.se/summary/catostomus-commersonii.html
+Black Bullhead Catfish|notte|Ictaluridae bullheads documented as nocturnal bottom feeders|media|https://www.dnr.state.mn.us/fish/catfish/biology.html
+Black Crappie|alba_tramonto|Feeds most actively at low light, large eyes|alta|https://a-z-animals.com/animals/black-crappie/
+Black Drum|sempre|No documented diel feeding-time pattern found|bassa|https://www.chesapeakebay.net/discover/field-guide/entry/black-drum
+Black Marlin|giorno|Billfish visual hunter, pursues baitfish schools by day|media|https://www.marlinmag.com/travel/billfish-diving-behavior-studies/
+Black Sea Roach|giorno|Close relative of common roach, baseline diurnal feeder|media|https://onlinelibrary.wiley.com/doi/10.1111/j.1095-8649.2008.02020.x
+Blacktail Shiner|sempre|No documented diel feeding-time evidence found|bassa|https://fishbase.se/summary/Cyprinella-venusta
+Blacktip Reef Shark|giorno|Rare diurnally-active reef shark, forages flats by day|media|https://www.researchgate.net/publication/309035399
+Blue Bream|notte|Abramidinae; congener common bream feeds at night|bassa|https://en.wikipedia.org/wiki/Common_bream
+Blue Catfish|notte|Ictalurid catfish, nocturnal feeding well documented|media|https://link.springer.com/article/10.1007/s10228-018-0653-4
+Bluegill|giorno|Captive activity matched the times when lights were on|alta|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Bluntnose Minnow|sempre|No documented diel feeding-time evidence found|bassa|https://animaldiversity.org/accounts/Pimephales_notatus/
+Bonefish|giorno|Forages visually on shallow flats mainly during daylight|media|https://www.bonefishtarpontrust.org/blog/2017-07-27-bonefish-and-tides/
+Bowfin|notte|Active at night per state wildlife agency|media|https://dnr.illinois.gov/content/dam/soi/en/web/dnr/education/cdindex/bowfin.pdf
+Brill|alba_tramonto|Flatfish ambush predator, family pattern dusk and night|bassa|https://blog.baityourhook.com/life-history-of-a-fish-atlantic-halibut/
+Brook Trout|alba_tramonto|Salvelinus char, seasonal diel shifts, low-light foraging|media|https://link.springer.com/article/10.1007/s10641-019-00931-1
+Brown Bullhead Catfish|notte|Ictaluridae bullheads documented as nocturnal bottom feeders|media|https://www.dnr.state.mn.us/fish/catfish/biology.html
+Brown Trout|notte|Inactive trout come out at night, nocturnal tendency adults|alta|https://onlinelibrary.wiley.com/doi/10.1002/ecy.1475/full
+Brycon|giorno|Frugivory documented via daytime field observations|media|https://www.researchgate.net/publication/222672759
+Bull Shark|alba_tramonto|Forages better in low-light dawn/dusk turbid water|media|https://pmc.ncbi.nlm.nih.gov/articles/PMC6906466/
+Bull Trout|alba_tramonto|Salvelinus char, diel vertical migration, low-light forager|media|https://research.fs.usda.gov/treesearch/54563
+Bulldog Fish|notte|Mormyrid, electroreceptive, most active feeding at night|alta|https://en.wikipedia.org/wiki/Marcusenius_macrolepidotus
+Burbot|notte|Crepuscular or nocturnal, seeks shallow water to feed|alta|https://animaldiversity.org/accounts/Lota_lota/
+Butterfly Peacock Bass|giorno|Primarily visual hunters and rarely feed at night|alta|https://acuteangling.com/peacock-bass-species-guide
+California Roach|giorno|Algae-grazing minnow, presumed diurnal|bassa|https://en.wikipedia.org/wiki/California_roach
+Chain Pickerel|alba_tramonto|Esocid sight-ambush hunter, genus pattern dawn/dusk peak|media|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Channel Catfish|notte|Nocturnal activity and feeding documented in juveniles|alta|https://link.springer.com/article/10.1007/s10228-018-0653-4
+Chinese Sleeper|sempre|No documented diel feeding-time pattern found|bassa|https://en.wikipedia.org/wiki/Chinese_sleeper
+Chinook Salmon|giorno|Oncorhynchus, juvenile salmonids typically diurnal feeders|bassa|https://cdnsciencepub.com/doi/10.1139/f42-011
+Chub|alba_tramonto|Wary by day, reports of dawn/dusk and night feeding|bassa|https://predatorfishingworld.com/2025/10/chub-fishing-at-night-with-lures-the-complete-guide/
+Chum Salmon|giorno|Oncorhynchus, juvenile salmonids typically diurnal feeders|bassa|https://cdnsciencepub.com/doi/10.1139/f42-011
+Clear Muskie|alba_tramonto|Muskellunge form, same crepuscular ambush biology|media|https://link.springer.com/article/10.1007/s10641-024-01652-w
+Coalfish|alba_tramonto|Pelagic gadid feeding near surface especially at dusk|bassa|https://britishseafishing.co.uk/pollock/
+Coho Salmon|giorno|Oncorhynchus, juvenile salmonids typically diurnal feeders|bassa|https://cdnsciencepub.com/doi/10.1139/f42-011
+Colorado Golden Trout|alba_tramonto|Oncorhynchus, classic salmonid dawn/dusk feeding peaks|bassa|https://cdnsciencepub.com/doi/10.1139/f42-011
+Common Barbel|alba_tramonto|Scientific review: barbel is normally crepuscular|alta|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Common Bleak|giorno|Diurnal feeding activity throughout day in upper layer|alta|https://www.seafishpool.com/common-bleak/
+Common Bream|notte|Wikipedia: bream feed close to shore at night|alta|https://en.wikipedia.org/wiki/Common_bream
+Common Carp|alba_tramonto|FishBase: most active feeding at dusk and dawn|alta|https://www.fishbase.se/summary/cyprinus-carpio.html
+Common Dace|giorno|Same genus Leuciscus as ide, which feeds actively by day|bassa|https://billouttes.eu/freshwater-fish/coarse-fish/ide-or-orfe-leuciscus-idus-description
+Common Ling|notte|Deepwater gadoid ambush predator, family pattern nocturnal|bassa|http://journal.nafo.int/Portals/0/1992-2/keats.pdf
+Common Minnow|sempre|Activity tracks photoperiod, no clear peak documented|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Common Nase|sempre|No documented diel feeding-time evidence found|bassa|https://en.wikipedia.org/wiki/Chondrostoma_nasus
+Common Roach|giorno|Study: shift from diurnal to nocturnal peak in autumn|media|https://onlinelibrary.wiley.com/doi/10.1111/j.1095-8649.2008.02020.x
+Common Rudd|giorno|Diurnal activity, especially in summer, surface feeder|alta|https://billouttes.eu/freshwater-fish/panfish/eurasian-rudd-scardinius-erythrophthalmus-description
+Common Shiner|sempre|Extended feeding period, no distinct day/night peak|media|https://pubs.usgs.gov/publication/70160762
+Common Snook|notte|Classic nocturnal ambush feeder around lights and structure|alta|https://en.wikipedia.org/wiki/Common_snook
+Congo Yellowfish|alba_tramonto|Barbin relatives (barbel) are crepuscular|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Cornish Jack|notte|Mormyrops (Mormyridae) documented nocturnal weakly-electric fish|alta|https://www.researchgate.net/publication/332379565
+Creek Brown Trout|notte|Salmo trutta, documented nocturnal-tendency adult behavior|alta|https://onlinelibrary.wiley.com/doi/10.1002/ecy.1475/full
+Crucian Carp|alba_tramonto|Activity peaks documented in early and late night|media|https://www.academia.edu/98698094
+Cusk|sempre|Deepwater gadoid, no strong documented diel pattern|bassa|http://journal.nafo.int/Portals/0/1992-2/keats.pdf
+Cutthroat Trout|alba_tramonto|Oncorhynchus, classic salmonid dawn/dusk feeding peaks|media|https://cdnsciencepub.com/doi/10.1139/f42-011
+Dogtooth Tuna|giorno|Reef-associated tuna, diurnal visual hunter|bassa|https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2021.664593/full
+Dolly Varden|alba_tramonto|Salvelinus char, low-light crepuscular foraging|media|https://cdnsciencepub.com/doi/10.1139/f97-187
+Electric Eel|notte|Documented nocturnal ambush predator hunting behavior|media|https://pmc.ncbi.nlm.nih.gov/articles/PMC6646469/
+Elephant Fish|notte|Mormyridae documented as nocturnal weakly-electric fish|alta|https://www.researchgate.net/publication/332379565
+Eurasian Ruffe|notte|Sensory system lets it feed at night, outcompetes perch|alta|https://fieldguide.mt.gov/speciesDetail.aspx?elcode=AFCQC06010
+European Angler|sempre|Sit-and-wait ambush predator, feeds day and night|media|https://en.wikipedia.org/wiki/Anglerfish
+European Bitterling|giorno|Study: most individuals fed during the daylight hours|alta|https://eurekamag.com/research/033/756/033756345.php
+European Brown Trout|notte|Salmo trutta, documented nocturnal-tendency adult behavior|alta|https://onlinelibrary.wiley.com/doi/10.1002/ecy.1475/full
+European Eel|notte|Studies document nocturnal activity and feeding behavior|alta|https://link.springer.com/article/10.1023/A:1025894010739
+European Flounder|alba_tramonto|Estuarine flatfish feeding mainly at dusk and night|media|https://blog.baityourhook.com/life-history-of-a-fish-atlantic-halibut/
+European Grayling|giorno|Thymallus, daytime insect sight-feeder|bassa|https://www.adfg.alaska.gov/index.cfm?adfg=arcticgrayling.main
+European Hake|notte|Ascends nightly in DVM to feed near surface|alta|https://onlinelibrary.wiley.com/doi/10.1111/j.1095-8649.2012.03345.x
+European Perch|alba_tramonto|FishBase: preys mainly during sunrise and sunset|alta|https://www.fishbase.se/summary/perca-fluviatilis.html
+European Sea Sturgeon|notte|Acipenser sturio, family-level nocturnal benthic feeding|bassa|https://pondinformer.com/sturgeon-feeding-guide/
+European Weatherfish|notte|Loach reported very active at night|media|https://www.loaches.com/species-index/misgurnus-fossilis
+Flag-Tailed Prochilodus|giorno|Congener P. nigricans diurnal, to shallows at dusk|media|https://www.fishi-pedia.com/fishes/prochilodus-nigricans
+Flathead Catfish|notte|Ambush predator, primarily nocturnal hunter, Ictaluridae|media|https://a-z-animals.com/animals/flathead-catfish/
+Flatwhiskered Catfish|notte|Pimelodidae family listed as nocturnal predators|media|https://tropicalfreshwaterfish.com/pimelodidae.htm
+Florida Gar|notte|Lepisosteidae; related gar species shown nocturnal foragers|media|https://academic.oup.com/tafs/article/128/1/144/7891271
+Freshwater Drum|notte|Peer-reviewed: Summer Nocturnal Patterns in Freshwater Drum|alta|https://bioone.org/journals/the-american-midland-naturalist/volume-157/issue-1
+Gafftopsail Catfish|notte|Catfish (Siluriformes) generally nocturnal tactile feeders|bassa|https://en.wikipedia.org/wiki/Gafftopsail_catfish
+Ghost Carp|alba_tramonto|Domesticated Cyprinus carpio form, same biology as common carp|alta|https://www.fishbase.se/summary/cyprinus-carpio.html
+Giant Grouper|alba_tramonto|Grouper family largely nocturnal-crepuscular ambush predators|media|https://www.researchgate.net/publication/309035399
+Giant Sweetlips|notte|Shelters on reef by day, forages over sand at night|media|https://www.petplace.com/article/fish/general/night-life-on-the-reef
+Giant Trevally|giorno|Apex visual hunter, documented hunting in daylight|alta|https://marinesanctuary.org/blog/sea-wonder-giant-trevally/
+Gilded Catfish|notte|Pimelodidae (Brachyplatystoma) documented nocturnal predators|media|https://tropicalfreshwaterfish.com/pimelodidae.htm
+Giraffe Catfish|notte|Claroteidae/Bagridae nocturnal bottom feeders|bassa|https://www.fishbase.se/Summary/SpeciesSummary.php?ID=2438
+Golden Shiner|alba_tramonto|Review: field populations feeding on zooplankton crepuscular|media|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Golden Tench|notte|Colour form of tench; tench feed mostly at night|alta|https://en.wikipedia.org/wiki/Tench
+Goliath Tigerfish|giorno|Hydrocynus goliath, diurnal visual sight-hunting predator|media|https://a-z-animals.com/animals/goliath-tigerfish/
+Gorgeous Swallowtail|giorno|Anthiine planktivore feeds by day, hides at night|media|https://www.liveaquaria.com/blogs/stocking-your-aquarium/keeping-the-jewels-of-the-reef-the-anthias-of-the-genus-pseudanthias
+Grass Carp|giorno|Classified diurnal-crepuscular, mainly daytime grazer|media|https://a-z-animals.com/animals/grass-carp/
+Grass Pickerel|alba_tramonto|Small Esox, genus-level crepuscular ambush hunter|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Great Barracuda|giorno|Sight-hunting ambush predator, needs light, active by day|media|https://en.wikipedia.org/wiki/Great_barracuda
+Greater Amberjack|giorno|Fast pelagic sight predator, feeds mainly in daylight|media|https://en.wikipedia.org/wiki/Greater_amberjack
+Green Jobfish|alba_tramonto|Lutjanid, leaves reef to forage near dusk and night|bassa|https://en.wikipedia.org/wiki/Aprion
+Green Sunfish|giorno|Lepomis genus, diurnal light-matched activity|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Greenland Halibut|sempre|Deepwater flatfish, no strong diel signal documented|bassa|https://blog.baityourhook.com/life-history-of-a-fish-atlantic-halibut/
+Greenland Shark|notte|Tracking shows more surface activity and foraging at night|media|https://link.springer.com/article/10.1007/s00300-013-1408-3
+Gudgeon|giorno|Wikipedia: normally active during the day|alta|https://en.wikipedia.org/wiki/Gobio_gobio
+Haddock|giorno|Visual benthic-invertebrate feeder, mainly active in daylight|bassa|http://journal.nafo.int/Portals/0/1992-2/keats.pdf
+Humpback Whitefish|alba_tramonto|Coregonid tracking zooplankton migration at low light|bassa|https://gambusia.zo.ncsu.edu/readings/Mehner%202012.pdf
+Hybrid F1 Carp|alba_tramonto|Common carp hybrid, same biology as common carp|alta|https://www.fishbase.se/summary/cyprinus-carpio.html
+Ide|giorno|Active feeding behaviour throughout the day|media|https://billouttes.eu/freshwater-fish/coarse-fish/ide-or-orfe-leuciscus-idus-description
+Indo-Pacific King Mackerel|giorno|Scomberomorus, diurnal sight-hunting pelagic predator|bassa|https://link.springer.com/article/10.1007/s00227-004-1480-x
+Jacunda|giorno|Crenicichla pike cichlid, diurnal sight-based ambush predator|bassa|https://en.wikipedia.org/wiki/Crenicichla
+Japanese Amberjack|giorno|Seriola, diurnal pelagic sight predator|bassa|https://en.wikipedia.org/wiki/Japanese_amberjack
+Japanese Anchovy|notte|Clupeiform DVM feeder rising to surface at night|media|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+Japanese Jack Mackerel|alba_tramonto|Trachurus undergo DVM, feed on plankton at dusk|bassa|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+Kamba Catfish|notte|Heterobranchus longifilis predominantly nocturnal activity pattern|alta|https://www.alr-journal.org/articles/alr/pdf/2008/04/alr043-08.pdf
+Lake Chub|alba_tramonto|Review: crepuscular activity in field populations|media|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Lake Sturgeon|notte|Benthic barbel feeder, night fishing standard|media|https://www.sciencedirect.com/science/article/abs/pii/S0380133017301788
+Lake Trout|alba_tramonto|Deep coldwater char, diel movements tracking prey and light|media|https://cdnsciencepub.com/doi/10.1139/as-2017-0003
+Lake Whitefish|alba_tramonto|Coregonid tracking zooplankton migration at low light|bassa|https://gambusia.zo.ncsu.edu/readings/Mehner%202012.pdf
+Largemouth Bass|alba_tramonto|Centrarchid predator, dawn/dusk low-light activity peaks|media|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Leather Carp|alba_tramonto|Scaleless common carp form, same biology as common carp|alta|https://www.fishbase.se/summary/cyprinus-carpio.html
+Lenok|giorno|Salmoninae, daytime insect and surface feeder|bassa|https://cdnsciencepub.com/doi/10.1139/f42-011
+Longnose Gar|notte|Lepisosteidae; related gar species shown nocturnal foragers|media|https://academic.oup.com/tafs/article/128/1/144/7891271
+Longnose Sucker|alba_tramonto|Same genus Catostomus as white sucker, dawn/dusk feeder|media|https://www.fishbase.se/summary/catostomus-commersonii.html
+Mahi-Mahi|giorno|Fast visual predator, hunts under flotsam by day|alta|https://www.fisheries.noaa.gov/species/atlantic-mahi-mahi
+Marble Trout|notte|Salmo genus, close relative of brown trout|bassa|https://onlinelibrary.wiley.com/doi/10.1002/ecy.1475/full
+Meagre|alba_tramonto|Sciaenid, known dusk and crepuscular feeding and calling|media|https://en.wikipedia.org/wiki/Meagre
+Mirror Carp|alba_tramonto|Scale-pattern common carp form, same biology as common carp|alta|https://www.fishbase.se/summary/cyprinus-carpio.html
+Monkey Goby|notte|Congener round goby (Neogobius) shown nocturnal feeder|media|https://www.usgs.gov/publications/diel-diet-composition-and-feeding-activity-round-goby-nearshore-region-lake-ontario
+Muskellunge|alba_tramonto|Stalk-ambush forager, peaks at low light|media|https://link.springer.com/article/10.1007/s10641-024-01652-w
+Narrow-Barred Mackerel|giorno|Scomberomorus, fast diurnal visual pelagic predator|bassa|https://link.springer.com/article/10.1007/s00227-004-1480-x
+Nile Perch|alba_tramonto|Ambush apex predator, cathemeral-crepuscular twilight peak|bassa|https://a-z-animals.com/animals/nile-perch/
+Nile Tilapia|giorno|Species profile: way of living diurnal|alta|https://www.fishi-pedia.com/fishes/oreochromis-niloticus
+Northern Pike|alba_tramonto|Wild pike crepuscular in summer, sight hunter|alta|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Norway Atlantic Salmon|alba_tramonto|Salmonids show classic dawn and dusk feeding peaks|media|https://cdnsciencepub.com/doi/10.1139/f42-011
+Norway Seaperch|alba_tramonto|Sebastes feed on migrating zooplankton mainly at dusk|media|https://www.researchgate.net/publication/265883697
+Oregon Redband Trout|alba_tramonto|O. mykiss subspecies, classic salmonid dawn/dusk pattern|bassa|https://cdnsciencepub.com/doi/10.1139/f42-011
+Orinoco Peacock Bass|giorno|Cichla genus, visual daytime hunter|media|https://acuteangling.com/peacock-bass-species-guide
+Oscar|sempre|No documented diel feeding-time pattern found|bassa|https://animaldiversity.org/accounts/Astronotus_ocellatus/
+Pacific Bluefin Tuna|giorno|Visual sight-feeding predator, active mainly in daylight|media|https://www.alr-journal.org/articles/alr/full_html/2017/01/alr170057/alr170057.html
+Payara|notte|Well documented nocturnal ambush predator with large fangs|alta|https://en.wikipedia.org/wiki/Hydrolycus_scomberoides
+Permit|giorno|Sight and tactile flats forager, feeds mainly in daylight|media|https://inthespread.com/blog/permit-fish-understanding-this-wary-predator-289
+Pink Salmon|giorno|Oncorhynchus, juvenile salmonids typically diurnal feeders|bassa|https://cdnsciencepub.com/doi/10.1139/f42-011
+Piraiba|notte|Pimelodidae (Brachyplatystoma) documented nocturnal predators|media|https://tropicalfreshwaterfish.com/pimelodidae.htm
+Porbeagle Shark|giorno|Active lamnid visual pelagic predator, daytime hunting|bassa|https://www.researchgate.net/publication/309035399
+Prussian Carp|alba_tramonto|Genus Carassius; crucian carp shows dawn/dusk peaks|bassa|https://www.academia.edu/98698094
+Pumpkinseed|giorno|Active mainly around daytime, light-matched pattern|media|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Purple Labeo|sempre|No documented diel feeding-time evidence found|bassa|https://en.wikipedia.org/wiki/Purple_labeo
+Rainbow Trout|alba_tramonto|Classic paper: crepuscular peaks in young trout feeding|media|https://cdnsciencepub.com/doi/10.1139/f42-011
+Red Drum|sempre|Feeding driven mainly by tide, no clear diel pattern|bassa|https://inthespread.com/blog/redfish-how-tides-effect-feeding-behavior-371
+Red Peacock Bass|giorno|Cichla genus, visual daytime hunter|media|https://acuteangling.com/peacock-bass-species-guide
+Red Tail Barracuda|giorno|Acestrorhynchus, fast diurnal sight-hunting characin|bassa|https://en.wikipedia.org/wiki/Acestrorhynchus
+Red-Bellied Piranha|alba_tramonto|Adults forage at dawn, late afternoon and early evening|media|https://animalia.bio/red-bellied-piranha
+Redbreast Sunfish|giorno|Lepomis genus, diurnal light-matched activity|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Redear Sunfish|giorno|Lepomis genus, diurnal light-matched activity|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Redeye Piranha|alba_tramonto|Serrasalmus, genus pattern of crepuscular ambush feeding|bassa|https://animalia.bio/red-bellied-piranha
+Redfin Pickerel|alba_tramonto|Esox genus, crepuscular ambush pattern inferred|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Rednose Labeo|sempre|No documented diel feeding-time evidence found|bassa|https://en.wikipedia.org/wiki/Labeo_rosae
+Redtail Catfish|notte|Pimelodidae; explicitly listed nocturnal predator|media|https://tropicalfreshwaterfish.com/pimelodidae.htm
+Ripsaw Catfish|notte|Doradidae thorny catfish most active after dark|alta|https://en.aqua-fish.net/fish/thorny-catfish
+Rock Bass|giorno|Centrarchidae, light-matched diurnal activity|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Round Goby|notte|Feeding intensity significantly greater at night than day|alta|https://www.usgs.gov/publications/diel-diet-composition-and-feeding-activity-round-goby-nearshore-region-lake-ontario
+Ruby Snapper|alba_tramonto|Eteline snapper, Lutjanidae largely nocturnal-crepuscular|bassa|https://en.wikipedia.org/wiki/Etelis_carbunculus
+Sailfish|giorno|Visual pack hunter, corrals baitfish during daylight|media|https://www.marlinmag.com/travel/billfish-diving-behavior-studies/
+Sauger|alba_tramonto|Sander congener of walleye, light-sensitive eyes|alta|https://www.dnr.state.mn.us/fish/walleye/biology.html
+Sea Trout|notte|Anadromous S. trutta, night feeding via lateral line|alta|https://salmonandseatrout.com/sea-trout-night-fishing-tactics/
+Shoal Bass|alba_tramonto|Micropterus genus, dawn/dusk activity like other black bass|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Siberian Taimen|alba_tramonto|Large ambush piscivore, dusk and night surface activity|bassa|https://news.orvis.com/fly-fishing/fish-facts-siberian-taimen-hucho-taimen
+Sickle Pomfret|notte|Bramidae undergo DVM, feed near surface at night|bassa|https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/diel-vertical-migration
+Silver Arowana|sempre|Surface ambush hunter, no documented time-of-day pattern|bassa|https://en.wikipedia.org/wiki/Silver_arowana
+Silver Bream|notte|Abramidinae; congener common bream feeds at night|bassa|https://en.wikipedia.org/wiki/Common_bream
+Silver Carp|giorno|Animal Diversity Web: typically more active during the day|media|https://animaldiversity.org/accounts/Hypophthalmichthys_molitrix/
+Silver Croaker|sempre|No documented diel feeding-time pattern for this sciaenid|bassa|https://fishbase.mnhn.fr/summary/4310
+Skipjack Tuna|giorno|Surface-schooling tuna, feeds visually during daylight|media|https://link.springer.com/article/10.1007/s00227-004-1480-x
+Sleek Unicornfish|giorno|Naso zooplanktivore, feeds in midwater by day|bassa|https://en.wikipedia.org/wiki/Naso_hexacanthus
+Smallmouth Bass|alba_tramonto|Micropterus, low-light activity peaks, quiet at night|media|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Smallmouth Buffalo|alba_tramonto|Catostomidae; sucker relatives feed at dawn/dusk|bassa|https://www.fishbase.se/summary/catostomus-commersonii.html
+Sockeye Salmon|giorno|Oncorhynchus, juvenile salmonids typically diurnal feeders|bassa|https://cdnsciencepub.com/doi/10.1139/f42-011
+Sorubim Catfish|notte|Pimelodidae shovelnose catfishes listed as nocturnal predators|media|https://tropicalfreshwaterfish.com/pimelodidae.htm
+Southern Flounder|notte|Flatfish known among anglers to feed heavily at night|media|https://blog.baityourhook.com/life-history-of-a-fish-atlantic-halibut/
+Speckled Peacock Bass|giorno|Cichla temensis, visual daytime hunter|media|https://acuteangling.com/peacock-bass-species-guide
+Spiny Dogfish|notte|Schooling shark undergoes DVM, moves up to feed at night|media|https://www.researchgate.net/publication/309035399
+Splake|alba_tramonto|Hybrid of two low-light chars, brook x lake trout|bassa|https://cdnsciencepub.com/doi/10.1139/f97-187
+Spotfin Flyingfish|alba_tramonto|Surface plankton feeder, drawn to light, low-light hours|bassa|https://en.wikipedia.org/wiki/Flying_fish
+Spotted Aracu|sempre|No documented diel feeding-time evidence found|bassa|https://www.researchgate.net/publication/261590083
+Spotted Bass|alba_tramonto|Micropterus genus, dawn/dusk activity like congeners|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Spotted Gar|notte|Movement and feeding far higher at night in telemetry study|alta|https://academic.oup.com/tafs/article/128/1/144/7891271
+Steelhead|alba_tramonto|Anadromous O. mykiss, same salmonid dawn/dusk pattern|media|https://cdnsciencepub.com/doi/10.1139/f42-011
+Sterlet|notte|Acipenser genus benthic chemosensory feeder, nocturnal|bassa|https://pondinformer.com/sturgeon-feeding-guide/
+Striped Bass|alba_tramonto|Most active during dawn and dusk, deep at sunrise|media|https://fishmasters.com/do-striped-bass-feed-at-night/
+Striped Bonito|giorno|Scombrid relative of tuna, diurnal visual predator|bassa|https://link.springer.com/article/10.1007/s00227-004-1480-x
+Striped Marlin|giorno|Sight predator, hunts baitballs cooperatively in daylight|media|https://www.marlinmag.com/travel/billfish-diving-behavior-studies/
+Swordfish|notte|Dives deep by day, rises to feed near surface at night|alta|https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0258011
+Tambaqui|giorno|Frugivorous characin forages for fallen fruit in daylight|bassa|https://en.wikipedia.org/wiki/Tambaqui
+Tarpon|notte|Well documented nocturnal feeder around lights and bridges|alta|https://en.wikipedia.org/wiki/Tarpon
+Tench|notte|Wikipedia: feed mostly at night on the bottom|alta|https://en.wikipedia.org/wiki/Tench
+Thicklip Grey Mullet|giorno|Mugilidae; congener striped mullet documented diurnal feeder|media|https://www.floridamuseum.ufl.edu/discover-fish/species-profiles/striped-mullet/
+Tiger Muskie|alba_tramonto|Esox hybrid, inherits crepuscular ambush biology|media|https://link.springer.com/article/10.1007/s10641-024-01652-w
+Tiger Trout|alba_tramonto|Hybrid nocturnal brown trout x crepuscular brook trout|bassa|https://onlinelibrary.wiley.com/doi/10.1002/ecy.1475/full
+Trahira|notte|Rests in vegetation during day and is active at night|alta|https://www.fws.gov/sites/default/files/documents/Ecological-Risk-Screening-Summary-Trahira.pdf
+Two-Spot Red Snapper|alba_tramonto|Lutjanus, family largely nocturnal-crepuscular reef predators|bassa|https://en.wikipedia.org/wiki/Lutjanus
+Vundu Catfish|notte|Heterobranchus longifilis predominantly nocturnal activity pattern|alta|https://www.alr-journal.org/articles/alr/pdf/2008/04/alr043-08.pdf
+Wahoo|giorno|Fast visual pelagic hunter, diurnal|media|https://en.wikipedia.org/wiki/Wahoo
+Walleye|alba_tramonto|Feed in shallow water at dawn and dusk, avoid bright light|alta|https://www.dnr.state.mn.us/fish/walleye/biology.html
+Warmouth|giorno|Lepomis genus, diurnal light-matched activity|bassa|https://gambusia.zo.ncsu.edu/readings/Reebs%202002.pdf
+Wels Catfish|notte|Nocturnal activity, surface-active at night, inactive by day|alta|https://ouci.dntb.gov.ua/en/works/7npweBLl/
+White Bass|alba_tramonto|Morone congener of striped bass, dawn/dusk feeding|bassa|https://fishmasters.com/do-striped-bass-feed-at-night/
+White Catfish|notte|Ictaluridae bullhead/catfish, nocturnal bottom feeders|media|https://www.dnr.state.mn.us/fish/catfish/biology.html
+White Crappie|alba_tramonto|Pomoxis congener, same crepuscular large-eye pattern|media|https://a-z-animals.com/animals/black-crappie/
+White Sturgeon|notte|Benthic barbel feeder, night fishing widely documented|media|https://globalseafoods.com/blogs/news/night-fishing-for-white-sturgeon-tips-and-techniques
+White Sucker|alba_tramonto|FishBase: moves shallow near sunrise/sunset to feed|alta|https://www.fishbase.se/summary/catostomus-commersonii.html
+White-Eye Bream|notte|Abramidinae; congener common bream feeds at night|bassa|https://en.wikipedia.org/wiki/Common_bream
+Whiting|alba_tramonto|Gadid moves inshore to feed at dusk and night|bassa|http://journal.nafo.int/Portals/0/1992-2/keats.pdf
+Yellow Perch|alba_tramonto|Perca congener, sunrise/sunset feeding pattern|media|https://www.fishbase.se/summary/perca-fluviatilis.html
+Yellowfin Tuna|giorno|Classic sight-feeder, hunts baitfish actively in daylight|alta|https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2021.664593/full
+Yellowstripe Scad|giorno|Small schooling carangid, visual planktivore by day|bassa|https://en.wikipedia.org/wiki/Yellowstripe_scad
+Zander|alba_tramonto|Sander congener of walleye, light-averse low-light hunter|alta|https://www.dnr.state.mn.us/fish/walleye/biology.html
+Ziege|sempre|No documented diel feeding-time evidence found|bassa|https://en.wikipedia.org/wiki/Pelecus

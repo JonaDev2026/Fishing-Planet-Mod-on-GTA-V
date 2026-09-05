@@ -1,0 +1,18 @@
+# zona|nome del posto|come si chiama il bar
+# I nomi sono quelli delle acque che abbiamo registrato andandoci sopra.
+alamosea|Alamo Sea|Bar
+cassidy|Cassidy|Bar
+chumash|Chumash|Bar
+elgordo|El Gordo|Bar
+golf|Golf|Bar
+landact|Land Act|Bar
+mirrorpark|Mirror Park|Bar
+pacificbluffs|Pacific Bluffs|Bar
+paletobay|Paleto Bay|Bar
+paletocove|Paleto Cove|Bar
+palomino|Palomino|Bar
+sanchianski|San Chianski|Bar
+tongva|Tongva|Bar
+vespucci|Vespucci|Bar
+vinewood|Vinewood|Bar
+zancudo|Zancudo|Bar

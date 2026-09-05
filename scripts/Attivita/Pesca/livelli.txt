@@ -1,0 +1,138 @@
+# livello|xp_totali_necessari
+# Curva NOSTRA: 3 uscite di pesca per livello, dal primo all'ultimo.
+# Non e' una formula a tavolino: e' stata misurata simulando 40 partite
+# con i pesci veri, il bonus prima-volta che si esaurisce e la lenza che
+# cresce, cosi' il passo resta uguale dall'inizio alla fine.
+# Non e' quella di Fishing Planet: la loro sale in modo esponenziale e per
+# arrivare al livello 80 servirebbero piu' di duemila uscite.
+# Quella vera resta consultabile in _riferimenti/wiki_dump/livelli_fp.txt
+#
+# ---- come si guadagnano i punti ----
+# base:  20 + peso_kg x 15
+#
+# poi conta COME l'hai preso:
+#   esca preferita di quella specie      x1.5
+#   amo nella misura giusta              x1.3
+#   (tutti e due insieme)                x2
+#
+# e quante volte l'hai gia' preso:
+#   prima volta in assoluto              x8
+#   dalla seconda alla quinta            x3
+#   dalla sesta alla ventesima           x1.5
+#   oltre                                x1.3
+#
+# e infine la taglia:
+#   trofeo   x2       esemplare unico   x3
+#
+# Nessun fattore domina: un pesce nuovo preso male vale come uno gia'
+# noto preso benissimo. Si sale pescando, non ripetendo.
+1|0
+2|7400
+3|12250
+4|16850
+5|22400
+6|28250
+7|35750
+8|43300
+9|53150
+10|60950
+11|71250
+12|86450
+13|99800
+14|115850
+15|131800
+16|157950
+17|188600
+18|216000
+19|252700
+20|286500
+21|346950
+22|406150
+23|463700
+24|492900
+25|543250
+26|591450
+27|627900
+28|666850
+29|700000
+30|744600
+31|776500
+32|808250
+33|844650
+34|869050
+35|911550
+36|944750
+37|974800
+38|1001100
+39|1025400
+40|1051800
+41|1078700
+42|1103400
+43|1137600
+44|1153150
+45|1191150
+46|1210100
+47|1238500
+48|1264800
+49|1285050
+50|1310500
+51|1329350
+52|1358100
+53|1380950
+54|1396200
+55|1423850
+56|1457950
+57|1486150
+58|1506850
+59|1529400
+60|1552600
+61|1575500
+62|1595500
+63|1611950
+64|1631850
+65|1657400
+66|1675700
+67|1709300
+68|1722250
+69|1743150
+70|1760500
+71|1777850
+72|1804200
+73|1819800
+74|1841650
+75|1866000
+76|1882050
+77|1911800
+78|1934450
+79|1956050
+80|1978900
+81|1995550
+82|2011650
+83|2033600
+84|2052200
+85|2076150
+86|2094500
+87|2106950
+88|2135300
+89|2157450
+90|2174600
+91|2194550
+92|2222500
+93|2240450
+94|2259400
+95|2285250
+96|2305200
+97|2329850
+98|2348500
+99|2370200
+100|2387050
+101|2403800
+102|2422700
+103|2444150
+104|2457150
+105|2485950
+106|2503350
+107|2520850
+108|2544950
+109|2564300
+110|2580450

@@ -1,0 +1,205 @@
+# id|categoria|nome|quantita|peso|prezzo|liv_wiki|amo|pesci|img
+# esche vere dal wiki di Fishing Planet - rifatte dalle pagine Common Baits,
+# Worms e Insects Baits, Fresh Baits e Saltwater Baits del wiki_dump.
+1|comuni|Bread|50|Light|10|1|#10 - #6|Crappie, Bluegill, Pumpkinseed, Common Shiner, Carp, Thicklip Grey Mullet|Bread.png
+2|comuni|Cheese|50|Light|60|3|#8 - #2|Bluegill, Trout, Catfish, Bullhead|Cheese.png
+3|comuni|Pearl Barley|50|Light|75|3|#10 - #2|Roach|Pearl_Barley.png
+4|comuni|Pet Food|50|Light|90|4|#8 - #1|Catfish, Bullhead, Redear Sunfish|Pet_Food.png
+5|comuni|Dough Ball|50|Light|110|5|#8 - #1|Bluegill, Pumpkinseed, Crappie, Golden Shiner, Carp|Dough_Balls.png
+6|comuni|Bread with Honey|50|Light|30|6|#10 - #6|Carassius, Carp|Bread_with_Honey.png
+7|comuni|Semolina Balls|50|Light|130|11|#6 - #1/0|Bluegill, Pumpkinseed, Crappie, Golden Shiner, Common Shiner, Carp, Roach, Carassius|Semolina_Balls.png
+8|comuni|Marshmallow|50|Light|160|14|#8 - #1|Trout, Bluegill, Pumpkinseed, Crappie, Common Shiner, Catfish, Carp|Marshmallows.png
+9|comuni|Corn|50|Light|200|34|#6 - #1|Carp, Catfish, Bullhead, Trout|Corn.png
+10|comuni|Peas|50|Light|200|34|#6 - #1/0|Carp, Catfish, Bullhead|Peas.png
+11|comuni|Sweet Peas|50|Light|250|36|#6 - #1|Carp|Sweet_Peas.png
+12|comuni|Sweet corn|50|Light|250|36|#6 - #1|Carp|Sweet_Corn.png
+13|comuni|Vegetables|50|Medium|300|42|#1 - #5/0|Silver Carp, Bighead Carp|Vegetables.png
+14|comuni|Pea dough|50|Light|375|46|#6 - #1/0|Carassius, Carp|Pea_dough.png
+15|comuni|Curd Dough|50|Light|310|48||Carp, Tench, Carassius|Curd_Dough.png
+16|comuni|Oat-flakes|50|Light|350|51||Roach, Carassius|Oat-flakes.png
+17|comuni|Camu-Camu|50|Medium|200|58||Redeye Piranha, Brycon, Flag-Tailed Prochilodus|Camu-Camu.png
+18|comuni|Jauari Palm Fruit|50|Med-Heavy|235|61||Tambaqui, Brycon, Ripsaw Catfish, Redeye Piranha|9078.png
+19|comuni|Moriche Palm Fruit|50|Med-Heavy|270|62||Tambaqui, Brycon, Ripsaw Catfish, Redeye Piranha|9077.png
+20|comuni|Rubber Tree Seeds|50|Medium|330|63||Tambaqui, Brycon, Ripsaw Catfish|Rubber_Tree_Seeds.png
+21|comuni|Banana bread|50|Light|420|71||Tilapia, Bluegill, Pumpkinseed, Shiner, Carp|Banana_Bread.png
+22|vermi|Red Worms|25|Light|50|1|#10 - #2|Crappie, Bluegill, Pumpkinseed, Redear Sunfish, Yellow Perch, Common Shiner, Warmouth, Roach, Carassius, Bream, Tench, Barbel|Red_Worms.png
+23|vermi|Grasshoppers|25|Light|140|4|#4 - #2/0|Trout, Bass, Crappie, Catfish, Predator Carp|Grasshoppers.png
+24|vermi|Flies|25|Light|180|5|#8 - #1|Bluegill, Trout, Ziege|Flies.png
+25|vermi|Crickets|25|Light|200|6|#6 - #1/0|Trout, Bass, Crappie, Bluegill, Redear Sunfish, Warmouth, Catfish, Bullhead, Predator Carp|Crickets.png
+26|vermi|Pinkies|25|Light|220|9||Roach|Pinkies.png
+27|vermi|Maggots|25|Light|240|10|#10 - #2|Crappie, Bluegill, Pumpkinseed, Redear Sunfish, Golden Shiner, Roach, Bream, Ziege|Maggots.png
+28|vermi|Bloodworms|25|Light|300|12|#10 - #6|Crappie, Bluegill, Pumpkinseed, Redear Sunfish, Common Shiner, Yellow Perch, Roach, Carassius, Bream, Tench|Bloodworms.png
+29|vermi|Caster Maggots|25|Light|275|12||Bream|Caster_Maggots.png
+30|vermi|Wax Worms|25|Light|250|13|#10 - #2|Crappie, Bluegill, Pumpkinseed, Redear Sunfish, Common Shiner, Trout, Ziege|Wax_Worms.png
+31|vermi|Yellow Maggots|25|Light|300|15||Crappie, Bluegill, Pumpkinseed, Redear Sunfish, Golden Shiner, Roach, Bream, Ziege|Yellow_Maggots.png
+32|vermi|Red Maggots|25|Light|350|17||Crappie, Bluegill, Pumpkinseed, Redear Sunfish, Golden Shiner, Roach, Bream, Ziege|Red_Maggots.png
+33|vermi|MayFlies|25|Light|400|16|#6 - #1|Trout|Mayflies1.png
+34|vermi|Mole Cricket Larva|25|Med-Heavy|400|21||Catfish|Mole_Cricket_Larva.png
+35|vermi|Leeches|25|Medium|350|30|#1 - #4/0|Catfish, Bullhead, Walleye, Perch, Chinese Sleeper|Leeches.png
+36|vermi|Dragonfly|25|Light|450|38|#6 - #1/0|Bass, Trout, Salmon, Predator Carp, Lenok|Dragonflies.png
+37|vermi|Centipedes|25|Light|350|46||Ziege, Roach|Centipedes.png
+38|vermi|Cockchafer|25|Medium|500|48||Predator Carp|Cockchafer.png
+39|vermi|Bark Beetle Larva|20|Med-Light|640|49||Arctic Grayling, European Grayling, Lenok, Common Dace, Ide, European Chub|Bark_Beetle_Larva.png
+40|vermi|Dobsonfly Larva|25|Med-Heavy|1280|60||Silver Arowana, Piranha, Panfish|Dobsonfly_Larva1.png
+41|vermi|Giant Silk Moth Larva|25|Med-Heavy|1595|70||Small Catfish, Piranha|Giant_Silk_Moth_Larva1.png
+42|fresche|Shiners|10|X Heavy|650|16|#1/0 - #10/0|Bass, Pike, Salmon, Gar, Burbot, Wels Catfish, Lenok|Shiners1.png
+43|fresche|Small Cutbait|10|Med Heavy|170|7|#8 - #2|Catfish, Bullhead, Burbot|Small_Cutbait.png
+44|fresche|Artificial Salmon Eggs|25|Light|300|8|#6 - #1|Trout|Artificial_Salmon_Eggs.png
+45|fresche|Crawfish|5|X Heavy|450|28|#1 - #7/0|Bass, Catfish, Sturgeon, Gar|Crawfish1.png
+46|fresche|Natural Eggs|25|Light|500|15|#4 - #2/0|Trout, Vendace, Chinese Sleeper|Natural_Eggs.png
+47|fresche|Large Minnow|5|X Heavy|950|31|#1/0 - #10/0|Catfish, Salmon, Pike, Gar|Large_Minnows1.png
+48|fresche|Spawn Sacks|15|Med Light|900|30|#4 - #2/0|Trout, Salmon, Sturgeon, Lenok|Spawn_Sack1.png
+49|fresche|Blood|30|Light|420|23|#2 - #4/0|Catfish, Redear Sunfish, Trout, Barbel|Blood.png
+50|fresche|Frogs|5|X Heavy|400|27|#1 - #4/0|Catfish, Bass|Frog.png
+51|fresche|Large Cutbait|5|X Heavy|600|32|#2 - #7/0|Catfish, Sturgeon, Gar|Large_Cutbait.png
+52|fresche|Technoplankton|50|Med-Heavy|1000|44||Silver Carp, Bighead Carp|Technoplankton.png
+53|fresche|Sideswimmers|25|Med-Light|1220|52||Baikal Omul, Humpback Whitefish, Lake Whitefish|Sideswimmers.png
+54|fresche|Meat Chunk|15|Med-Heavy|690|56||Piranha, Catfish, Gar|Meat_Chunk.png
+55|fresche|Huge Cutbait|5|XX Heavy|725|57||Catfish, Sturgeon, Gar|Huge_Cutbait.png
+56|fresche|Aracu Minnow|5|X Heavy|1715|59||Catfish, Arapaima, Silver Arowana, Payara|Aracu_Minnow1.png
+57|fresche|Freshwater Prawns|15|Med-Heavy|1250|58||Catfish, Silver Croaker, Peacock Bass, Jacunda|Freshwater_Prawns.png
+58|fresche|Large Liver|10|XX Heavy|985|60||Catfish, Sturgeon, Gar|Large_Liver.png
+59|fresche|Freshwater Crab|10|X Heavy|1880|65||Catfish, Silver Arowana, Trahira|Freshwater_Crab1.png
+60|fresche|Buffalo Kidneys|10|X Heavy|1730|77||Catfish, Sturgeon, Gar|Buffalo_Kidneys1.png
+61|boilies|Banana Sinking Boilies|10|Medium|1680|42||Carp|6252.png
+62|boilies|Bloodworm Sinking Pellets|20|Light|1000|42||Carp|6354.png
+63|boilies|Chocolate Sinking Boilies|10|Medium|1680|42||Carp|6258.png
+64|boilies|Fishmeal Sinking Boilies|10|Medium|1680|42||Carp|6261.png
+65|boilies|Hemp Sinking Pellets|20|Light|1000|42||Carp|6348.png
+66|boilies|Pineapple Sinking Pellets|20|Light|1000|42||Carp|6346.png
+67|boilies|Plum Sinking Boilies|10|Medium|1680|42||Carp|6255.png
+68|boilies|Salmon Sinking Pellets|20|Light|1000|42||Carp|6350.png
+69|boilies|Shellfish Sinking Boilies|10|Medium|1680|42||Carp|6264.png
+70|boilies|Shrimp Sinking Pellets|20|Light|1000|42||Carp|6352.png
+71|boilies|Sunflower oil cake Sinking Pellets|20|Light|1000|42||Carp|6347.png
+72|boilies|Worm Sinking Boilies|10|Medium|1680|42||Carp|6263.png
+73|boilies|Caviar Sinking Pellets|20|Light|1100|43||Carp|6353.png
+74|boilies|Citrus Sinking Boilies|10|Medium|1750|43||Carp|6253.png
+75|boilies|Crab Sinking Boilies|10|Medium|1750|43||Carp|6260.png
+76|boilies|Garlic Sinking Pellets|20|Light|1100|43||Carp|6343.png
+77|boilies|Halibut Sinking Pellet|20|Light|1100|43||Carp|6349.png
+78|boilies|Honey Sinking Pellets|20|Light|1100|43||Carp|6344.png
+79|boilies|Krill Sinking Boilies|10|Medium|1750|43||Carp|6262.png
+80|boilies|Mulberry Sinking Pellets|20|Light|1100|43||Carp|6345.png
+81|boilies|Spices Sinking Boilies|10|Medium|1750|43||Carp|6265.png
+82|boilies|Strawberry Sinking Boilies|10|Medium|1750|43||Carp|6254.png
+83|boilies|Tiger Nut Sinking Boilies|10|Medium|1750|43||Carp|6259.png
+84|boilies|Tuna Sinking Pellets|20|Light|1100|43||Carp|6351.png
+85|boilies|Banana Pop-up Boilies|10|Light|1800|44||Carp|6292.png
+86|boilies|Bloodworm Pop-up Pellets|20|Light|1220|44||Carp|6366.png
+87|boilies|Chocolate Pop-up Boilies|10|Light|1800|44||Carp|6296.png
+88|boilies|Fishmeal Pop-up Boilies|10|Light|1800|44||Carp|6299.png
+89|boilies|Hemp Pop-up Pellets|20|Light|1220|44||Carp|6360.png
+90|boilies|Pineapple Pop-up Pellets|20|Light|1220|44||Carp|6358.png
+91|boilies|Plum Pop-up Boilies|10|Light|1800|44||Carp|6295.png
+92|boilies|Salmon Pop-up Pellets|20|Light|1220|44||Carp|6362.png
+93|boilies|Shellfish Pop-up Boilies|10|Light|1800|44||Carp|6302.png
+94|boilies|Shrimp Pop-up Pellets|20|Light|1220|44||Carp|6364.png
+95|boilies|Sunflower oil cake Pop-up Pellets|20|Light|1220|44||Carp|6359.png
+96|boilies|Worm Pop-up Boilies|10|Light|1800|44||Carp|6301.png
+97|boilies|Caviar Pop-up Pellets|20|Light|1350|45||Carp|6365.png
+98|boilies|Citrus Pop-up Boilies|10|Light|1890|45||Carp|6293.png
+99|boilies|Crab Pop-up Boilies|10|Light|1890|45||Carp|6298.png
+100|boilies|Garlic Pop-up Pellets|20|Light|1350|45||Carp|6355.png
+101|boilies|Halibut Pop-up Pellet|20|Light|1350|45||Carp|6361.png
+102|boilies|Honey Pop-up Pellets|20|Light|1350|45||Carp|6356.png
+103|boilies|Krill Pop-up Boilies|10|Light|1890|45||Carp|6300.png
+104|boilies|Mulberry Pop-up Pellets|20|Light|1350|45||Carp|6357.png
+105|boilies|Spices Pop-up Boilies|10|Light|1890|45||Carp|6303.png
+106|boilies|Strawberry Pop-up Boilies|10|Light|1890|45||Carp|6294.png
+107|boilies|Tiger Nut Pop-up Boilies|10|Light|1890|45||Carp|6297.png
+108|boilies|Tuna Pop-up Pellets|20|Light|1350|45||Carp|6363.png
+109|boilies|Banana Sinking Boilies|10|Med-Heavy|1900|46||Carp|6240.png
+110|boilies|Bloodworm Sinking Pellets|20|Light|1560|46||Carp|6328.png
+111|boilies|Chocolate Sinking Boilies|10|Med-Heavy|1900|46||Carp|6244.png
+112|boilies|Fishmeal Sinking Boilies|10|Med-Heavy|1900|46||Carp|6247.png
+113|boilies|Hemp Sinking Pellets|20|Light|1560|46||Carp|6316.png
+114|boilies|Pineapple Sinking Pellets|20|Light|1560|46||Carp|6312.png
+115|boilies|Plum Sinking Boilies|10|Med-Heavy|1900|46||Carp|6243.png
+116|boilies|Salmon Sinking Pellets|20|Light|1560|46||Carp|6322.png
+117|boilies|Shellfish Sinking Boilies|10|Med-Heavy|1900|46||Carp|6250.png
+118|boilies|Shrimp Sinking Pellets|20|Light|1560|46||Carp|6326.png
+119|boilies|Sunflower oil cake Sinking Pellets|20|Light|1560|46||Carp|6315.png
+120|boilies|Worm Sinking Boilies|10|Med-Heavy|1900|46||Carp|6249.png
+121|boilies|Caviar Sinking Pellets|20|Light|1640|47||Carp|6327.png
+122|boilies|Citrus Sinking Boilies|10|Med-Heavy|2000|47||Carp|6241.png
+123|boilies|Crab Sinking Boilies|10|Med-Heavy|2000|47||Carp|6246.png
+124|boilies|Garlic Sinking Pellets|20|Light|1640|47||Carp|6306.png
+125|boilies|Halibut Sinking Pellet|20|Light|1640|47||Carp|6319.png
+126|boilies|Honey Sinking Pellets|20|Light|1640|47||Carp|6310.png
+127|boilies|Krill Sinking Boilies|10|Med-Heavy|2000|47||Carp|6248.png
+128|boilies|Mulberry Sinking Pellets|20|Light|1640|47||Carp|6311.png
+129|boilies|Spices Sinking Boilies|10|Med-Heavy|2000|47||Carp|6251.png
+130|boilies|Strawberry Sinking Boilies|10|Med-Heavy|2000|47||Carp|6242.png
+131|boilies|Tiger Nut Sinking Boilies|10|Med-Heavy|2000|47||Carp|6245.png
+132|boilies|Tuna Sinking Pellets|20|Light|1640|47||Carp|6325.png
+133|boilies|Bloodworm Pop-up Pellets|20|Light|1700|48||Carp|6342.png
+134|boilies|Hemp Pop-up Pellets|20|Light|1700|48||Carp|6336.png
+135|boilies|Pineapple Pop-up Pellets|20|Light|1700|48||Carp|6334.png
+136|boilies|Salmon Pop-up Pellets|20|Light|1700|48||Carp|6338.png
+137|boilies|Shrimp Pop-up Pellets|20|Light|1700|48||Carp|6340.png
+138|boilies|Sunflower oil cake Pop-up Pellets|20|Light|1700|48||Carp|6335.png
+139|boilies|Banana Pop-up Boilies|10|Med-Heavy|2100|49||Carp|6272.png
+140|boilies|Caviar Pop-up Pellets|20|Light|1770|49||Carp|6341.png
+141|boilies|Chocolate Pop-up Boilies|10|Med-Heavy|2100|49||Carp|6276.png
+142|boilies|Fishmeal Pop-up Boilies|10|Med-Heavy|2100|49||Carp|6279.png
+143|boilies|Garlic Pop-up Pellets|20|Light|1770|49||Carp|6331.png
+144|boilies|Halibut Pop-up Pellet|20|Light|1770|49||Carp|6337.png
+145|boilies|Honey Pop-up Pellets|20|Light|1770|49||Carp|6332.png
+146|boilies|Mulberry Pop-up Pellets|20|Light|1770|49||Carp|6333.png
+147|boilies|Plum Pop-up Boilies|10|Med-Heavy|2100|49||Carp|6275.png
+148|boilies|Shellfish Pop-up Boilies|10|Med-Heavy|2100|49||Carp|6282.png
+149|boilies|Tuna Pop-up Pellets|20|Light|1770|49||Carp|6339.png
+150|boilies|Worm Pop-up Boilies|10|Med-Heavy|2100|49||Carp|6281.png
+151|boilies|Citrus Pop-up Boilies|10|Med-Heavy|2200|50||Carp|6273.png
+152|boilies|Crab Pop-up Boilies|10|Med-Heavy|2200|50||Carp|6278.png
+153|boilies|Krill Pop-up Boilies|10|Med-Heavy|2200|50||Carp|6280.png
+154|boilies|Spices Pop-up Boilies|10|Med-Heavy|2200|50||Carp|6283.png
+155|boilies|Strawberry Pop-up Boilies|10|Med-Heavy|2200|50||Carp|6274.png
+156|boilies|Tiger Nut Pop-up Boilies|10|Med-Heavy|2200|50||Carp|6277.png
+157|mare|Tuna Fish Heads|15|X Heavy|3930|1||Butcher Shark, Shark|Tuna_Fish_Heads.png
+158|mare|Shrimps|15|Medium|350|30|#6 - #1/0|Bass, Trout, Salmon, Shad, Thicklip Grey Mullet, European Eel|Shrimp1.png
+159|mare|Mussel Meat|15|Heavy|850|47||Permit, Red Drum, Striped Bass, Flounder, Gafftopsail Сatfish|Mussel_Meat.png
+160|mare|Crab|10|Heavy|1900|55||Permit, Red Drum, Striped Bass, Tarpon, Flounder|Crab1.png
+161|mare|Gulf Shrimp|15|Med-Heavy|1300|55||Bonefish, Flounder, Permit, Red Drum, Common Snook, Gafftopsail Сatfish|Gulf_Shrimp1.png
+162|mare|Sea Worms|25|Med-Light|110|54||Bonefish, Flounder, Striped Bass, Mullet, Shad|Sea_Worms.png
+163|mare|Medium Fish Strips|15|Heavy|2800|81||Ruby Snapper, Greater Amberjack, Giant Trevally, European Eel, Striped Bass, Small Grouper|Medium_Fish_Strips.png
+164|mare|Large Fish Strips|10|X Heavy|3300|82||Giant Grouper, Ruby Snapper, Shark, Sturgeon|Large_Fish_Strips.png
+165|mare|Japanese Spiny Lobster|5|X Heavy|3640|88||Giant Grouper|Japanese_Spiny_Lobster1.png
+166|mare|Gutted Fish|5|XXL Heavy|3170|84||Grouper, Shark, Big Catfish, Beluga|Gutted_Fish.png
+167|mare|Japanese Jack Mackerel|5|X Heavy|3430|87||Tarpon, Tuna, Marlin, Greater Amberjack, Giant Trevally, Narrow-Barred Mackerel|Japanese_Jack_Mackerel1.png
+168|mare|Indo-Pacific Swimming Crab|5|Heavy|4435|97||Young Grouper, Ruby Snapper, Two-Spot Red Snapper, Giant Sweetlips, Sickle Pomfret|Indo-Pacific_Swimming_Crab1.png
+169|mare|Filamentous Red Algae|25|Medium-light|2475|94||Sleek Unicornfish|Filamentous_Red_Algae.png
+170|mare|Flying Fish|5|X Heavy|3760|94||Tuna, Marlin, Mahi-Mahi, Sailfish, Wahoo, Swordfish|FlyingFish.png
+171|mare|Indian Ocean Squid|10|Heavy|4255|96||Tuna, Marlin, Wahoo, Mahi-Mahi|IndianOceanSquid1.png
+172|mare|Giant Tiger Prawn|10|Med-Heavy|4100|95||Giant Sweetlips, Two-Spot Red Snapper, Sickle Pomfret, Gorgeous Swallowtail|Giant_Tiger_Prawn.png
+173|mare|Large Flying Fish|5|XXL Heavy|5640|100||Tuna, Marlin, Mahi-Mahi, Sailfish, Wahoo, Swordfish|FlyingFish.png
+174|vermi|Night Crawler|25|Med Light|170|18|#4 - #4/0|Bass, Carp, Trout, Catfish, White Bass, Tench, Carp, Goby, European Eel|Night_Crawlers.png
+175|vermi|Crawling Worm and Selective Crawling worm|15|Medium|350|46||Catfish, Bullhead, Walleye|Night_Crawlers.png
+176|vermi|Mole Cricket and Selective Mole Cricket|10|Medium|560|46||Catfish, Bullhead, Walleye|Mole_Cricket_Larva.png
+177|vermi|Dobsonfly|25|Heavy|1455|64||Silver Arowana, Trahira, Apapa, Jacunda|Dobsonfly.png
+178|vermi|Blue-Winged Grasshopper|25|Medium|1510|68||Bicuda, Silver Arowana, Trahira, Apapa, Jacunda|Bully_Grasshopper.png
+179|vermi|Caddis Larva|25|Light|2175|75||Bluegill, Pumpkinseed, Prussian Carp, Bream, Tench, Labeo, Tilapia, Bulldog Fish, Elephant Fish, Congo Yellowfish, African Big Eye Catfish|Caddis_Larva.png
+180|vermi|African Giant Water Bug|25|Heavy|2330|75||Catfish|African_Giant_Water_Bug.png
+181|fresche|Small Minnows|10|Med Heavy|300|7|#6 - #1|Bass, Trout, Salmon, Pike, Crappie, White Bass, Predator Carp, European Eel, Zander, European Flounder|Small_Minnows.png
+182|fresche|Crawfish Cuts|15|Med Heavy|250|11|#2 - #4/0|Bass, Burbot, Sterlet, European Flounder|Crawfish_Cut.png
+183|fresche|Medium Cutbait|10|Heavy|340|20|#4 - #4/0|Catfish, Gar, Burbot, Sterlet, European Eel|Medium_Cutbait.png
+184|fresche|Duck Mussel Meat|15|Heavy|370|20||Catfish, Sturgeon|Duck_Mussel_Meat.png
+185|fresche|Common Minnow|10|Med-Heavy|1100|48||Ide, Perch, Lenok, Arctic Grayling, European Grayling, Asp|Common_Minnow_Baits.png
+186|fresche|Boiled Red Roe|25|Light|1150|49||Arctic Grayling, European Grayling, Humpback Whitefish, Lake Whitefish, Trout, Salmon|Boiled_Red_Roe.png
+187|fresche|Salo and Salo Generalske|20|Med-Heavy|990|50||Grass Carp, Carp|Salo.png
+188|fresche|Chicken Liver|10|Med-Heavy|690|57||Piranha, Catfish, Gar|Chicken_Liver.png
+189|fresche|Dead Lambari Fish|15|Heavy|1550|58||Piranha, Catfish|Dead_Lambari_Fish.png
+190|fresche|Amazonian Sardine|5|Heavy|1875|68||Catfish, Arapaima, Silver Arowana, Payara|Amazonian_Sardine.png
+191|fresche|Banded Aracu|5|X Heavy|1915|69||Catfish, Arapaima, Silver Arowana, Payara|Banded_Aracu_Minnow.png
+192|fresche|Canned Meat|10|Heavy|1240|73||Catfish, Sturgeon, Gar|Canned_Meat.png
+193|fresche|Small Tilapia|5|X Heavy|2280|79||Nile Perch, Tigerfish, Cornish Jack, Catfish|Small_Tilapia.png
+194|mare|Clam Meat|20|Medium|730|35||Bonefish, Striped Bass, Flounder, Gafftopsail Сatfish|Clam_Meat.png
+195|mare|Sand Fleas|15|Medium|1010|54||Permit, Red Drum, Striped Bass, Flounder|Sand_Fleas.png
+196|mare|Finger Mullets|10|Med-Heavy|1115|54||Bonefish, Flounder, Permit, Red Drum, Common Snook, Striped Bass|Finger_Mullets.png
+197|mare|Scaled Sardines|5|X Heavy|1700|55||Tarpon, Flounder, Permit, Red Drum, Common Snook, Striped Bass|Scaled_Sardines.png
+198|mare|Japanese flying squid|10|X Heavy|3115|83||Tuna, Marlin, Greater Amberjack, Giant Trevally, Ruby Snapper, Mahi-Mahi|Japanese_Flying_Squid.png
+199|mare|Japanese Anchovy|10|Med-Heavy|2575|85||Bonefish, Small Tuna, Japanese Amberjack, Striped Bonito, Mahi-Mahi, Green Jobfish|Japanese_Anchovy1.png
+200|mare|Natal Rock Oyster Meat|10|Med-Heavy|3320|92||Small Snapper, Giant Sweetlips, Sickle Pomfret, Gorgeous Swallowtail|Natal_Rock_Oyster_Meat.png
+201|mare|Fish Head|5|X Heavy|3590|94||Grouper, Shark, Snapper|Fish_Head.png
+202|mare|Split Tail Mullet|5|X Heavy|4985|98||Tuna, Marlin, Mahi-Mahi, Sailfish, Wahoo, Swordfish|SplitTailMullet.png

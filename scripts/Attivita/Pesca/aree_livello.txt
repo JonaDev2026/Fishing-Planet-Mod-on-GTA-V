@@ -1,0 +1,41 @@
+# OGNI NOSTRA ZONA E' UNA ACQUA VERA DI FISHING PLANET.
+# area|acqua_vera|livello_richiesto
+# Il livello e' il required_level della loro pagina (pagine_acque).
+# Lone Star Lake sul wiki e' livello 2 perche' l'1 e' il tutorial: da noi
+# il tutorial non c'e', quindi apre all'1.
+# L'abbinamento zona -> acqua e' NOSTRO, sul carattere dell'acqua.
+Riva ovest di Alamo|Emerald Lake, New York|8
+Slab|Lone Star Lake, Texas|1
+Foce dello Zancudo|San Joaquin Delta, California|34
+Sponda sud di Alamo|Lone Star Lake, Texas|1
+Sandy Shores|Sander Baggersee, Germania|42
+Riva est di Alamo|Dnepr, Ucraina|46
+Grapeseed|Weeping Willow Fishery, UK|50
+Riva nord-est di Alamo|Sander Baggersee, Germania|42
+Mount Chiliad|Saint-Croix Lake, Michigan|30
+Riva nord di Alamo|Saint-Croix Lake, Michigan|30
+Ponte Calafia|Falcon Lake, Oregon|14
+Fiume Zancudo alto|Creuse, Francia|24
+Fiume Zancudo basso|Mudwater River, Missouri|4
+Palude di Zancudo ovest|Quanchkin Lake, Louisiana|26
+Torrente di Tongva alto|Kaniq Creek, Alaska|38
+Torrente di Tongva basso|Tevere, Italia|20
+Palude di Zancudo est|Everglades, Florida|18
+Cassidy Creek alto|Selenge, Mongolia|48
+Cassidy Creek basso|Neherrin River, North Carolina|10
+Foce del Cassidy|Ghent-Terneuzen Canal, Olanda|12
+Lago di Vinewood|Emerald Lake, New York|8
+Diga di Land Act|Rocky Lake, Colorado|5
+Land Act nord|White Moose Lake, Alberta|22
+Land Act ovest|Falcon Lake, Oregon|14
+Mirror Park|Lesni Vila Fishery, Cechia|3
+Laghetti del golf|Lone Star Lake, Texas|1
+Vespucci Beach e molo di Del Perro|Kaiji No Ri, Giappone|83
+Isolotto di San Chianski|Noomaa Kuda Atholhu, Maldive|94
+Faro di El Gordo|Fiordo di Skårland, Norvegia|100
+Molo di Paleto Cove|Fiordo di Skårland, Norvegia|100
+Paleto Bay ovest|Fiordo di Skårland, Norvegia|100
+Paleto Bay est|Fiordo di Skårland, Norvegia|100
+Spiaggia e molo di Chumash|Kaiji No Ri, Giappone|83
+Spiaggia di Pacific Bluffs|Kaiji No Ri, Giappone|83
+Palomino Highlands|Blue Crab Island, Mississippi|54

@@ -1,0 +1,11086 @@
+// ============================================================
+//  PESCA - versione pulita, si costruisce un pezzo alla volta
+//  PASSO 1: il quaderno dei pesci (239 specie da pesci.txt)
+// ============================================================
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Drawing;
+using System.Media;
+using GTA;
+using GTA.Math;
+using GTA.Native;
+using GTA.UI;
+
+public class Pesca : Script
+{
+    const string MY_DIR = "C:\\Program Files\\Rockstar Games\\Grand Theft Auto V Enhanced\\scripts\\Attivita\\Pesca";
+    const string TRAINER_DIR = "C:\\Program Files\\Rockstar Games\\Grand Theft Auto V Enhanced\\scripts\\Trainer";
+
+    // ---------- LA LINGUA ----------
+    // Come Bus, Camionista e Fuzer: si legge 900= dal config.ini del
+    // trainer. 0 = inglese, 1 = italiano.
+    int lang = 1;
+
+    void LeggiLingua()
+    {
+        try
+        {
+            string f = Path.Combine(TRAINER_DIR, "config.ini");
+            if (!File.Exists(f)) return;
+            string[] rows = File.ReadAllLines(f);
+            int i;
+            for (i = 0; i < rows.Length; i++)
+            {
+                string r = rows[i].Trim();
+                if (!r.StartsWith("900=")) continue;
+                int val;
+                if (int.TryParse(r.Substring(4).Trim(), out val)) lang = val;
+            }
+        }
+        catch { }
+    }
+
+    string L(string en, string it)
+    {
+        return (lang == 1) ? it : en;
+    }
+
+    int ultimaLingua = 0;
+
+    // i nomi italiani dei pesci, da pesci_it.txt
+    Dictionary<string, string> nomiIt = new Dictionary<string, string>();
+
+    void CaricaNomiIt()
+    {
+        nomiIt.Clear();
+        string[] r = LeggiRighe("pesci_it.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 2) continue;
+            string en = c[0].Trim(), it = c[1].Trim();
+            if (en.Length == 0 || it.Length == 0) continue;
+            if (!nomiIt.ContainsKey(en)) nomiIt.Add(en, it);
+        }
+    }
+
+    // il nome di un pesce nella lingua scelta
+    string NomeIt(string en)
+    {
+        if (lang != 1 || en == null) return en;
+        string v;
+        if (nomiIt.TryGetValue(en.Trim(), out v)) return v;
+        return en;
+    }
+
+    // LE ESCHE IN ITALIANO, da esche_it.txt e colori_it.txt.
+    // Le liste vere restano in inglese - sono i nomi del wiki e servono
+    // per far tornare i conti - qui c'e' solo come si leggono.
+    Dictionary<string, string> escheIt = new Dictionary<string, string>();
+    Dictionary<string, string> coloriIt = new Dictionary<string, string>();
+
+    void CaricaTabella(string file, Dictionary<string, string> d)
+    {
+        d.Clear();
+        string[] r = LeggiRighe(file);
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 2) continue;
+            string en = c[0].Trim(), it = c[1].Trim();
+            if (en.Length == 0 || it.Length == 0) continue;
+            if (!d.ContainsKey(en)) d.Add(en, it);
+        }
+    }
+
+    // LA FORMA DI OGNI PESCE, da pesci_modello.txt.
+    // a_c_fish ha tre corpi diversi: se il gioco ne pesca uno a caso, un
+    // persico ti esce lungo come una trota. Qui ogni specie ha il suo.
+    Dictionary<string, int> formaPesce = new Dictionary<string, int>();
+    Dictionary<string, string> modelloPesce = new Dictionary<string, string>();
+
+    void CaricaForme()
+    {
+        formaPesce.Clear();
+        modelloPesce.Clear();
+        string[] r = LeggiRighe("pesci_modello.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 3) continue;
+            string en = c[0].Trim();
+            if (en.Length == 0 || formaPesce.ContainsKey(en)) continue;
+            modelloPesce.Add(en, c[1].Trim());
+            formaPesce.Add(en, Numero(c[2].Trim()));
+        }
+    }
+
+    int FormaDi(string nome)
+    {
+        int v;
+        if (nome != null && formaPesce.TryGetValue(nome.Trim(), out v)) return v;
+        return 0;
+    }
+
+    string ModelloDi(string nome)
+    {
+        string v;
+        if (nome != null && modelloPesce.TryGetValue(nome.Trim(), out v)
+            && v.Length > 0) return v;
+        return "a_c_fish";
+    }
+
+    void CaricaEscheIt()
+    {
+        CaricaTabella("esche_it.txt", escheIt);
+        CaricaTabella("colori_it.txt", coloriIt);
+    }
+
+    // il nome di un'esca nella lingua scelta
+    string EscaIt(string en)
+    {
+        if (lang != 1 || en == null || en.Length == 0) return en;
+        string v;
+        if (escheIt.TryGetValue(en.Trim(), out v)) return v;
+        return en;
+    }
+
+    // il colore di un'artificiale nella lingua scelta
+    string ColoreIt(string en)
+    {
+        if (lang != 1 || en == null || en.Length == 0) return en;
+        string v;
+        if (coloriIt.TryGetValue(en.Trim(), out v)) return v;
+        return en;
+    }
+
+    // piu' esche di fila, tradotte una per una
+    string EscheIt(string elenco)
+    {
+        if (lang != 1 || elenco == null || elenco.Length == 0) return elenco;
+        string[] pz = elenco.Split(',');
+        string t = "";
+        int i;
+        for (i = 0; i < pz.Length; i++)
+        {
+            if (t.Length > 0) t += ", ";
+            t += EscaIt(pz[i].Trim());
+        }
+        return t;
+    }
+
+    // ---------- i pesci letti da pesci.txt ----------
+    class Specie
+    {
+        public string Nome;
+        public string Img;
+        public float KgC, KgT, KgU;          // comune / trofeo / unico  (pesi veri)
+        public int PrC, PrT, PrU;            // prezzi veri
+        public int Livello, Denti;
+        public string Amo, Famiglia;
+        public int[] Esche;                  // esche naturali
+        public int[] Art;                    // esche artificiali
+        public string[] Zone;
+        public string Quando;                // notte/alba_tramonto/giorno/sempre
+        public int Rarita;                   // 1 comunissimo ... 5 rarissimo
+        public int Pred;                     // 1 = la sua pagina elenca artificiali
+    }
+    List<Specie> pesci = new List<Specie>();
+
+    List<string> esche = new List<string>();      // i nomi veri del wiki
+    List<string> escheTipo = new List<string>();  // naturale / artificiale
+
+    // ---------- le acque della mappa ----------
+    // ============================================================
+    //  LE AREE DI PESCA
+    //  Non piu' dieci zone decise a tavolino sui nomi di GTA, ma le aree
+    //  vere registrate andandoci sopra (acque.txt). Un posto appartiene
+    //  all'area del punto registrato piu' vicino.
+    //  Il GRUPPO e' l'acqua a cui l'area appartiene: la licenza si paga
+    //  per gruppo, cosi' con "Alamo Sea" peschi in tutti i suoi tratti.
+    // ============================================================
+    List<string> arNome = new List<string>();
+    List<string> arTipo = new List<string>();
+    List<string> arGruppo = new List<string>();
+    List<string> arCodice = new List<string>();   // codice del gruppo
+    List<string> arFile = new List<string>();     // q_<n>.txt del quaderno
+    List<float> arCx = new List<float>();
+    List<float> arCy = new List<float>();
+    List<float> arCz = new List<float>();
+    List<List<string>> arZoneGta = new List<List<string>>();
+    // IL PUNTO D'ACCESSO: dove si arriva davvero, segnato a mano.
+    // Il centro geometrico puo' cadere su uno scoglio o in mezzo all'acqua:
+    // il segnaposto e il blip vanno qui, se c'e'.
+    // il livello che serve per pescare in quest'area, e l'acqua vera che
+    // rappresenta: da aree_livello.txt
+    List<int> arLiv = new List<int>();
+    List<string> arAcqua = new List<string>();
+    List<float> arAx = new List<float>();
+    List<float> arAy = new List<float>();
+    List<bool> arAcc = new List<bool>();
+    // tutti i punti, con l'indice dell'area a cui appartengono
+    List<float> apX = new List<float>();
+    List<float> apY = new List<float>();
+    List<int> apA = new List<int>();
+
+    const float RAGGIO_AREA = 400f;   // oltre questo non sei in nessuna area
+
+    static string Codicino(string t)
+    {
+        string r = "";
+        int i;
+        for (i = 0; i < t.Length && r.Length < 14; i++)
+        {
+            char c = char.ToLower(t[i]);
+            if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) r += c;
+        }
+        if (r.Length == 0) r = "zona";
+        return r;
+    }
+
+    void CaricaAree()
+    {
+        arNome.Clear(); arTipo.Clear(); arGruppo.Clear(); arCodice.Clear();
+        arFile.Clear(); arCx.Clear(); arCy.Clear(); arCz.Clear(); arZoneGta.Clear();
+        arAx.Clear(); arAy.Clear(); arAcc.Clear();
+        arLiv.Clear(); arAcqua.Clear();
+        apX.Clear(); apY.Clear(); apA.Clear();
+        List<float> sx = new List<float>(), sy = new List<float>(), sz = new List<float>();
+        List<int> sn = new List<int>();
+
+        string[] r = LeggiRighe("acque.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 6) continue;
+            string nome = c[0].Trim();
+            int a = arNome.IndexOf(nome);
+            if (a < 0)
+            {
+                a = arNome.Count;
+                arNome.Add(nome);
+                arTipo.Add(c[1].Trim());
+                string gr = (c.Length > 6 && c[6].Trim().Length > 0) ? c[6].Trim() : nome;
+                arGruppo.Add(gr);
+                arCodice.Add(Codicino(gr));
+                arFile.Add("q_" + Codicino(nome) + ".txt");
+                arZoneGta.Add(new List<string>());
+                sx.Add(0f); sy.Add(0f); sz.Add(0f); sn.Add(0);
+                arCx.Add(0f); arCy.Add(0f); arCz.Add(0f);
+                arAx.Add(0f); arAy.Add(0f); arAcc.Add(false);
+                arLiv.Add(1); arAcqua.Add("");
+            }
+            float x = Decimale(c[2]), y = Decimale(c[3]), z = Decimale(c[4]);
+            apX.Add(x); apY.Add(y); apA.Add(a);
+            sx[a] = sx[a] + x; sy[a] = sy[a] + y; sz[a] = sz[a] + z; sn[a] = sn[a] + 1;
+            string zg = c[5].Trim().ToUpper();
+            if (zg.Length > 0 && !arZoneGta[a].Contains(zg)) arZoneGta[a].Add(zg);
+        }
+        for (i = 0; i < arNome.Count; i++)
+        {
+            if (sn[i] <= 0) continue;
+            arCx[i] = sx[i] / sn[i];
+            arCy[i] = sy[i] / sn[i];
+            arCz[i] = sz[i] / sn[i];
+        }
+        // due aree con lo stesso file rovinerebbero il quaderno
+        for (i = 0; i < arFile.Count; i++)
+        {
+            int k, n = 1;
+            for (k = 0; k < i; k++)
+                if (arFile[k] == arFile[i])
+                { n++; arFile[i] = arFile[i].Replace(".txt", n + ".txt"); k = -1; }
+        }
+    }
+
+    void CaricaLivelliAree()
+    {
+        string[] r = LeggiRighe("aree_livello.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 3) continue;
+            int a = arNome.IndexOf(c[0].Trim());
+            if (a < 0) continue;
+            arAcqua[a] = c[1].Trim();
+            int lv = Numero(c[2]);
+            if (lv < 1) lv = 1;
+            arLiv[a] = lv;
+        }
+    }
+
+    int LivelloArea(int lu)
+    {
+        if (lu < 0 || lu >= arLiv.Count) return 1;
+        return arLiv[lu];
+    }
+
+    void CaricaAccessi()
+    {
+        string[] r = LeggiRighe("accessi.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 3) continue;
+            int a = arNome.IndexOf(c[0].Trim());
+            if (a < 0) continue;
+            arAx[a] = Decimale(c[1]); arAy[a] = Decimale(c[2]); arAcc[a] = true;
+        }
+    }
+
+    void SalvaAccessi()
+    {
+        List<string> v = new List<string>();
+        v.Add("# DOVE SI ARRIVA in ogni area, segnato andandoci.");
+        v.Add("# area|x|y");
+        v.Add("# Il segnaposto e il blip puntano qui invece che al centro");
+        v.Add("# geometrico, che puo' cadere su uno scoglio o in mezzo all'acqua.");
+        int i;
+        for (i = 0; i < arNome.Count; i++)
+        {
+            if (!arAcc[i]) continue;
+            v.Add(arNome[i] + "|"
+                  + arAx[i].ToString("0.0", CultureInfo.InvariantCulture) + "|"
+                  + arAy[i].ToString("0.0", CultureInfo.InvariantCulture));
+        }
+        try { File.WriteAllLines(Path.Combine(MY_DIR, "accessi.txt"), v.ToArray()); }
+        catch { }
+    }
+
+    // dove puntare per quest'area: l'accesso se c'e', se no il centro
+    float PuntoX(int a)
+    {
+        if (a < 0 || a >= arNome.Count) return 0f;
+        return arAcc[a] ? arAx[a] : arCx[a];
+    }
+
+    float PuntoY(int a)
+    {
+        if (a < 0 || a >= arNome.Count) return 0f;
+        return arAcc[a] ? arAy[a] : arCy[a];
+    }
+
+    string NomeLuogo(int lu)
+    {
+        if (lu < 0 || lu >= arNome.Count) return "";
+        return arNome[lu];
+    }
+
+    string TipoLuogo(int lu)
+    {
+        if (lu < 0 || lu >= arTipo.Count) return "";
+        return arTipo[lu];
+    }
+
+    string FileLuogo(int lu)
+    {
+        if (lu < 0 || lu >= arFile.Count) return "studio_voci.txt";
+        return arFile[lu];
+    }
+
+    // il codice del GRUPPO: e' quello che si compra con la licenza
+    string CodiceLuogo(int lu)
+    {
+        if (lu < 0 || lu >= arCodice.Count) return "";
+        return arCodice[lu];
+    }
+
+    // la prima area di quel gruppo
+    int IndiceLuogo(string zona)
+    {
+        if (zona == null || zona.Length == 0) return -1;
+        int i;
+        for (i = 0; i < arCodice.Count; i++) if (arCodice[i] == zona) return i;
+        return -1;
+    }
+
+    string NomeGruppo(string zona)
+    {
+        int i;
+        for (i = 0; i < arCodice.Count; i++) if (arCodice[i] == zona) return arGruppo[i];
+        return "";
+    }
+
+    // ============================================================
+    //  I PUNTI CALDI
+    //  Dentro un'acqua i pesci non stanno sparsi uguali: stanno dove c'e'
+    //  l'erba, la buca, la corrente che gira. Ogni area ha due punti a
+    //  specie - li' quel pesce abbocca molto piu' che altrove - e un punto
+    //  profondo, dove vengono piu' trofei ed esemplari unici.
+    //  Si misurano sull'ESCA, non su di te: lanci da riva e peschi trenta
+    //  metri piu' in la'.
+    // ============================================================
+    List<float> pcX = new List<float>();
+    List<float> pcY = new List<float>();
+    List<float> pcR = new List<float>();
+    List<string> pcSpecie = new List<string>();
+    List<float> pcBonus = new List<float>();
+
+    void CaricaPuntiCaldi()
+    {
+        pcX.Clear(); pcY.Clear(); pcR.Clear(); pcSpecie.Clear(); pcBonus.Clear();
+        string[] r = LeggiRighe("punti_caldi.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 6) continue;
+            pcX.Add(Decimale(c[1]));
+            pcY.Add(Decimale(c[2]));
+            float rr = Decimale(c[3]);
+            if (rr < 5f) rr = 30f;
+            pcR.Add(rr);
+            pcSpecie.Add(c[4].Trim());
+            float b = Decimale(c[5]);
+            if (b < 1f) b = 1f;
+            pcBonus.Add(b);
+        }
+    }
+
+    // dove sta l'esca adesso: da dove hai lanciato, nella direzione in cui
+    // guardavi, per i metri di lenza che sono fuori
+    float escaX = 0f, escaY = 0f;
+    bool escaInAcqua = false;
+    bool escaATerra = false;     // il lancio e' finito sul prato
+
+    // dove guardava quando ha lanciato, e di quanto ha spostato la canna
+    float dirBase = 0f;
+    float scartoCanna = 0f;
+    int ultimoGiroCanna = 0;
+
+    // L'ESCA STA DOVE E' CADUTA.
+    // Prima si ricavava dalla direzione in cui guardava il pescatore:
+    // bastava girare la canna e l'esca girava con lui, tutta la lenza
+    // faceva l'arco. In acqua non succede: il piombo sta dove sta, e
+    // muovendo la canna lo trascini appena. Adesso l'esca ha una sua
+    // direzione - "escaDir" - che si segna quando lanci e che la canna
+    // sposta solo di un pelo.
+    float escaDir = 0f;
+    // dove guardava quando ha lanciato, e di quanti centimetri la canna
+    // ha trascinato l'esca di lato da allora
+    float escaBase = 0f;
+    float escaScarto = 0f;
+
+    void AggiornaEsca(Ped p, float metri)
+    {
+        try
+        {
+            double rad = escaDir * Math.PI / 180.0;
+            float fx = -(float)Math.Sin(rad);
+            float fy = (float)Math.Cos(rad);
+            GTA.Math.Vector3 o = p.Position;
+            escaX = o.X + fx * metri;
+            escaY = o.Y + fy * metri;
+            escaInAcqua = true;
+        }
+        catch { escaInAcqua = false; }
+    }
+
+    // il punto caldo in cui sta l'esca, -1 se in nessuno
+    int CaldoDellEsca()
+    {
+        if (!escaInAcqua) return -1;
+        int i;
+        for (i = 0; i < pcX.Count; i++)
+        {
+            float dx = pcX[i] - escaX, dy = pcY[i] - escaY;
+            if (dx * dx + dy * dy <= pcR[i] * pcR[i]) return i;
+        }
+        return -1;
+    }
+
+    // I PESCI DI OGNI AREA, da pesci_aree.txt.
+    // Non piu' i codici zona di GTA: quelli davano gli stessi settanta
+    // pesci a tutto il lago. Adesso ogni tratto ha la sua lista, presa
+    // dalle acque vere di Fishing Planet che quel tratto rappresenta.
+    List<List<string>> arPesci = new List<List<string>>();
+
+    void CaricaPesciAree()
+    {
+        arPesci.Clear();
+        int i;
+        for (i = 0; i < arNome.Count; i++) arPesci.Add(new List<string>());
+        string[] r = LeggiRighe("pesci_aree.txt");
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            int b = l.IndexOf('|');
+            if (b < 1) continue;
+            int a = arNome.IndexOf(l.Substring(0, b).Trim());
+            if (a < 0) continue;
+            string[] nn = l.Substring(b + 1).Split(';');
+            int k;
+            for (k = 0; k < nn.Length; k++)
+            {
+                string x = nn[k].Trim();
+                if (x.Length > 0 && !arPesci[a].Contains(x)) arPesci[a].Add(x);
+            }
+        }
+    }
+
+    // ============================================================
+    //  A CHE LIVELLO SI PRENDE UN PESCE
+    //  Non e' una scelta nostra: viene dal negozio. Per ogni livello si
+    //  guarda il pezzo migliore che a quel livello puoi comprare - lenza,
+    //  canna, frizione del mulinello, nassa - e si vede da quale livello
+    //  in poi reggono tutte e quattro il peso di quel pesce. Prima di
+    //  quel livello o ti spezza la lenza o in nassa non ci sta.
+    // ============================================================
+    static float NumeroPiuAlto(string t)
+    {
+        if (t == null) return 0f;
+        float best = 0f, cur = 0f;
+        bool dentro = false;
+        int i;
+        string n = "";
+        for (i = 0; i <= t.Length; i++)
+        {
+            char c = (i < t.Length) ? t[i] : ' ';
+            if ((c >= '0' && c <= '9') || c == '.') { n += c; dentro = true; }
+            else
+            {
+                if (dentro)
+                {
+                    if (float.TryParse(n, NumberStyles.Float,
+                                       CultureInfo.InvariantCulture, out cur))
+                        if (cur > best) best = cur;
+                    n = ""; dentro = false;
+                }
+            }
+        }
+        return best;
+    }
+
+    float[] topLenza, topCanna, topFriz, topNassa;
+
+    void CalcolaProgressione()
+    {
+        topLenza = new float[101]; topCanna = new float[101];
+        topFriz = new float[101]; topNassa = new float[101];
+        int lv, i;
+        for (lv = 1; lv <= 100; lv++)
+        {
+            float a = 0f, b = 0f, c = 0f, d = 0f;
+            for (i = 0; i < lenze.Count; i++)
+                if (lenze[i].LivWiki <= lv && lenze[i].Kg > a) a = lenze[i].Kg;
+            for (i = 0; i < canne.Count; i++)
+                if (canne[i].LivWiki <= lv)
+                {
+                    float x = NumeroPiuAlto(canne[i].LenzaKg);
+                    if (x > b) b = x;
+                }
+            for (i = 0; i < mulinelli.Count; i++)
+                if (mulinelli[i].LivWiki <= lv && mulinelli[i].Frizione > c)
+                    c = mulinelli[i].Frizione;
+            for (i = 0; i < nasse.Count; i++)
+                if (nasse[i].LivWiki <= lv && nasse[i].KgPesce > d) d = nasse[i].KgPesce;
+            topLenza[lv] = a; topCanna[lv] = b; topFriz[lv] = c; topNassa[lv] = d;
+        }
+    }
+
+    int LivelloDelPesce(Specie s)
+    {
+        if (topLenza == null) CalcolaProgressione();
+        float k = s.KgC;
+        if (k <= 0f) k = 0.3f;
+        int lv;
+        for (lv = 1; lv <= 100; lv++)
+            if (topLenza[lv] >= k && topCanna[lv] >= k
+                && topNassa[lv] >= k && topFriz[lv] >= k * 0.7f) return lv;
+        return 100;
+    }
+
+    // IL LIVELLO CONSIGLIATO DI UN'AREA.
+    // Non e' una regola, e' un consiglio: il livello a cui la nassa che
+    // puoi comprare regge il pesce di mezzo di quel posto. Sotto quel
+    // livello ci peschi lo stesso, ma meta' di quello che prendi lo devi
+    // ributtare perche' non ci sta.
+    int LivelloConsigliato(int lu)
+    {
+        if (lu < 0 || lu >= arPesci.Count) return 1;
+        List<float> pp = new List<float>();
+        int i;
+        for (i = 0; i < pesci.Count; i++)
+            if (arPesci[lu].Contains(pesci[i].Nome)) pp.Add(pesci[i].KgC);
+        if (pp.Count == 0) return 1;
+        pp.Sort();
+        float mediano = pp[pp.Count / 2];
+        // il primo livello in cui una nassa regge un pesce cosi'
+        int best = 100;
+        for (i = 0; i < nasse.Count; i++)
+        {
+            if (nasse[i].KgPesce < mediano) continue;
+            if (nasse[i].LivWiki < best) best = nasse[i].LivWiki;
+        }
+        if (best > 100) best = 100;
+        if (best < 1) best = 1;
+        return best;
+    }
+
+    // quanti pesci di quest'area ti stanno gia' nella nassa che hai
+    int PesciAllaTuaPortata(int lu)
+    {
+        if (lu < 0 || lu >= arPesci.Count) return 0;
+        float max = KgPesceMax();
+        if (max <= 0f) max = 1f;
+        int i, q = 0;
+        for (i = 0; i < pesci.Count; i++)
+            if (arPesci[lu].Contains(pesci[i].Nome) && pesci[i].KgC <= max) q++;
+        return q;
+    }
+
+    // il livello piu' basso e piu' alto fra i pesci di un'area
+    void LivelliArea(int lu, out int basso, out int alto)
+    {
+        basso = 100; alto = 1;
+        if (lu < 0 || lu >= arPesci.Count) { basso = 1; return; }
+        int i;
+        for (i = 0; i < pesci.Count; i++)
+        {
+            if (!arPesci[lu].Contains(pesci[i].Nome)) continue;
+            int l = LivelloDelPesce(pesci[i]);
+            if (l < basso) basso = l;
+            if (l > alto) alto = l;
+        }
+        if (basso > alto) basso = alto;
+    }
+
+    // LA SCHEDA DI UNA ZONA: i suoi pesci raggruppati per livello.
+    // I livelli non li decidiamo qui: sono quelli del negozio, cioe' da
+    // quando lenza, canna, frizione e nassa reggono quel pesce.
+    int zonaQui = -1;   // dove sei, calcolato una volta sola da ScriviZone
+
+    // IL NOME DEL FILE DEL BANNER: "Riva nord-est di Alamo" ->
+    // "riva_nord_est_di_alamo.png". Tutto minuscolo, e quello che non e'
+    // una lettera o un numero diventa un trattino basso.
+    static string SlugArea(string nome)
+    {
+        string t = SoloAscii(nome).ToLower();
+        string o = "";
+        bool ultimoTratto = true;
+        int i;
+        for (i = 0; i < t.Length; i++)
+        {
+            char c = t[i];
+            if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
+            { o += c; ultimoTratto = false; }
+            else if (!ultimoTratto) { o += '_'; ultimoTratto = true; }
+        }
+        while (o.Length > 0 && o[o.Length - 1] == '_') o = o.Substring(0, o.Length - 1);
+        return o;
+    }
+
+    void ScriviUnaZona(int a)
+    {
+        List<string> v = new List<string>();
+        v.Add("titolo_finestra|" + SoloAscii(arNome[a]).ToUpper());
+        // il banner del posto, come ce l'hanno i tornei
+        string insZ = ImgOk("img\\zone\\" + SlugArea(arNome[a]) + ".png");
+        if (insZ.Length > 0) v.Add("insegna|" + insZ);
+
+        int quanti = (a < arPesci.Count) ? arPesci[a].Count : 0;
+        bool aperta = (livelloPescatore >= LivelloArea(a));
+
+        v.Add("testo|" + L(arNome[a] + ", " + arTipo[a] + ". " + quanti
+                           + " species. Opens at level " + LivelloArea(a) + ".",
+                           arNome[a] + ", " + arTipo[a] + ". " + quanti
+                           + " specie. Apre al livello " + LivelloArea(a) + "."));
+        if (!aperta)
+            v.Add("testo|" + L("Closed for you: you are level " + livelloPescatore + ".",
+                               "Per te e' chiusa: sei al livello "
+                               + livelloPescatore + "."));
+
+        // l'elenco dei pesci e basta: un livello solo per scheda, quello
+        // della zona. Mettere anche il livello di attrezzatura di ogni
+        // pesce faceva solo confusione.
+        string el = "";
+        int i;
+        for (i = 0; i < pesci.Count; i++)
+        {
+            if (a >= arPesci.Count || !arPesci[a].Contains(pesci[i].Nome)) continue;
+            string nn = NomeIt(pesci[i].Nome);
+            el = (el.Length > 0) ? (el + ", " + nn) : nn;
+        }
+        if (el.Length > 0)
+        {
+            v.Add("testo|- " + L("What lives here", "Chi ci vive"));
+            v.Add("testo|" + el + ".");
+        }
+
+        // se ci sei gia' non ha senso mandarti il segnaposto
+        if (zonaQui == a)
+            v.Add(L("You are here", "Sei qui") + "|niente|||250,175,205");
+        else
+            v.Add(L("Get to the spot", "Raggiungi il posto")
+                  + "|gps_zona " + a + "|||130,225,180");
+        ScriviVoci("z_zona_" + a + ".txt", v);
+    }
+
+    void ScriviZone()
+    {
+        List<string> v = new List<string>();
+        v.Add("titolo_finestra|" + L("FISHING SPOTS", "ZONE DI PESCA"));
+        v.Add("nota|" + L("Press to open the spot.", "Premi per aprire la zona."));
+
+        // in ordine: prima quelle che si esauriscono presto, poi quelle
+        // che ti portano avanti fino ai livelli alti
+        List<int> ord = new List<int>();
+        int i, k;
+        for (i = 0; i < arNome.Count; i++) ord.Add(i);
+        for (i = 1; i < ord.Count; i++)
+        {
+            int t = ord[i];
+            int l1 = LivelloArea(t);
+            k = i - 1;
+            while (k >= 0)
+            {
+                int l2 = LivelloArea(ord[k]);
+                if (l2 > l1) { ord[k + 1] = ord[k]; k--; }
+                else break;
+            }
+            ord[k + 1] = t;
+        }
+        int qui = LuogoQui();
+        zonaQui = qui;
+        for (i = 0; i < ord.Count; i++)
+        {
+            int a = ord[i];
+            int b1, a1; LivelliArea(a, out b1, out a1);
+            int qs = (a < arPesci.Count) ? arPesci[a].Count : 0;
+            // il livello va scritto attaccato, "Liv.1-20": se ci metti gli
+            // spazi il trainer stacca solo "Liv.1" e il resto resta orfano
+            string d = L("Lv.", "Liv.") + LivelloArea(a)
+                     + "   " + qs + " " + L("species", "specie")
+                     + "   " + arTipo[a];
+            if (livelloPescatore < LivelloArea(a))
+                d += "   " + L("closed", "chiusa");
+            // "sei qui" sta accanto al nome, non nella fascia
+            string et = arNome[a];
+            if (a == qui) et += "   " + L("you are here", "sei qui");
+            // OGNI RIGA PORTA IL BANNER DEL SUO POSTO.
+            // Il riquadro grande in cima e' l'immagine della riga scelta:
+            // col logo dell'associazione su tutte le righe scorrevi la
+            // lista e in cima non cambiava mai niente. Cosi' invece
+            // scendendo vedi il banner di ogni acqua.
+            string imgZ = BannerArea(a);
+            if (imgZ.Length == 0) imgZ = Banner();
+            v.Add("sottofile|" + et
+                  + "|z_zona_" + a + ".txt||" + imgZ + "|" + d);
+            ScriviUnaZona(a);
+        }
+        ScriviVoci("zone_voci.txt", v);
+    }
+
+    bool PesceQui(Specie s, int lu)
+    {
+        if (lu < 0 || lu >= arPesci.Count) return true;
+        if (arPesci[lu].Count == 0) return false;
+        return arPesci[lu].Contains(s.Nome);
+    }
+
+    // ---------- le lenze lette da lenze.txt (dati veri del wiki) ----------
+    class Lenza
+    {
+        public int Id;
+        public string Tipo, Marca, Prodotto, Mm, Img;
+        public float Kg;
+        public int Metri, Prezzo, LivWiki;
+    }
+    List<Lenza> lenze = new List<Lenza>();
+
+    static readonly string[] TIPO_COD = new string[] { "mono", "fluoro", "braid", "mare" };
+    static readonly string[] TIPO_NOME = new string[] {
+        "Monofilo", "Fluorocarbon", "Trecciato", "Lenze da mare" };
+    static readonly string[] TIPO_NOTA = new string[] {
+        "Forza media, si vede poco, elastica: la lenza di tutti i giorni.",
+        "Quasi invisibile in acqua e resistentissima all'abrasione: per i pesci diffidenti.",
+        "Fortissima e per niente elastica, ma i pesci la vedono bene.",
+        "Le piu' potenti, fatte per il mare e per i pesci grossi." };
+
+    // ---------- canne e mulinelli (dati veri del wiki) ----------
+    class Canna
+    {
+        public int Id;
+        public string Tipo, Marca, Modello, Lunghezza, Esca, LenzaKg, Potenza, Img;
+        public int LivWiki, Prezzo;
+    }
+    class Mulinello
+    {
+        public int Id;
+        public string Tipo, Marca, Serie, Misura, Rapporto, Recupero, Capacita, Img;
+        public float Frizione;
+        public int LivWiki, Prezzo;
+    }
+    List<Canna> canne = new List<Canna>();
+    List<Mulinello> mulinelli = new List<Mulinello>();
+
+    static readonly string[] CANNA_COD = new string[] {
+        "spinning", "casting", "fondo", "feeder", "match",
+        "carpa", "telescopica", "mare", "spod" };
+    static readonly string[] CANNA_NOME = new string[] {
+        "Spinning", "Casting", "Da fondo", "Feeder", "Match",
+        "Da carpa", "Telescopiche", "Da mare", "Spod" };
+
+    static readonly string[] MUL_COD = new string[] { "spinning", "casting", "mare" };
+    static readonly string[] MUL_NOME = new string[] {
+        "Da spinning", "Da casting", "Da mare" };
+
+    // ---------- ami, jig head, rig, leader e piombi ----------
+    class Terminale
+    {
+        public int Id;
+        public string Cat, Marca, Modello, Misura, Mm, Kg, Pezzi, Img, Grammi;
+        public string Forma;                 // il disegno grande dell'amo
+        public int Prezzo, LivWiki;
+    }
+    List<Terminale> terminali = new List<Terminale>();
+
+    static readonly string[] TERM_COD = new string[] { "amo", "jig", "rig", "leader", "piombo" };
+    static readonly string[] TERM_NOME = new string[] {
+        "Ami", "Testine piombate", "Rig montati", "Leader", "Piombi" };
+    static readonly string[] TERM_NOTA = new string[] {
+        "Misure da #16 a #1, poi da #1/0 a #18/0.",
+        "Amo e piombo in un pezzo solo, per le esche artificiali morbide.",
+        "Montature gia' pronte: Carolina, Texas e Three-way.",
+        "Il pezzo di filo prima dell'amo. Quello in titanio serve per i pesci coi denti.",
+        "Per portare l'esca sul fondo e lanciare piu' lontano." };
+
+    // I prezzi sul wiki sono in crediti di Fishing Planet, gonfiati perche'
+    // quel gioco ci vende sopra la moneta a pagamento. Qui li divido per
+    // avere cifre da GTA. Cambia solo questo numero per rifare i conti.
+    const int CAMBIO = 10;
+
+    static int Dollari(int crediti)
+    {
+        int v = crediti / CAMBIO;
+        if (v < 1 && crediti > 0) v = 1;
+        return v;
+    }
+
+    // ---------- le esche in vendita ----------
+    class EscaShop
+    {
+        public int Id;
+        public string Cat, Nome, Quantita, Peso, Amo, Pesci, Img;
+        public int Prezzo, LivWiki;
+    }
+    List<EscaShop> escheShop = new List<EscaShop>();
+
+    static readonly string[] ESCA_COD = new string[] {
+        "comuni", "vermi", "fresche", "boilies", "mare" };
+    static readonly string[] ESCA_NOME = new string[] {
+        "Comuni", "Vermi e insetti", "Fresche", "Boilies e pellet", "Da mare" };
+    static readonly string[] ESCA_NOTA = new string[] {
+        "Pane, formaggio, mais: quello che si trova in cucina.",
+        "Lombrichi, camole, larve: l'esca che funziona quasi sempre.",
+        "Pesciolini, gamberi, pezzi di pesce: per i predatori.",
+        "Palline e pellet aromatizzati: la pesca alla carpa.",
+        "Sardine, granchi, vermi di mare: per il mare." };
+
+    // ---------- cassette e borse ----------
+    class Cassetta
+    {
+        public int Id;
+        public string Nome, Materiale, Attrezzi, Lenze, Mulinelli, Img;
+        public int Prezzo, LivWiki;
+    }
+    List<Cassetta> cassette = new List<Cassetta>();
+
+    // le borse portacanne (Rod Cases): dati veri dal wiki
+    class Portacanne
+    {
+        public int Id;
+        public string Nome, Materiale, Img;
+        public int Canne, Mulinelli, Lenze, Prezzo, LivWiki;
+    }
+    List<Portacanne> portacanne = new List<Portacanne>();
+
+    // nasse (keepnet) e fili (stringer)
+    class Nassa
+    {
+        public int Id;
+        public string Tipo, Nome, Taglia, Materiale, Img;
+        public float KgPesce, KgTotale;
+        public int Prezzo, LivWiki;
+    }
+    List<Nassa> nasse = new List<Nassa>();
+
+    // galleggianti: dati veri dal wiki (Classic Bobbers, Wagglers, Sliders)
+    class Galleggiante
+    {
+        public int Id;
+        public string Tipo, Nome, Colore, Misura, Forma, Portata, Materiale, Img;
+        public int Prezzo, LivWiki;
+    }
+    List<Galleggiante> galleggianti = new List<Galleggiante>();
+
+    int livelloPescatore = 1;  // 1..100 come su Fishing Planet
+
+    public Pesca()
+    {
+        Tick += OnTick;
+        PuliziaPesciOrfani();
+        LeggiLingua();
+        CaricaNomiIt();
+        CaricaEscheIt();
+        CaricaForme();
+        CaricaSuoni();
+        CaricaSuonoLancio();
+        ScriviSuoni();
+        ScriviModelli();
+        CaricaAree();
+        CaricaLivelliAree();
+        CaricaAccessi();
+        CaricaPesciAree();
+        CaricaPuntiCaldi();
+        CaricaEsche();
+        CaricaPesci();
+        CaricaLenze();
+        CaricaCanne();
+        CaricaMulinelli();
+        CaricaTerminali();
+        CaricaEscheShop();
+        CaricaCassette();
+        CaricaPortacanne();
+        CaricaNasse();
+        CaricaGalleggianti();
+        ScriviProvaGall();
+        CaricaArtificiali();
+        CaricaTornei();
+        CaricaRecordTornei();
+        OrdinaPerLivello();
+        CaricaAcque();
+        ScriviAcque();
+        ScriviQuaderno();
+        // il negozio NON si scrive qui: qui il livello e' ancora 1 perche'
+        // lo stato non e' stato letto. Lo scrive ScaffaliDelNegozio() dopo
+        // CaricaStato(), e poi ogni volta che sali di livello.
+        // quando gli script si ricaricano la canna vecchia resta appesa
+        // alla mano: si toglie all'uscita e si ripulisce all'avvio
+        Aborted += OnAborted;
+        PulisciCanneRimaste();
+
+        CaricaStato();
+        livelloPescatore = LivelloDa(xpTot);
+        ScaffaliDelNegozio();
+        ScriviZone();
+        ScriviTesta();
+        MettiBlipPunti();
+        // se ricarichi gli script con la licenza attiva, l'orologio era
+        // rimasto in pausa: lo riprendiamo in mano da dove stava
+        if (inPesca)
+        {
+            try
+            {
+                Function.Call(Hash.PAUSE_CLOCK, true);
+                orologioPreso = true;
+                prossimoMinuto = Game.GameTime + MS_PER_MINUTO;
+            }
+            catch { }
+        }
+        else
+        {
+            try { Function.Call(Hash.PAUSE_CLOCK, false); }
+            catch { }
+        }
+        RiscriviTutto();
+    }
+
+    // la vetrina: tutte le categorie del negozio sotto una voce sola
+    void CaricaEscheShop()
+    {
+        escheShop.Clear();
+        string[] rows = LeggiRighe("esche_negozio.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 10) continue;
+            EscaShop x = new EscaShop();
+            int v;
+            int.TryParse(c[0], out v); x.Id = v;
+            x.Cat = c[1].Trim(); x.Nome = c[2].Trim(); x.Quantita = c[3].Trim();
+            x.Peso = c[4].Trim();
+            int.TryParse(c[5], out v); x.Prezzo = v;
+            int.TryParse(c[6], out v); x.LivWiki = v;
+            x.Amo = c[7].Trim();
+            // sul wiki alcune esche non hanno l'amo consigliato e la cella
+            // resta un trattino: non deve finire a schermo
+            if (x.Amo == "-" || x.Amo == "/-" || x.Amo == "/") x.Amo = "";
+            x.Pesci = c[8].Trim();
+            x.Img = ImgOk("img\\esche\\" + c[9].Trim());
+            escheShop.Add(x);
+        }
+        int j, k;
+        for (j = 1; j < escheShop.Count; j++)
+        {
+            EscaShop t = escheShop[j];
+            k = j - 1;
+            while (k >= 0 && escheShop[k].LivWiki > t.LivWiki) { escheShop[k + 1] = escheShop[k]; k--; }
+            escheShop[k + 1] = t;
+        }
+    }
+
+
+    // TUTTO IL NEGOZIO IN ORDINE DI LIVELLO.
+    // Le esche erano gia' ordinate cosi'; adesso lo sono anche le canne,
+    // i mulinelli, le lenze, gli ami, i galleggianti, le nasse, le borse
+    // e le artificiali. Cosi' scorrendo vedi la progressione.
+    void OrdinaPerLivello()
+    {
+        int j, k;
+        for (j = 1; j < canne.Count; j++)
+        { Canna t = canne[j]; k = j - 1;
+          while (k >= 0 && canne[k].LivWiki > t.LivWiki) { canne[k+1] = canne[k]; k--; }
+          canne[k+1] = t; }
+        for (j = 1; j < mulinelli.Count; j++)
+        { Mulinello t = mulinelli[j]; k = j - 1;
+          while (k >= 0 && mulinelli[k].LivWiki > t.LivWiki) { mulinelli[k+1] = mulinelli[k]; k--; }
+          mulinelli[k+1] = t; }
+        for (j = 1; j < lenze.Count; j++)
+        { Lenza t = lenze[j]; k = j - 1;
+          while (k >= 0 && lenze[k].LivWiki > t.LivWiki) { lenze[k+1] = lenze[k]; k--; }
+          lenze[k+1] = t; }
+        for (j = 1; j < terminali.Count; j++)
+        { Terminale t = terminali[j]; k = j - 1;
+          while (k >= 0 && terminali[k].LivWiki > t.LivWiki) { terminali[k+1] = terminali[k]; k--; }
+          terminali[k+1] = t; }
+        for (j = 1; j < galleggianti.Count; j++)
+        { Galleggiante t = galleggianti[j]; k = j - 1;
+          while (k >= 0 && galleggianti[k].LivWiki > t.LivWiki) { galleggianti[k+1] = galleggianti[k]; k--; }
+          galleggianti[k+1] = t; }
+        for (j = 1; j < nasse.Count; j++)
+        { Nassa t = nasse[j]; k = j - 1;
+          while (k >= 0 && nasse[k].LivWiki > t.LivWiki) { nasse[k+1] = nasse[k]; k--; }
+          nasse[k+1] = t; }
+        for (j = 1; j < cassette.Count; j++)
+        { Cassetta t = cassette[j]; k = j - 1;
+          while (k >= 0 && cassette[k].LivWiki > t.LivWiki) { cassette[k+1] = cassette[k]; k--; }
+          cassette[k+1] = t; }
+        for (j = 1; j < portacanne.Count; j++)
+        { Portacanne t = portacanne[j]; k = j - 1;
+          while (k >= 0 && portacanne[k].LivWiki > t.LivWiki) { portacanne[k+1] = portacanne[k]; k--; }
+          portacanne[k+1] = t; }
+        for (j = 1; j < artificiali.Count; j++)
+        { Artificiale t = artificiali[j]; k = j - 1;
+          while (k >= 0 && artificiali[k].LivWiki > t.LivWiki) { artificiali[k+1] = artificiali[k]; k--; }
+          artificiali[k+1] = t; }
+    }
+
+    void ScriviNegozioEsche()
+    {
+        List<string> tipi = new List<string>();
+        int t, i;
+        for (t = 0; t < ESCA_COD.Length; t++)
+        {
+            List<string> voci = new List<string>();
+            for (i = 0; i < escheShop.Count; i++)
+            {
+                EscaShop x = escheShop[i];
+                if (x.Cat != ESCA_COD[t]) continue;
+                string et = EscaIt(x.Nome);
+                if (x.Quantita.Length > 0) et = Unisci(et, "x" + x.Quantita);
+                if (x.Amo.Length > 0) et = Unisci(et, x.Amo);
+                string ds = "Liv." + x.LivWiki + "   $" + Dollari(x.Prezzo);
+                // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+                // Quello che non puoi ancora comprare resta scritto, spento
+                // e non si preme: cosi' sai gia' dove stai andando.
+                bool ok = (x.LivWiki <= livelloPescatore);
+                if (voci.Count == 0)
+                {
+                    voci.Add("icone");
+                    voci.Add("nota|Premi A per comprare");
+                }
+                voci.Add(et + "|compra_esca " + x.Id
+                         + "|" + x.Img + "|" + ds + LivRosso(ok));
+            }
+            if (voci.Count == 0) continue;
+            string file = "e_" + ESCA_COD[t] + ".txt";
+            ScriviVoci(file, voci);
+            tipi.Add("sottofile|" + ESCA_NOME[t] + " (" + (voci.Count - 2) + ")|" + file
+                     + "||" + Banner() + "|" + ESCA_NOTA[t]);
+        }
+        ScriviVoci("e_tipi.txt", tipi);
+    }
+
+    void CaricaCassette()
+    {
+        cassette.Clear();
+        string[] rows = LeggiRighe("cassette.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 9) continue;
+            Cassetta x = new Cassetta();
+            int v;
+            int.TryParse(c[0], out v); x.Id = v;
+            x.Nome = c[1].Trim(); x.Materiale = c[2].Trim();
+            x.Attrezzi = c[3].Trim(); x.Lenze = c[4].Trim(); x.Mulinelli = c[5].Trim();
+            int.TryParse(c[6], out v); x.Prezzo = v;
+            int.TryParse(c[7], out v); x.LivWiki = v;
+            x.Img = ImgOk("img\\cassette\\" + c[8].Trim());
+            cassette.Add(x);
+        }
+    }
+
+    void ScriviNegozioCassette()
+    {
+        List<string> v2 = new List<string>();
+        int i;
+        for (i = 0; i < cassette.Count; i++)
+        {
+            Cassetta x = cassette[i];
+            string et = x.Nome + "   " + x.Attrezzi + " attrezzi";
+            if (x.Lenze.Length > 0) et += "   " + x.Lenze + " lenze";
+            if (x.Mulinelli.Length > 0) et += "   " + x.Mulinelli + " mulinelli";
+            string ds = "Liv." + x.LivWiki + "   $" + Dollari(x.Prezzo);
+            // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+            // Quello che non puoi ancora comprare resta scritto, spento
+            // e non si preme: cosi' sai gia' dove stai andando.
+            bool ok = (x.LivWiki <= livelloPescatore);
+            // anche le borse sono immagini larghe: banner sopra, riga pulita
+            if (v2.Count == 0) v2.Add("nota|Premi A per comprare");
+            v2.Add(et + "|compra_cassetta " + x.Id
+                   + "|" + x.Img + "|" + ds + LivRosso(ok));
+        }
+        ScriviVoci("cassette_voci.txt", v2);
+    }
+
+    void CaricaPortacanne()
+    {
+        portacanne.Clear();
+        string[] rows = LeggiRighe("rodcase.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 9) continue;
+            Portacanne x = new Portacanne();
+            int v;
+            int.TryParse(c[0], out v); x.Id = v;
+            x.Nome = c[1].Trim(); x.Materiale = c[2].Trim();
+            int.TryParse(c[3], out v); x.Canne = v;
+            int.TryParse(c[4], out v); x.Mulinelli = v;
+            int.TryParse(c[5], out v); x.Lenze = v;
+            int.TryParse(c[6], out v); x.Prezzo = v;
+            int.TryParse(c[7], out v); x.LivWiki = v;
+            x.Img = ImgOk("img\\portacanne\\" + c[8].Trim());
+            portacanne.Add(x);
+        }
+    }
+
+    void ScriviNegozioPortacanne()
+    {
+        List<string> v2 = new List<string>();
+        int i;
+        for (i = 0; i < portacanne.Count; i++)
+        {
+            Portacanne x = portacanne[i];
+            string et = x.Nome + "   " + x.Canne + " canne   "
+                      + x.Mulinelli + " mulinelli   " + x.Lenze + " lenze";
+            string ds = "Liv." + x.LivWiki + "   $" + Dollari(x.Prezzo);
+            // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+            // Quello che non puoi ancora comprare resta scritto, spento
+            // e non si preme: cosi' sai gia' dove stai andando.
+            bool ok = (x.LivWiki <= livelloPescatore);
+            // le borse portacanne sono lunghe e basse come le canne:
+            // in un'icona non si vedrebbero, quindi banner sopra
+            if (v2.Count == 0) v2.Add("nota|Premi A per comprare");
+            v2.Add(et + "|compra_portacanne " + x.Id
+                   + "|" + x.Img + "|" + ds + LivRosso(ok));
+        }
+        ScriviVoci("portacanne_voci.txt", v2);
+    }
+
+    void CaricaNasse()
+    {
+        nasse.Clear();
+        string[] rows = LeggiRighe("nasse.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 9) continue;
+            Nassa x = new Nassa();
+            int v; float g;
+            int.TryParse(c[0], out v); x.Id = v;
+            x.Tipo = c[1].Trim(); x.Nome = c[2].Trim(); x.Taglia = c[3].Trim();
+            float.TryParse(c[4], NumberStyles.Float, CultureInfo.InvariantCulture, out g);
+            x.KgPesce = g;
+            float.TryParse(c[5], NumberStyles.Float, CultureInfo.InvariantCulture, out g);
+            x.KgTotale = g;
+            x.Materiale = c[6].Trim();
+            int.TryParse(c[7], out v); x.Prezzo = v;
+            int.TryParse(c[8], out v); x.LivWiki = v;
+            // sul wiki c'e' una foto sola per famiglia, non per modello
+            // le nasse cambiano faccia con la taglia: le immagini sono
+            // divise per fasce di capienza, come le ha preparate lui
+            string fimg = "filo.png";
+            if (x.Tipo != "filo")
+            {
+                if (x.KgTotale >= 220f) fimg = "nassa_grande.png";
+                else if (x.KgTotale >= 100f) fimg = "nassa_100_200.png";
+                else if (x.KgTotale >= 30f) fimg = "nassa_30_90.png";
+                else if (x.KgTotale >= 12f) fimg = "nassa_12_25.png";
+                else fimg = "nassa_2_7.png";
+            }
+            x.Img = ImgOk("img\\nasse\\" + fimg);
+            nasse.Add(x);
+        }
+    }
+
+    void ScriviNegozioNasse()
+    {
+        List<string> tipi = new List<string>();
+        string[] cod = new string[] { "nassa", "filo" };
+        string[] nome = new string[] { "Nasse", "Fili portapesce" };
+        string[] nota = new string[] {
+            "Tengono il pesce vivo. Il primo numero e' il pesce piu' grosso che ci sta, il secondo quanti chili in tutto.",
+            "Costano meno ma rovinano il pesce: se lo vuoi rilasciare, non va bene." };
+        int t, i;
+        for (t = 0; t < cod.Length; t++)
+        {
+            List<string> v2 = new List<string>();
+            for (i = 0; i < nasse.Count; i++)
+            {
+                Nassa x = nasse[i];
+                if (x.Tipo != cod[t]) continue;
+                string et = x.Nome + " " + x.Taglia + "   pesce max "
+                          + x.KgPesce.ToString("0.##", CultureInfo.InvariantCulture) + " kg   in tutto "
+                          + x.KgTotale.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+                string ds = "Liv." + x.LivWiki + "   $" + Dollari(x.Prezzo);
+                // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+                // Quello che non puoi ancora comprare resta scritto, spento
+                // e non si preme: cosi' sai gia' dove stai andando.
+                bool ok = (x.LivWiki <= livelloPescatore);
+                if (v2.Count == 0) v2.Add("nota|Premi A per comprare");
+                v2.Add(et + "|compra_nassa " + x.Id
+                       + "|" + x.Img + "|" + ds + LivRosso(ok));
+            }
+            if (v2.Count == 0) continue;
+            string file = "n_" + cod[t] + ".txt";
+            ScriviVoci(file, v2);
+            tipi.Add("sottofile|" + nome[t] + " (" + (v2.Count - 1) + ")|" + file
+                     + "||" + Banner() + "|" + nota[t]);
+        }
+        ScriviVoci("n_tipi.txt", tipi);
+    }
+
+    void CaricaGalleggianti()
+    {
+        galleggianti.Clear();
+        string[] rows = LeggiRighe("galleggianti.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 11) continue;
+            Galleggiante x = new Galleggiante();
+            int v;
+            int.TryParse(c[0], out v); x.Id = v;
+            x.Tipo = c[1].Trim(); x.Nome = c[2].Trim(); x.Colore = c[3].Trim();
+            x.Misura = c[4].Trim(); x.Forma = c[5].Trim(); x.Portata = c[6].Trim();
+            x.Materiale = c[7].Trim();
+            int.TryParse(c[8], out v); x.Prezzo = v;
+            int.TryParse(c[9], out v); x.LivWiki = v;
+            x.Img = ImgOk("img\\galleggianti\\" + c[10].Trim());
+            int k = galleggianti.Count;
+            while (k > 0 && galleggianti[k - 1].LivWiki > x.LivWiki) k--;
+            galleggianti.Insert(k, x);
+        }
+    }
+
+    static string PortataIt(string p)
+    {
+        if (p == "Low") return "leggero";
+        if (p == "Medium") return "medio";
+        if (p == "High") return "pesante";
+        return p.ToLower();
+    }
+
+    void ScriviNegozioGalleggianti()
+    {
+        List<string> v2 = new List<string>();
+        int i;
+        for (i = 0; i < galleggianti.Count; i++)
+        {
+            Galleggiante x = galleggianti[i];
+            string et = Unisci(x.Nome, Corto(x.Misura));
+            string ds = "Liv." + x.LivWiki + "   $" + Dollari(x.Prezzo)
+                      + "   piombo " + PortataIt(x.Portata);
+            // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+            // Quello che non puoi ancora comprare resta scritto, spento
+            // e non si preme: cosi' sai gia' dove stai andando.
+            bool ok = (x.LivWiki <= livelloPescatore);
+            if (v2.Count == 0)
+            {
+                v2.Add("icone");
+                v2.Add("nota|Premi A per comprare");
+            }
+            v2.Add(et + "|compra_galleggiante " + x.Id
+                   + "|" + x.Img + "|" + ds + LivRosso(ok));
+        }
+        ScriviVoci("galleggianti_voci.txt", v2);
+    }
+
+    // quanti articoli ha in tutto una categoria.
+    // Prima contava solo quello che potevi comprare adesso, e le voci
+    // dicevano "Canne (1)" quando le canne sono quarantuno.
+    // il "Liv.N" di una riga del negozio: giallo se ci arrivi, rosso se
+    // e' ancora sopra il tuo livello. Solo la scritta: il fondo della riga
+    // resta quello di tutte le altre.
+    static string LivRosso(bool ok)
+    {
+        return ok ? "" : "|||235,90,80";
+    }
+
+    int Comprabili(string cat)
+    {
+        int n = 0, i;
+        if (cat == "canna") { for (i = 0; i < canne.Count; i++) n++; }
+        else if (cat == "mulinello") { for (i = 0; i < mulinelli.Count; i++) n++; }
+        else if (cat == "lenza") { for (i = 0; i < lenze.Count; i++) n++; }
+        else if (cat == "terminale") { for (i = 0; i < terminali.Count; i++) n++; }
+        else if (cat == "galleggiante") { for (i = 0; i < galleggianti.Count; i++) n++; }
+        else if (cat == "artificiale") { for (i = 0; i < artificiali.Count; i++) n++; }
+        else if (cat == "esca") { for (i = 0; i < escheShop.Count; i++) n++; }
+        else if (cat == "cassetta") { for (i = 0; i < cassette.Count; i++) n++; }
+        else if (cat == "portacanne") { for (i = 0; i < portacanne.Count; i++) n++; }
+        else if (cat == "nassa") { for (i = 0; i < nasse.Count; i++) n++; }
+        return n;
+    }
+
+    void ScriviNegozio()
+    {
+        List<string> v = new List<string>();
+        // IL NEGOZIO E' SEMPRE LO STESSO.
+        // Prima sull'acqua diventava un baracchino con dentro quattro
+        // cose buttate in fila, senza categorie e senza ordine: un
+        // pasticcio. Adesso e' sempre il negozio grande, con le sue
+        // categorie; cambia solo il nome fuori - "Negozio del golf" - e
+        // il prezzo, che sul posto e' il triplo.
+        // Quello che compri mentre peschi te lo metti addosso subito, e
+        // finisce quando finisce il posto in cassetta.
+        // IL NEGOZIO E' TUTTO APERTO.
+        // Nessun numero fra parentesi e nessuna categoria nascosta: quello
+        // che non puoi ancora comprare si vede lo stesso, e premendolo ti
+        // dice che livello serve.
+        v.Add("sottofile|Canne|c_tipi.txt||" + Banner()
+              + "|Il primo pezzo: decide che pesca puoi fare.");
+        v.Add("sottofile|Mulinelli|m_tipi.txt||" + Banner()
+              + "|La frizione decide quanto pesce riesci a tenere.");
+        v.Add("sottofile|Lenze|l_tipi.txt||" + Banner()
+              + "|Monofilo, fluorocarbon, trecciato e da mare.");
+        v.Add("sottofile|Ami e terminali|t_tipi.txt||" + Banner()
+              + "|Ami, testine, rig, leader e piombi.");
+        v.Add("sottofile|Esche|e_tipi.txt||" + Banner()
+              + "|Comuni, vermi, fresche, boilies e da mare.");
+        v.Add("sottofile|Esche artificiali|a_tipi.txt||" + Banner()
+              + "|Cucchiaini, rotanti, minnow, siliconici.");
+        v.Add("sottofile|Galleggianti|galleggianti_voci.txt||" + Banner()
+              + "|Classici, waggler e slider.");
+        v.Add("sottofile|Nasse e fili|n_tipi.txt||" + Banner()
+              + "|Quanto pesce ti tieni prima di rientrare.");
+        v.Add("sottofile|Portacanne|portacanne_voci.txt||" + Banner()
+              + "|Per portarti dietro piu' di una canna.");
+        v.Add("sottofile|Cassette e borse|cassette_voci.txt||" + Banner()
+              + "|Per portarti dietro piu' roba minuta.");
+        ScriviVoci("negozio.txt", v);
+    }
+
+    // il banner della Los Santos Fishermen's Association
+    string Banner()
+    {
+        return ImgOk("img\\lsfa.png");
+    }
+
+    // il logo del marchio, se ce l'abbiamo
+    string Logo(string marca)
+    {
+        string t = "";
+        int i;
+        for (i = 0; i < marca.Length; i++)
+        {
+            char c = marca[i];
+            if (c == ' ') t += "_";
+            else if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+                     || (c >= '0' && c <= '9') || c == '-' || c == '_') t += c;
+        }
+        return ImgOk("img\\marchi\\" + t + ".png");
+    }
+
+    static string Unisci(string a, string b)
+    {
+        if (a.Length == 0) return b;
+        if (b.Length == 0) return a;
+        return a + "   " + b;
+    }
+
+    string ImgOk(string rel)
+    {
+        try { if (File.Exists(Path.Combine(MY_DIR, rel))) return rel; }
+        catch { }
+        return "";
+    }
+
+    // "8.00 - 20.00" -> "8-20"
+    static string Corto(string s)
+    {
+        string t = s.Replace(" ", "");
+        // "8.00 - 20.50" -> "8 - 20.5"
+        string[] p = t.Split('-');
+        int q;
+        for (q = 0; q < p.Length; q++)
+        {
+            string v = p[q];
+            if (v.IndexOf('.') >= 0)
+            {
+                while (v.EndsWith("0")) v = v.Substring(0, v.Length - 1);
+                if (v.EndsWith(".")) v = v.Substring(0, v.Length - 1);
+            }
+            p[q] = v;
+        }
+        return string.Join(" - ", p);
+    }
+
+    string[] LeggiRighe(string nome)
+    {
+        try
+        {
+            string f = Path.Combine(MY_DIR, nome);
+            if (File.Exists(f)) return File.ReadAllLines(f);
+        }
+        catch { }
+        return new string[0];
+    }
+
+    void CaricaCanne()
+    {
+        canne.Clear();
+        string[] rows = LeggiRighe("canne.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 11) continue;
+            Canna x = new Canna();
+            int v;
+            int.TryParse(c[0], out v); x.Id = v;
+            x.Tipo = c[1].Trim(); x.Marca = c[2].Trim(); x.Modello = c[3].Trim();
+            x.Lunghezza = c[4].Trim(); x.Esca = c[5].Trim(); x.LenzaKg = c[6].Trim();
+            x.Potenza = c[7].Trim();
+            int.TryParse(c[8], out v); x.LivWiki = v;
+            int.TryParse(c[9], out v); x.Prezzo = v;
+            x.Img = ImgOk("img\\attrezzi\\" + c[10].Trim());
+            canne.Add(x);
+        }
+        int j, k;
+        for (j = 1; j < canne.Count; j++)
+        {
+            Canna t = canne[j];
+            k = j - 1;
+            while (k >= 0 && canne[k].LivWiki > t.LivWiki) { canne[k + 1] = canne[k]; k--; }
+            canne[k + 1] = t;
+        }
+    }
+
+    void CaricaMulinelli()
+    {
+        mulinelli.Clear();
+        string[] rows = LeggiRighe("mulinelli.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 12) continue;
+            Mulinello x = new Mulinello();
+            int v; float g;
+            int.TryParse(c[0], out v); x.Id = v;
+            x.Tipo = c[1].Trim(); x.Marca = c[2].Trim(); x.Serie = c[3].Trim();
+            x.Misura = c[4].Trim(); x.Rapporto = c[5].Trim(); x.Recupero = c[6].Trim();
+            x.Capacita = c[7].Trim();
+            float.TryParse(c[8], NumberStyles.Float, CultureInfo.InvariantCulture, out g);
+            x.Frizione = g;
+            int.TryParse(c[9], out v); x.LivWiki = v;
+            int.TryParse(c[10], out v); x.Prezzo = v;
+            x.Img = ImgOk("img\\attrezzi\\" + c[11].Trim());
+            mulinelli.Add(x);
+        }
+        int j, k;
+        for (j = 1; j < mulinelli.Count; j++)
+        {
+            Mulinello t = mulinelli[j];
+            k = j - 1;
+            while (k >= 0 && mulinelli[k].LivWiki > t.LivWiki) { mulinelli[k + 1] = mulinelli[k]; k--; }
+            mulinelli[k + 1] = t;
+        }
+    }
+
+    void CaricaTerminali()
+    {
+        terminali.Clear();
+        string[] rows = LeggiRighe("terminali.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 11) continue;
+            Terminale x = new Terminale();
+            int v;
+            int.TryParse(c[0], out v); x.Id = v;
+            x.Cat = c[1].Trim(); x.Marca = c[2].Trim(); x.Modello = c[3].Trim();
+            x.Misura = c[4].Trim(); x.Mm = c[5].Trim(); x.Kg = c[6].Trim();
+            x.Pezzi = c[7].Trim();
+            int.TryParse(c[8], out v); x.Prezzo = v;
+            int.TryParse(c[9], out v); x.LivWiki = v;
+            x.Img = ImgOk("img\\terminali\\" + c[10].Trim());
+            x.Grammi = (c.Length > 11) ? c[11].Trim() : "";
+            // il disegno dell'amo va accanto alla scatolina: il trainer
+            // legge due immagini separate dal piu'
+            x.Forma = "";
+            if (c.Length > 12 && c[12].Trim().Length > 0)
+            {
+                string ff = ImgOk("img\\terminali\\" + c[12].Trim());
+                if (ff.Length > 0) x.Forma = ff;
+            }
+            terminali.Add(x);
+        }
+        int j, k;
+        for (j = 1; j < terminali.Count; j++)
+        {
+            Terminale t = terminali[j];
+            k = j - 1;
+            while (k >= 0 && terminali[k].LivWiki > t.LivWiki) { terminali[k + 1] = terminali[k]; k--; }
+            terminali[k + 1] = t;
+        }
+    }
+
+    void ScriviNegozioTerminali()
+    {
+        List<string> tipi = new List<string>();
+        int t, i;
+        for (t = 0; t < TERM_COD.Length; t++)
+        {
+            List<string> modelli = new List<string>();
+            for (i = 0; i < terminali.Count; i++)
+                if (terminali[i].Cat == TERM_COD[t] && !modelli.Contains(terminali[i].Modello))
+                    modelli.Add(terminali[i].Modello);
+            if (modelli.Count == 0) continue;
+
+            List<string> vociTipo = new List<string>();
+            int m;
+            for (m = 0; m < modelli.Count; m++)
+            {
+                List<string> vociMod = new List<string>();
+                string img0 = "", marcaMod = "";
+                for (i = 0; i < terminali.Count; i++)
+                {
+                    Terminale x = terminali[i];
+                    if (x.Cat != TERM_COD[t] || x.Modello != modelli[m]) continue;
+                    if (img0.Length == 0 && x.Img.Length > 0) img0 = x.Img;
+                    if (marcaMod.Length == 0) marcaMod = x.Marca;
+                    // l'etichetta si compone solo dei pezzi che esistono davvero:
+                    // niente trattini segnaposto, che il trainer li scambia
+                    // per intestazioni di sezione
+                    string et = "";
+                    if (x.Cat == "jig")
+                    {
+                        et = x.Misura;
+                        // per le testine il campo kg contiene la misura dell'amo
+                        if (x.Kg.Length > 0) et = Unisci(et, x.Kg);
+                    }
+                    else if (x.Cat == "leader")
+                    {
+                        if (x.Misura.Length > 0) et = x.Misura + " m";
+                        if (x.Mm.Length > 0) et = Unisci(et, x.Mm + " mm");
+                        if (x.Kg.Length > 0) et = Unisci(et, x.Kg + " kg");
+                    }
+                    else
+                    {
+                        et = x.Misura;
+                        if (x.Mm.Length > 0) et = Unisci(et, x.Mm + " mm");
+                    }
+                    if (et.Length == 0) et = x.Modello;
+                    if (x.Pezzi.Length > 0) et = Unisci(et, "x" + x.Pezzi);
+                    string ds = "Liv." + x.LivWiki + "   $" + Dollari(x.Prezzo);
+                    // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+                    // Quello che non puoi ancora comprare resta scritto, spento
+                    // e non si preme: cosi' sai gia' dove stai andando.
+                    bool ok = (x.LivWiki <= livelloPescatore);
+                    if (vociMod.Count == 0)
+                    {
+                        vociMod.Add("icone");
+                        vociMod.Add("nota|Premi A per comprare");
+                    }
+                    vociMod.Add(et + "|compra_terminale " + x.Id
+                                + "|" + x.Img
+                                + (x.Forma.Length > 0 ? "+" + x.Forma : "")
+                                + "|" + ds + LivRosso(ok));
+                }
+                if (vociMod.Count == 0) continue;   // modello senza niente di comprabile
+                string fileMod = "t_" + TERM_COD[t] + "_" + (m + 1) + ".txt";
+                ScriviVoci(fileMod, vociMod);
+                string logoT = Logo(marcaMod);
+                if (logoT.Length == 0) logoT = img0;
+                vociTipo.Add("sottofile|" + modelli[m] + "|" + fileMod + "||" + logoT
+                             + "|" + (vociMod.Count - 2) + " misure.");
+            }
+            if (vociTipo.Count == 0) continue;
+            string fileTipo = "t_" + TERM_COD[t] + ".txt";
+            ScriviVoci(fileTipo, vociTipo);
+            tipi.Add("sottofile|" + TERM_NOME[t] + " (" + vociTipo.Count + ")|" + fileTipo
+                     + "||" + Banner() + "|" + TERM_NOTA[t]);
+        }
+        ScriviVoci("t_tipi.txt", tipi);
+    }
+
+    void ScriviNegozioCanne()
+    {
+        List<string> tipi = new List<string>();
+        int t, i;
+        for (t = 0; t < CANNA_COD.Length; t++)
+        {
+            List<string> modelli = new List<string>();
+            for (i = 0; i < canne.Count; i++)
+                if (canne[i].Tipo == CANNA_COD[t] && !modelli.Contains(canne[i].Modello))
+                    modelli.Add(canne[i].Modello);
+            if (modelli.Count == 0) continue;
+
+            List<string> vociTipo = new List<string>();
+            int m;
+            for (m = 0; m < modelli.Count; m++)
+            {
+                List<string> vociMod = new List<string>();
+                string img0 = "", lenza0 = "", pot0 = "", marcaMod = "";
+                for (i = 0; i < canne.Count; i++)
+                {
+                    Canna x = canne[i];
+                    if (x.Tipo != CANNA_COD[t] || x.Modello != modelli[m]) continue;
+                    if (marcaMod.Length == 0) { img0 = x.Img; lenza0 = x.LenzaKg; pot0 = x.Potenza; marcaMod = x.Marca; }
+                    string et = x.Lunghezza + " m   lenza " + Corto(x.LenzaKg) + " kg";
+                    // il peso di lancio non ce l'hanno tutte: le canne da
+                    // galleggiante e le telescopiche sul wiki non lo portano.
+                    // Se manca non si scrive "esca g" e basta.
+                    string pl = (x.Esca != null && x.Esca.Trim().Length > 0)
+                                ? ("esca " + x.Esca + " g   ") : "";
+                    string ds = "Liv." + x.LivWiki + "   " + pl
+                              + x.Potenza + "   $" + Dollari(x.Prezzo);
+                    // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+                    // Quello che non puoi ancora comprare resta scritto, spento
+                    // e non si preme: cosi' sai gia' dove stai andando.
+                    bool ok = (x.LivWiki <= livelloPescatore);
+                    // le canne sono lunghe e basse: in un'icona non si vedrebbero,
+                    // quindi qui resta il banner grande sopra la lista
+                    if (vociMod.Count == 0) vociMod.Add("nota|Premi A per comprare");
+                    vociMod.Add(et + "|compra_canna " + x.Id
+                                + "|" + x.Img + "|" + ds + LivRosso(ok));
+                }
+                if (vociMod.Count == 0) continue;
+                string fileMod = "c_" + CANNA_COD[t] + "_" + (m + 1) + ".txt";
+                ScriviVoci(fileMod, vociMod);
+                string logoC = Logo(marcaMod);
+                if (logoC.Length == 0) logoC = img0;
+                vociTipo.Add("sottofile|" + modelli[m] + "|" + fileMod + "||" + logoC
+                             + "|" + pot0 + ".  Lenza " + Corto(lenza0) + " kg.");
+            }
+            if (vociTipo.Count == 0) continue;
+            string fileTipo = "c_" + CANNA_COD[t] + ".txt";
+            ScriviVoci(fileTipo, vociTipo);
+            tipi.Add("sottofile|" + CANNA_NOME[t] + " (" + vociTipo.Count + ")|" + fileTipo
+                     + "||" + Banner() + "|" + vociTipo.Count + " modelli.");
+        }
+        ScriviVoci("c_tipi.txt", tipi);
+    }
+
+    void ScriviNegozioMulinelli()
+    {
+        List<string> tipi = new List<string>();
+        int t, i;
+        for (t = 0; t < MUL_COD.Length; t++)
+        {
+            List<string> serie = new List<string>();
+            for (i = 0; i < mulinelli.Count; i++)
+                if (mulinelli[i].Tipo == MUL_COD[t] && !serie.Contains(mulinelli[i].Serie))
+                    serie.Add(mulinelli[i].Serie);
+            if (serie.Count == 0) continue;
+
+            List<string> vociTipo = new List<string>();
+            int m;
+            for (m = 0; m < serie.Count; m++)
+            {
+                List<string> vociMod = new List<string>();
+                string img0 = "", marcaMod2 = "";
+                float fMin = 0f, fMax = 0f;
+                bool primo = true;
+                for (i = 0; i < mulinelli.Count; i++)
+                {
+                    Mulinello x = mulinelli[i];
+                    if (x.Tipo != MUL_COD[t] || x.Serie != serie[m]) continue;
+                    if (primo) { img0 = x.Img; fMin = x.Frizione; fMax = x.Frizione; marcaMod2 = x.Marca; primo = false; }
+                    if (x.Frizione < fMin) fMin = x.Frizione;
+                    if (x.Frizione > fMax) fMax = x.Frizione;
+                    string et = "mis. " + x.Misura + " - frizione "
+                              + x.Frizione.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+                    string ds = "Liv." + x.LivWiki + "   $" + Dollari(x.Prezzo);
+                    // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+                    // Quello che non puoi ancora comprare resta scritto, spento
+                    // e non si preme: cosi' sai gia' dove stai andando.
+                    bool ok = (x.LivWiki <= livelloPescatore);
+                    if (vociMod.Count == 0) { vociMod.Add("icone"); vociMod.Add("nota|Premi A per comprare"); }
+                    vociMod.Add(et + "|compra_mulinello " + x.Id
+                                + "|" + x.Img + "|" + ds + LivRosso(ok));
+                }
+                if (vociMod.Count == 0) continue;
+                string fileMod = "m_" + MUL_COD[t] + "_" + (m + 1) + ".txt";
+                ScriviVoci(fileMod, vociMod);
+                string logoM = Logo(marcaMod2);
+                if (logoM.Length == 0) logoM = img0;
+                vociTipo.Add("sottofile|" + serie[m] + "|" + fileMod + "||" + logoM
+                             + "|Frizione da " + fMin.ToString("0.0", CultureInfo.InvariantCulture)
+                             + " a " + fMax.ToString("0.0", CultureInfo.InvariantCulture)
+                             + " kg.  " + (vociMod.Count - 2) + " misure.");
+            }
+            if (vociTipo.Count == 0) continue;
+            string fileTipo = "m_" + MUL_COD[t] + ".txt";
+            ScriviVoci(fileTipo, vociTipo);
+            tipi.Add("sottofile|" + MUL_NOME[t] + " (" + vociTipo.Count + ")|" + fileTipo
+                     + "||" + Banner() + "|" + vociTipo.Count + " serie.");
+        }
+        ScriviVoci("m_tipi.txt", tipi);
+    }
+
+    void CaricaLenze()
+    {
+        lenze.Clear();
+        try
+        {
+            string f = Path.Combine(MY_DIR, "lenze.txt");
+            if (!File.Exists(f)) return;
+            string[] rows = File.ReadAllLines(f);
+            int i;
+            for (i = 0; i < rows.Length; i++)
+            {
+                string r = rows[i].Trim();
+                if (r.Length == 0 || r[0] == '#') continue;
+                string[] c = r.Split('|');
+                if (c.Length < 10) continue;
+                Lenza l = new Lenza();
+                int v; float g;
+                int.TryParse(c[0], out v); l.Id = v;
+                l.Tipo = c[1].Trim();
+                l.Marca = c[2].Trim();
+                l.Prodotto = c[3].Trim();
+                l.Mm = c[4].Trim();
+                float.TryParse(c[5], NumberStyles.Float, CultureInfo.InvariantCulture, out g);
+                l.Kg = g;
+                int.TryParse(c[6], out v); l.Metri = v;
+                int.TryParse(c[7], out v); l.Prezzo = v;
+                int.TryParse(c[8], out v); l.LivWiki = v;
+                l.Img = ImgOk("img\\lenze\\" + c[9].Trim());
+                lenze.Add(l);
+            }
+            int j, k;
+            for (j = 1; j < lenze.Count; j++)
+            {
+                Lenza t = lenze[j];
+                k = j - 1;
+                while (k >= 0 && lenze[k].LivWiki > t.LivWiki) { lenze[k + 1] = lenze[k]; k--; }
+                lenze[k + 1] = t;
+            }
+        }
+        catch { }
+    }
+
+    static string SoloNome(string prodotto)
+    {
+        string t = prodotto;
+        t = t.Replace(" fishing line", "");
+        t = t.Replace(" Serie", "");
+        t = t.Replace(" mono", "");
+        t = t.Replace(" braid", "");
+        t = t.Replace(" fluorocarbon", "");
+        return t.Trim();
+    }
+
+    void ScriviNegozioLenze()
+    {
+        List<string> tipi = new List<string>();
+        int t, i;
+        for (t = 0; t < TIPO_COD.Length; t++)
+        {
+            List<string> modelli = new List<string>();
+            for (i = 0; i < lenze.Count; i++)
+                if (lenze[i].Tipo == TIPO_COD[t] && !modelli.Contains(lenze[i].Prodotto))
+                    modelli.Add(lenze[i].Prodotto);
+
+            List<string> vociTipo = new List<string>();
+            int m;
+            for (m = 0; m < modelli.Count; m++)
+            {
+                List<string> vociMod = new List<string>();
+                float kgMin = 0f, kgMax = 0f;
+                bool primo = true;
+                string img0 = "", marcaMod = "";
+                for (i = 0; i < lenze.Count; i++)
+                {
+                    Lenza l = lenze[i];
+                    if (l.Tipo != TIPO_COD[t] || l.Prodotto != modelli[m]) continue;
+                    if (primo) { kgMin = l.Kg; kgMax = l.Kg; img0 = l.Img; marcaMod = l.Marca; primo = false; }
+                    if (l.Kg < kgMin) kgMin = l.Kg;
+                    if (l.Kg > kgMax) kgMax = l.Kg;
+                    string et = l.Mm + " mm - " + l.Kg.ToString("0.0", CultureInfo.InvariantCulture)
+                              + " kg - " + l.Metri + " m";
+                    string ds = "Liv." + l.LivWiki + "   $" + Dollari(l.Prezzo);
+                    // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+                    // Quello che non puoi ancora comprare resta scritto, spento
+                    // e non si preme: cosi' sai gia' dove stai andando.
+                    bool ok = (l.LivWiki <= livelloPescatore);
+                    if (vociMod.Count == 0) { vociMod.Add("icone"); vociMod.Add("nota|Premi A per comprare"); }
+                    vociMod.Add(et + "|compra_lenza " + l.Id
+                                + "|" + l.Img + "|" + ds + LivRosso(ok));
+                }
+                string fileMod = "l_" + TIPO_COD[t] + "_" + (m + 1) + ".txt";
+                if (vociMod.Count == 0) continue;
+                ScriviVoci(fileMod, vociMod);
+                string riass = "Carico da " + kgMin.ToString("0.0", CultureInfo.InvariantCulture)
+                             + " a " + kgMax.ToString("0.0", CultureInfo.InvariantCulture)
+                             + " kg.  " + (vociMod.Count - 2) + " misure.";
+                string logo = Logo(marcaMod);
+                if (logo.Length == 0) logo = img0;
+                vociTipo.Add("sottofile|" + SoloNome(modelli[m]) + "|" + fileMod
+                             + "||" + logo + "|" + riass);
+            }
+            if (vociTipo.Count == 0) continue;
+            string fileTipo = "l_" + TIPO_COD[t] + ".txt";
+            ScriviVoci(fileTipo, vociTipo);
+            tipi.Add("sottofile|" + TIPO_NOME[t] + "|" + fileTipo + "||" + Banner()
+                     + "|" + TIPO_NOTA[t]);
+        }
+        ScriviVoci("l_tipi.txt", tipi);
+    }
+
+    void CaricaPesci()
+    {
+        pesci.Clear();
+        try
+        {
+            string f = Path.Combine(MY_DIR, "pesci.txt");
+            if (!File.Exists(f)) return;
+            string[] rows = File.ReadAllLines(f);
+            int i;
+            for (i = 0; i < rows.Length; i++)
+            {
+                string r = rows[i].Trim();
+                if (r.Length == 0 || r[0] == '#') continue;
+                string[] c = r.Split('|');
+                if (c.Length < 15) continue;
+                Specie s = new Specie();
+                s.Nome = c[0].Trim();
+                s.Img = ImgOk("img\\pesci\\" + c[1].Trim());
+                float g;
+                float.TryParse(c[2], NumberStyles.Float, CultureInfo.InvariantCulture, out g);
+                s.KgC = g;
+                float.TryParse(c[3], NumberStyles.Float, CultureInfo.InvariantCulture, out g);
+                s.KgT = g;
+                float.TryParse(c[4], NumberStyles.Float, CultureInfo.InvariantCulture, out g);
+                s.KgU = g;
+                int p;
+                int.TryParse(c[5], out p); s.PrC = p;
+                int.TryParse(c[6], out p); s.PrT = p;
+                int.TryParse(c[7], out p); s.PrU = p;
+                int.TryParse(c[8], out p); s.Livello = p;
+                int.TryParse(c[9], out p); s.Denti = p;
+                s.Amo = c[10].Trim();
+                s.Famiglia = c[11].Trim();
+                s.Esche = Numeri(c[12]);
+                s.Art = Numeri(c[13]);
+                string[] z = c[14].Split(',');
+                int k;
+                for (k = 0; k < z.Length; k++) z[k] = z[k].Trim().ToUpper();
+                s.Zone = z;
+                s.Quando = (c.Length > 15) ? c[15].Trim() : "sempre";
+                if (s.Quando.Length == 0) s.Quando = "sempre";
+                s.Rarita = 3;
+                if (c.Length > 16) { int rr; if (int.TryParse(c[16].Trim(), out rr) && rr >= 1 && rr <= 5) s.Rarita = rr; }
+                s.Pred = 0;
+                if (c.Length > 17 && c[17].Trim() == "1") s.Pred = 1;
+                pesci.Add(s);
+            }
+        }
+        catch { }
+    }
+
+    void CaricaEsche()
+    {
+        esche.Clear(); escheTipo.Clear();
+        try
+        {
+            string f = Path.Combine(MY_DIR, "esche.txt");
+            if (!File.Exists(f)) return;
+            string[] rows = File.ReadAllLines(f);
+            int i;
+            for (i = 0; i < rows.Length; i++)
+            {
+                string r = rows[i].Trim();
+                if (r.Length == 0 || r[0] == '#') continue;
+                string[] c = r.Split('|');
+                if (c.Length < 3) continue;
+                esche.Add(c[1].Trim());
+                escheTipo.Add(c[2].Trim());
+            }
+        }
+        catch { }
+    }
+
+    static int[] Numeri(string csv)
+    {
+        string[] p = csv.Split(',');
+        List<int> l = new List<int>();
+        int q;
+        for (q = 0; q < p.Length; q++)
+        {
+            int v;
+            if (int.TryParse(p[q].Trim(), out v)) l.Add(v);
+        }
+        return l.ToArray();
+    }
+
+    // I NOMI DELLE ESCHE DI UN PESCE.
+    // Gli id in pesci.txt sono quelli di esche_negozio.txt, e vanno cercati
+    // per ID, non per posizione: prima si prendeva la riga numero N di
+    // esche.txt, che e' un altro catalogo, e uscivano nomi a caso.
+    string NomiEsche(int[] ids, int quante)
+    {
+        string t = "";
+        int q, k, messe = 0;
+        for (q = 0; q < ids.Length && messe < quante; q++)
+        {
+            string nome = "";
+            for (k = 0; k < escheShop.Count; k++)
+                if (escheShop[k].Id == ids[q]) { nome = EscaIt(escheShop[k].Nome); break; }
+            if (nome.Length == 0) continue;
+            if (t.Length > 0) t += ", ";
+            t += nome;
+            messe++;
+        }
+        return t;
+    }
+
+    // lo stesso per le artificiali, che stanno in artificiali.txt
+    string NomiArtificiali(int[] ids, int quante)
+    {
+        string t = "";
+        int q, k, messe = 0;
+        for (q = 0; q < ids.Length && messe < quante; q++)
+        {
+            string nome = "";
+            for (k = 0; k < artificiali.Count; k++)
+                if (artificiali[k].Id == ids[q]) { nome = EscaIt(artificiali[k].Nome); break; }
+            if (nome.Length == 0) continue;
+            if (t.IndexOf(nome) >= 0) continue;
+            if (t.Length > 0) t += ", ";
+            t += nome;
+            messe++;
+        }
+        return t;
+    }
+
+    // quanto pesa il pesce piu' grosso che l'attrezzatura montata riesce a tenere:
+    // e' il piu' debole dei tre pezzi (canna, mulinello, lenza)
+    float tenutaKg = 0f;
+
+    string Scheda(Specie s)
+    {
+        string esca = NomiEsche(s.Esche, 6);
+        if (esca.Length == 0) esca = NomiArtificiali(s.Art, 6);
+        if (esca.Length == 0) esca = "-";
+        // peso: se minimo e massimo coincidono non scrivo due volte lo stesso numero
+        string kgMin = s.KgC.ToString("0.##", CultureInfo.InvariantCulture);
+        string kgMax = s.KgU.ToString("0.##", CultureInfo.InvariantCulture);
+        string peso = (s.KgU > s.KgC) ? (kgMin + "-" + kgMax) : kgMin;
+        // prezzo: idem, e se quello dell'esemplare unico manca uso solo il comune
+        int pMin = s.PrC, pMax = s.PrU;
+        if (pMax <= 0) pMax = s.PrT;
+        if (pMax <= 0) pMax = pMin;
+        if (pMin <= 0) pMin = pMax;
+        string prezzo = (pMax > pMin) ? ("$" + pMin + "-" + pMax) : ("$" + pMin);
+        string t = peso + " kg   " + prezzo + "  Esche: " + esca + ".";
+        if (s.Amo.Length > 0) t += "  Amo: " + s.Amo + ".";
+        // la parola "leader" da sola: il trainer la mette in prima riga,
+        // gialla, subito dopo la misura dell'amo
+        if (s.Denti > 0) t += "  leader";
+        return t;
+    }
+
+    // il gioco non sa disegnare i caratteri strani: fuori tutto
+    // quello che non e' ASCII, se no vedi i quadratini
+    static string SoloAscii(string t)
+    {
+        if (t == null) return "";
+        char[] b = new char[t.Length];
+        int n = 0, i;
+        for (i = 0; i < t.Length; i++)
+        {
+            char c = t[i];
+            if (c >= ' ' && c <= '~') { b[n] = c; n++; }
+        }
+        return new string(b, 0, n);
+    }
+
+    void ScriviVoci(string nome, List<string> righe)
+    {
+        try
+        {
+            // un menu vuoto non dice niente: spieghiamo perche' e' vuoto
+            if (righe.Count == 0)
+                righe.Add("Ancora niente|niente||");
+            string[] a = new string[righe.Count];
+            int i;
+            for (i = 0; i < righe.Count; i++) a[i] = SoloAscii(righe[i]);
+            File.WriteAllLines(Path.Combine(MY_DIR, nome), a);
+        }
+        catch { }
+    }
+
+    void ScriviQuaderno()
+    {
+        List<string> menu = new List<string>();
+        int lu;
+        for (lu = 0; lu < arNome.Count; lu++)
+        {
+            List<string> r = new List<string>();
+            int presi = 0, i;
+            for (i = 0; i < pesci.Count; i++)
+            {
+                Specie s = pesci[i];
+                if (!PesceQui(s, lu)) continue;
+                if (tenutaKg >= s.KgC) presi++;
+                r.Add((r.Count + 1) + ". " + s.Nome + "|niente|" + s.Img + "|" + Scheda(s));
+            }
+            string conteggio = r.Count + " specie";
+            if (tenutaKg > 0f)
+                conteggio += ".  Con l'attrezzatura che hai montato ("
+                           + tenutaKg.ToString("0.##", CultureInfo.InvariantCulture)
+                           + " kg di tenuta) ne prendi " + presi;
+            else
+                conteggio += ".  Non hai ancora montato niente.";
+            // la prima riga e' quella del conteggio: senza immagine lasciava
+            // il buco del banner, quindi ci mettiamo lo stemma
+            r.Insert(0, "- " + r.Count + " specie -|niente|" + Banner() + "|" + conteggio + ".");
+            ScriviVoci(FileLuogo(lu), r);
+            menu.Add("sottofile|" + NomeLuogo(lu) + " (" + (r.Count - 1) + ")|" + FileLuogo(lu)
+                     + "||" + Banner() + "|" + conteggio);
+        }
+        ScriviVoci("studio_voci.txt", menu);
+        ScriviDiario();
+    }
+
+    // IL DIARIO DI PESCA.
+    // Stessa identica riga di "Studia i pesci", con gli stessi colori:
+    // il trainer la spezza da solo in peso (bianco), amo (azzurro),
+    // prezzo (verde) ed esche (arancio) - basta scriverla nella sua forma:
+    //     <peso> kg  $<prezzo>  Esche: <...>.  Amo: <...>.
+    // La differenza e' che qui NON sono i dati del catalogo: sono i tuoi.
+    // Il peso e' il tuo record e si aggiorna quando lo batti, l'esca e
+    // l'amo sono quelli con cui l'hai preso davvero, e in piu' ci sono
+    // i punti guadagnati.
+    void ScriviDiario()
+    {
+        List<string> r = new List<string>();
+        int i;
+        for (i = 0; i < pesci.Count; i++)
+        {
+            Specie s = pesci[i];
+            if (Quanti(quaderno, s.Nome) <= 0) continue;
+
+            float kg = record.ContainsKey(s.Nome) ? record[s.Nome] : 0f;
+            string d = kg.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+
+            // la taglia del TUO record, non quella del catalogo
+            if (s.KgU > 0f && kg >= s.KgU) d += "  unico";
+            else if (s.KgT > 0f && kg >= s.KgT) d += "  trofeo";
+            else d += "  comune";
+
+            // dal dollaro in poi va tutto in verde: prezzo e punti insieme
+            int vl = recVale.ContainsKey(s.Nome) ? recVale[s.Nome] : 0;
+            int xp = recXp.ContainsKey(s.Nome) ? recXp[s.Nome] : 0;
+            if (vl > 0) d += "   $" + vl;
+            if (xp > 0) d += (vl > 0 ? "  " : "   $0  ") + "+" + xp + " XP";
+
+            // le esche vanno a capo da sole, l'amo torna su in azzurro
+            string es = recEsca.ContainsKey(s.Nome) ? recEsca[s.Nome] : "";
+            if (es.Length == 0) es = "-"; else es = EscheIt(es);
+            d += "  Esche: " + es + ".";
+            string am = recAmo.ContainsKey(s.Nome) ? recAmo[s.Nome] : "";
+            if (am.Length > 0) d += "  Amo: " + am + ".";
+
+            r.Add((r.Count + 1) + ". " + s.Nome + "|niente|" + s.Img + "|" + d);
+        }
+        ScriviVoci("diario_voci.txt", r);
+    }
+
+    void OnTick(object sender, EventArgs e)
+    {
+        // la pescata gira a ogni frame: le barre devono essere fluide
+        Pescata();
+        DisegnaMessaggio();
+        // mentre guardi l'inventario, l'HUD dell'attrezzatura: la stessa
+        // roba che vedi quando peschi, cosi' si controlla com'e' armata
+        if (fase == FASE_FERMO && Game.GameTime < hudCasaFino)
+            DisegnaAttrezzatura();
+        HudRegistrazione();
+        MuoviOrologio();
+
+        int ora = Game.GameTime;
+        if (ora - ultimoGiro < 400) return;
+        ultimoGiro = ora;
+        // se cambi lingua nel trainer, i menu della pesca si riscrivono
+        if (ora - ultimaLingua > 2000)
+        {
+            ultimaLingua = ora;
+            int prima = lang;
+            LeggiLingua();
+            if (lang != prima) RiscriviTutto();
+        }
+        LeggiComandi();
+        ControllaOrologio();
+        ControllaTorneo();
+        GiroRegistrazione();
+        // se cambi acqua mentre giri, le licenze proposte cambiano da sole
+        if (!inPesca)
+        {
+            int lu = LuogoQui();
+            if (lu != luogoPrec)
+            {
+                luogoPrec = lu;
+                ScriviPesca();
+                // anche la voce del menu porta il nome del posto
+                ScriviMenu();
+            }
+        }
+    }
+
+    int luogoPrec = -2;
+
+    // ============================================================
+    //  IL GIOCO VERO: soldi, roba comprata, licenza, giornata.
+    //  Tutto quello che sta qui sotto e' roba NOSTRA, non del wiki.
+    //  Lo stato sta in stato.txt, dentro questa cartella.
+    // ============================================================
+
+    // I SOLDI SONO QUELLI DI GTA: niente portafoglio separato.
+    // Peschi, vendi il pesce e i dollari sono gli stessi con cui ti
+    // compri la macchina.
+    // Quale dei tre personaggi sei: Michael 0, Franklin 1, Trevor 2.
+    // I soldi in storia stanno nello stat SP<n>_TOTAL_CASH.
+    static string StatSoldi()
+    {
+        int n = 0;
+        try
+        {
+            int mdl = Function.Call<int>(Hash.GET_ENTITY_MODEL, Game.Player.Character);
+            if (mdl == Function.Call<int>(Hash.GET_HASH_KEY, "player_one")) n = 1;
+            else if (mdl == Function.Call<int>(Hash.GET_HASH_KEY, "player_two")) n = 2;
+        }
+        catch { }
+        return "SP" + n + "_TOTAL_CASH";
+    }
+
+    static int Soldi()
+    {
+        // prima il modo normale; se da' zero si legge lo stat, perche' su
+        // GTA Enhanced Player.Money non sempre risponde
+        try
+        {
+            int m = Game.Player.Money;
+            if (m > 0) return m;
+        }
+        catch { }
+        try
+        {
+            OutputArgument o = new OutputArgument();
+            int h = Function.Call<int>(Hash.GET_HASH_KEY, StatSoldi());
+            Function.Call<bool>(Hash.STAT_GET_INT, h, o, -1);
+            return o.GetResult<int>();
+        }
+        catch { }
+        return 0;
+    }
+
+    static void Paga(int quanto)
+    {
+        int prima = Soldi();
+        int dopo = prima - quanto;
+        if (dopo < 0) dopo = 0;
+        try { Game.Player.Money = dopo; }
+        catch { }
+        // e per sicurezza anche sullo stat, che e' quello che il gioco legge
+        try
+        {
+            int h = Function.Call<int>(Hash.GET_HASH_KEY, StatSoldi());
+            Function.Call(Hash.STAT_SET_INT, h, dopo, true);
+        }
+        catch { }
+        try
+        {
+            Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "PURCHASE",
+                          "HUD_LIQUOR_STORE_SOUNDSET", true);
+        }
+        catch { }
+    }
+
+    int xpTot = 0;
+    string licZona = "";             // zona con la licenza attiva ("" = a casa)
+    int licGiorni = 0;               // giornate ancora pagate
+    bool inPesca = false;
+    int oraPrec = -1;                // per accorgersi del cambio d'ora
+    int oreFatte = 0;                // ore di gioco passate dall'alba
+    // I MINUTI DI GIOCO FATTI DALL'ALBA.
+    // Contare le ore in memoria non bastava: a ogni ricarica degli
+    // script il contatore ripartiva da zero, il tempo che resta diceva
+    // bugie e la giornata non finiva piu'. Questo si salva in stato.txt.
+    int minutiFatti = 0;
+    const int MINUTI_GIORNATA = 24 * 60;
+    int ultimoGiro = 0;
+
+    // quello che possiedi e quello che ti sei messo in borsa:
+    // chiave "categoria:id", valore quante ne hai
+    Dictionary<string, int> magazzino = new Dictionary<string, int>();
+    Dictionary<string, int> borsa = new Dictionary<string, int>();
+
+    static readonly string[] CAT_COD = new string[] {
+        "canna", "mulinello", "lenza", "terminale", "galleggiante",
+        "artificiale", "esca", "nassa", "cassetta", "portacanne" };
+    static readonly string[] CAT_NOME = new string[] {
+        "Canne", "Mulinelli", "Lenze", "Ami e terminali", "Galleggianti",
+        "Esche artificiali", "Esche", "Nasse e fili", "Cassette e borse", "Portacanne" };
+    static readonly string[] CAT_FILE = new string[] {
+        "i_canna.txt", "i_mulinello.txt", "i_lenza.txt", "i_terminale.txt",
+        "i_galleggiante.txt", "i_artificiale.txt", "i_esca.txt", "i_nassa.txt",
+        "i_cassetta.txt", "i_portacanne.txt" };
+    // L'ORDINE DEL NEGOZIO: le categorie di casa si vedono in quest'ordine,
+    // che e' quello degli scaffali. Sono gli indici dentro CAT_COD.
+    // la voce in fondo alle categorie, mentre peschi
+    const string PESCATO = "Pescato del giorno";
+
+    static readonly int[] CASA_ORD = new int[] { 0, 1, 2, 3, 6, 5, 4, 7, 9, 8 };
+
+    // L'ARMATURA, NELLO STESSO ORDINE DELL'HUD.
+    // Nell'HUD la colonna si costruisce dal basso in su - mulinello,
+    // lenza, terminale, galleggiante - con la canna sopra a destra.
+    // Letta dall'alto in basso e' questa. L'esca non c'e': quella si
+    // monta sul posto.
+    static readonly string[] CAT_FILE_B = new string[] {
+        "b_canna.txt", "b_mulinello.txt", "b_lenza.txt", "b_terminale.txt",
+        "b_galleggiante.txt", "b_artificiale.txt", "b_esca.txt", "b_nassa.txt",
+        "b_cassetta.txt", "b_portacanne.txt" };
+
+    static int Quanti(Dictionary<string, int> d, string k)
+    {
+        int v;
+        if (d.TryGetValue(k, out v)) return v;
+        return 0;
+    }
+
+    static void Aggiungi(Dictionary<string, int> d, string k, int n)
+    {
+        int v = Quanti(d, k) + n;
+        if (v <= 0) d.Remove(k);
+        else d[k] = v;
+    }
+
+    // i soldi dei tornei sono gia' in dollari nostri: qui si aggiunge
+    // solo il punto delle migliaia, niente cambio dai crediti del wiki
+    static string Soldo(int v)
+    {
+        return v.ToString("#,0", CultureInfo.InvariantCulture);
+    }
+
+    static string Kg(float v)
+    {
+        return v.ToString("0.##", CultureInfo.InvariantCulture);
+    }
+
+    static float Decimale(string s)
+    {
+        float v;
+        if (s == null) return 0f;
+        if (float.TryParse(s.Trim(), NumberStyles.Float,
+                           CultureInfo.InvariantCulture, out v)) return v;
+        return 0f;
+    }
+
+    static int Numero(string s)
+    {
+        int v;
+        if (s == null) return 0;
+        if (int.TryParse(s.Trim(), out v)) return v;
+        return 0;
+    }
+
+    // ------------------------------------------------------------
+    //  Un articolo qualunque del catalogo, cercato per categoria e id
+    // ------------------------------------------------------------
+    bool Articolo(string cat, int id, out string nome, out string img,
+                  out int prezzo, out int liv)
+    {
+        nome = ""; img = ""; prezzo = 0; liv = 1;
+        int i;
+        if (cat == "canna")
+        {
+            for (i = 0; i < canne.Count; i++)
+                if (canne[i].Id == id)
+                {
+                    nome = Unisci(canne[i].Marca + " " + canne[i].Modello, canne[i].Lunghezza);
+                    img = canne[i].Img; prezzo = canne[i].Prezzo; liv = canne[i].LivWiki;
+                    return true;
+                }
+        }
+        else if (cat == "mulinello")
+        {
+            for (i = 0; i < mulinelli.Count; i++)
+                if (mulinelli[i].Id == id)
+                {
+                    nome = Unisci(mulinelli[i].Marca + " " + mulinelli[i].Serie, mulinelli[i].Misura);
+                    img = mulinelli[i].Img; prezzo = mulinelli[i].Prezzo; liv = mulinelli[i].LivWiki;
+                    return true;
+                }
+        }
+        else if (cat == "lenza")
+        {
+            for (i = 0; i < lenze.Count; i++)
+                if (lenze[i].Id == id)
+                {
+                    nome = lenze[i].Marca + " " + SoloNome(lenze[i].Prodotto);
+                    img = lenze[i].Img; prezzo = lenze[i].Prezzo; liv = lenze[i].LivWiki;
+                    return true;
+                }
+        }
+        else if (cat == "terminale")
+        {
+            for (i = 0; i < terminali.Count; i++)
+                if (terminali[i].Id == id)
+                {
+                    nome = Unisci(terminali[i].Marca + " " + terminali[i].Modello, terminali[i].Misura);
+                    img = terminali[i].Img; prezzo = terminali[i].Prezzo; liv = terminali[i].LivWiki;
+                    return true;
+                }
+        }
+        else if (cat == "galleggiante")
+        {
+            for (i = 0; i < galleggianti.Count; i++)
+                if (galleggianti[i].Id == id)
+                {
+                    nome = Unisci(galleggianti[i].Nome, galleggianti[i].Colore);
+                    img = galleggianti[i].Img; prezzo = galleggianti[i].Prezzo;
+                    liv = galleggianti[i].LivWiki;
+                    return true;
+                }
+        }
+        else if (cat == "artificiale")
+        {
+            for (i = 0; i < artificiali.Count; i++)
+                if (artificiali[i].Id == id)
+                {
+                    nome = Unisci(EscaIt(artificiali[i].Nome),
+                                  ColoreIt(artificiali[i].Colore));
+                    img = artificiali[i].Img; prezzo = artificiali[i].Prezzo;
+                    liv = artificiali[i].LivWiki;
+                    return true;
+                }
+        }
+        else if (cat == "esca")
+        {
+            for (i = 0; i < escheShop.Count; i++)
+                if (escheShop[i].Id == id)
+                {
+                    nome = EscaIt(escheShop[i].Nome); img = escheShop[i].Img;
+                    prezzo = escheShop[i].Prezzo; liv = escheShop[i].LivWiki;
+                    return true;
+                }
+        }
+        else if (cat == "cassetta")
+        {
+            for (i = 0; i < cassette.Count; i++)
+                if (cassette[i].Id == id)
+                {
+                    nome = cassette[i].Nome; img = cassette[i].Img;
+                    prezzo = cassette[i].Prezzo; liv = cassette[i].LivWiki;
+                    return true;
+                }
+        }
+        else if (cat == "portacanne")
+        {
+            for (i = 0; i < portacanne.Count; i++)
+                if (portacanne[i].Id == id)
+                {
+                    nome = portacanne[i].Nome; img = portacanne[i].Img;
+                    prezzo = portacanne[i].Prezzo; liv = portacanne[i].LivWiki;
+                    return true;
+                }
+        }
+        else if (cat == "nassa")
+        {
+            for (i = 0; i < nasse.Count; i++)
+                if (nasse[i].Id == id)
+                {
+                    nome = Unisci(nasse[i].Nome, nasse[i].Taglia); img = nasse[i].Img;
+                    prezzo = nasse[i].Prezzo; liv = nasse[i].LivWiki;
+                    return true;
+                }
+        }
+        return false;
+    }
+
+    // ------------------------------------------------------------
+    //  LO STATO SU FILE
+    // ------------------------------------------------------------
+    void CaricaStato()
+    {
+        magazzino.Clear();
+        borsa.Clear();
+        string[] rows = LeggiRighe("stato.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 2) continue;
+            string k = c[0].Trim();
+            if (k == "xp") xpTot = Numero(c[1]);
+            else if (k == "licenza")
+            {
+                licZona = c[1].Trim();
+                if (c.Length > 2) licGiorni = Numero(c[2]);
+                inPesca = (licZona.Length > 0 && licGiorni > 0);
+            }
+            else if (k == "presosu" && c.Length > 1)
+                presoSu[c[1].Trim()] = 1;
+            else if (k == "bobina" && c.Length > 2)
+                MettiBobina(Numero(c[1]), Numero(c[2]));
+            else if (k == "imbobinato" && c.Length > 1)
+                metriInBobina = Numero(c[1]);
+            else if (k == "casa" && c.Length > 2)
+            {
+                int v = Numero(c[2]);
+                if (v > 0) magazzino[c[1].Trim()] = v;
+            }
+            else if (k == "preso" && c.Length > 2)
+            {
+                int v = Numero(c[2]);
+                if (v > 0) quaderno[c[1].Trim()] = v;
+            }
+            else if (k == "borsa" && c.Length > 2)
+            {
+                int v = Numero(c[2]);
+                if (v > 0) borsa[c[1].Trim()] = v;
+            }
+            else if (k == "armato" && c.Length > 2)
+            {
+                armato[c[1].Trim()] = Numero(c[2]);
+            }
+            else if (k == "usato" && c.Length > 2)
+            {
+                int uv = Numero(c[2]);
+                if (uv > 0) usati[c[1].Trim()] = uv;
+            }
+            else if (k == "imp" && c.Length > 2)
+            {
+                if (c[1].Trim() == "avvisa_zona") avvisaZona = (Numero(c[2]) != 0);
+                if (c[1].Trim() == "gall_zoom") gallZoom = Numero(c[2]);
+                if (c[1].Trim() == "regole_vere") regoleVere = (Numero(c[2]) != 0);
+                if (c[1].Trim() == "minuti") minutiFatti = Numero(c[2]);
+                if (c[1].Trim() == "frizione")
+                {
+                    frizione = Numero(c[2]);
+                    if (frizione < 1) frizione = 1;
+                    if (frizione > 4) frizione = 4;
+                }
+            }
+            else if (k == "record" && c.Length > 2)
+            {
+                float rk;
+                if (float.TryParse(c[2].Trim(), NumberStyles.Float,
+                                   CultureInfo.InvariantCulture, out rk))
+                {
+                    string nk = c[1].Trim();
+                    record[nk] = rk;
+                    if (c.Length > 3 && c[3].Trim().Length > 0) dovePreso[nk] = c[3].Trim();
+                    if (c.Length > 4 && c[4].Trim().Length > 0) recEsca[nk] = c[4].Trim();
+                    if (c.Length > 5 && c[5].Trim().Length > 0) recAmo[nk] = c[5].Trim();
+                    if (c.Length > 6) recXp[nk] = Numero(c[6]);
+                    if (c.Length > 7) recVale[nk] = Numero(c[7]);
+                }
+            }
+        }
+        livelloPescatore = LivelloDa(xpTot);
+
+        // SALVATAGGI VECCHI: se un pezzo risulta montato ma non c'e' il
+        // segno che e' stato tolto dalla cassetta, lo si toglie adesso.
+        // Prima della regola un amo montato restava anche in cassetta:
+        // dieci nella scatola piu' uno sulla canna.
+        int qp;
+        string[] daSistemare = new string[] { "terminale", "galleggiante" };
+        for (qp = 0; qp < daSistemare.Length; qp++)
+        {
+            string ca = daSistemare[qp];
+            if (!armato.ContainsKey(ca)) continue;
+            int ia = armato[ca];
+            if (ia < 0 || presoSu.ContainsKey(ca)) continue;
+            if (QuantiPezzi(ca, ia) > 0) Consuma(ca, ia);
+            presoSu[ca] = 1;
+        }
+    }
+
+    void SalvaStato()
+    {
+        List<string> v = new List<string>();
+        v.Add("# stato della pesca - lo scrive la mod, non toccarlo a mano");
+        v.Add("xp|" + xpTot);
+        v.Add("licenza|" + licZona + "|" + licGiorni);
+        foreach (KeyValuePair<string, int> kv in magazzino)
+            v.Add("casa|" + kv.Key + "|" + kv.Value);
+        foreach (KeyValuePair<string, int> kv in borsa)
+            v.Add("borsa|" + kv.Key + "|" + kv.Value);
+        foreach (KeyValuePair<string, int> kv in quaderno)
+            v.Add("preso|" + kv.Key + "|" + kv.Value);
+        v.Add("imp|avvisa_zona|" + (avvisaZona ? "1" : "0"));
+        v.Add("imp|gall_zoom|" + gallZoom);
+        v.Add("imp|regole_vere|" + (regoleVere ? "1" : "0"));
+        v.Add("imp|frizione|" + frizione);
+        v.Add("imp|minuti|" + minutiFatti);
+        foreach (KeyValuePair<string, int> kv in usati)
+            v.Add("usato|" + kv.Key + "|" + kv.Value);
+        foreach (KeyValuePair<string, float> kv in record)
+        {
+            string dv = dovePreso.ContainsKey(kv.Key) ? dovePreso[kv.Key] : "";
+            v.Add("record|" + kv.Key + "|"
+                  + kv.Value.ToString("0.###", CultureInfo.InvariantCulture)
+                  + "|" + dv
+                  + "|" + (recEsca.ContainsKey(kv.Key) ? recEsca[kv.Key] : "")
+                  + "|" + (recAmo.ContainsKey(kv.Key) ? recAmo[kv.Key] : "")
+                  + "|" + (recXp.ContainsKey(kv.Key) ? recXp[kv.Key] : 0)
+                  + "|" + (recVale.ContainsKey(kv.Key) ? recVale[kv.Key] : 0));
+        }
+        foreach (KeyValuePair<string, int> kv in armato)
+            v.Add("armato|" + kv.Key + "|" + kv.Value);
+        foreach (KeyValuePair<string, int> kv in presoSu)
+            v.Add("presosu|" + kv.Key + "|1");
+        int qbo;
+        for (qbo = 0; qbo < bobine.Count; qbo++)
+            v.Add("bobina|" + bobine[qbo]);
+        v.Add("imbobinato|" + metriInBobina);
+        try { File.WriteAllLines(Path.Combine(MY_DIR, "stato.txt"), v.ToArray()); }
+        catch { }
+    }
+
+    // il livello che ti spetta con gli XP che hai
+    int LivelloDa(int xp)
+    {
+        string[] rows = LeggiRighe("livelli.txt");
+        int liv = 1, i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 2) continue;
+            int l = Numero(c[0]);
+            int soglia = Numero(c[1]);
+            if (l > 0 && xp >= soglia && l > liv) liv = l;
+        }
+        return liv;
+    }
+
+    // ------------------------------------------------------------
+    //  DOVE SEI: la zona di GTA tradotta in una delle nostre acque
+    // ------------------------------------------------------------
+    string zonaVista = "?";
+
+    // ------------------------------------------------------------
+    //  I PUNTI CHE HAI SEGNATO IN GIOCO.
+    //  Sono loro a dire dove sei: il punto piu' vicino decide di che
+    //  acqua si tratta, senza limiti di distanza. Il mare non si segna
+    //  apposta, quello si riconosce dalla zona.
+    // ------------------------------------------------------------
+    class Punto
+    {
+        public string Tipo, Zona;
+        public float X, Y, Z;
+        public Blip B = null;
+    }
+    List<Punto> punti = new List<Punto>();
+    bool puntiLetti = false;
+
+    void CaricaPunti()
+    {
+        punti.Clear();
+        puntiLetti = true;
+        try
+        {
+            string f = Path.Combine(MY_DIR, "zone_marcate.txt");
+            if (!File.Exists(f)) return;
+            string[] r = File.ReadAllLines(f);
+            int i;
+            for (i = 0; i < r.Length; i++)
+            {
+                string s = r[i].Trim();
+                if (s.Length == 0 || s[0] == '#') continue;
+                string[] c = s.Split('|');
+                if (c.Length < 5) continue;
+                Punto q = new Punto();
+                q.Tipo = c[0].Trim();
+                q.Zona = c[1].Trim().ToUpper();
+                if (!float.TryParse(c[2].Trim(), NumberStyles.Float,
+                                    CultureInfo.InvariantCulture, out q.X)) continue;
+                if (!float.TryParse(c[3].Trim(), NumberStyles.Float,
+                                    CultureInfo.InvariantCulture, out q.Y)) continue;
+                if (!float.TryParse(c[4].Trim(), NumberStyles.Float,
+                                    CultureInfo.InvariantCulture, out q.Z)) continue;
+                punti.Add(q);
+            }
+        }
+        catch { }
+    }
+
+    // a quale delle nostre acque appartiene un codice di zona
+    int LuogoDaZona(string z)
+    {
+        int lu, q;
+        for (lu = 0; lu < arZoneGta.Count; lu++)
+            for (q = 0; q < arZoneGta[lu].Count; q++)
+                if (arZoneGta[lu][q] == z) return lu;
+        return -1;
+    }
+
+    // il punto segnato piu' vicino a dove sei
+
+    // ------------------------------------------------------------
+    //  I TORNEI
+    //  Nome, immagine, pesce, tempo, livello, quota e premio vengono
+    //  dalle pagine dei singoli tornei sul wiki. La zona e' nostra:
+    //  i loro laghi non ci sono, quindi ogni torneo sta dove quel pesce
+    //  vive da noi. Tutto in tornei.txt.
+    // ------------------------------------------------------------
+    class Torneo
+    {
+        public string Nome, Banner, Pesce, Zona, Punteggio, Attrezzi, Lago;
+        public string PunteggioIt, AttrezziIt;
+        public int Minuti, LivMin, Quota, Premio;
+        // i traguardi: chili di quel pesce da mettere insieme, e i premi.
+        // Sono NOSTRI, non del wiki: bilanciati sul peso medio del pesce,
+        // sulla durata della gara e sul livello richiesto.
+        public float KgBronzo, KgArgento, KgOro;
+        public int PrBronzo, PrArgento, PrOro, ExTrofeo, ExUnico;
+        // il record tuo: quanti chili hai fatto, che medaglia, e quanti
+        // trofei ed esemplari unici hai preso in quella gara
+        public float RecKg;
+        public int RecMed, RecTrofei, RecUnici, RecFatte;
+        // l'ora e il tempo che il torneo impone: sono scelti sull'orario
+        // in cui quel pesce mangia davvero e sul carattere dell'acqua
+        public int Ora;
+        public string Meteo;
+    }
+    List<Torneo> tornei = new List<Torneo>();
+
+    void CaricaTornei()
+    {
+        tornei.Clear();
+        string[] rows = LeggiRighe("tornei.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 8) continue;
+            Torneo t = new Torneo();
+            t.Nome = c[0].Trim();
+            t.Banner = c[1].Trim();
+            t.Pesce = c[2].Trim();
+            t.Zona = c[3].Trim();
+            t.Minuti = Numero(c[4]);
+            t.LivMin = Numero(c[5]);
+            t.Quota = Numero(c[6]);
+            t.Premio = Numero(c[7]);
+            t.Punteggio = (c.Length > 8) ? c[8].Trim() : "";
+            t.Attrezzi = (c.Length > 9) ? c[9].Trim() : "";
+            t.Lago = (c.Length > 10) ? c[10].Trim() : "";
+            t.PunteggioIt = (c.Length > 11) ? c[11].Trim() : "";
+            t.AttrezziIt = (c.Length > 12) ? c[12].Trim() : "";
+            t.KgBronzo = (c.Length > 13) ? Decimale(c[13]) : 0f;
+            t.KgArgento = (c.Length > 14) ? Decimale(c[14]) : 0f;
+            t.KgOro = (c.Length > 15) ? Decimale(c[15]) : 0f;
+            t.PrBronzo = (c.Length > 16) ? Numero(c[16]) : 0;
+            t.PrArgento = (c.Length > 17) ? Numero(c[17]) : 0;
+            t.PrOro = (c.Length > 18) ? Numero(c[18]) : 0;
+            t.ExTrofeo = (c.Length > 19) ? Numero(c[19]) : 0;
+            t.ExUnico = (c.Length > 20) ? Numero(c[20]) : 0;
+            t.Ora = (c.Length > 21) ? Numero(c[21]) : -1;
+            t.Meteo = (c.Length > 22) ? c[22].Trim() : "";
+            if (t.Minuti <= 0) t.Minuti = 45;
+            tornei.Add(t);
+        }
+
+        // IN ORDINE DI LIVELLO.
+        // Cosi' in cima trovi quelli che puoi gia' fare e scendendo
+        // vedi dove stai andando, invece di cercare in mezzo a cinquanta.
+        int a, b;
+        for (a = 1; a < tornei.Count; a++)
+        {
+            Torneo tt = tornei[a];
+            b = a - 1;
+            while (b >= 0 && tornei[b].LivMin > tt.LivMin)
+            {
+                tornei[b + 1] = tornei[b];
+                b--;
+            }
+            tornei[b + 1] = tt;
+        }
+    }
+
+    // l'indice della nostra zona dal nome scritto in tornei.txt
+    int LuogoDalNome(string nome)
+    {
+        int i;
+        for (i = 0; i < arNome.Count; i++) if (arNome[i] == nome) return i;
+        for (i = 0; i < arGruppo.Count; i++) if (arGruppo[i] == nome) return i;
+        return -1;
+    }
+
+    // taglia una frase lunga in due pezzi da mettere su due righe
+    static string Spezza(string t, int pezzo)
+    {
+        if (t == null) t = "";
+        int max = 74;
+        if (t.Length <= max) return (pezzo == 0) ? t : "";
+        int taglio = t.LastIndexOf(' ', max);
+        if (taglio < 20) taglio = max;
+        if (pezzo == 0) return t.Substring(0, taglio).Trim();
+        string resto = t.Substring(taglio).Trim();
+        if (resto.Length > max) resto = resto.Substring(0, max - 1) + "...";
+        return resto;
+    }
+
+
+
+    // ============================================================
+    //  SVILUPPO - LE ACQUE
+    //  Serve a segnare a mano dove si pesca davvero. Le zone di GTA sono
+    //  grossolane e non c'entrano niente con l'acqua: "Vinewood Hills" e'
+    //  la collina e il laghetto di Franklin insieme, e un fiume attraversa
+    //  quattro zone diverse. Quindi l'acqua la definiscono i punti segnati
+    //  qui, e il codice zona resta solo come promemoria.
+    //  Si scrive in acque.txt:  nome|tipo|x|y|z|zona_gta
+    // ============================================================
+    class PuntoAcqua
+    {
+        public string Nome, Tipo, Zona;
+        public float X, Y, Z;
+    }
+    List<PuntoAcqua> acque = new List<PuntoAcqua>();
+    string regNome = "";          // registrazione in corso, "" = ferma
+    string regTipo = "";
+    const float REG_PASSO = 10f;  // un punto ogni dieci metri
+    float ultTracX = 0f, ultTracY = 0f;
+    bool ultTracValido = false;
+
+    void CaricaAcque()
+    {
+        acque.Clear();
+        string[] r = LeggiRighe("acque.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 5) continue;
+            PuntoAcqua a = new PuntoAcqua();
+            a.Nome = c[0].Trim();
+            a.Tipo = c[1].Trim();
+            a.X = Decimale(c[2]);
+            a.Y = Decimale(c[3]);
+            a.Z = Decimale(c[4]);
+            a.Zona = (c.Length > 5) ? c[5].Trim() : "";
+            acque.Add(a);
+        }
+    }
+
+    void SalvaAcque()
+    {
+        List<string> v = new List<string>();
+        v.Add("# LE ACQUE REGISTRATE ANDANDOCI SOPRA.");
+        v.Add("# registrazione|tipo|x|y|z|zona_gta");
+        v.Add("# Un punto ogni dieci metri. Il nome zona e' quello che il");
+        v.Add("# gioco dava in QUEL punto: serve per dividere poi la");
+        v.Add("# registrazione in piu' aree di pesca.");
+        int i;
+        for (i = 0; i < acque.Count; i++)
+        {
+            PuntoAcqua a = acque[i];
+            v.Add(a.Nome + "|" + a.Tipo + "|"
+                  + a.X.ToString("0.0", CultureInfo.InvariantCulture) + "|"
+                  + a.Y.ToString("0.0", CultureInfo.InvariantCulture) + "|"
+                  + a.Z.ToString("0.0", CultureInfo.InvariantCulture) + "|"
+                  + a.Zona);
+        }
+        try { File.WriteAllLines(Path.Combine(MY_DIR, "acque.txt"), v.ToArray()); }
+        catch { }
+    }
+
+    static string ZonaDiPunto(float x, float y, float z)
+    {
+        try { return Function.Call<string>(Hash.GET_NAME_OF_ZONE, x, y, z); }
+        catch { return ""; }
+    }
+
+    List<string> NomiAcque()
+    {
+        List<string> n = new List<string>();
+        int i;
+        for (i = 0; i < acque.Count; i++)
+            if (!n.Contains(acque[i].Nome)) n.Add(acque[i].Nome);
+        return n;
+    }
+
+    int PuntiDi(string nome)
+    {
+        int i, q = 0;
+        for (i = 0; i < acque.Count; i++) if (acque[i].Nome == nome) q++;
+        return q;
+    }
+
+    // le zone di GTA che una registrazione ha attraversato, in ordine
+    List<string> ZoneDi(string nome)
+    {
+        List<string> z = new List<string>();
+        int i;
+        for (i = 0; i < acque.Count; i++)
+        {
+            if (acque[i].Nome != nome) continue;
+            string q = acque[i].Zona;
+            if (q.Length == 0) q = "?";
+            if (!z.Contains(q)) z.Add(q);
+        }
+        return z;
+    }
+
+    void AvviaRegistrazione(string tipo)
+    {
+        if (regNome.Length > 0) { FermaRegistrazione(); return; }
+        // nome automatico: fiume 1, fiume 2, lago 1...
+        int n = 1;
+        while (PuntiDi(tipo + " " + n) > 0) n++;
+        regNome = tipo + " " + n;
+        regTipo = tipo;
+        ultTracValido = false;
+        Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+        Avviso("~g~Registro " + regNome + ".~s~  Percorrila tutta, dall'inizio alla fine.");
+        ScriviAcque();
+    }
+
+    void FermaRegistrazione()
+    {
+        if (regNome.Length == 0) return;
+        string f = regNome;
+        List<string> z = ZoneDi(f);
+        regNome = ""; regTipo = "";
+        SalvaAcque();
+        Avviso("~y~" + f + " chiusa.~s~  " + PuntiDi(f) + " punti, "
+               + z.Count + (z.Count == 1 ? " zona." : " zone."));
+        ScriviAcque();
+    }
+
+    // mentre ti muovi semina i punti da solo
+    void GiroRegistrazione()
+    {
+        if (regNome.Length == 0) return;
+        Vector3 p = Game.Player.Character.Position;
+        if (ultTracValido)
+        {
+            float dx = p.X - ultTracX, dy = p.Y - ultTracY;
+            if (dx * dx + dy * dy < REG_PASSO * REG_PASSO) return;
+        }
+        PuntoAcqua a = new PuntoAcqua();
+        a.Nome = regNome; a.Tipo = regTipo;
+        a.X = p.X; a.Y = p.Y; a.Z = p.Z;
+        a.Zona = ZonaDiPunto(p.X, p.Y, p.Z);
+        acque.Add(a);
+        ultTracX = p.X; ultTracY = p.Y; ultTracValido = true;
+        if ((acque.Count % 10) == 0) SalvaAcque();
+    }
+
+    // mentre registri, in alto: quanti punti e in che zona sei
+    void HudRegistrazione()
+    {
+        if (regNome.Length == 0) return;
+        Vector3 p = Game.Player.Character.Position;
+        DisegnaRett(490f, 40f, 300f, 32f, 12, 26, 24, 225);
+        DisegnaTesto(PuntiDi(regNome) + " punti     "
+                     + ZonaDiPunto(p.X, p.Y, p.Z),
+                     640f, 57f, 0.22f, 235, 245, 240);
+    }
+
+    // ============================================================
+    //  PROVA I SUONI
+    //  I nomi dei suoni di GTA non sono documentati: si trovano solo a
+    //  tentativi. Qui si sentono uno per uno senza ricaricare, e quello
+    //  che ti piace lo metti sul lancio. Resta scritto in
+    //  suono_lancio.txt, cosi' non si perde.
+    // ============================================================
+    List<string> suoNome = new List<string>();
+    List<string> suoSet = new List<string>();
+    List<string> suoNota = new List<string>();
+    string suoUltimoN = "";
+    string suoUltimoS = "";
+
+    void CaricaSuoni()
+    {
+        suoNome.Clear(); suoSet.Clear(); suoNota.Clear();
+        string[] r = LeggiRighe("suoni_prova.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 2) continue;
+            suoNome.Add(c[0].Trim());
+            suoSet.Add(c[1].Trim());
+            suoNota.Add(c.Length > 2 ? c[2].Trim() : "");
+        }
+    }
+
+    // il suono del lancio scelto: nome e soundset
+    string sulN = "";
+    string sulS = "";
+
+    void CaricaSuonoLancio()
+    {
+        sulN = LeggiS("suono_lancio", "");
+        sulS = LeggiS("suono_lancio_set", "");
+        string[] r = LeggiRighe("suono_lancio.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 2) continue;
+            sulN = c[0].Trim(); sulS = c[1].Trim();
+            break;
+        }
+    }
+
+    void SalvaSuonoLancio()
+    {
+        try
+        {
+            List<string> v = new List<string>();
+            v.Add("# il suono del lancio, scelto dal menu: nome|soundset");
+            v.Add(sulN + "|" + sulS);
+            ScriviVoci("suono_lancio.txt", v);
+        }
+        catch { }
+    }
+
+    void ScriviSuoni()
+    {
+        if (suoNome.Count == 0) CaricaSuoni();
+        List<string> v = new List<string>();
+        v.Add("titolo_finestra|PROVA I SUONI");
+        v.Add("nota|" + (sulN.Length > 0
+              ? ("Sul lancio adesso c'e': " + sulN)
+              : "Sul lancio non c'e' ancora niente"));
+        v.Add("Rileggi la lista dal file|suono_rileggi||"
+              + "Puoi aggiungere righe tue in suoni_prova.txt: nome|soundset"
+              + "|130,200,245");
+        if (suoUltimoN.Length > 0)
+            v.Add("Metti \"" + suoUltimoN + "\" sul lancio|suono_usa||"
+                  + "L'ultimo che hai sentito diventa il fruscio del lancio."
+                  + "|130,225,180");
+        if (sulN.Length > 0)
+            v.Add("Togli il suono dal lancio|suono_via||"
+                  + "Si torna al lancio muto.|235,90,80");
+        v.Add("- DA PROVARE -");
+        int i;
+        for (i = 0; i < suoNome.Count; i++)
+            v.Add(suoNome[i] + "|prova_suono " + i + "||"
+                  + suoSet[i] + (suoNota[i].Length > 0 ? "   -   " + suoNota[i] : ""));
+        ScriviVoci("suoni_voci.txt", v);
+    }
+
+    // ============================================================
+    //  LE VARIANTI DEL PESCE
+    //  Il modello a_c_fish non e' uno solo: GTA gli da' una forma a caso
+    //  fra quelle che ha dentro - piatte, affusolate, tozze. Qui si
+    //  guardano una per una, si scrive cosa sono, e poi si lega ogni
+    //  specie alla forma giusta.
+    // ============================================================
+    Ped pesceProva = null;
+    int pesceProvaN = -1;
+    int pesceQuante = -1;
+
+
+    void ProvaPesce(int n)
+    {
+        try
+        {
+            if (pesceProva == null || !pesceProva.Exists())
+            {
+                Model m = new Model("a_c_fish");
+                m.Request(800);
+                if (!m.IsLoaded) { Avviso("~r~Modello non caricato."); return; }
+                Ped p = Game.Player.Character;
+                pesceProva = World.CreatePed(m, p.Position + p.ForwardVector * 2f);
+                m.MarkAsNoLongerNeeded();
+                if (pesceProva == null || !pesceProva.Exists())
+                { pesceProva = null; return; }
+                Function.Call(Hash.SET_ENTITY_INVINCIBLE, pesceProva, true);
+                Function.Call(Hash.SET_ENTITY_COLLISION, pesceProva, false, false);
+                Function.Call(Hash.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS, pesceProva, true);
+                Function.Call(Hash.SET_PED_CAN_RAGDOLL, pesceProva, false);
+                // TENERLO FERMO SI FA COSI'.
+                // Togliere la gravita' e renderlo non dinamico non basta e
+                // fa danni: il gioco lo lascia sprofondare sotto il mondo.
+                // Il modo giusto e' congelarlo - resta dove lo metti - e
+                // spostarlo noi.
+                Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, pesceProva, false);
+                Function.Call(Hash.FREEZE_ENTITY_POSITION, pesceProva, true);
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pesceProva, true, true);
+            }
+            if (pesceQuante < 0)
+                pesceQuante = Function.Call<int>(
+                    Hash.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS, pesceProva, 0);
+            if (pesceQuante < 1) pesceQuante = 1;
+            if (n < 0) n = pesceQuante - 1;
+            if (n >= pesceQuante) n = 0;
+            pesceProvaN = n;
+            Function.Call(Hash.SET_PED_COMPONENT_VARIATION, pesceProva, 0, n, 0, 0);
+            Avviso("~b~Modello " + n + "~s~ di " + pesceQuante);
+            ScriviModelli();
+        }
+        catch { }
+    }
+
+    void ViaProvaPesce()
+    {
+        try
+        {
+            if (pesceProva != null && pesceProva.Exists())
+            {
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pesceProva, true, true);
+                pesceProva.Delete();
+            }
+        }
+        catch { }
+        pesceProva = null;
+        pesceProvaN = -1;
+    }
+
+    // sta davanti a te, all'altezza degli occhi, e gira piano
+    void TieniProvaPesce(int now)
+    {
+        if (pesceProva == null || !pesceProva.Exists()) return;
+        try
+        {
+            Ped p = Game.Player.Character;
+            if (p == null || !p.Exists()) return;
+            // se per qualche motivo e' scappato via, si butta invece di
+            // lasciarlo cadere per il mondo
+            GTA.Math.Vector3 dd = pesceProva.Position - p.Position;
+            if (dd.Length() > 25f) { ViaProvaPesce(); return; }
+            GTA.Math.Vector3 q = p.Position + p.ForwardVector * 1.6f;
+            float gr = (float)((now / 20) % 360);
+            Function.Call(Hash.SET_ENTITY_ROTATION, pesceProva, 0f, 0f, gr, 2, true);
+            Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, pesceProva,
+                          q.X, q.Y, q.Z + 0.7f, false, false, false);
+        }
+        catch { }
+    }
+
+    // PROVA I GALLEGGIANTI.
+    // Sono venticinque e quasi tutti chiedono un livello che non hai
+    // ancora: per guardarli non ha senso comprarli. Qui si monta quello
+    // che vuoi, gratis e senza controlli, giusto per vederlo in acqua.
+    // Quello che monti da qui finisce nello zaino come gli altri: se non
+    // lo vuoi tenere, premi di nuovo la sua riga e sparisce.
+    void ScriviProvaGall()
+    {
+        List<string> v = new List<string>();
+        v.Add("icone");
+        v.Add("titolo_finestra|PROVA I GALLEGGIANTI");
+        v.Add("nota|Premi uno e te lo monta, gratis. Premi di nuovo e lo toglie.");
+        int id = InUso("galleggiante");
+        int i;
+        for (i = 0; i < galleggianti.Count; i++)
+        {
+            Galleggiante x = galleggianti[i];
+            bool ora = (x.Id == id);
+            v.Add(Unisci(x.Nome, x.Colore)
+                  + "|prova_gall " + x.Id + "|" + x.Img + "|"
+                  + Corto(x.Misura) + (ora ? "   montato" : ""));
+        }
+        ScriviVoci("provagall_voci.txt", v);
+    }
+
+    void ScriviModelli()
+    {
+        List<string> v = new List<string>();
+        v.Add("titolo_finestra|MODELLI DEL PESCE");
+        v.Add("nota|" + (pesceQuante > 0
+              ? ("Il modello ha " + pesceQuante + " forme"
+                 + (pesceProvaN >= 0 ? "   -   ora vedi la " + pesceProvaN : ""))
+              : "Premi una forma per vederla"));
+        v.Add("Vai avanti|mod_pesce_piu||La forma dopo.|130,225,180");
+        v.Add("Vai indietro|mod_pesce_meno||La forma prima.|130,200,245");
+        v.Add("Togli il pesce|mod_pesce_via||Lo fa sparire.|235,90,80");
+        int q = (pesceQuante > 0) ? pesceQuante : 12;
+        int i;
+        v.Add("- LE FORME -");
+        for (i = 0; i < q; i++)
+            v.Add("Forma " + i + "|mod_pesce " + i + "||"
+                  + (i == pesceProvaN ? "e' questa che vedi" : ""));
+        ScriviVoci("modelli_voci.txt", v);
+    }
+
+    void ScriviAcque()
+    {
+        List<string> v = new List<string>();
+        v.Add("titolo_finestra|REGISTRA LE ACQUE");
+        v.Add("nota|" + (regNome.Length > 0
+              ? ("Sto registrando " + regNome + " - " + PuntiDi(regNome) + " punti")
+              : (acque.Count + " punti registrati")));
+
+        if (regNome.Length > 0)
+        {
+            v.Add("Ferma la registrazione|reg_stop||"
+                  + "Un punto ogni dieci metri mentre ti muovi.|235,90,80");
+        }
+        else
+        {
+            v.Add("Registra un fiume|reg_fiume||"
+                  + "Parti dall'inizio e percorrilo tutto.|130,225,180");
+            v.Add("Registra un lago|reg_lago||"
+                  + "Girane tutta la riva.|130,225,180");
+        }
+
+        // DOVE SI ARRIVA. Il centro di un'area puo' cadere su uno scoglio
+        // o in mezzo all'acqua: qui si segna il posto vero da cui si scende.
+        int qui = LuogoQui();
+        if (qui >= 0)
+            v.Add("Segna il punto di partenza|acq_accesso||"
+                  + arNome[qui] + " - "
+                  + (arAcc[qui] ? "gia' segnato, premi per rifarlo qui dove sei."
+                                : "il segnaposto e il blip verranno qui.")
+                  + "|130,200,245");
+
+        List<string> nn = NomiAcque();
+        int i;
+        if (nn.Count > 0)
+        {
+            v.Add("- REGISTRAZIONI -");
+            for (i = 0; i < nn.Count; i++)
+            {
+                List<string> z = ZoneDi(nn[i]);
+                string el = "";
+                int q;
+                for (q = 0; q < z.Count && q < 6; q++)
+                    el = (el.Length > 0) ? (el + ", " + z[q]) : z[q];
+                v.Add(nn[i] + "|reg_butta " + i + "||"
+                      + PuntiDi(nn[i]) + " punti   "
+                      + z.Count + (z.Count == 1 ? " zona: " : " zone: ") + el
+                      + "   (premi per buttarla)");
+            }
+        }
+        ScriviVoci("acque_voci.txt", v);
+    }
+
+    // ============================================================
+    //  I TORNEI: iscrizione, cronometro, traguardi, premi, record
+    // ============================================================
+    int torneoOra = -1;        // quale torneo stai facendo, -1 nessuno
+    int torneoFine = 0;        // Game.GameTime in cui scade
+    float torneoKg = 0f;       // chili del pesce bersaglio messi insieme
+    int torneoPezzi = 0, torneoTrofei = 0, torneoUnici = 0;
+
+    // che medaglia valgono questi chili: 0 niente, 1 bronzo, 2 argento, 3 oro
+    string CieloIt(string m)
+    {
+        if (m == null) m = "";
+        m = m.ToUpper();
+        if (m == "EXTRASUNNY") return L("bright sun", "sole pieno");
+        if (m == "CLEAR") return L("clear", "sereno");
+        if (m == "CLOUDS") return L("cloudy", "nuvoloso");
+        if (m == "OVERCAST") return L("grey", "coperto");
+        if (m == "RAIN") return L("rain", "pioggia");
+        if (m == "FOGGY") return L("fog", "nebbia");
+        return m.ToLower();
+    }
+
+    static int Medaglia(Torneo t, float kg)
+    {
+        if (t.KgOro > 0f && kg >= t.KgOro) return 3;
+        if (t.KgArgento > 0f && kg >= t.KgArgento) return 2;
+        if (t.KgBronzo > 0f && kg >= t.KgBronzo) return 1;
+        return 0;
+    }
+
+    string NomeMedaglia(int m)
+    {
+        if (m == 3) return L("gold", "oro");
+        if (m == 2) return L("silver", "argento");
+        if (m == 1) return L("bronze", "bronzo");
+        return L("nothing", "niente");
+    }
+
+    static int PremioMedaglia(Torneo t, int m)
+    {
+        if (m == 3) return t.PrOro;
+        if (m == 2) return t.PrArgento;
+        if (m == 1) return t.PrBronzo;
+        return 0;
+    }
+
+    // i record stanno in un file loro, con il NOME del torneo come chiave:
+    // cosi' se un giorno cambia l'ordine della lista non si perde niente
+    void CaricaRecordTornei()
+    {
+        string[] r = LeggiRighe("tornei_record.txt");
+        int i, k;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length < 6) continue;
+            for (k = 0; k < tornei.Count; k++)
+            {
+                if (tornei[k].Nome != c[0].Trim()) continue;
+                tornei[k].RecKg = Decimale(c[1]);
+                tornei[k].RecMed = Numero(c[2]);
+                tornei[k].RecTrofei = Numero(c[3]);
+                tornei[k].RecUnici = Numero(c[4]);
+                tornei[k].RecFatte = Numero(c[5]);
+                break;
+            }
+        }
+    }
+
+    void SalvaRecordTornei()
+    {
+        List<string> v = new List<string>();
+        v.Add("# nome|kg|medaglia|trofei|unici|volte");
+        int i;
+        for (i = 0; i < tornei.Count; i++)
+        {
+            Torneo t = tornei[i];
+            if (t.RecFatte <= 0) continue;
+            v.Add(t.Nome + "|"
+                  + t.RecKg.ToString("0.##", CultureInfo.InvariantCulture) + "|"
+                  + t.RecMed + "|" + t.RecTrofei + "|" + t.RecUnici + "|" + t.RecFatte);
+        }
+        try { File.WriteAllLines(Path.Combine(MY_DIR, "tornei_record.txt"), v.ToArray()); }
+        catch { }
+    }
+
+    // il pesce appena messo nella nassa conta per il torneo?
+    // Conta solo il pesce bersaglio; se il torneo non ne ha uno, conta tutto.
+    void PesceDelTorneo(string nome, float kg, string taglia)
+    {
+        if (torneoOra < 0 || torneoOra >= tornei.Count) return;
+        Torneo t = tornei[torneoOra];
+        string b = t.Pesce.Trim();
+        if (b.Length > 0 && b[0] != '(' && b != nome) return;
+        torneoKg += kg;
+        torneoPezzi++;
+        if (taglia == "ESEMPLARE UNICO") torneoUnici++;
+        else if (taglia == "TROFEO") torneoTrofei++;
+    }
+
+    void ApriTorneo(int i)
+    {
+        if (i < 0 || i >= tornei.Count) return;
+        Torneo t = tornei[i];
+        if (torneoOra >= 0)
+        { Avviso("~y~" + L("A competition is already running.",
+                           "Hai gia' un torneo in corso.")); return; }
+        if (livelloPescatore < t.LivMin)
+        { Avviso("~r~" + L("Level " + t.LivMin + " needed.",
+                           "Ci vuole il livello " + t.LivMin + ".")); return; }
+        if (!inPesca)
+        { Avviso("~y~" + L("Pay the day licence first.",
+                           "Prima paga la giornata.")); return; }
+        int luZ = LuogoDalNome(t.Zona);
+        int luO = LuogoQui();
+        if (luZ >= 0 && luO != luZ)
+        { Avviso("~r~" + L("The competition is at " + t.Zona + ".",
+                           "Il torneo e' a " + t.Zona + ".")); return; }
+        if (Soldi() < t.Quota)
+        { Avviso("~r~" + L("Entry is $" + Soldo(t.Quota) + ".",
+                           "L'iscrizione costa $" + Soldo(t.Quota) + ".")); return; }
+
+        Paga(t.Quota);
+
+        // L'ORA E IL TEMPO DEL TORNEO.
+        // Ogni gara ha la sua ora di partenza e il suo cielo, scelti
+        // sull'orario in cui quel pesce mangia davvero: la gara notturna
+        // ai pesci gatto comincia alle due, quella al luccio all'alba.
+        if (t.Ora >= 0 && t.Ora <= 23)
+        {
+            try { Function.Call(Hash.SET_CLOCK_TIME, t.Ora, 0, 0); }
+            catch { }
+        }
+        if (t.Meteo != null && t.Meteo.Length > 0)
+        {
+            try
+            {
+                Function.Call(Hash.SET_WEATHER_TYPE_NOW_PERSIST, t.Meteo);
+                Function.Call(Hash.SET_WEATHER_TYPE_PERSIST, t.Meteo);
+            }
+            catch { }
+        }
+
+        torneoOra = i;
+        torneoFine = Game.GameTime + t.Minuti * 60000;
+        torneoKg = 0f; torneoPezzi = 0; torneoTrofei = 0; torneoUnici = 0;
+        Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+        Avviso("~g~" + t.Nome + "~s~  " + L("started", "al via") + ".  "
+               + t.Minuti + " " + L("minutes", "minuti") + ".");
+        Diario("torneo iniziato: " + t.Nome + " - quota " + t.Quota);
+        RiscriviTutto();
+    }
+
+    // fine del torneo: ritirato = te ne sei andato tu, niente premi
+    void ChiudiTorneo(bool ritirato)
+    {
+        if (torneoOra < 0 || torneoOra >= tornei.Count) { torneoOra = -1; return; }
+        Torneo t = tornei[torneoOra];
+
+        if (ritirato)
+        {
+            Avviso("~y~" + L("Withdrawn from ", "Ritirato da ") + t.Nome + ".");
+            Diario("torneo abbandonato: " + t.Nome);
+            torneoOra = -1;
+            RiscriviTutto();
+            return;
+        }
+
+        int med = Medaglia(t, torneoKg);
+        int premio = PremioMedaglia(t, med);
+        int extra = 0;
+        if (torneoTrofei > 0) extra += t.ExTrofeo;
+        if (torneoUnici > 0) extra += t.ExUnico;
+        // gli extra si prendono solo se hai almeno il bronzo: se non hai
+        // fatto il minimo non hai fatto la gara
+        if (med == 0) extra = 0;
+        int tot = premio + extra;
+        if (tot > 0) Paga(-tot);
+
+        // il record: vale il peso, e a parita' di peso la medaglia
+        if (torneoKg > t.RecKg)
+        {
+            t.RecKg = torneoKg;
+            t.RecMed = med;
+            t.RecTrofei = torneoTrofei;
+            t.RecUnici = torneoUnici;
+        }
+        t.RecFatte++;
+        SalvaRecordTornei();
+
+        string kgs = torneoKg.ToString("0.##", CultureInfo.InvariantCulture);
+        if (med > 0)
+            Avviso("~g~" + NomeMedaglia(med).ToUpper() + "~s~  " + kgs + " kg   $"
+                   + Soldo(tot));
+        else
+            Avviso("~y~" + kgs + " kg.  " + L("Not even bronze.",
+                                              "Nemmeno il bronzo."));
+        Diario("torneo finito: " + t.Nome + " - " + kgs + " kg, medaglia "
+               + med + ", premio " + tot);
+
+        torneoOra = -1;
+        RiscriviTutto();
+    }
+
+    // il cronometro, chiamato a ogni giro
+    void ControllaTorneo()
+    {
+        if (torneoOra < 0) return;
+        if (Game.GameTime >= torneoFine) ChiudiTorneo(false);
+    }
+
+    string TempoTorneo()
+    {
+        int ms = torneoFine - Game.GameTime;
+        if (ms < 0) ms = 0;
+        int sec = ms / 1000;
+        int mi = sec / 60;
+        int se = sec % 60;
+        return mi + ":" + (se < 10 ? "0" : "") + se;
+    }
+
+    // LA SCHEDA DI UN TORNEO.
+    // Insegna in cima, sotto un blocco di testo con tutto quello che c'e'
+    // da sapere, e in fondo una sola cosa da fare: andarci.
+    // IL FILE DELLA SCHEDA CAMBIA A SECONDA DA DOVE SI ENTRA.
+    // Il trainer si ricorda da dove viene guardando il file: se la stessa
+    // scheda la aprono due menu diversi, tornando indietro finisci
+    // nell'altro. Quindi la pagina dei tornei usa t_gara_N.txt e quella
+    // di "inizia a pescare" usa p_gara_N.txt.
+    void ScriviUnTorneo(int i) { ScriviUnTorneo(i, "t_gara_"); }
+
+    void ScriviUnTorneo(int i, string pre)
+    {
+        Torneo t = tornei[i];
+        List<string> v = new List<string>();
+        string ins = (t.Banner.Length > 0) ? ImgOk("img\\tornei\\" + t.Banner) : "";
+        if (ins.Length > 0) v.Add("insegna|" + ins);
+
+        string pesce = (t.Pesce.Length > 0) ? NomeIt(t.Pesce)
+                       : L("everything that swims here", "tutto quello che c'e'");
+        v.Add("testo|" + L("You fish for " + pesce + " at " + t.Zona + ", for "
+                           + t.Minuti + " real minutes.",
+                           "Si pesca " + pesce + " a " + t.Zona + ", per "
+                           + t.Minuti + " minuti veri."));
+        if (t.Ora >= 0)
+            v.Add("testo|" + L("It starts at " + t.Ora + ":00, sky " + CieloIt(t.Meteo) + ".",
+                               "Si parte alle " + t.Ora + ":00, cielo "
+                               + CieloIt(t.Meteo) + "."));
+        v.Add("testo|" + L("Entry is $" + Soldo(t.Quota)
+                           + " and the winner takes $" + Soldo(t.Premio) + ".",
+                           "Si entra con $" + Soldo(t.Quota)
+                           + " e chi vince porta a casa $" + Soldo(t.Premio) + "."));
+
+        string pun = L(t.Punteggio, (t.PunteggioIt.Length > 0) ? t.PunteggioIt : t.Punteggio);
+        if (pun.Length > 0)
+        {
+            v.Add("testo|- " + L("How you win", "Come si vince"));
+            v.Add("testo|" + pun.Replace("|", " "));
+        }
+        string att = L(t.Attrezzi, (t.AttrezziIt.Length > 0) ? t.AttrezziIt : t.Attrezzi);
+        if (att.Length > 0)
+        {
+            v.Add("testo|- " + L("Required tackle", "Attrezzatura obbligatoria"));
+            v.Add("testo|" + att.Replace("|", " "));
+        }
+
+        // I TRAGUARDI: chili di quel pesce da mettere insieme, e cosa pagano
+        v.Add("testo|- " + L("Targets", "Traguardi"));
+        v.Add("testo|" + L("Bronze", "Bronzo") + " " + Kg(t.KgBronzo)
+              + " kg = $" + Soldo(t.PrBronzo) + ".    "
+              + L("Silver", "Argento") + " " + Kg(t.KgArgento)
+              + " kg = $" + Soldo(t.PrArgento) + ".    "
+              + L("Gold", "Oro") + " " + Kg(t.KgOro)
+              + " kg = $" + Soldo(t.PrOro) + ".");
+        v.Add("testo|" + L("On top of the medal: one trophy fish pays $",
+                           "Sopra la medaglia: un trofeo paga $")
+              + Soldo(t.ExTrofeo) + ", "
+              + L("one unique specimen pays $", "un esemplare unico paga $")
+              + Soldo(t.ExUnico) + ".");
+
+        // IL TUO RECORD
+        v.Add("testo|- " + L("Your record", "Il tuo record"));
+        if (t.RecFatte <= 0)
+            v.Add("testo|" + L("Never fished.", "Mai fatto."));
+        else
+            v.Add("testo|" + Kg(t.RecKg) + " kg, "
+                  + NomeMedaglia(t.RecMed) + ".    "
+                  + t.RecTrofei + " " + L("trophies", "trofei") + ", "
+                  + t.RecUnici + " " + L("uniques", "unici") + ".    "
+                  + L("Fished ", "Fatto ") + t.RecFatte + " "
+                  + L("times", "volte") + ".");
+
+        // COSA PUOI FARE
+        if (torneoOra == i)
+        {
+            v.Add(L("Withdraw", "Ritirati") + "|mollo_torneo|||235,90,80");
+        }
+        else if (torneoOra >= 0)
+        {
+            v.Add(L("Another competition is running", "Hai un altro torneo in corso")
+                  + "|niente|||235,90,80");
+        }
+        else if (livelloPescatore < t.LivMin)
+        {
+            // il livello non ce l'hai, ma il posto lo puoi comunque
+            // andare a vedere: e' meta' del gusto
+            v.Add(L("Needs level " + t.LivMin + ": you are " + livelloPescatore,
+                    "Ci vuole il livello " + t.LivMin + ": sei al " + livelloPescatore)
+                  + "|niente|||235,90,80");
+            v.Add(L("Go and see the spot anyway", "Vai comunque a vedere il posto")
+                  + "|gps_torneo " + i + "|||130,225,180");
+        }
+        else
+        {
+            int luZ2 = LuogoDalNome(t.Zona);
+            bool qui = (luZ2 < 0) || (LuogoQui() == luZ2);
+            if (!qui)
+                v.Add(L("Get to the spot", "Raggiungi il posto")
+                      + "|gps_torneo " + i + "|||130,225,180");
+            else if (inPesca)
+                v.Add(L("Sign up", "Iscriviti") + " - $" + Soldo(t.Quota)
+                      + "|iscr_torneo " + i + "|||130,225,180");
+            else
+                // la giornata non ce l'hai: si paga tutto in una volta
+                v.Add(L("Pay and start", "Paga e comincia") + " - $" + Soldo(t.Quota)
+                      + " + " + L("day licence", "la giornata")
+                      + "|torneo_via " + i + "|||130,225,180");
+        }
+
+        ScriviVoci(pre + i + ".txt", v);
+    }
+
+    void ScriviTornei()
+    {
+        // Come "Studia i pesci": voci normali, e il trainer disegna da solo
+        // in cima l'immagine della riga scelta con la sua scheda sotto.
+        // Qui l'immagine e' il banner. Premendo si entra nella scheda.
+        List<string> v = new List<string>();
+        v.Add("nota|" + L("Press to open the competition", "Premi per aprire il torneo"));
+        int i;
+        for (i = 0; i < tornei.Count; i++)
+        {
+            Torneo t = tornei[i];
+            string img = "niente";
+            if (t.Banner.Length > 0)
+            {
+                string p = ImgOk("img\\tornei\\" + t.Banner);
+                if (p.Length > 0) img = p;
+            }
+            if (img == "niente") img = Banner();
+            // IN CIMA SOLO TRE COSE: quanto dura, quanto paga, che
+            // livello vuole. Il resto sta dentro la scheda, se no la
+            // fascia diventa una riga di roba scritta tutta uguale.
+            string d = t.Minuti + " min   $" + Soldo(t.Premio)
+                     + "   " + L("Lv.", "Liv.") + t.LivMin;
+
+            // sottofile: etichetta | file | colore | immagine | descrizione
+            v.Add("sottofile|" + t.Nome + "|t_gara_" + i + ".txt|"
+                  + "|" + img + "|" + d);
+            ScriviUnTorneo(i, "t_gara_");
+            ScriviUnTorneo(i, "p_gara_");
+        }
+        ScriviVoci("tornei_voci.txt", v);
+    }
+
+    // ------------------------------------------------------------
+    //  I PUNTI DI PESCA SULLA MAPPA
+    //  Un blip col pesce su ognuno dei punti segnati a mano in gioco,
+    //  col colore che dice che acqua e'.
+    // ------------------------------------------------------------
+    static int ColorePunto(string tipo)
+    {
+        if (tipo == "lago") return 3;        // azzurro
+        if (tipo == "fiume") return 2;       // verde
+        if (tipo == "torrente") return 24;   // verde chiaro
+        if (tipo == "palude") return 52;     // verde scuro
+        if (tipo == "canale") return 38;     // blu
+        return 3;
+    }
+
+    string NomePunto(Punto q)
+    {
+        string t = q.Tipo;
+        if (t != null && t.Length > 0) t = char.ToUpper(t[0]) + t.Substring(1);
+        int lu, k;
+        for (lu = 0; lu < arZoneGta.Count; lu++)
+            for (k = 0; k < arZoneGta[lu].Count; k++)
+                if (arZoneGta[lu][k] == q.Zona) return t + " - " + arNome[lu];
+        return t + " - " + q.Zona;
+    }
+
+    void TogliBlipPunti()
+    {
+        int i;
+        for (i = 0; i < blipAree.Count; i++)
+        {
+            try { if (blipAree[i] != null && blipAree[i].Exists()) blipAree[i].Delete(); }
+            catch { }
+        }
+        blipAree.Clear();
+    }
+
+    // UN BLIP PER AREA, al centro dei suoi punti.
+    // Se il centro cade fuori dall'acqua - succede con le anse e le rive
+    // storte - si sposta sul punto registrato piu' vicino al centro, cosi'
+    // il segno sta sempre sull'acqua.
+    List<Blip> blipAree = new List<Blip>();
+
+    void MettiBlipPunti()
+    {
+        TogliBlipPunti();
+        int a;
+        for (a = 0; a < arNome.Count; a++)
+        {
+            float cx = PuntoX(a), cy = PuntoY(a), cz = arCz[a];
+            if (arAcc[a])
+            {
+                try
+                {
+                    Blip ba = World.CreateBlip(new GTA.Math.Vector3(cx, cy, cz));
+                    if (ba != null && ba.Exists())
+                    {
+                        Function.Call(Hash.SET_BLIP_SPRITE, ba, 68);
+                        Function.Call(Hash.SET_BLIP_COLOUR, ba, 0);
+                        Function.Call(Hash.SET_BLIP_SCALE, ba, 0.85f);
+                        Function.Call(Hash.SET_BLIP_AS_SHORT_RANGE, ba, false);
+                        Function.Call(Hash.SET_BLIP_DISPLAY, ba, 3);
+                        Function.Call(Hash.BEGIN_TEXT_COMMAND_SET_BLIP_NAME, "STRING");
+                        Function.Call(Hash.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME,
+                                      SoloAscii(arNome[a]));
+                        Function.Call(Hash.END_TEXT_COMMAND_SET_BLIP_NAME, ba);
+                        blipAree.Add(ba);
+                    }
+                }
+                catch { }
+                continue;
+            }
+            int best = -1; float bd = 0f;
+            int i;
+            for (i = 0; i < apX.Count; i++)
+            {
+                if (apA[i] != a) continue;
+                float dx = apX[i] - cx, dy = apY[i] - cy;
+                float d = dx * dx + dy * dy;
+                if (best < 0 || d < bd) { bd = d; best = i; }
+            }
+            // oltre i cento metri dal centro vuol dire che il centro e'
+            // finito sulla terra: si usa il punto vero
+            if (best >= 0 && bd > 100f * 100f) { cx = apX[best]; cy = apY[best]; }
+            try
+            {
+                Blip b = World.CreateBlip(new GTA.Math.Vector3(cx, cy, cz));
+                if (b == null || !b.Exists()) continue;
+                Function.Call(Hash.SET_BLIP_SPRITE, b, 68);          // il pesce
+                // bianchi e basta, come i segni classici della mappa
+                Function.Call(Hash.SET_BLIP_COLOUR, b, 0);
+                Function.Call(Hash.SET_BLIP_SCALE, b, 0.85f);
+                Function.Call(Hash.SET_BLIP_AS_SHORT_RANGE, b, false);
+                // SOLO SULLA MAPPA GRANDE: sul radarino trentacinque pesci
+                // in giro danno solo fastidio mentre guidi
+                Function.Call(Hash.SET_BLIP_DISPLAY, b, 3);
+                Function.Call(Hash.BEGIN_TEXT_COMMAND_SET_BLIP_NAME, "STRING");
+                Function.Call(Hash.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME,
+                              SoloAscii(arNome[a]));
+                Function.Call(Hash.END_TEXT_COMMAND_SET_BLIP_NAME, b);
+                blipAree.Add(b);
+            }
+            catch { }
+        }
+    }
+
+    // il punto segnato piu' vicino, ma non oltre "quanto" metri.
+    // Con quanto = 0 non c'e' limite.
+    int LuogoDaiPunti(GTA.Math.Vector3 pos, float quanto)
+    {
+        int best = -1;
+        float bd = 0f;
+        int i;
+        for (i = 0; i < apX.Count; i++)
+        {
+            float dx = apX[i] - pos.X;
+            float dy = apY[i] - pos.Y;
+            float d = dx * dx + dy * dy;
+            if (best < 0 || d < bd) { bd = d; best = i; }
+        }
+        if (best < 0) return -1;
+        if (quanto > 0f && bd > quanto * quanto) return -1;
+        return apA[best];
+    }
+
+    // l'area il cui punto registrato piu' vicino sta entro "raggio"
+    // metri: -1 se sei piu' lontano di cosi'
+    int LuogoVicino(float raggio)
+    {
+        try
+        {
+            Ped p = Game.Player.Character;
+            if (p == null || !p.Exists()) return -1;
+            GTA.Math.Vector3 pos = p.Position;
+            int best = -1;
+            float bd = 0f;
+            int i;
+            for (i = 0; i < apX.Count; i++)
+            {
+                float dx = apX[i] - pos.X;
+                float dy = apY[i] - pos.Y;
+                float d = dx * dx + dy * dy;
+                if (best < 0 || d < bd) { bd = d; best = i; }
+            }
+            if (best >= 0 && bd <= raggio * raggio) return apA[best];
+        }
+        catch { }
+        return -1;
+    }
+
+    int LuogoQui()
+    {
+        try
+        {
+            Ped p = Game.Player.Character;
+            if (p == null || !p.Exists()) return -1;
+            GTA.Math.Vector3 pos = p.Position;
+            string z = Function.Call<string>(Hash.GET_NAME_OF_ZONE, pos.X, pos.Y, pos.Z);
+            if (z != null) zonaVista = z.ToUpper().Trim();
+
+            // COMANDA IL PUNTO REGISTRATO PIU' VICINO.
+            // Le aree le abbiamo percorse a piedi e in barca, un punto ogni
+            // dieci metri: quello e' il dato vero. I nomi zona di GTA non
+            // c'entrano piu' niente - "Vinewood Hills" e' la collina e il
+            // laghetto insieme, e un fiume attraversa quattro zone.
+            int best = -1;
+            float bd = 0f;
+            int i;
+            for (i = 0; i < apX.Count; i++)
+            {
+                float dx = apX[i] - pos.X;
+                float dy = apY[i] - pos.Y;
+                float d = dx * dx + dy * dy;
+                if (best < 0 || d < bd) { bd = d; best = i; }
+            }
+            if (best >= 0 && bd <= RAGGIO_AREA * RAGGIO_AREA) return apA[best];
+        }
+        catch { }
+        return -1;
+    }
+
+    // La zona da sola non basta: ALAMO e' grande e ci passa anche la
+    // statale. Guardiamo se c'e' acqua intorno a noi.
+    // ------------------------------------------------------------
+    //  C'E' ACQUA QUI?
+    //  In GTA i fiumi e i torrenti non sono acqua per GET_WATER_HEIGHT:
+    //  quelle funzioni conoscono solo il mare e i grandi specchi. Per
+    //  i corsi d'acqua l'unica che risponde e' la sonda verticale.
+    //  Si prova in quest'ordine, dal caso piu' ovvio al piu' fino:
+    //    1. hai i piedi in acqua                -> ovvio che si'
+    //    2. sonda verticale intorno a te        -> vede fiumi e torrenti
+    //    3. le due GET_WATER_HEIGHT             -> mare e laghi
+    // ------------------------------------------------------------
+    // L'ACQUA VERA E' PIU' ALTA DEL FONDO.
+    // La sonda verticale del gioco, in collina, risponde sempre un metro
+    // esatto sotto i piedi: non sta trovando acqua, sta restituendo il
+    // TERRENO. Si smaschera cosi': l'acqua vera ha una profondita', quindi
+    // il pelo dell'acqua sta almeno mezzo metro sopra il fondo. Se acqua e
+    // suolo coincidono, quella non e' acqua, e' terra.
+    float ultimoSuolo = 0f;
+
+    // QUANTO LONTANA PUO' STARE L'ACQUA, in linea d'aria.
+    // Non due limiti separati (tanti metri di lato, tanti di salto) ma uno
+    // solo: la distanza vera fra te e il pelo dell'acqua. Cosi' dal ponte
+    // di Zancudo, con la palude trenta metri piu' sotto, te lo dice lo
+    // stesso. E' l'unico numero da girare se vuoi piu' o meno raggio.
+    const float RAGGIO_ARIA = 50f;
+
+    static bool InLineaDAria(float dx, float dy, float dz)
+    {
+        return (dx * dx + dy * dy + dz * dz) <= RAGGIO_ARIA * RAGGIO_ARIA;
+    }
+
+    float ultimaDistanza = 0f;
+
+    bool AcquaRaggiungibile(float dx, float dy, float acquaZ, float mioZ)
+    {
+        float dz = acquaZ - mioZ;
+        ultimaDistanza = (float)Math.Sqrt(dx * dx + dy * dy + dz * dz);
+        return InLineaDAria(dx, dy, dz);
+    }
+
+    bool AcquaSopraIlFondo(float qx, float qy, float acquaZ)
+    {
+        ultimoSuolo = -9999f;
+        try
+        {
+            OutputArgument g = new OutputArgument();
+            if (!Function.Call<bool>(Hash.GET_GROUND_Z_FOR_3D_COORD,
+                                     qx, qy, acquaZ + 50f, g, false))
+                return true;                       // fondo sconosciuto: passa
+            float suolo = g.GetResult<float>();
+            ultimoSuolo = suolo;
+            return (acquaZ > suolo + 0.5f);
+        }
+        catch { }
+        return true;
+    }
+
+    bool VicinoAllAcqua()
+    {
+        try
+        {
+            Ped p = Game.Player.Character;
+            if (p == null || !p.Exists()) return false;
+            GTA.Math.Vector3 pos = p.Position;
+
+            // 1. ci sei dentro
+            if (Function.Call<bool>(Hash.IS_ENTITY_IN_WATER, p)) return true;
+            if (Function.Call<float>(Hash.GET_ENTITY_SUBMERGED_LEVEL, p) > 0.01f) return true;
+
+            int d;
+            for (d = 0; d < RAGGIX.Length; d++)
+            {
+                float qx = pos.X + RAGGIX[d];
+                float qy = pos.Y + RAGGIY[d];
+
+                // 2. la sonda verticale: parte da sopra la testa e scende
+                OutputArgument hv = new OutputArgument();
+                bool cv = Function.Call<bool>(Hash.TEST_VERTICAL_PROBE_AGAINST_ALL_WATER,
+                            qx, qy, pos.Z + 3f, 1, hv);
+                if (cv && AcquaRaggiungibile(RAGGIX[d], RAGGIY[d], hv.GetResult<float>(), pos.Z))
+                {
+                    if (!AcquaSopraIlFondo(qx, qy, hv.GetResult<float>()))
+                        continue;
+                    return true;
+                }
+
+                // 3. mare e laghi
+                OutputArgument h = new OutputArgument();
+                if (Function.Call<bool>(Hash.GET_WATER_HEIGHT, qx, qy, pos.Z, h)
+                    && AcquaRaggiungibile(RAGGIX[d], RAGGIY[d], h.GetResult<float>(), pos.Z))
+                {
+                    if (!AcquaSopraIlFondo(qx, qy, h.GetResult<float>()))
+                        continue;
+                    return true;
+                }
+
+                OutputArgument h2 = new OutputArgument();
+                if (Function.Call<bool>(Hash.GET_WATER_HEIGHT_NO_WAVES, qx, qy, pos.Z, h2)
+                    && AcquaRaggiungibile(RAGGIX[d], RAGGIY[d], h2.GetResult<float>(), pos.Z))
+                {
+                    if (!AcquaSopraIlFondo(qx, qy, h2.GetResult<float>()))
+                        continue;
+                    return true;
+                }
+            }
+        }
+        // Se qualcosa va storto la risposta e' NO. Prima qui c'era un
+        // "return true" e bastava un errore qualunque perche' ti dicesse
+        // che eri in riva dappertutto.
+        catch { }
+        return false;
+    }
+
+    // QUANTO VICINO ALL'ACQUA DEVI ESSERE.
+    // Prima si arrivava a quaranta metri in orizzontale e dodici in
+    // verticale: cosi' a casa di Franklin, col laghetto li' sopra, ti
+    // diceva gia' "zona di pesca". Adesso devi essere sulla riva davvero,
+    // otto metri al massimo.
+    static readonly float[] RAGGIX = new float[] {
+        0f,  2f, -2f,  0f,  0f,  2f, -2f,  2f, -2f,
+        5f, -5f,  0f,  0f,  5f, -5f,  5f, -5f,
+       10f,-10f,  0f,  0f, 10f,-10f, 10f,-10f,
+       15f,-15f,  0f,  0f, 20f,-20f,  0f,  0f,
+       14f,-14f, 14f,-14f,
+       30f,-30f,  0f,  0f, 21f,-21f, 21f,-21f,
+       40f,-40f,  0f,  0f, 28f,-28f, 28f,-28f,
+       50f,-50f,  0f,  0f, 35f,-35f, 35f,-35f };
+    static readonly float[] RAGGIY = new float[] {
+        0f,  0f,  0f,  2f, -2f,  2f,  2f, -2f, -2f,
+        0f,  0f,  5f, -5f,  5f, -5f, -5f,  5f,
+        0f,  0f, 10f,-10f, 10f,-10f,-10f, 10f,
+        0f,  0f, 15f,-15f,  0f,  0f, 20f,-20f,
+       14f, 14f,-14f,-14f,
+        0f,  0f, 30f,-30f, 21f, 21f,-21f,-21f,
+        0f,  0f, 40f,-40f, 28f, 28f,-28f,-28f,
+        0f,  0f, 50f,-50f, 35f, 35f,-35f,-35f };
+
+    // ------------------------------------------------------------
+    //  I COMANDI CHE ARRIVANO DAL TRAINER (comandi.txt)
+    // ------------------------------------------------------------
+    void LeggiComandi()
+    {
+        string f = Path.Combine(MY_DIR, "comandi.txt");
+        string[] rows;
+        try
+        {
+            if (!File.Exists(f)) return;
+            rows = File.ReadAllLines(f);
+            if (rows.Length == 0) return;
+            File.WriteAllText(f, "");
+        }
+        catch { return; }
+
+        int i;
+        bool cambiato = false;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0) continue;
+            Diario("arrivato: " + r);
+            if (Esegui(r)) cambiato = true;
+        }
+        if (cambiato)
+        {
+            SalvaStato();
+            RiscriviTutto();
+        }
+    }
+
+    bool Esegui(string riga)
+    {
+        // il trainer attacca in fondo la posizione del giocatore:
+        //    compra_canna 105 @-178.32|800.51|197.86|345.00
+        // quella parte non ci serve, si taglia
+        int chiocc = riga.IndexOf(" @");
+        if (chiocc > 0) riga = riga.Substring(0, chiocc).Trim();
+
+        string cmd = riga, arg = "";
+        int sp = riga.IndexOf(' ');
+        if (sp > 0) { cmd = riga.Substring(0, sp); arg = riga.Substring(sp + 1).Trim(); }
+
+        // "compra_cibo" e' il bar, non il negozio: va tolto di mezzo prima,
+        // se no lo mangia StartsWith("compra_") e il bar non funziona
+        if (cmd == "compra_cibo") return Mangia(Numero(arg));
+        if (cmd.StartsWith("compra_"))
+        {
+            string cat = cmd.Substring(7);
+            return Compra(cat, Numero(arg));
+        }
+        // A su un'esca la sceglie e basta: niente equipaggiato/non
+        // equipaggiato, le esche si consumano. Lo stesso che fa RB.
+        // il trainer ci dice quale nostra pagina hai aperto: se vai a
+        // toccare l'armatura la canna va riposta, non si cambia il
+        // mulinello con la lenza in acqua
+        // IL TRAINER DICE OGNI SECONDO QUALE PAGINA E' APERTA.
+        // Serve per far vedere qualcosa solo mentre ci sei dentro: "apri"
+        // arriva una volta sola e non dice mai quando chiudi.
+        if (cmd == "vedi")
+        {
+            if (arg == "casa_voci.txt") hudCasaFino = Game.GameTime + 2500;
+            // false apposta: non e' un cambiamento, e arriva ogni secondo.
+            // Tornando true si risalvava e si riscriveva tutto di continuo.
+            return false;
+        }
+        if (cmd == "apri")
+        {
+            if (arg == "casa_voci.txt" && fase != FASE_FERMO)
+            {
+                ScenaGiu(Game.Player.Character);
+                fase = FASE_FERMO;
+                Avviso("~y~Canna ritirata.");
+            }
+            return true;
+        }
+        // azzera il diario: due pressioni, che e' roba che non torna
+        if (cmd == "imp_diario")
+        {
+            if (!diarioChiesto)
+            {
+                diarioChiesto = true;
+                Avviso("~y~Premi ancora per azzerare il diario.");
+                return true;
+            }
+            diarioChiesto = false;
+            quaderno.Clear();
+            record.Clear();
+            dovePreso.Clear();
+            recEsca.Clear();
+            recAmo.Clear();
+            recXp.Clear();
+            recVale.Clear();
+            Avviso("~g~Diario azzerato.");
+            return true;
+        }
+        if (cmd == "imp_reset")
+        {
+            // RICOMINCIA DA ZERO. Cancella tutto: diario, punti, livello,
+            // e la roba comprata. I soldi restano i tuoi, quelli sono di GTA.
+            if (!resetChiesto)
+            {
+                resetChiesto = true;
+                Avviso("~r~Premi ancora: cancelli tutto e riparti da zero.");
+                return true;
+            }
+            resetChiesto = false;
+            FinePesca(false);
+            fase = FASE_FERMO;
+            quaderno.Clear();
+            record.Clear();
+            dovePreso.Clear();
+            recEsca.Clear();
+            recAmo.Clear();
+            recXp.Clear();
+            recVale.Clear();
+            magazzino.Clear();
+            borsa.Clear();
+            armato.Clear();
+            usati.Clear();
+            nassaOggi.Clear();
+            xpTot = 0;
+            livelloPescatore = 1;
+            kgNassa = 0f;
+            escaMontata = -1;
+            frizione = 2;
+            minutiFatti = 0;
+            licZona = "";
+            licGiorni = 0;
+            SalvaStato();
+            RiscriviTutto();
+            Avviso("~g~Tutto azzerato. Sei di nuovo al livello 1.");
+            return true;
+        }
+        if (cmd == "pesca_via")
+        {
+            if (!inPesca) { Avviso("~y~Prima paga la giornata."); return true; }
+            int luV = LuogoQui();
+            if (luV >= 0 && CodiceLuogo(luV) != licZona)
+            {
+                string bzV;
+                Avviso("~r~La licenza e' per " + NomeChiosco(licZona, out bzV) + ".");
+                return true;
+            }
+            if (!VicinoAllAcqua()) { Avviso("~y~Non sei in riva."); return true; }
+            if (fase != FASE_FERMO) { Avviso("~y~Hai gia' la canna in mano."); return true; }
+            int idv; string imgv, nomev;
+            if (!Montato("canna", out idv, out imgv, out nomev))
+            { Messaggio("Arma una canna dall'equipaggiamento."); return true; }
+            if (!Montato("mulinello", out idv, out imgv, out nomev))
+            { Messaggio("Arma il mulinello dall'equipaggiamento."); return true; }
+            if (!Montato("lenza", out idv, out imgv, out nomev))
+            { Messaggio("Imbobina una lenza sul mulinello."); return true; }
+            if (!Montato("nassa", out idv, out imgv, out nomev))
+            { Messaggio("Porta una nassa, o i pesci dove li metti?"); return true; }
+            // e in punta ci vuole qualcosa che agganci
+            string mancaQui = CosaMancaPerLanciare();
+            if (mancaQui.Length > 0) { Messaggio(mancaQui); return true; }
+            if (escaMontata < 0) CambiaEsca();
+            if (escaMontata < 0) Avviso("~y~Senza esca peschi solo robaccia.");
+            fase = FASE_PRONTO;
+            grillettoMollato = false;
+            ScenaSu(Game.Player.Character);
+            tastoDa = Game.GameTime + 500;
+            return true;
+        }
+        if (cmd == "acq_accesso")
+        {
+            int la = LuogoQui();
+            if (la < 0) { Avviso("~y~Non sei dentro nessuna area."); return true; }
+            Vector3 pa = Game.Player.Character.Position;
+            arAx[la] = pa.X; arAy[la] = pa.Y; arAcc[la] = true;
+            SalvaAccessi();
+            MettiBlipPunti();
+            Avviso("~g~Punto di partenza segnato: " + arNome[la] + ".");
+            ScriviAcque();
+            return true;
+        }
+        if (cmd == "prova_gall")
+        {
+            int ig = Numero(arg);
+            if (InUso("galleggiante") == ig)
+            {
+                armato["galleggiante"] = -1;
+                Aggiungi(borsa, "galleggiante:" + ig, -1);
+                Avviso("~y~Galleggiante tolto.");
+            }
+            else
+            {
+                Aggiungi(borsa, "galleggiante:" + ig, 1);
+                armato["galleggiante"] = ig;
+                string ng = "", ig2; int pg, lg;
+                if (Articolo("galleggiante", ig, out ng, out ig2, out pg, out lg))
+                    Avviso("~g~Montato: ~s~" + ng);
+            }
+            SalvaStato();
+            ScriviProvaGall();
+            RiscriviTutto();
+            return true;
+        }
+        if (cmd == "mod_pesce") { ProvaPesce(Numero(arg)); return true; }
+        if (cmd == "mod_pesce_piu") { ProvaPesce(pesceProvaN + 1); return true; }
+        if (cmd == "mod_pesce_meno") { ProvaPesce(pesceProvaN - 1); return true; }
+        if (cmd == "mod_pesce_via") { ViaProvaPesce(); ScriviModelli(); return true; }
+        if (cmd == "prova_suono")
+        {
+            if (suoNome.Count == 0) CaricaSuoni();
+            int ks = Numero(arg);
+            if (ks >= 0 && ks < suoNome.Count)
+            {
+                suoUltimoN = suoNome[ks]; suoUltimoS = suoSet[ks];
+                Suono(suoUltimoN, suoUltimoS);
+                Avviso("~b~" + suoUltimoN + "~s~   (" + suoUltimoS + ")");
+                ScriviSuoni();
+            }
+            return true;
+        }
+        if (cmd == "suono_rileggi")
+        {
+            CaricaSuoni();
+            Avviso("~g~" + suoNome.Count + " suoni da provare.");
+            ScriviSuoni();
+            return true;
+        }
+        if (cmd == "suono_usa")
+        {
+            if (suoUltimoN.Length == 0) { Avviso("~y~Prima sentine uno."); return true; }
+            sulN = suoUltimoN; sulS = suoUltimoS;
+            SalvaSuonoLancio();
+            Avviso("~g~Il lancio adesso fa: ~s~" + sulN);
+            ScriviSuoni();
+            return true;
+        }
+        if (cmd == "suono_via")
+        {
+            sulN = ""; sulS = "";
+            SalvaSuonoLancio();
+            Avviso("~y~Lancio muto.");
+            ScriviSuoni();
+            return true;
+        }
+        if (cmd == "reg_fiume") { AvviaRegistrazione("fiume"); return true; }
+        if (cmd == "reg_lago") { AvviaRegistrazione("lago"); return true; }
+        if (cmd == "reg_stop") { FermaRegistrazione(); return true; }
+        if (cmd == "reg_butta")
+        {
+            int kb = Numero(arg);
+            List<string> nb = NomiAcque();
+            if (kb >= 0 && kb < nb.Count)
+            {
+                string via = nb[kb];
+                int q7;
+                for (q7 = acque.Count - 1; q7 >= 0; q7--)
+                    if (acque[q7].Nome == via) acque.RemoveAt(q7);
+                SalvaAcque();
+                // il file e' cambiato: le aree vanno rilette, se no i blip
+                // e LuogoQui riconoscono ancora una zona che non c'e' piu'
+                CaricaAree();
+                CaricaLivelliAree();
+                CaricaAccessi();
+                CaricaPesciAree();
+                CaricaPuntiCaldi();
+                MettiBlipPunti();
+                Avviso("~y~Buttata: " + via);
+            }
+            ScriviAcque();
+            return true;
+        }
+        if (cmd == "torneo_via")
+        {
+            int it2 = Numero(arg);
+            if (it2 < 0 || it2 >= tornei.Count) return false;
+            Torneo tv = tornei[it2];
+            if (!inPesca)
+            {
+                int luV2 = LuogoQui();
+                if (luV2 < 0) { Avviso("~y~Non sei in una zona di pesca."); return true; }
+                if (!CompraLicenza(CodiceLuogo(luV2), 1)) return true;
+            }
+            ApriTorneo(it2);
+            return true;
+        }
+        if (cmd == "iscr_torneo")
+        {
+            ApriTorneo(Numero(arg));
+            return true;
+        }
+        if (cmd == "mollo_torneo")
+        {
+            ChiudiTorneo(true);
+            return true;
+        }
+        if (cmd == "gps_zona")
+        {
+            int az = Numero(arg);
+            if (az < 0 || az >= arNome.Count) return false;
+            Function.Call(Hash.SET_NEW_WAYPOINT, PuntoX(az), PuntoY(az));
+            Avviso("~g~Segnaposto su " + arNome[az] + ".");
+            Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            return true;
+        }
+        if (cmd == "gps_torneo")
+        {
+            int it = Numero(arg);
+            if (it < 0 || it >= tornei.Count) return false;
+            Torneo tt = tornei[it];
+            int lu = LuogoDalNome(tt.Zona);
+            if (lu < 0) { Avviso("~y~Non so dove sia questa zona."); return true; }
+            // il segnaposto va al centro dell'area del torneo
+            Function.Call(Hash.SET_NEW_WAYPOINT, PuntoX(lu), PuntoY(lu));
+            Avviso("~g~Segnaposto su " + tt.Zona + ".~s~  " + tt.Nome);
+            Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            return true;
+        }
+        if (cmd == "imp_gall")
+        {
+            int gz = Numero(arg);
+            if (gz < 0 || gz >= GALL_ZOOM.Length) gz = 0;
+            gallZoom = gz;
+            Avviso("~b~Galleggiante: " + GallZoomTxt());
+            SalvaStato();
+            ScriviImpostazioni();
+            return true;
+        }
+        if (cmd == "imp_zone")
+        {
+            avvisaZona = !avvisaZona;
+            Avviso(avvisaZona ? "~g~Zone di pesca: acceso"
+                              : "~y~Zone di pesca: spento");
+            return true;
+        }
+        if (cmd == "imp_regole")
+        {
+            regoleVere = !regoleVere;
+            Avviso(regoleVere ? "~g~Regole vere: acceso.  Ora contano esca, amo, ora e rarita'."
+                              : "~y~Regole vere: spento.  Abbocca di tutto, come prima.");
+            return true;
+        }
+        if (cmd == "usa_esca")
+        {
+            int ide = Numero(arg);
+            if (Quanti(borsa, "esca:" + ide) <= 0) return false;
+            escaMontata = ide;
+            string ne, ie; int pe, le;
+            if (Articolo("esca", ide, out ne, out ie, out pe, out le))
+                Avviso("~g~Esca: ~s~" + ne + "  x" + QuanteEsche(ide));
+            Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            return true;
+        }
+        if (cmd == "arma")
+        {
+            string[] aa = arg.Split(' ');
+            if (aa.Length < 2) return false;
+            return Arma(aa[0], Numero(aa[1]));
+        }
+        if (cmd == "disarma_lenza") { DisarmaLenza(); return true; }
+        if (cmd == "arma_bob") { return ArmaLenzaBobina(Numero(arg)); }
+        if (cmd == "butta_bob") { return ButtaBobina(Numero(arg)); }
+        if (cmd == "butta")
+        {
+            string[] ab = arg.Split(' ');
+            if (ab.Length < 3) return false;
+            return Butta(ab[0], Numero(ab[1]), ab[2] == "casa");
+        }
+        if (cmd == "vendi")
+        {
+            string[] av = arg.Split(' ');
+            if (av.Length < 2) return false;
+            return Vendi(av[0], Numero(av[1]));
+        }
+        if (cmd == "equipaggia" || cmd == "lascia")
+        {
+            string[] a = arg.Split(' ');
+            if (a.Length < 2) return false;
+            return Sposta(a[0], Numero(a[1]), cmd == "equipaggia");
+        }
+        if (cmd == "licenza")
+        {
+            string[] a = arg.Split(' ');
+            if (a.Length < 2) return false;
+            return CompraLicenza(a[0], Numero(a[1]));
+        }
+        if (cmd == "marca") return Marca(arg);
+        if (cmd == "smarca") return Smarca();
+        if (cmd == "smetti") return FinePesca(true);
+        if (cmd == "compra_cibo") return Mangia(Numero(arg));
+        return false;
+    }
+
+    // il prezzo di oggi: al chiosco si paga il doppio
+    int PrezzoOggi(int prezzoWiki)
+    {
+        int d = Dollari(prezzoWiki);
+        // il chiosco sul posto costa il triplo: e' comodo, si paga
+        if (inPesca) d = d * 3;
+        if (d < 1) d = 1;
+        return d;
+    }
+
+    // scrive in diario.txt cosa succede a ogni comando: serve solo per
+    // capire i problemi, si toglie quando tutto va
+    void Diario(string t)
+    {
+        try
+        {
+            File.AppendAllText(Path.Combine(MY_DIR, "diario.txt"),
+                               DateTime.Now.ToString("HH:mm:ss") + "  " + t + "\r\n");
+        }
+        catch { }
+    }
+
+    bool Compra(string cat, int id)
+    {
+        string nome, img;
+        int prezzo, liv;
+        Diario("compra " + cat + " " + id + " - soldi letti: " + Soldi()
+               + " - livello: " + livelloPescatore + " - inPesca: " + inPesca);
+        if (!Articolo(cat, id, out nome, out img, out prezzo, out liv))
+        {
+            Diario("   RIFIUTATO: articolo non trovato");
+            return false;
+        }
+        if (liv > livelloPescatore)
+        {
+            Diario("   RIFIUTATO: serve livello " + liv);
+            Avviso("~r~" + nome + ": ci vuole il livello " + liv + ".");
+            return false;
+        }
+        // SUL POSTO SI COMPRA TUTTO, MA CI DEVE STARE.
+        // Prima il chiosco vendeva solo roba di consumo. Adesso vendono
+        // tutto: il limite non e' piu' cosa tengono, e' quanto ti entra
+        // in cassetta - quello che compri mentre peschi ce l'hai addosso
+        // gia' pronto.
+        if (inPesca && !CiSta(cat))
+        {
+            Diario("   RIFIUTATO: non ci sta piu' niente in " + cat);
+            Avviso("~y~Non ci sta: " + Contatori());
+            return false;
+        }
+        int costo = PrezzoOggi(prezzo);
+        if (Soldi() < costo)
+        {
+            Diario("   RIFIUTATO: costa " + costo + " e ne hai " + Soldi());
+            Avviso("~r~Ti servono $" + costo + ", ne hai " + Soldi() + ".");
+            return false;
+        }
+        Paga(costo);
+        // al chiosco quello che compri ce l'hai gia' addosso,
+        // a casa finisce in magazzino
+        Aggiungi(inPesca ? borsa : magazzino, cat + ":" + id, 1);
+        // scritto per esteso cosi' si vede se i soldi si muovono davvero
+        Diario("   COMPRATO " + nome + " per " + costo + ", restano " + Soldi());
+        Avviso("~g~" + nome + "  ~r~-$" + costo + "  ~s~restano $" + Soldi());
+
+        // Il consiglio arriva come AVVISO, non nel menu: il menu resta
+        // pulito. Non blocca niente, la canna giusta magari la compri dopo.
+        string cons = ConsiglioAcquisto(cat, id);
+        if (cons.Length > 0)
+        {
+            if (cons.StartsWith("Non va")) Avviso("~y~" + cons);
+            else Avviso("~b~" + cons);
+        }
+        return true;
+    }
+
+    // sul posto si vende solo roba di consumo
+    static bool AlChiosco(string cat)
+    {
+        return (cat == "esca" || cat == "lenza" || cat == "terminale"
+             || cat == "galleggiante" || cat == "artificiale");
+    }
+
+    // VENDERE LA ROBA DI CASA.
+    // Si vende solo da casa, un pezzo per volta, e ci vogliono due colpi
+    // di X: il primo dice quanto ti danno, il secondo lo vende. Se in
+    // mezzo cambi riga la conferma decade, cosi' un tasto sbagliato non
+    // ti svuota il magazzino.
+    // Il prezzo di ritiro e' una percentuale di quello di listino:
+    // "vendi_percento" in config.ini, di suo 50.
+    int hudCasaFino = 0;
+    string vendiChiesto = "";
+    int vendiScade = 0;
+
+    // BUTTARE VIA.
+    // Una bobina con dieci metri avanzati non la vende nessuno: o te la
+    // tieni o la butti. Due colpi di Y, come per vendere: il primo
+    // chiede, il secondo butta. Non torna piu' indietro.
+    string buttaChiesto = "";
+    int buttaScade = 0;
+
+    bool ChiediDueVolte(string chiave, string domanda)
+    {
+        int ora = Game.GameTime;
+        if (buttaChiesto != chiave || ora > buttaScade)
+        {
+            buttaChiesto = chiave;
+            buttaScade = ora + 5000;
+            Messaggio(domanda);
+            return false;
+        }
+        buttaChiesto = "";
+        return true;
+    }
+
+    bool ButtaBobina(int i)
+    {
+        int id = BobinaId(i);
+        int m = BobinaMetri(i);
+        if (id < 0) return false;
+        string nome, img;
+        int prezzo, liv;
+        if (!Articolo("lenza", id, out nome, out img, out prezzo, out liv)) return false;
+        if (!ChiediDueVolte("bob" + i,
+                "Premi ancora (Y) per gettare " + nome + " (" + m + " m)"))
+            return true;
+        if (i < 0 || i >= bobine.Count) return true;
+        bobine.RemoveAt(i);
+        Messaggio("Gettata: " + nome + "   " + m + " m");
+        return true;
+    }
+
+    bool Butta(string cat, int id, bool daCasa)
+    {
+        Dictionary<string, int> d = daCasa ? magazzino : borsa;
+        string k = cat + ":" + id;
+        if (Quanti(d, k) <= 0) return false;
+        string nome, img;
+        int prezzo, liv;
+        if (!Articolo(cat, id, out nome, out img, out prezzo, out liv)) return false;
+        if (!ChiediDueVolte(k + (daCasa ? "c" : "b"),
+                "Premi ancora (Y) per gettare " + nome))
+            return true;
+        Aggiungi(d, k, -1);
+        Messaggio("Gettato: " + nome);
+        return true;
+    }
+
+    bool Vendi(string cat, int id)
+    {
+        string k = cat + ":" + id;
+        if (Quanti(magazzino, k) <= 0) { Messaggio("Non ce l'hai in casa."); return true; }
+        if (inPesca) { Messaggio("Si vende da casa, non in riva."); return true; }
+
+        string nome, img;
+        int prezzo, liv;
+        if (!Articolo(cat, id, out nome, out img, out prezzo, out liv)) return false;
+
+        int perc = (int)LeggiF("vendi_percento", 50f);
+        if (perc < 0) perc = 0;
+        if (perc > 100) perc = 100;
+        int reso = prezzo * perc / 100;
+
+        int ora = Game.GameTime;
+        if (vendiChiesto != k || ora > vendiScade)
+        {
+            vendiChiesto = k;
+            vendiScade = ora + 5000;
+            Messaggio("Premi ancora (X) per vendere " + nome + " a $" + Dollari(reso));
+            return true;
+        }
+
+        vendiChiesto = "";
+        magazzino[k] = Quanti(magazzino, k) - 1;
+        if (magazzino[k] <= 0) magazzino.Remove(k);
+        Paga(-reso);
+        SalvaStato();
+        RiscriviTutto();
+        Messaggio("Venduto " + nome + "   +$" + Dollari(reso));
+        return true;
+    }
+
+    bool Sposta(string cat, int id, bool versoBorsa)
+    {
+        string k = cat + ":" + id;
+        Dictionary<string, int> da = versoBorsa ? magazzino : borsa;
+        Dictionary<string, int> a = versoBorsa ? borsa : magazzino;
+        if (Quanti(da, k) <= 0) return false;
+        if (inPesca)
+        {
+            Avviso("~r~Sei fuori: la borsa e' quella che ti sei portato.");
+            return false;
+        }
+        if (versoBorsa && !CiSta(cat))
+        {
+            Avviso("~r~Non ci sta piu': guarda cassetta e portacanne.");
+            return false;
+        }
+
+        // l'equilibrio: qui si blocca, non quando peschi
+        if (versoBorsa)
+        {
+            string perche;
+            if (cat == "canna")
+            {
+                // monti la canna DOPO: allora sono lenza e mulinello gia'
+                // in borsa a dover stare dentro il suo limite
+                int q; string qi, qn;
+                if (Montato("lenza", out q, out qi, out qn)
+                    && !VaConLaCanna("lenza", q, id, out perche))
+                {
+                    Avviso("~r~Non e' equilibrata: ~s~" + perche);
+                    return false;
+                }
+                if (Montato("mulinello", out q, out qi, out qn)
+                    && !VaConLaCanna("mulinello", q, id, out perche))
+                {
+                    Avviso("~r~Non e' equilibrata: ~s~" + perche);
+                    return false;
+                }
+            }
+            else
+            {
+                int idc = CannaInBorsa();
+                if (idc >= 0 && !VaConLaCanna(cat, id, idc, out perche))
+                {
+                    Avviso("~r~Non e' equilibrata: ~s~" + perche);
+                    return false;
+                }
+            }
+        }
+        Aggiungi(da, k, -1);
+        Aggiungi(a, k, 1);
+        string nome, img;
+        int prezzo, liv;
+        if (!Articolo(cat, id, out nome, out img, out prezzo, out liv)) nome = cat;
+        if (versoBorsa) Avviso("~g~Equipaggiato: ~s~" + nome);
+        else Avviso("~y~Rimesso a casa: ~s~" + nome);
+        return true;
+    }
+
+    // ------------------------------------------------------------
+    //  L'EQUILIBRIO DELL'ATTREZZATURA (regola nostra, semplificata)
+    //
+    //  Nel wiki la portata della canna ("1.00 - 2.00") non e' la forza
+    //  della canna: e' LA LENZA CHE QUELLA CANNA VUOLE. Da li' esce
+    //  tutto il resto.
+    //
+    //  Si blocca solo il TROPPO FORTE, mai il troppo debole:
+    //    - lenza oltre il massimo della canna  -> spacchi la canna
+    //    - mulinello con frizione oltre quel massimo -> stessa cosa
+    //  Montare piu' leggero invece si puo': non e' uno sbaglio, e' una
+    //  scelta. Si spezza la lenza e perdi il pesce, e va bene cosi'.
+    //
+    //  Cosi' non serve simulare canne che si rompono: non ci arrivi.
+    // ------------------------------------------------------------
+    float MaxCanna(int idCanna)
+    {
+        int i;
+        for (i = 0; i < canne.Count; i++)
+            if (canne[i].Id == idCanna) return MaxKg(canne[i].LenzaKg);
+        return 0f;
+    }
+
+    float FrizioneMul(int idMul)
+    {
+        int i;
+        for (i = 0; i < mulinelli.Count; i++)
+            if (mulinelli[i].Id == idMul) return mulinelli[i].Frizione;
+        return 0f;
+    }
+
+    // un pezzo sta bene su quella canna?
+    bool VaConLaCanna(string cat, int id, int idCanna, out string perche)
+    {
+        perche = "";
+        float max = MaxCanna(idCanna);
+        if (max <= 0f) return true;          // canna senza dato: non blocco
+
+        if (cat == "lenza")
+        {
+            float kg = KgLenza(id);
+            if (kg > max)
+            {
+                perche = "lenza da " + kg.ToString("0.##", CultureInfo.InvariantCulture)
+                       + " kg su una canna da " + max.ToString("0.##", CultureInfo.InvariantCulture)
+                       + " kg";
+                return false;
+            }
+        }
+        else if (cat == "mulinello")
+        {
+            float fr = FrizioneMul(id);
+            if (fr > max)
+            {
+                perche = "frizione da " + fr.ToString("0.##", CultureInfo.InvariantCulture)
+                       + " kg su una canna da " + max.ToString("0.##", CultureInfo.InvariantCulture)
+                       + " kg";
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // la canna che hai equipaggiato adesso (-1 se non ne hai)
+    int CannaInBorsa()
+    {
+        int id; string img, nome;
+        if (Montato("canna", out id, out img, out nome)) return id;
+        return -1;
+    }
+
+    // tutte le canne che possiedi, a casa e in borsa
+    List<int> LeMieCanne()
+    {
+        List<int> r = new List<int>();
+        foreach (KeyValuePair<string, int> kv in magazzino)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length > 1 && c[0] == "canna" && kv.Value > 0) r.Add(Numero(c[1]));
+        }
+        foreach (KeyValuePair<string, int> kv in borsa)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length > 1 && c[0] == "canna" && kv.Value > 0 && !r.Contains(Numero(c[1])))
+                r.Add(Numero(c[1]));
+        }
+        return r;
+    }
+
+    // Per il negozio: con quale delle tue canne va questo pezzo?
+    // Non blocca niente, e' solo un consiglio: magari la canna giusta
+    // la compri dopo.
+    string ConsiglioAcquisto(string cat, int id)
+    {
+        if (cat != "lenza" && cat != "mulinello") return "";
+        List<int> mie = LeMieCanne();
+        if (mie.Count == 0) return "Non hai ancora canne";
+        int i;
+        for (i = 0; i < mie.Count; i++)
+        {
+            string perche;
+            if (VaConLaCanna(cat, id, mie[i], out perche))
+            {
+                string nome, img; int prezzo, liv;
+                if (Articolo("canna", mie[i], out nome, out img, out prezzo, out liv))
+                    return "Va con la tua " + nome;
+                return "Va con una canna che hai";
+            }
+        }
+        return "Non va con nessuna canna che hai";
+    }
+
+    // ------------------------------------------------------------
+    //  QUANTO CI STA IN BORSA
+    // ------------------------------------------------------------
+    void Capienza(out int maxCanne, out int maxMul, out int maxLenze, out int maxRoba)
+    {
+        // LO ZAINO: ce l'hai addosso da sempre, non si compra e non si perde.
+        // Una canna in mano, il mulinello montato, due bobine e le tasche.
+        // Il portacanne serve solo per portarne piu' di una; la cassetta per
+        // portare piu' roba minuta. Sono miglioramenti, non il punto di
+        // partenza: a livello 1 esci con lo zaino e basta.
+        maxCanne = ZAINO_CANNE; maxMul = ZAINO_MUL;
+        maxLenze = ZAINO_LENZE; maxRoba = ZAINO_ROBA;
+        foreach (KeyValuePair<string, int> kv in borsa)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length < 2) continue;
+            int id = Numero(c[1]);
+            int i;
+            if (c[0] == "portacanne")
+            {
+                for (i = 0; i < portacanne.Count; i++)
+                    if (portacanne[i].Id == id)
+                    {
+                        maxCanne += portacanne[i].Canne * kv.Value;
+                        maxMul += portacanne[i].Mulinelli * kv.Value;
+                        maxLenze += portacanne[i].Lenze * kv.Value;
+                    }
+            }
+            else if (c[0] == "cassetta")
+            {
+                for (i = 0; i < cassette.Count; i++)
+                    if (cassette[i].Id == id)
+                    {
+                        maxRoba += Numero(cassette[i].Attrezzi) * kv.Value;
+                        maxLenze += Numero(cassette[i].Lenze) * kv.Value;
+                        maxMul += Numero(cassette[i].Mulinelli) * kv.Value;
+                    }
+            }
+        }
+    }
+
+    // roba lunga (canne, portacanne, borse, nasse, mulinelli) va nel banner
+    // sopra la lista: in un'icona a sinistra non si vedrebbe niente.
+    // Roba piccola (lenze, ami, esche, galleggianti) sta bene a icone.
+    static bool AIcone(string cat)
+    {
+        return (cat == "lenza" || cat == "terminale" || cat == "galleggiante"
+             || cat == "artificiale" || cat == "esca");
+    }
+
+    const int ZAINO_CANNE = 1;
+    const int ZAINO_MUL = 1;
+    const int ZAINO_LENZE = 2;
+    const int ZAINO_ROBA = 10;
+
+    // quanti pezzi ci sono in una confezione (esche, ami, piombi...)
+    int PerConfezione(string cat, int id)
+    {
+        int i;
+        if (cat == "esca")
+            for (i = 0; i < escheShop.Count; i++)
+                if (escheShop[i].Id == id) return Numero(escheShop[i].Quantita);
+        if (cat == "terminale")
+            for (i = 0; i < terminali.Count; i++)
+                if (terminali[i].Id == id) return Numero(terminali[i].Pezzi);
+        return 0;
+    }
+
+    // l'etichetta di una riga: per la roba che si conta a pezzi scrivo il
+    // TOTALE, non quante confezioni hai. I conti li fa la mod, non tu.
+    string Etichetta(string cat, int id, string nome, int quante)
+    {
+        return nome;
+    }
+
+    // la quantita': quanti pezzi in tutto, non quante confezioni
+    string Quantita(string cat, int id, int quante)
+    {
+        return Quantita(cat, id, quante, true);
+    }
+
+    // QUANTI PEZZI, E DI QUALE MUCCHIO.
+    // Gli ami stanno in scatole da dieci: la riga deve dire i pezzi, non
+    // le scatole. Ma "quelli usati" valgono solo per la roba che ti sei
+    // portato: una scatola in casa e' intera per definizione. Contando
+    // sempre la borsa, gli ami comprati e lasciati a casa risultavano
+    // zero.
+    string Quantita(string cat, int id, int quante, bool dallaBorsa)
+    {
+        int per = PerConfezione(cat, id);
+        if (per > 0)
+        {
+            if (dallaBorsa) return "x" + QuantiPezzi(cat, id);
+            return "x" + (per * quante);
+        }
+        return "x" + quante;
+    }
+
+    // i numeri che contano davvero di un pezzo equipaggiato
+    // una bobina tagliata: stesso filo, ma i metri sono quelli che ha lei
+    string DettaglioBobina(int id, int metri)
+    {
+        int i;
+        for (i = 0; i < lenze.Count; i++)
+            if (lenze[i].Id == id)
+                return lenze[i].Mm + " mm   "
+                     + lenze[i].Kg.ToString("0.##", CultureInfo.InvariantCulture) + " kg   "
+                     + metri + " m";
+        return metri + " m";
+    }
+
+    string Dettaglio(string cat, int id)
+    {
+        int i;
+        if (cat == "canna")
+            for (i = 0; i < canne.Count; i++)
+                if (canne[i].Id == id)
+                    return Corto(canne[i].LenzaKg) + " kg   " + canne[i].Lunghezza + " m";
+        // il mulinello: la frizione, e i fili che ci stanno con i metri.
+        // Il diametro conta: piu' sottile e' il filo, piu' ne entra.
+        if (cat == "mulinello")
+            for (i = 0; i < mulinelli.Count; i++)
+                if (mulinelli[i].Id == id)
+                {
+                    string cp = mulinelli[i].Capacita;
+                    if (cp == null) cp = "";
+                    cp = cp.Replace(";", "  ").Replace("  ", " ").Trim();
+                    return mulinelli[i].Frizione.ToString("0.##", CultureInfo.InvariantCulture)
+                         + " kg   " + cp;
+                }
+        if (cat == "lenza")
+            for (i = 0; i < lenze.Count; i++)
+                if (lenze[i].Id == id)
+                    return lenze[i].Mm + " mm   "
+                         + lenze[i].Kg.ToString("0.##", CultureInfo.InvariantCulture) + " kg   "
+                         + lenze[i].Metri + " m";
+        if (cat == "nassa")
+            for (i = 0; i < nasse.Count; i++)
+                if (nasse[i].Id == id)
+                    return "pesce " + nasse[i].KgPesce.ToString("0.##", CultureInfo.InvariantCulture)
+                         + " kg   rete " + nasse[i].KgTotale.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+        if (cat == "terminale")
+            for (i = 0; i < terminali.Count; i++)
+                if (terminali[i].Id == id)
+                    return (terminali[i].Kg.Length > 0) ? ("tiene " + terminali[i].Kg + " kg") : "";
+        if (cat == "esca")
+            for (i = 0; i < escheShop.Count; i++)
+                if (escheShop[i].Id == id)
+                    return (escheShop[i].Amo.Length > 0) ? ("amo " + escheShop[i].Amo) : "";
+        if (cat == "galleggiante")
+            for (i = 0; i < galleggianti.Count; i++)
+                if (galleggianti[i].Id == id)
+                    return "piombo " + PortataIt(galleggianti[i].Portata);
+        if (cat == "artificiale")
+            for (i = 0; i < artificiali.Count; i++)
+                if (artificiali[i].Id == id)
+                    return artificiali[i].Grammi + " g";
+        if (cat == "portacanne")
+            for (i = 0; i < portacanne.Count; i++)
+                if (portacanne[i].Id == id)
+                    return portacanne[i].Canne + " canne   " + portacanne[i].Mulinelli
+                         + " mulinelli   " + portacanne[i].Lenze + " lenze";
+        if (cat == "cassetta")
+            for (i = 0; i < cassette.Count; i++)
+                if (cassette[i].Id == id)
+                    return cassette[i].Attrezzi + " attrezzi   " + cassette[i].Lenze + " lenze";
+        return "";
+    }
+
+    // il riquadro a destra: quello che hai equipaggiato, pezzo per pezzo,
+    // con la sua immagine e i numeri che servono per decidere
+    // QUELLO CHE STA IN CASA: il magazzino, riga per riga, nello stesso
+    // formato del riquadro dell'equipaggiamento.
+    //   nome|icona|dati|comando|quantita
+    // Il comando e' "equipaggia": da casa la roba va in borsa.
+    List<string> RigheCasa()
+    {
+        List<string> r = new List<string>();
+        r.Add("IN CASA");
+        r.Add("- spazio illimitato|||||190,195,205");
+        int k;
+        for (k = 0; k < CAT_COD.Length; k++)
+        {
+            foreach (KeyValuePair<string, int> kv in magazzino)
+            {
+                string[] c = kv.Key.Split(':');
+                if (c.Length < 2 || c[0] != CAT_COD[k]) continue;
+                int id = Numero(c[1]);
+                string nome, img;
+                int prezzo, liv;
+                if (!Articolo(c[0], id, out nome, out img, out prezzo, out liv)) continue;
+                r.Add(nome + "|" + img + "|" + Dettaglio(c[0], id)
+                      + "|equipaggia " + c[0] + " " + c[1]
+                      + "|" + Quantita(c[0], id, kv.Value));
+            }
+        }
+        if (r.Count == 2) r.Add("Non hai niente in casa");
+        return r;
+    }
+
+    List<string> RigheBorsa()
+    {
+        List<string> r = new List<string>();
+        int mc, mm, ml, mr;
+        Capienza(out mc, out mm, out ml, out mr);
+        r.Add("EQUIPAGGIAMENTO");
+        r.Add("- Canne " + InBorsa("canna") + "/" + mc
+              + "   Mulinelli " + InBorsa("mulinello") + "/" + mm
+              + "   Lenze " + InBorsa("lenza") + "/" + ml
+              + "   Cassetta " + RobaMinuta() + "/" + mr
+              + "|||||190,195,205");
+        int k;
+        for (k = 0; k < CAT_COD.Length; k++)
+        {
+            foreach (KeyValuePair<string, int> kv in borsa)
+            {
+                string[] c = kv.Key.Split(':');
+                if (c.Length < 2 || c[0] != CAT_COD[k]) continue;
+                int id = Numero(c[1]);
+                string nome, img;
+                int prezzo, liv;
+                if (!Articolo(c[0], id, out nome, out img, out prezzo, out liv)) continue;
+                // il quarto campo e' il comando: premendo A sulla riga a
+                // destra il pezzo torna a casa
+                r.Add(nome + "|" + img + "|" + Dettaglio(c[0], id)
+                      + "|lascia " + c[0] + " " + c[1]
+                      + "|" + Quantita(c[0], id, kv.Value));
+            }
+        }
+        if (r.Count == 2) r.Add("Non hai equipaggiato niente");
+        return r;
+    }
+
+    // ce l'hai, in cassetta o gia' montato sulla canna
+    bool HoDavvero(string cat)
+    {
+        if (InBorsa(cat) > 0) return true;
+        if (Armato(cat) >= 0) return true;
+        return false;
+    }
+
+    // la lenza c'e' se ne hai una bobina in cassetta, una tagliata, o
+    // del filo gia' sul mulinello
+    bool HoLaLenza()
+    {
+        if (InBorsa("lenza") > 0) return true;
+        if (bobine.Count > 0) return true;
+        if (metriInBobina > 0) return true;
+        return false;
+    }
+
+    int InBorsa(string cat)
+    {
+        int n = 0;
+        foreach (KeyValuePair<string, int> kv in borsa)
+            if (kv.Key.StartsWith(cat + ":")) n += kv.Value;
+        return n;
+    }
+
+    // quanti TIPI diversi di quella roba hai, non quanti pezzi
+    int TipiInBorsa(string cat)
+    {
+        int n = 0;
+        foreach (KeyValuePair<string, int> kv in borsa)
+            if (kv.Key.StartsWith(cat + ":") && kv.Value > 0) n++;
+        return n;
+    }
+
+    // LA CASSETTA SI CONTA A TIPI, NON A PEZZI.
+    // Un pacco di ami del #10 e' uno scomparto: che tu ne abbia un pacco
+    // o tre, sempre quello scomparto e'. Due misure diverse invece sono
+    // due scomparti. Contando i pezzi ci vorrebbe un camion per portarsi
+    // cento vermi.
+    int RobaMinuta()
+    {
+        return TipiInBorsa("terminale") + TipiInBorsa("galleggiante")
+             + TipiInBorsa("artificiale") + TipiInBorsa("esca") + TipiInBorsa("nassa");
+    }
+
+    bool CiSta(string cat)
+    {
+        // i contenitori si portano sempre: sono loro a fare il posto
+        if (cat == "cassetta" || cat == "portacanne") return true;
+        int mc, mm, ml, mr;
+        Capienza(out mc, out mm, out ml, out mr);
+        if (cat == "canna") return InBorsa("canna") < mc;
+        if (cat == "mulinello") return InBorsa("mulinello") < mm;
+        if (cat == "lenza") return InBorsa("lenza") < ml;
+        return RobaMinuta() < mr;
+    }
+
+    // Cosa ti tiene la roba. Lo zaino ce l'hai da sempre; cassetta e
+    // portacanne si aggiungono quando li compri e non si vedono: fanno
+    // solo posto. Il portacanne da due ti fa portare una canna in piu',
+    // quello da quattro tre in piu', e senza ne porti una sola.
+    string NomeContenitore()
+    {
+        string s = "ZAINO";
+        if (InBorsa("cassetta") > 0) s = s + " + CASSETTA";
+        if (InBorsa("portacanne") > 0) s = s + " + PORTACANNE";
+        return s;
+    }
+
+    string Contatori()
+    {
+        int mc, mm, ml, mr;
+        Capienza(out mc, out mm, out ml, out mr);
+        // la roba minuta sta nello zaino finche' non compri la cassetta:
+        // scrivere sempre "Cassetta" era falso
+        string dove = (InBorsa("cassetta") > 0) ? "Cassetta" : "Zaino";
+        return "Canne " + InBorsa("canna") + "/" + mc
+             + "  Mulinelli " + InBorsa("mulinello") + "/" + mm
+             + "  Lenze " + InBorsa("lenza") + "/" + ml
+             + "  " + dove + " " + RobaMinuta() + "/" + mr;
+    }
+
+    // ------------------------------------------------------------
+    //  LA LICENZA E LA GIORNATA
+    // ------------------------------------------------------------
+    bool CompraLicenza(string zona, int giorni)
+    {
+        if (inPesca) return false;
+        int prezzo = PrezzoLicenza(zona, giorni);
+        if (prezzo <= 0) return false;
+        // IL LIVELLO DELL'ACQUA.
+        // Come su Fishing Planet: in certi posti non ti fanno entrare
+        // finche' non sei del livello giusto. Non e' che il pesce non c'e',
+        // e' che quel lago non e' ancora aperto per te.
+        int luLic2 = LuogoQui();
+        if (luLic2 >= 0 && livelloPescatore < LivelloArea(luLic2))
+        {
+            Avviso("~r~" + arNome[luLic2] + ": ci vuole il livello "
+                   + LivelloArea(luLic2) + ".");
+            return false;
+        }
+        // IL MINIMO PER PESCARE: canna, mulinello, lenza e la nassa.
+        // Attenzione a dove si guarda: un pezzo ARMATO non sta piu' in
+        // cassetta, sta sulla canna - e la lenza nemmeno li', sta sul
+        // mulinello. Contando solo la borsa, chi si era gia' preparato
+        // si sentiva dire di prepararsi.
+        if (!HoDavvero("canna") || !HoDavvero("mulinello")
+         || !HoLaLenza() || !HoDavvero("nassa"))
+        {
+            Messaggio("Prima prepara l'attrezzatura: canna, mulinello, lenza e nassa.");
+            return false;
+        }
+        if (Soldi() < prezzo)
+        {
+            Avviso("~r~La licenza costa $" + prezzo + ", hai " + Soldi() + ".");
+            return false;
+        }
+        Paga(prezzo);
+        licZona = zona;
+        licGiorni = giorni;
+        inPesca = true;
+        Alba();
+        Avviso("~g~Licenza pagata. Buona pesca.");
+        return true;
+    }
+
+    int PrezzoLicenza(string zona, int giorni)
+    {
+        string[] rows = LeggiRighe("licenze.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 5) continue;
+            if (c[0].Trim() != zona) continue;
+            if (c[3].Trim() != (giorni + "g")) continue;
+            return Numero(c[4]);
+        }
+        return 0;
+    }
+
+    // Porta l'orologio alle cinque e rallenta il tempo. Si usa lo stesso
+    // sistema del trainer (voce "velocita' del tempo"): si ferma l'orologio
+    // del gioco e poi gli si aggiunge un minuto ogni tot millisecondi.
+    // La nativa che cambia direttamente la velocita' su Enhanced non c'e'.
+    const int MS_PER_MINUTO = 5000;   // 5 secondi veri = un minuto di gioco
+    bool orologioPreso = false;
+    int prossimoMinuto = 0;
+
+    void Alba()
+    {
+        try
+        {
+            Function.Call(Hash.SET_CLOCK_TIME, 5, 0, 0);
+            Function.Call(Hash.PAUSE_CLOCK, true);
+            orologioPreso = true;
+            prossimoMinuto = Game.GameTime + MS_PER_MINUTO;
+            oraPrec = 5;
+            oreFatte = 0;
+            minutiFatti = 0;
+            // l'ora ce la teniamo NOI: vedi MuoviOrologio
+            oraMia = 5;
+            minutoMio = 0;
+        }
+        catch { }
+    }
+
+    void TempoNormale()
+    {
+        if (!orologioPreso) return;
+        try { Function.Call(Hash.PAUSE_CLOCK, false); }
+        catch { }
+        orologioPreso = false;
+    }
+
+    // L'ORA LA TENIAMO NOI.
+    // PAUSE_CLOCK da solo non basta: l'orologio del gioco ogni tanto
+    // riparte - lo rimette in moto il trainer, o una missione, o il
+    // gioco stesso - e allora i minuti che aggiungiamo noi si SOMMANO
+    // ai suoi: la giornata che doveva durare due ore vola via in mezz'ora.
+    // Percio' l'ora giusta la teniamo in due numeri nostri e la
+    // riscriviamo a ogni giro con SET_CLOCK_TIME: qualunque cosa la
+    // tocchi, un attimo dopo torna quella che diciamo noi.
+    int oraMia = 5, minutoMio = 0;
+
+    void MuoviOrologio()
+    {
+        if (!orologioPreso) return;
+        if (!inPesca) { TempoNormale(); return; }
+        // dopo una pausa lunga non si recupera il tempo perso
+        if (Game.GameTime - prossimoMinuto > 10000)
+        {
+            prossimoMinuto = Game.GameTime + MS_PER_MINUTO;
+            return;
+        }
+        while (Game.GameTime >= prossimoMinuto)
+        {
+            minutoMio++;
+            if (minutoMio >= 60) { minutoMio = 0; oraMia++; }
+            if (oraMia >= 24) oraMia = 0;
+            prossimoMinuto += MS_PER_MINUTO;
+            minutiFatti++;
+        }
+        try
+        {
+            Function.Call(Hash.SET_CLOCK_TIME, oraMia, minutoMio, 0);
+            Function.Call(Hash.PAUSE_CLOCK, true);
+        }
+        catch { }
+    }
+
+    bool FinePesca(bool avvisa)
+    {
+        if (!inPesca) return false;
+        // se avevi un torneo in corso finisce qui, e senza premio: sei
+        // andato a casa prima del tempo
+        if (torneoOra >= 0) ChiudiTorneo(true);
+        inPesca = false;
+        licZona = "";
+        licGiorni = 0;
+        TempoNormale();
+        if (avvisa) Avviso("~y~Giornata finita. Si torna a casa.");
+        return true;
+    }
+
+    // la giornata di pesca finisce alle 21
+    // QUANTO MANCA ALLA FINE DELLA LICENZA, in tempo VERO.
+    // Un minuto di gioco vale 5 secondi veri, una giornata sono 24 ore di
+    // gioco: quindi due ore scarse di orologio da polso. Dire "resta un
+    // giorno" non aiuta nessuno, sapere che mancano 47 minuti si'.
+    string TempoCheResta()
+    {
+        long minutiGioco = (long)(MINUTI_GIORNATA - minutiFatti)
+                         + (long)(licGiorni - 1) * MINUTI_GIORNATA;
+        if (minutiGioco < 0L) minutiGioco = 0L;
+        long secondiVeri = minutiGioco * MS_PER_MINUTO / 1000L;
+        long h = secondiVeri / 3600L;
+        long m = (secondiVeri % 3600L) / 60L;
+        if (h > 0) return h + "h " + m + "m";
+        return m + " min";
+    }
+
+    void ControllaOrologio()
+    {
+        if (!inPesca) return;
+        int h;
+        try { h = Function.Call<int>(Hash.GET_CLOCK_HOURS); }
+        catch { return; }
+        if (h == oraPrec) return;
+        oraPrec = h;
+
+        // la giornata dura 24 ore di gioco: dalle cinque del mattino alle
+        // cinque del giorno dopo, notte compresa. Di notte si pesca.
+        oreFatte++;
+        if (minutiFatti < MINUTI_GIORNATA) return;
+        oreFatte = 0;
+        minutiFatti = 0;
+
+        licGiorni--;
+        if (licGiorni > 0)
+        {
+            Alba();
+            nassaOggi.Clear();
+            kgNassa = 0f;
+            Avviso("~y~Un'altra giornata: ne restano " + licGiorni + ".");
+        }
+        else FinePesca(true);
+        SalvaStato();
+        RiscriviTutto();
+    }
+
+    // il bar. Fame e sete le tiene il trainer, non noi: gli lasciamo
+    // detto cosa hai preso in cibo.txt e ci pensa lui.
+    static readonly string[] CIBO_NOME = new string[] {
+        "", "Panino", "Bibita", "Birra", "Caffe'", "Pasto completo" };
+    static readonly int[] CIBO_PREZZO = new int[] { 0, 12, 3, 5, 3, 15 };
+    static readonly int[] CIBO_FAME = new int[] { 0, 60, 0, 10, 0, 70 };
+    static readonly int[] CIBO_SETE = new int[] { 0, 20, 55, 45, 30, 60 };
+
+    bool Mangia(int k)
+    {
+        if (k < 1 || k >= CIBO_NOME.Length) return false;
+        int costo = CIBO_PREZZO[k];
+        if (Soldi() < costo)
+        {
+            Avviso("~r~Ti servono $" + costo + ".");
+            return false;
+        }
+        Paga(costo);
+        try
+        {
+            File.AppendAllText(Path.Combine(MY_DIR, "cibo.txt"),
+                CIBO_FAME[k] + "|" + CIBO_SETE[k] + "\r\n");
+        }
+        catch { }
+        Avviso("~g~" + CIBO_NOME[k] + " ~s~- $" + costo);
+        return true;
+    }
+
+    // ------------------------------------------------------------
+    //  SEGNAPOSTI: giri la mappa, ti fermi su un'acqua e la marchi.
+    //  Ogni riga finisce in zone_marcate.txt:  tipo|zonaGTA|x|y|z
+    //  Da li' si ricava a quale delle nostre dieci acque va ogni zona.
+    // ------------------------------------------------------------
+    bool Marca(string tipo)
+    {
+        try
+        {
+            Ped p = Game.Player.Character;
+            if (p == null || !p.Exists()) return false;
+            GTA.Math.Vector3 pos = p.Position;
+            string dove = "dove sei";
+
+            // se hai messo il segnaposto sulla mappa grande, marchiamo quello:
+            // cosi' si segnano i laghi senza andarci
+            int blip = Function.Call<int>(Hash.GET_FIRST_BLIP_INFO_ID, 4);
+            if (Function.Call<bool>(Hash.DOES_BLIP_EXIST, blip))
+            {
+                GTA.Math.Vector3 w = Function.Call<GTA.Math.Vector3>(Hash.GET_BLIP_INFO_ID_COORD, blip);
+                if (w.X != 0f || w.Y != 0f)
+                {
+                    pos = w;
+                    dove = "segnaposto";
+                }
+            }
+
+            string z = Function.Call<string>(Hash.GET_NAME_OF_ZONE, pos.X, pos.Y, pos.Z);
+            if (z == null) z = "?";
+            z = z.ToUpper().Trim();
+            string riga = tipo + "|" + z + "|"
+                + pos.X.ToString("0.0", CultureInfo.InvariantCulture) + "|"
+                + pos.Y.ToString("0.0", CultureInfo.InvariantCulture) + "|"
+                + pos.Z.ToString("0.0", CultureInfo.InvariantCulture)
+                + "|" + dove;
+            File.AppendAllText(Path.Combine(MY_DIR, "zone_marcate.txt"), riga + "\r\n");
+            CaricaPunti();
+            Avviso("~g~Segnato ~s~" + z + " come " + tipo + " (" + dove + ")");
+        }
+        catch { return false; }
+        return true;
+    }
+
+    // il mare e l'oceano non si marcano: la costa si capisce da sola
+    // cancella l'ultima riga segnata, per quando si preme il tasto sbagliato
+    bool Smarca()
+    {
+        try
+        {
+            string f = Path.Combine(MY_DIR, "zone_marcate.txt");
+            if (!File.Exists(f)) return false;
+            List<string> r = new List<string>();
+            string[] tutte = File.ReadAllLines(f);
+            int i;
+            for (i = 0; i < tutte.Length; i++)
+                if (tutte[i].Trim().Length > 0) r.Add(tutte[i]);
+            if (r.Count == 0) return false;
+            string ultima = r[r.Count - 1];
+            r.RemoveAt(r.Count - 1);
+            File.WriteAllLines(f, r.ToArray());
+            CaricaPunti();
+            Avviso("~y~Cancellato: ~s~" + ultima.Replace("|", "  "));
+        }
+        catch { return false; }
+        return true;
+    }
+
+    static readonly string[] MARCA_COD = new string[] {
+        "lago", "fiume", "torrente", "palude", "canale" };
+    static readonly string[] MARCA_NOME = new string[] {
+        "Lago", "Fiume", "Torrente", "Palude", "Canale di citta'" };
+
+    void ScriviMarca()
+    {
+        List<string> v = new List<string>();
+        v.Add("nota|Metti il segnaposto sulla mappa, poi premi A");
+        int i;
+        for (i = 0; i < MARCA_COD.Length; i++)
+            v.Add("Segna qui: " + MARCA_NOME[i] + "|marca " + MARCA_COD[i] + "|"
+                  + Banner() + "|Se c'e' il segnaposto marco quello, se no dove sei. Zona qui: " + zonaVista);
+        v.Add("Cancella l'ultimo segnato|smarca|" + Banner()
+              + "|Se hai premuto il tasto sbagliato.");
+        ScriviVoci("marca_voci.txt", v);
+    }
+
+    void Avviso(string t)
+    {
+        try { Notification.PostTicker(t, false); }
+        catch { }
+    }
+
+    // ------------------------------------------------------------
+    //  LA FASCIA IN BASSO
+    // ------------------------------------------------------------
+    // I messaggi della pescata non stanno piu' nel ticker in alto a
+    // sinistra: stanno in basso al centro, su una fascia scura, scritti
+    // in bianco, come le scritte di servizio del gioco. Niente colori e
+    // niente suoni: si legge e basta.
+    // I colori del ticker (~y~ e compagnia) vengono tolti dal testo,
+    // se no si leggono a lettere.
+    string msgTxt = "";
+    int msgFino = 0;
+
+    void Messaggio(string t)
+    {
+        if (t == null) t = "";
+        t = t.Replace("~y~", "").Replace("~r~", "").Replace("~g~", "")
+             .Replace("~b~", "").Replace("~s~", "").Replace("~w~", "")
+             .Replace("~p~", "").Replace("~o~", "");
+        msgTxt = t.Trim();
+        msgFino = Game.GameTime + (int)LeggiF("messaggio_ms", 3000f);
+    }
+
+    void DisegnaMessaggio()
+    {
+        if (msgTxt.Length == 0) return;
+        if (Game.GameTime > msgFino) { msgTxt = ""; return; }
+        float y = LeggiF("messaggio_y", 636f);
+        float sc = LeggiF("messaggio_scala", 0.36f);
+        float alt = LeggiF("messaggio_alt", 30f);
+        // la fascia si allarga con la scritta, ma resta centrata
+        float w = 28f + msgTxt.Length * sc * 19.5f;
+        if (w < 200f) w = 200f;
+        if (w > 940f) w = 940f;
+        DisegnaRett(640f - w * 0.5f, y - 5f, w, alt,
+                    (int)LeggiF("messaggio_r", 0f),
+                    (int)LeggiF("messaggio_g", 0f),
+                    (int)LeggiF("messaggio_b", 0f),
+                    (int)LeggiF("messaggio_alfa", 150f));
+        DisegnaTesto(msgTxt, 640f, y, sc, 255, 255, 255);
+    }
+
+    // ------------------------------------------------------------
+    //  I MENU CHE CAMBIANO
+    // ------------------------------------------------------------
+    // IL POSTO SI CHIAMA COL SUO NOME.
+    // "Golf" e' il gruppo della licenza, non il posto: il posto e'
+    // "Laghetti del golf". Un gruppo puo' tenere undici tratti - Alamo
+    // Sea li tiene - e dire "Alamo Sea" quando sei sulla Riva ovest non
+    // dice dove sei. Qui si prende sempre il nome del tratto.
+    int AreaOra()
+    {
+        int q = LuogoQui();
+        if (inPesca)
+        {
+            if (q >= 0 && CodiceLuogo(q) == licZona) return q;
+            return IndiceLuogo(licZona);
+        }
+        return q;
+    }
+
+    string NomeArea(int a)
+    {
+        if (a >= 0 && a < arNome.Count) return arNome[a];
+        return "";
+    }
+
+    string NomeChiosco(string zona, out string bar)
+    {
+        bar = "Bar";
+        string[] rows = LeggiRighe("negozi_zona.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 2) continue;
+            if (c[0].Trim() != zona) continue;
+            if (c.Length > 2 && c[2].Trim().Length > 0) bar = c[2].Trim();
+            return c[1].Trim();
+        }
+        string g = NomeGruppo(zona);
+        return (g.Length > 0) ? g : "Chiosco";
+    }
+
+    // quante voci diverse ci sono dentro (non la somma delle quantita')
+    static int Quanti0(Dictionary<string, int> d)
+    {
+        int n = 0;
+        foreach (KeyValuePair<string, int> kv in d)
+            if (kv.Value > 0) n++;
+        return n;
+    }
+
+    // la voce "Inizia a pescare": a casa le licenze, in pesca la giornata
+    // il banner del posto dove sei: quello del lago, non il logo
+    // dell'associazione. Se il posto non ce l'ha, torna vuoto.
+    string BannerArea(int a)
+    {
+        if (a < 0 || a >= arNome.Count) return "";
+        return ImgOk("img\\zone\\" + SlugArea(arNome[a]) + ".png");
+    }
+
+    void ScriviPesca()
+    {
+        List<string> v = new List<string>();
+        // IN CIMA CI VA IL POSTO DOVE SEI.
+        // Il logo dell'associazione va bene a casa; qui sei su un'acqua
+        // precisa, e vedere quella e' meglio di vedere sempre lo stesso
+        // rettangolo.
+        int luB = inPesca ? IndiceLuogo(licZona) : LuogoQui();
+        if (inPesca)
+        {
+            int lq = LuogoQui();
+            if (lq >= 0 && CodiceLuogo(lq) == licZona) luB = lq;
+        }
+        string insP = BannerArea(luB);
+        // MENTRE C'E' UN TORNEO comanda il torneo: e' quello che stai
+        // facendo, il posto passa in secondo piano.
+        if (torneoOra >= 0 && torneoOra < tornei.Count
+            && tornei[torneoOra].Banner.Length > 0)
+        {
+            string insT = ImgOk("img\\tornei\\" + tornei[torneoOra].Banner);
+            if (insT.Length > 0) insP = insT;
+        }
+        // NON un'insegna: il banner va messo come immagine delle righe.
+        // Il riquadro grande in cima e' quello della riga scelta, e se
+        // le righe si portano dietro il logo dell'associazione e' il
+        // logo che ti ritrovi in cima, col banner del posto sotto - due
+        // banner uno sull'altro. Cosi' invece in cima c'e' il posto.
+        if (insP.Length == 0) insP = Banner();
+        if (!inPesca)
+        {
+            int lu = LuogoQui();
+            bool acqua = VicinoAllAcqua();
+            if (lu < 0 || !acqua)
+            {
+                v.Add("nota|Zona " + zonaVista + "   acqua: " + (acqua ? "si" : "no"));
+                v.Add("Qui non si pesca|niente|" + insP
+                      + "|" + (lu < 0 ? ("La zona " + zonaVista + " non e' una delle nostre dieci acque.")
+                                      : ("Sei nella zona giusta ma non in riva: avvicinati all'acqua.")));
+            }
+            else
+            {
+                string zona = CodiceLuogo(lu);
+                v.Add("nota|" + NomeLuogo(lu));
+                if (livelloPescatore < LivelloArea(lu))
+                {
+                    v.Add(L("Level " + LivelloArea(lu) + " needed here",
+                            "Qui ci vuole il livello " + LivelloArea(lu))
+                          + "|niente|" + insP + "|"
+                          + L("You are level " + livelloPescatore
+                              + ". Fish somewhere easier and come back.",
+                              "Sei al livello " + livelloPescatore
+                              + ". Fatti le ossa altrove e torna.")
+                          + "|235,90,80");
+                    VociTorneiDelPosto(v, lu);
+                    ScriviVoci("pesca_voci.txt", v);
+                    return;
+                }
+                int[] tagli = new int[] { 1, 3 };
+                int t;
+                for (t = 0; t < tagli.Length; t++)
+                {
+                    int pr = PrezzoLicenza(zona, tagli[t]);
+                    if (pr <= 0) continue;
+                    string et = L("Pay and fish free - ", "Paga e pesca libera - ")
+                              + tagli[t]
+                              + (lang == 1
+                                 ? (tagli[t] == 1 ? " giorno" : " giorni")
+                                 : (tagli[t] == 1 ? " day" : " days"));
+                    // quanti soldi hai sta gia' scritto in cima al trainer
+                    v.Add(et + "|licenza " + zona + " " + tagli[t] + "|" + insP
+                          + "|$" + pr + "   "
+                          + L("Starts at 5 and you fish 24 hours, night included.",
+                              "Si parte alle 5 e si pesca 24 ore, notte compresa."));
+                }
+                // I TORNEI DI QUESTO POSTO.
+                // Stessa pagina: paghi la giornata e la quota in un colpo
+                // solo, e il banner del torneo sale in cima.
+                VociTorneiDelPosto(v, lu);
+            }
+        }
+        else
+        {
+            string nome = NomeArea(AreaOra());
+            v.Add("nota|" + nome + " - restano " + TempoCheResta()
+                  + "   -   Livello " + livelloPescatore + "   XP " + xpTot);
+            // INIZIA A PESCARE STA QUI, SOPRA EQUIPAGGIAMENTO.
+            // E' la prima cosa che vuoi quando hai gia' pagato la giornata:
+            // non deve stare dentro un sottomenu.
+            if (fase == FASE_FERMO)
+            {
+                int luP = LuogoQui();
+                if (luP >= 0 && CodiceLuogo(luP) != licZona)
+                {
+                    string bzP;
+                    v.Add(L("You are not where your licence is",
+                            "Non sei nel posto della licenza")
+                          + "|niente|" + insP + "|"
+                          + L("You paid for ", "L'hai pagata per ")
+                          + NomeChiosco(licZona, out bzP) + "|235,90,80");
+                }
+                else if (!VicinoAllAcqua())
+                    v.Add(L("You are not on the bank", "Non sei in riva")
+                          + "|niente|" + insP + "|"
+                          + L("Get closer to the water.", "Avvicinati all'acqua.")
+                          + "|235,90,80");
+                else
+                    v.Add(L("Start fishing", "Inizia a pescare")
+                          + "|!pesca_via|" + insP + "|"
+                          + L("take the rod in hand", "prendi la canna in mano")
+                          + "|130,225,180");
+            }
+            // E' LA STESSA PAGINA DI CASA: cambia solo che la parte di
+            // casa non si vede, perche' da qui non ci arrivi.
+            v.Add("sottofile|" + L("Tackle", "Equipaggiamento")
+                  + "|casa_voci.txt||" + insP
+                  + "|" + Contatori());
+            // I PESCI DI DOVE SEI e il diario: qui dentro, insieme
+            // all'equipaggiamento. Mentre peschi sono le due cose che
+            // guardi davvero.
+            int luD = LuogoQui();
+            if (luD < 0) luD = IndiceLuogo(licZona);
+            if (luD >= 0)
+            {
+                v.Add("sottofile|" + L("Fish of ", "Studia i pesci di ")
+                      + NomeArea(luD)
+                      + "|" + FileLuogo(luD) + "||" + insP + "|"
+                      + L("who lives here and what takes them",
+                          "chi c'e' sotto e con cosa lo prendi"));
+            }
+            v.Add("sottofile|" + L("Fishing log", "Diario di pesca")
+                  + "|diario_voci.txt||" + insP + "|"
+                  + Quanti0(quaderno) + L(" species caught so far",
+                                          " specie prese finora"));
+            VociTorneiDelPosto(v, LuogoQui());
+            // niente chiosco qui: il chiosco E' il negozio, e sta fuori
+            // nel menu grande. Niente "Studia i pesci" doppio: e' la
+            // stessa pagina che c'e' gia' fuori.
+            // SMETTERE STA IN FONDO A QUESTA PAGINA.
+            // Fuori, nel menu grande, restava scritto anche dopo che
+            // avevi smesso. Qui dentro invece la giornata finisce e la
+            // pagina non c'e' piu': rossa, e in fondo a tutto, cosi'
+            // non la premi per sbaglio.
+            v.Add(L("Stop fishing and go home", "Smetti di pescare e torna a casa")
+                  + "|smetti|" + insP + "|"
+                  + L("Ends the day: the licence you have left is lost.",
+                      "Chiudi la giornata: la licenza che avanza la perdi.")
+                  + "|235,90,80");
+        }
+        ScriviVoci("pesca_voci.txt", v);
+    }
+
+    // LE RIGHE DEI TORNEI DI QUESTO POSTO.
+    // Non si paga da qui: ogni riga apre la scheda del torneo, la stessa
+    // che c'e' nel menu dei tornei, con banner, regole, traguardi e record.
+    // Si paga li' dentro, dopo aver letto cosa stai facendo.
+    void VociTorneiDelPosto(List<string> v, int lu)
+    {
+        if (lu < 0) return;
+        int i;
+        for (i = 0; i < tornei.Count; i++)
+        {
+            Torneo t = tornei[i];
+            if (LuogoDalNome(t.Zona) != lu) continue;
+
+            string img = Banner();
+            if (t.Banner.Length > 0)
+            {
+                string pb = ImgOk("img\\tornei\\" + t.Banner);
+                if (pb.Length > 0) img = pb;
+            }
+
+            string d;
+            if (torneoOra == i)
+                d = L("Running", "In corso") + "   " + Kg(torneoKg) + " kg   "
+                    + TempoTorneo();
+            else
+                d = t.Minuti + " min   $" + Soldo(t.PrOro)
+                    + "   " + L("Lv.", "Liv.") + t.LivMin;
+
+            // qui davanti al nome ci va "Torneo": in questa pagina ci sono
+            // anche le righe della pesca libera, e se no non si capisce.
+            // Nel menu dei tornei no: li' si sa gia' cosa sono.
+            v.Add("sottofile|" + L("Competition ", "Torneo ") + t.Nome
+                  + "|p_gara_" + i + ".txt||" + img + "|" + d);
+            ScriviUnTorneo(i, "p_gara_");
+        }
+    }
+
+    // ============================================================
+    //  INVENTARIO DI CASA - si sta rifacendo da zero
+    // ============================================================
+    // Pagina nuova, vuota: si riempie un pezzo per volta.
+    // Il vecchio ScriviInventario() sta ancora qui sotto, ma non lo
+    // chiama piu' nessuno.
+    // dove finisce davvero un'immagine dentro la sua casella
+    string RettoSprite(string img, float x, float y, float w, float h)
+    {
+        float dw = w, dh = h;
+        int iw, ih;
+        if (MisuraPng(Path.Combine(MY_DIR, img), out iw, out ih)
+            && iw > 0 && ih > 0)
+        {
+            float sx = w / (float)iw, sy = h / (float)ih;
+            float sc = (sx < sy) ? sx : sy;
+            dw = iw * sc; dh = ih * sc;
+        }
+        return (int)(x + (w - dw) * 0.5f) + "|" + (int)(y + (h - dh) * 0.5f)
+             + "|" + (int)dw + "|" + (int)dh;
+    }
+
+    // le caselle dell'armatura sullo strumento, dall'alto in basso.
+    //   rig|x|y|larghezza|altezza|comando
+    void RigheArmatura(List<string> v)
+    {
+        int id; string img, nome;
+        List<string> col = new List<string>();
+        float mx = 1136f, my = 590f;
+        int piano = 0;
+
+        // LA CANNA: il rettangolo e' quello vero del disegno, non quello
+        // della casella. L'immagine si stringe dentro 270x108 tenendo le
+        // proporzioni, e girata di 90 gradi diventa alta quanto era larga.
+        //   rig|x|y|larghezza|altezza|comando|margine
+        if (Montato("canna", out id, out img, out nome))
+        {
+            float dw = 270f, dh = 108f;
+            int iw, ih;
+            if (MisuraPng(Path.Combine(MY_DIR, img), out iw, out ih)
+                && iw > 0 && ih > 0)
+            {
+                float sx = 270f / (float)iw, sy = 108f / (float)ih;
+                float sc = (sx < sy) ? sx : sy;
+                dw = iw * sc; dh = ih * sc;
+            }
+            float cx = 1180f + 108f * 0.5f;
+            float cy = 365f + 270f * 0.5f;
+            // girata: quello che era largo diventa alto
+            v.Add("rig|" + (int)(cx - dh * 0.5f) + "|" + (int)(cy - dw * 0.5f)
+                  + "|" + (int)dh + "|" + (int)dw
+                  + "|arma canna " + id
+                  + "|" + (int)LeggiF("sel_canna", -9f)
+                  + "|" + (int)LeggiF("sel_canna_alt", 0f));
+        }
+
+        // QUATTRO QUADRATI UGUALI.
+        // Lato 50, quanto l'altezza della casella, centrati sulla
+        // colonna: la colonna sta fra 1128 e 1256, quindi il centro e'
+        // 1192. Il lato si cambia da config.ini con "sel_lato".
+        //   rig|x|y|lato|lato|comando|margine|margine in alto
+        float lato = LeggiF("sel_lato", 50f);
+        float qx = 1192f - lato * 0.5f;
+        if (Montato("mulinello", out id, out img, out nome))
+        {
+            col.Add("rig|" + (int)qx + "|" + (int)(my - piano * 54f - 3f)
+                    + "|" + (int)lato + "|" + (int)lato
+                    + "|arma mulinello " + id + "|0|0");
+            piano++;
+        }
+        if (Montato("lenza", out id, out img, out nome))
+        {
+            col.Add("rig|" + (int)qx + "|" + (int)(my - piano * 54f - 3f)
+                    + "|" + (int)lato + "|" + (int)lato
+                    + "|disarma_lenza|0|0");
+            piano++;
+        }
+        if (MontatoTerm("leader", out id, out img, out nome))
+        {
+            col.Add("rig|" + (int)qx + "|" + (int)(my - piano * 54f - 3f)
+                    + "|" + (int)lato + "|" + (int)lato
+                    + "|arma terminale " + id + "|0|0");
+            piano++;
+        }
+        if (MontatoTerm("piombo", out id, out img, out nome))
+        {
+            col.Add("rig|" + (int)qx + "|" + (int)(my - piano * 54f - 3f)
+                    + "|" + (int)lato + "|" + (int)lato
+                    + "|arma terminale " + id + "|0|0");
+            piano++;
+        }
+        if (Montato("galleggiante", out id, out img, out nome))
+        {
+            col.Add("rig|" + (int)qx + "|" + (int)(my - piano * 54f - 3f)
+                    + "|" + (int)lato + "|" + (int)lato
+                    + "|arma galleggiante " + id + "|0|0");
+            piano++;
+        }
+        if (Montato("terminale", out id, out img, out nome))
+        {
+            col.Add("rig|" + (int)qx + "|" + (int)(my - piano * 54f - 3f)
+                    + "|" + (int)lato + "|" + (int)lato
+                    + "|arma terminale " + id + "|0|0");
+            piano++;
+        }
+
+        // la colonna si costruisce dal basso in su: per il cursore serve
+        // l'ordine di come si vede, dall'alto in basso
+        int q;
+        for (q = col.Count - 1; q >= 0; q--) v.Add(col[q]);
+    }
+
+    void ScriviCasa()
+    {
+        List<string> v = new List<string>();
+        v.Add("titolo_finestra|CATEGORIE");
+        v.Add("centra");
+        // TRE FINESTRE.
+        // In mezzo le categorie - le stesse del negozio, stesso ordine e
+        // stessi nomi. A sinistra la roba di casa di QUELLA categoria: le
+        // righe hanno la chiave del nome della categoria, e il trainer fa
+        // vedere solo quelle della voce su cui sei. A destra quello che
+        // ti porti dietro.
+        // MENTRE SEI FUORI A PESCARE la parte di casa non c'e': la borsa
+        // e' quella che ti sei portato, da casa non prendi piu' niente.
+        // Il riquadro di sinistra sparisce e basta.
+        if (inPesca) v.Add("nota|Sei fuori a pescare: da casa non prendi niente");
+        else v.Add("pannello_sx|IN CASA");
+        if (!inPesca)
+        {
+            // i colori sono quelli dei tasti del pad: A verde, X blu,
+            // Y giallo. Il rosso resta a "disarma", che e' l'unico che toglie.
+            v.Add("pannello_sx|- (A) equipaggia~   (X) vendi~   (Y) getta"
+                  + "|||||130,225,180;110,175,255;245,205,80");
+            v.Add("pannello_sx_pie|- spazio illimitato|||||190,195,205");
+        }
+        int qk;
+        for (qk = 0; qk < CASA_ORD.Length && !inPesca; qk++)
+        {
+            int ic = CASA_ORD[qk];
+            string ch = CAT_NOME[ic];
+            int quanti = 0;
+            foreach (KeyValuePair<string, int> kv in magazzino)
+            {
+                string[] cc = kv.Key.Split(':');
+                if (cc.Length < 2 || cc[0] != CAT_COD[ic]) continue;
+                int id = Numero(cc[1]);
+                string nome, img;
+                int prezzo, liv;
+                if (!Articolo(cc[0], id, out nome, out img, out prezzo, out liv)) continue;
+                // chiave|nome|icona|dati|comando|quantita
+                // chiave|nome|icona|dati|comando A|quantita|colore|comando X
+                // chiave|nome|icona|dati|comando A|quantita|colore|comando X
+                //   |stato|colore stato|comando Y
+                v.Add("pannello_sx_k|" + ch + "|" + nome + "|" + img
+                      + "|" + Dettaglio(cc[0], id)
+                      + "|equipaggia " + cc[0] + " " + cc[1]
+                      + "|" + Quantita(cc[0], id, kv.Value, false)
+                      + "||vendi " + cc[0] + " " + cc[1]
+                      + "|||butta " + cc[0] + " " + cc[1] + " casa");
+                quanti++;
+            }
+            // il cassetto vuoto lo dice, ma non ci si va sopra
+            if (quanti == 0)
+                v.Add("pannello_sx_k|" + ch + "|Niente in casa");
+        }
+
+        // I PEZZI MONTATI: si smontano andando SULL'HUD.
+        // Non stanno in cassetta, stanno sulla canna: per toglierli si va
+        // li' sopra col cursore. La mod passa i rettangoli - le stesse
+        // coordinate con cui li disegna - e il trainer ci mette sopra la
+        // selezione. Ordine: dall'alto in basso, come si vedono.
+        RigheArmatura(v);
+
+        // A DESTRA QUELLO CHE PORTI ADESSO, della stessa categoria: il
+        // menu in mezzo comanda tutti e due i riquadri.
+        int mc2, mm2, ml2, mr2;
+        Capienza(out mc2, out mm2, out ml2, out mr2);
+        v.Add("pannello|EQUIPAGGIAMENTO");
+        // QUI SI MONTA E BASTA: si smonta andando sulla canna, dove c'e'
+        // gia' scritto (X) SMONTA sotto la colonna dell'armatura.
+        string capX = "(X) monta~   (Y) getta";
+        string colX = "110,175,255;245,205,80";
+        v.Add("pannello|" + (inPesca
+              ? ("- " + capX + "|||||" + colX)
+              : ("- (A) sposta a casa~   " + capX
+                 + "|||||130,225,180;" + colX)));
+
+        v.Add("pannello_pie|- Canne " + InBorsa("canna") + "/" + mc2
+              + "   Mulinelli " + InBorsa("mulinello") + "/" + mm2
+              + "   Lenze " + InBorsa("lenza") + "/" + ml2
+              + "   Cassetta " + RobaMinuta() + "/" + mr2
+              + "|||||190,195,205");
+        int qb;
+        for (qb = 0; qb < CASA_ORD.Length; qb++)
+        {
+            int ib = CASA_ORD[qb];
+            string chb = CAT_NOME[ib];
+            int quantiB = 0;
+            foreach (KeyValuePair<string, int> kv in borsa)
+            {
+                string[] cb = kv.Key.Split(':');
+                if (cb.Length < 2 || cb[0] != CAT_COD[ib]) continue;
+                int idb = Numero(cb[1]);
+                string nb, ib2;
+                int pb, lb;
+                if (!Articolo(cb[0], idb, out nb, out ib2, out pb, out lb)) continue;
+                // X arma solo la roba che si monta: esche, nasse,
+                // cassette e portacanne non si armano
+                bool siArma = SiArma(cb[0]);
+                string cx = siArma ? ("arma " + cb[0] + " " + cb[1]) : "";
+                // e in fondo alla riga lo stato, come e' sempre stato:
+                // verde se e' montato, grigio se sta in panchina
+                bool suDiTe = siArma && EArmato(cb[0], idb);
+                string stb = siArma ? (suDiTe ? "Armato" : "Disarmato") : "";
+                // gli stessi colori della caption: blu "arma", rosso "disarma"
+                string colb = suDiTe ? "110,175,255" : "235,90,80";
+                v.Add("pannello_k|" + chb + "|" + nb + "|" + ib2
+                      + "|" + Dettaglio(cb[0], idb)
+                      + "|lascia " + cb[0] + " " + cb[1]
+                      + "|" + Quantita(cb[0], idb, kv.Value)
+                      + "||" + cx
+                      + "|" + stb + "|" + colb
+                      + "|butta " + cb[0] + " " + cb[1] + " borsa");
+                quantiB++;
+            }
+            // LE BOBINE TAGLIATE: ognuna e' un pezzo a se', con i suoi
+            // metri. Non sono confezioni nuove, quindi hanno la loro riga.
+            if (CAT_COD[ib] == "lenza")
+            {
+                int qbo;
+                for (qbo = 0; qbo < bobine.Count; qbo++)
+                {
+                    int idb2 = BobinaId(qbo);
+                    string nb2, ib3;
+                    int pb2, lb2;
+                    if (!Articolo("lenza", idb2, out nb2, out ib3, out pb2, out lb2)) continue;
+                    v.Add("pannello_k|" + chb + "|" + nb2 + "|" + ib3
+                          + "|" + DettaglioBobina(idb2, BobinaMetri(qbo))
+                          + "|niente|"
+                          + "||arma_bob " + qbo
+                          + "|Tagliata|190,195,205"
+                          + "|butta_bob " + qbo + "");
+                    quantiB++;
+                }
+            }
+
+            if (quantiB == 0)
+                v.Add("pannello_k|" + chb + "|Niente in borsa");
+        }
+
+        // L'ARMATURA NON SI DISEGNA PIU' QUI SOTTO: mentre sei in questa
+        // pagina si vede l'HUD vero, in basso a destra.
+
+        // IL PESCATO DEL GIORNO.
+        // Mentre sei fuori a pescare, in fondo alle categorie, c'e' la
+        // nassa: scegliendola, a destra al posto dell'attrezzatura
+        // compaiono i pesci che hai preso oggi, col peso, gli XP e
+        // quanto valgono. A casa non serve: la nassa si svuota a fine
+        // giornata.
+        if (inPesca)
+        {
+            int qn;
+            for (qn = nassaOggi.Count - 1; qn >= 0; qn--)
+            {
+                // la riga della nassa e' gia' fatta:
+                //   nome|comando|img|destra|colore|sotto|colDestra|colSotto
+                string[] rn = nassaOggi[qn].Split('|');
+                if (rn.Length < 6) continue;
+                v.Add("pannello_k|" + PESCATO + "|" + rn[0] + "|" + rn[2]
+                      + "|" + rn[5]                    // peso e valore
+                      + "|niente|"                     // A non fa niente
+                      + "||"                           // colore, comando X
+                      + "|" + rn[3]                    // a destra gli XP
+                      + "|130,200,245");
+            }
+            if (nassaOggi.Count == 0)
+                v.Add("pannello_k|" + PESCATO + "|Nassa vuota");
+        }
+
+        // IN MEZZO LE CATEGORIE. Nessun numero sulle righe: pulite.
+        int qc;
+        for (qc = 0; qc < CASA_ORD.Length; qc++)
+            v.Add(CAT_NOME[CASA_ORD[qc]] + "|niente||");
+        // e in fondo, solo quando sei fuori, la cesta del pescato
+        if (inPesca)
+            v.Add(PESCATO + "|niente||"
+                  + KgNassaDentro().ToString("0.0", CultureInfo.InvariantCulture)
+                  + " kg");
+        ScriviVoci("casa_voci.txt", v);
+    }
+
+    // l'inventario di casa: e' il negozio, ma con quello che possiedi
+    void ScriviInventario()
+    {
+        List<string> menu = new List<string>();
+        if (inPesca)
+        {
+            menu.Add("nota|Sei fuori a pescare");
+            menu.Add("Sei fuori casa in questo momento|niente|" + Banner()
+                     + "|Riapre stasera, quando finisce la giornata.");
+            ScriviVoci("inventario_voci.txt", menu);
+            return;
+        }
+        menu.Add("titolo_finestra|INVENTARIO DI CASA");
+        // L'EQUIPAGGIAMENTO STA SOTTO, NELLA STESSA LISTA.
+        // Prima le categorie di casa, poi una riga di sezione, poi quello
+        // che ti porti. Si scorre e ci arrivi, senza saltare a destra in
+        // un riquadro a parte. E scorre quanto serve: nell'equipaggiamento
+        // di roba ce ne puo' finire tanta.
+        menu.Add("icone");
+        // l'intestazione resta un'intestazione, come e' sempre stata:
+        // sotto ci va una riga sola con quello che c'e' da sapere
+        menu.Add("- IN CASA -");
+        // testo|comando|img|destra|colore riga|riga sotto|col.destra
+        menu.Add("|niente||spazio illimitato|||190,195,205");
+
+        int k;
+        for (k = 0; k < CAT_COD.Length; k++)
+        {
+            List<string> v = new List<string>();
+            int quante = 0;
+            foreach (KeyValuePair<string, int> kv in magazzino)
+            {
+                string[] c = kv.Key.Split(':');
+                if (c.Length < 2 || c[0] != CAT_COD[k]) continue;
+                string nome, img;
+                int prezzo, liv;
+                if (!Articolo(c[0], Numero(c[1]), out nome, out img, out prezzo, out liv)) continue;
+                if (v.Count == 0)
+                {
+                    if (AIcone(CAT_COD[k])) v.Add("icone");
+                    v.Add("nota|Premi A per equipaggiare");
+                    v.Add("titolo_finestra|" + CAT_NOME[k].ToUpper() + " IN CASA");
+                    int qp;
+                    List<string> pan = RigheBorsa();
+                    for (qp = 0; qp < pan.Count; qp++) v.Add("pannello|" + pan[qp]);
+                }
+                string et = Unisci(nome, Quantita(c[0], Numero(c[1]), kv.Value));
+                v.Add(et + "|equipaggia " + c[0] + " " + c[1] + "|" + img
+                      + "|Liv." + liv + "   $" + Dollari(prezzo));
+                quante += kv.Value;
+            }
+            if (v.Count == 0)
+            {
+                v.Add("Ancora niente|niente||");
+                v.Add("titolo_finestra|" + CAT_NOME[k].ToUpper() + " IN CASA");
+                int qp2;
+                List<string> pan2 = RigheBorsa();
+                for (qp2 = 0; qp2 < pan2.Count; qp2++) v.Add("pannello|" + pan2[qp2]);
+            }
+            ScriviVoci(CAT_FILE[k], v);
+            // le voci ci sono sempre, come nel negozio: se dentro non c'e'
+            // niente lo dice la voce stessa
+            // niente banner qui: cosi' la lista e il riquadro della borsa
+            // partono tutti e due dalla stessa altezza
+            // niente logo qui: ripetuto dieci volte e' solo rumore
+            menu.Add("sottofile|" + CAT_NOME[k] + " (" + quante + ")|" + CAT_FILE[k]
+                     + "|||");
+        }
+
+        // EQUIPAGGIAMENTO, e sotto quanto ci sta ancora.
+        // Prima l'intestazione cominciava con "ZAINO" e si portava
+        // dietro tutti i numeri: sembrava che lo zaino fosse un pezzo
+        // dell'equipaggiamento, e i conti non ci stavano. L'intestazione
+        // resta com'era, i limiti vanno sulla riga sotto, in viola: un
+        // colore che qui dentro non usa nessun altro.
+        menu.Add("- EQUIPAGGIAMENTO -");
+        menu.Add("|niente||" + Contatori() + "|||190,150,245");
+        int kb;
+        int quantiB = 0;
+        for (kb = 0; kb < CAT_COD.Length; kb++)
+        {
+            foreach (KeyValuePair<string, int> kv in borsa)
+            {
+                string[] cb = kv.Key.Split(':');
+                if (cb.Length < 2 || cb[0] != CAT_COD[kb]) continue;
+                int idb = Numero(cb[1]);
+                string nb, ib;
+                int pb, lb;
+                if (!Articolo(cb[0], idb, out nb, out ib, out pb, out lb)) continue;
+                string etb = Unisci(nb, Quantita(cb[0], idb, kv.Value));
+                string stb = SiArma(cb[0])
+                           ? (EArmato(cb[0], idb) ? "Equipaggiato" : "Non equipaggiato")
+                           : "";
+                string cmb;
+                if (SiArma(cb[0])) cmb = "arma " + cb[0] + " " + cb[1];
+                else if (cb[0] == "esca") cmb = "usa_esca " + cb[1];
+                else cmb = "lascia " + cb[0] + " " + cb[1];
+                string colb = EArmato(cb[0], idb) ? "130,225,180" : "150,155,165";
+                // testo|comando|icona|destra|colore riga|sotto|col.destra
+                menu.Add(etb + "|" + cmb + "|" + ib + "|" + stb
+                         + "||" + Dettaglio(cb[0], idb)
+                         + "|" + (stb.Length > 0 ? colb : ""));
+                quantiB++;
+            }
+        }
+        if (quantiB == 0)
+            menu.Add("Lo zaino e' vuoto|niente|" + Banner()
+                     + "|Premi A sulla roba qui sopra per portartela.");
+
+        ScriviVoci("inventario_voci.txt", menu);
+    }
+
+    // l'equipaggiamento: quello che ti porti dietro oggi
+    // L'EQUIPAGGIAMENTO NON E' UN NEGOZIO.
+    // E' l'armatura che hai addosso: una lista sola, tutti i pezzi in
+    // fila con la loro icona, come il riquadro che si vede a destra
+    // mentre sposti la roba da casa. Niente categorie da aprire.
+    void ScriviEquip()
+    {
+        List<string> menu = new List<string>();
+        menu.Add("icone");
+        menu.Add("nota|" + Contatori());
+        menu.Add("titolo_finestra|EQUIPAGGIAMENTO");
+
+        // SI COMINCIA DA QUI, non piu' col tasto X: quello serve a saltare,
+        // e saltellare mentre sei in riva non deve farti tirare fuori la canna.
+        if (inPesca && fase == FASE_FERMO)
+        {
+            int luE = LuogoQui();
+            if (luE >= 0 && CodiceLuogo(luE) != licZona)
+            {
+                string bzE;
+                menu.Add("Non sei nel posto della licenza|niente||l'hai pagata per "
+                         + NomeChiosco(licZona, out bzE) + "|235,90,80");
+            }
+            else if (!VicinoAllAcqua())
+                menu.Add("Non sei in riva|niente||avvicinati all'acqua|235,90,80");
+            else
+                menu.Add("Inizia a pescare|!pesca_via||prendi la canna in mano|130,225,180");
+        }
+
+        int k;
+        int quanti = 0;
+        for (k = 0; k < CAT_COD.Length; k++)
+        {
+            foreach (KeyValuePair<string, int> kv in borsa)
+            {
+                string[] c = kv.Key.Split(':');
+                if (c.Length < 2 || c[0] != CAT_COD[k]) continue;
+                int id = Numero(c[1]);
+                string nome, img;
+                int prezzo, liv;
+                if (!Articolo(c[0], id, out nome, out img, out prezzo, out liv)) continue;
+                string et = Unisci(nome, Quantita(c[0], id, kv.Value));
+
+                // LA NASSA E' UNA PORTA, non una riga qualsiasi: a destra
+                // dice quanto pesce ci sta dentro adesso su quanto regge, e
+                // la freccia apre l'elenco di quello che hai preso oggi.
+                if (c[0] == "nassa")
+                {
+                    menu.Add("sottofile|" + et + "|nassa_voci.txt||" + img
+                             + "|" + KgNassaDentro().ToString("0.0", CultureInfo.InvariantCulture)
+                             + " / " + ((int)KgNassaMax()) + " kg");
+                    quanti++;
+                    continue;
+                }
+
+                // a destra lo STATO, sotto il nome i dati del pezzo
+                string stato = SiArma(c[0])
+                             ? (EArmato(c[0], id) ? "Equipaggiato" : "Non equipaggiato")
+                             : "";
+                string cmdRiga;
+                if (SiArma(c[0])) cmdRiga = "arma " + c[0] + " " + c[1];
+                else if (c[0] == "esca") cmdRiga = "usa_esca " + c[1];
+                else cmdRiga = inPesca ? "niente" : ("lascia " + c[0] + " " + c[1]);
+                // verde quando e' in pesca, grigio quando sta in panchina:
+                // il giallo resta ai dati, che ora stanno sotto il nome
+                string colStato = EArmato(c[0], id) ? "130,225,180" : "150,155,165";
+                menu.Add(et + "|" + cmdRiga + "|" + img + "|" + stato
+                         + "||" + Dettaglio(c[0], id)
+                         + "|" + (stato.Length > 0 ? colStato : ""));
+                quanti++;
+            }
+        }
+
+        if (quanti == 0)
+            menu.Add("Lo zaino e' vuoto|niente|" + Banner()
+                     + "|Vai in Inventario di casa e premi A su quello che vuoi portarti.");
+
+        ScriviVoci("equip_voci.txt", menu);
+    }
+    // il chiosco del posto: quello che serve in QUELL'acqua, al doppio.
+    // Non lo decidiamo a mano: lo dicono i pesci che ci vivono.
+    void ScriviChiosco()
+    {
+        List<string> v = new List<string>();
+        if (!inPesca)
+        {
+            v.Add("nota|Il chiosco apre quando compri la licenza");
+            ScriviVoci("chiosco_voci.txt", v);
+            return;
+        }
+        // IL TRATTO DOVE SEI, non il primo del gruppo: con la licenza di
+        // Alamo Sea sono undici tratti, e ognuno ha i suoi pesci
+        int lu = LuogoQui(), i;
+        if (lu < 0 || CodiceLuogo(lu) != licZona)
+        {
+            lu = -1;
+            for (i = 0; i < arNome.Count; i++)
+                if (CodiceLuogo(i) == licZona) { lu = i; break; }
+        }
+        if (lu < 0)
+        {
+            ScriviVoci("chiosco_voci.txt", v);
+            return;
+        }
+
+        // 1. quante volte ogni esca compare fra i pesci di qui
+        Dictionary<int, int> voti = new Dictionary<int, int>();
+        float kgMax = 0f;
+        for (i = 0; i < pesci.Count; i++)
+        {
+            Specie s = pesci[i];
+            int z;
+            if (!PesceQui(s, lu)) continue;
+            if (s.KgU > kgMax) kgMax = s.KgU;
+            if (s.Esche != null)
+                for (z = 0; z < s.Esche.Length; z++)
+                    Aggiungi2(voti, s.Esche[z]);
+        }
+
+        v.Add("icone");
+        v.Add("nota|Prezzi del posto: il triplo");
+
+        // 2. le dieci esche piu' richieste da questi pesci.
+        // IL CHIOSCO TIENE TUTTO. Prima saltava quello che era di livello
+        // troppo alto: ai laghetti del golf, a livello uno, non restava
+        // una sola esca e si vedevano soltanto ami e galleggianti. Adesso
+        // c'e' tutto, e quello che non puoi ancora comprare porta il suo
+        // Liv. in rosso, come al negozio grande.
+        int messe = 0;
+        while (messe < 10)
+        {
+            int best = -1, bestN = 0;
+            foreach (KeyValuePair<int, int> kv in voti)
+                if (kv.Value > bestN) { bestN = kv.Value; best = kv.Key; }
+            if (best < 0) break;
+            voti.Remove(best);
+            string nomeEsca = (best >= 0 && best < esche.Count) ? esche[best] : "";
+            for (i = 0; i < escheShop.Count; i++)
+            {
+                if (escheShop[i].Nome != nomeEsca) continue;
+                bool okE = (escheShop[i].LivWiki <= livelloPescatore);
+                v.Add(EscaIt(escheShop[i].Nome) + "   x" + escheShop[i].Quantita
+                      + "|compra_esca " + escheShop[i].Id + "|" + escheShop[i].Img
+                      + "|Liv." + escheShop[i].LivWiki + "   $"
+                      + PrezzoOggi(escheShop[i].Prezzo) + LivRosso(okE));
+                messe++;
+                break;
+            }
+        }
+
+        // 3. tre lenze che reggano il pesce piu' grosso di qui
+        int prese = 0;
+        for (i = 0; i < lenze.Count && prese < 4; i++)
+        {
+            if (lenze[i].Kg < kgMax * 0.6f) continue;
+            bool okL = (lenze[i].LivWiki <= livelloPescatore);
+            v.Add(lenze[i].Marca + " " + lenze[i].Mm + " mm   " + lenze[i].Kg + " kg"
+                  + "|compra_lenza " + lenze[i].Id + "|" + lenze[i].Img
+                  + "|Liv." + lenze[i].LivWiki + "   $" + PrezzoOggi(lenze[i].Prezzo)
+                  + LivRosso(okL));
+            prese++;
+        }
+
+        // 4. quattro ami e un paio di galleggianti
+        prese = 0;
+        for (i = 0; i < terminali.Count && prese < 6; i++)
+        {
+            if (terminali[i].Cat != "amo") continue;
+            bool okA = (terminali[i].LivWiki <= livelloPescatore);
+            v.Add(Unisci(terminali[i].Marca + " " + terminali[i].Modello, terminali[i].Misura)
+                  + "|compra_terminale " + terminali[i].Id + "|" + terminali[i].Img
+                  + "|Liv." + terminali[i].LivWiki + "   $" + PrezzoOggi(terminali[i].Prezzo)
+                  + LivRosso(okA));
+            prese++;
+        }
+        prese = 0;
+        for (i = 0; i < galleggianti.Count && prese < 4; i++)
+        {
+            bool okG = (galleggianti[i].LivWiki <= livelloPescatore);
+            v.Add(Unisci(galleggianti[i].Nome, galleggianti[i].Colore)
+                  + "|compra_galleggiante " + galleggianti[i].Id + "|" + galleggianti[i].Img
+                  + "|Liv." + galleggianti[i].LivWiki + "   $"
+                  + PrezzoOggi(galleggianti[i].Prezzo) + LivRosso(okG));
+            prese++;
+        }
+        ScriviVoci("chiosco_voci.txt", v);
+    }
+
+    static void Aggiungi2(Dictionary<int, int> d, int k)
+    {
+        int v;
+        if (d.TryGetValue(k, out v)) d[k] = v + 1;
+        else d[k] = 1;
+    }
+
+    // il bar: gli stessi numeri di fame e sete del trainer
+    void ScriviBar()
+    {
+        List<string> v = new List<string>();
+        v.Add("nota|Da mangiare e da bere");
+        v.Add("Panino|compra_cibo 1||$12   Toglie la fame.");
+        v.Add("Bibita|compra_cibo 2||$3   Toglie la sete.");
+        v.Add("Birra|compra_cibo 3||$5   Toglie la sete, ma la mira peggiora.");
+        v.Add("Caffe'|compra_cibo 4||$3   Sveglia.");
+        v.Add("Pasto completo|compra_cibo 5||$15   Fame e sete insieme.");
+        ScriviVoci("bar_voci.txt", v);
+    }
+
+    // IL MENU DELLA MOD.
+    // Lo riscriviamo noi perche' una voce deve cambiare nome: finche' sei
+    // a casa e' "Inizia a pescare", con la licenza attiva diventa "Torna
+    // a pescare", che e' quello che stai facendo davvero.
+    // Il trainer si accorge che il file e' cambiato e aggiorna la scritta.
+    void ScriviMenu()
+    {
+        List<string> v = new List<string>();
+        v.Add("# Pannello di Pesca dentro il menu del trainer.");
+        v.Add("# Lo riscrive la mod: non modificarlo a mano.");
+        v.Add("sempre_attiva");
+        // La prima voce dice DOVE sei: "Inizia a pescare a Tongva Valley".
+        // Se non sei su un'acqua nostra resta secca, che e' gia' la
+        // risposta: qui non si pesca.
+        // "INIZIA A PESCARE" C'E' SOLO SE SEI SUL POSTO.
+        // A Rockford Hills quella voce apriva una pagina che diceva "qui
+        // non si pesca": una riga per dirti che non serve a niente. Se
+        // non sei su un'acqua nostra non c'e' proprio, e la prima voce
+        // diventa "Zone di pesca", che e' quello che ti serve davvero:
+        // scegli dove andare, ci vai, e li' compare la licenza.
+        // COME PRIMA: vale il raggio dell'area, quattrocento metri.
+        // Provato a stringerlo e provato a chiedere di essere in riva:
+        // tutte e due le volte la voce spariva dove serviva. Meglio
+        // vederla un po' troppo presto che non vederla affatto.
+        int luM = inPesca ? -1 : LuogoQui();
+        if (inPesca || luM >= 0)
+        {
+            string vPesca, dPesca;
+            if (inPesca)
+            {
+                vPesca = "Giornata di pesca a " + NomeArea(AreaOra());
+                dPesca = "Restano " + TempoCheResta()
+                       + "   Livello " + livelloPescatore + "   XP " + xpTot;
+            }
+            else
+            {
+                vPesca = "Inizia a pescare a " + NomeArea(luM);
+                dPesca = "Compra la licenza e si parte.";
+            }
+            // anche qui il banner del posto: e' la riga che parla di
+            // quell'acqua, non dell'associazione
+            int luBM = inPesca ? IndiceLuogo(licZona) : luM;
+            string imgM = BannerArea(luBM);
+            if (imgM.Length == 0) imgM = "img\\lsfa.png";
+            v.Add("sottofile|" + vPesca + "|pesca_voci.txt||" + imgM + "|" + dPesca);
+        }
+        // DOVE SI PESCA: tutte le aree in ordine di livello, col prezzo
+        // della licenza e il segnaposto. Sta subito sotto "Inizia a
+        // pescare" perche' e' la prima domanda di chi comincia.
+        v.Add("sottofile|" + L("Fishing spots", "Zone di pesca")
+              + "|zone_voci.txt||img\\lsfa.png|"
+              + L(arNome.Count + " spots, from level 1 up.",
+                  arNome.Count + " posti, dal livello 1 in su."));
+        // I tornei: la lista con i banner, e premendo uno ti mette il
+        // segnaposto sulla mappa dove si corre.
+        v.Add("sottofile|" + L("Competitions", "Tornei e competizioni")
+              + "|tornei_voci.txt||img\\lsfa.png|"
+              + L(tornei.Count + " competitions with cash prizes.",
+                    tornei.Count + " tornei con premi in denaro."));
+        // Il negozio e' uno solo: a casa e' quello grande, sull'acqua
+        // diventa il baracchino del posto, col suo nome.
+        string nomeNeg = "Negozio di Los Santos Fisherman";
+        string descNeg = "Canne, mulinelli, lenze, ami, esche e provviste.";
+        if (inPesca)
+        {
+            nomeNeg = "Negozio di " + NomeArea(AreaOra());
+            descNeg = "Tutto, al triplo del prezzo.   " + Contatori();
+        }
+        v.Add("sottofile|" + nomeNeg + "|negozio.txt||img\\lsfa.png|" + descNeg);
+        // INVENTARIO DI CASA: pagina nuova, si sta rifacendo da zero.
+        v.Add("sottofile|Inventario di casa|casa_voci.txt||img\\lsfa.png|"
+              + "Quello che possiedi, e cosa ti porti dietro.");
+        // STUDIA I PESCI non sta piu' qui.
+        // Non ha senso studiare i pesci di un posto dove non sei: adesso
+        // la voce sta dentro la giornata di pesca, e mostra i pesci di
+        // dove sei. Il diario invece resta qui: quello e' tuo, non del
+        // posto.
+        v.Add("sottofile|Diario di pesca|diario_voci.txt||img\\lsfa.png|"
+              + Quanti0(quaderno) + " specie su " + pesci.Count + " prese finora.");
+        // "Smetti" non sta piu' qui: sta in fondo alla giornata di pesca,
+        // dentro. Qui fuori restava scritto anche dopo che avevi smesso.
+        v.Add("sottofile|Impostazioni|impostazioni_voci.txt||img\\lsfa.png|"
+              + "Come si comporta la mod.");
+        // LE VOCI DI SVILUPPO NON CI SONO PIU'.
+        // Registra le acque, prova i suoni, modelli del pesce, prova i
+        // galleggianti: tutte tolte dal menu. Il codice e i comandi
+        // (registra, suono_prova, mod_pesce, prova_gall) sono ancora
+        // tutti li' sotto e funzionano: per rimettere una voce basta
+        // riscrivere la sua riga qui.
+        ScriviVoci("menu.txt", v);
+    }
+
+    // LA NASSA DEI PESCI: quello che hai preso OGGI, l'ultimo in cima, con
+    // il peso, quanto vale e quanti punti ti ha dato. Si svuota a fine
+    // giornata, come la nassa vera.
+    List<string> nassaOggi = new List<string>();
+
+    void ScriviNassa()
+    {
+        List<string> v = new List<string>();
+        v.Add("icone");
+        v.Add("nota|" + KgNassaDentro().ToString("0.0", CultureInfo.InvariantCulture)
+              + " kg su " + ((int)KgNassaMax()) + "   -   " + nassaOggi.Count
+              + (nassaOggi.Count == 1 ? " pesce" : " pesci"));
+        int i;
+        for (i = nassaOggi.Count - 1; i >= 0; i--) v.Add(nassaOggi[i]);
+        // vuota vuol dire vuota: nessuna riga, nessuna immagine
+        ScriviVoci("nassa_voci.txt", v);
+    }
+
+    void ScriviImpostazioni()
+    {
+        List<string> v = new List<string>();
+        // niente "icone" e niente Banner: qui immagini non ce ne sono, e il
+        // logo dell'associazione usato come tappabuchi diventava una
+        // iconcina appiccicata a ogni riga
+        v.Add("nota|Si salvano da sole");
+        // QUANTO SI VEDE IL GALLEGGIANTE.
+        // La misura vera e' quella del wiki, ma su uno schermo lontano un
+        // galleggiante da due centimetri sparisce: chi vuole se lo
+        // ingrossa, senza toccare i dati.
+        // E' una LISTA vera - destra e sinistra per scegliere, A per
+        // confermare - non un bottone che gira sempre nello stesso verso.
+        //   lista|etichetta|comando|valori|scritte|scelto
+        v.Add("lista|Grandezza del galleggiante|imp_gall|0;1;2;3;4"
+              + "|Vera;x1.3;x1.6;x2.0;x2.6|" + gallZoom);
+        v.Add("Consiglia zone di pesca|imp_zone||"
+              + (avvisaZona ? "Acceso" : "Spento")
+              + "||Ti avvisa quando passi su un'acqua dove si pesca."
+              + "|" + (avvisaZona ? "130,225,180" : "150,155,165"));
+        // LE REGOLE VERE NON SI VEDONO PIU'.
+        // Il comando "imp_regole" c'e' ancora e l'interruttore funziona:
+        // e' solo sparito dal menu, si riaccende quando e' il momento.
+        v.Add((diarioChiesto ? "Sicuro? Premi ancora" : "Azzera il diario")
+              + "|imp_diario||" + Quanti0(quaderno) + " specie"
+              + "||Cancella tutto quello che hai pescato finora."
+              + "|150,155,165");
+        v.Add((resetChiesto ? "Sicuro? Premi ancora" : "Ricomincia da zero")
+              + "|imp_reset||Liv. " + livelloPescatore + " - " + XpCorto(xpTot) + " XP"
+              + "||Azzera XP, livello, diario e tutta l'attrezzatura comprata."
+              + "|" + (resetChiesto ? "235,90,80" : "150,155,165"));
+        ScriviVoci("impostazioni_voci.txt", v);
+    }
+
+    // I PUNTI SCRITTI CORTI: 0, 10, 100, 900, poi 1.2K, 12.5K.
+    static string XpCorto(int xp)
+    {
+        if (xp < 1000) return xp.ToString();
+        int k = xp / 1000;
+        int d = (xp % 1000) / 100;
+        if (d > 0) return k.ToString() + "." + d.ToString() + "K";
+        return k.ToString() + "K";
+    }
+
+    // LA RIGA IN CIMA. Il trainer la legge da header.txt e la mette
+    // nell'header dopo la temperatura, cosi' livello e punti si vedono
+    // anche quando non stai pescando.
+    void ScriviTesta()
+    {
+        try
+        {
+            File.WriteAllText(Path.Combine(MY_DIR, "header.txt"),
+                              "Liv. " + livelloPescatore
+                              + "   " + XpCorto(xpTot) + " XP");
+        }
+        catch { }
+    }
+
+    // GLI SCAFFALI DEL NEGOZIO.
+    // Sono dieci file grossi (527 artificiali, 381 terminali...) e si
+    // riscrivono solo quando serve: all'avvio, e quando sali di livello.
+    // Prima venivano scritti una volta sola all'avvio, per giunta prima di
+    // leggere il salvataggio: il negozio restava fermo al livello 1 e la
+    // roba nuova non compariva mai.
+    int livelloDegliScaffali = -1;
+
+    // i prezzi degli scaffali cambiano anche quando esci a pescare:
+    // sul posto costa il triplo, e le pagine vanno rifatte
+    bool scaffaliInPesca = false;
+
+    void ScaffaliDelNegozio()
+    {
+        livelloDegliScaffali = livelloPescatore;
+        scaffaliInPesca = inPesca;
+        ScriviNegozioLenze();
+        ScriviNegozioCanne();
+        ScriviNegozioMulinelli();
+        ScriviNegozioTerminali();
+        ScriviNegozioEsche();
+        ScriviNegozioCassette();
+        ScriviNegozioPortacanne();
+        ScriviNegozioNasse();
+        ScriviNegozioGalleggianti();
+        ScriviNegozioArtificiali();
+    }
+
+    // LE PAGINE PESANTI SI RIFANNO SOLO QUANDO SERVE.
+    // "Zone di pesca" sono 36 file, il quaderno 37, i tornei 103: rifarli
+    // a ogni pesce preso sono quattrocento scritture su disco e si sente.
+    // Cambiano solo col livello, col posto o con un torneo, quindi si
+    // ricordano com'erano l'ultima volta.
+    int zoneScritteLiv = -1, zoneScritteQui = -2;
+    int torneiScrittiLiv = -1, torneiScrittiOra = -2;
+    int quadernoScrittoLiv = -1;
+    float quadernoScrittoKg = -1f;
+
+    void RiscriviTutto()
+    {
+        int prima = livelloPescatore;
+        livelloPescatore = LivelloDa(xpTot);
+        ScriviTesta();
+        if (livelloPescatore != livelloDegliScaffali || inPesca != scaffaliInPesca)
+        {
+            ScaffaliDelNegozio();
+            if (livelloPescatore > prima)
+                Avviso("~g~Livello " + livelloPescatore
+                       + ".~s~  In negozio c'e' roba nuova.");
+        }
+        ScriviMenu();
+        ScriviPesca();
+        ScriviCasa();
+        ScriviInventario();
+        ScriviEquip();
+        // il chiosco non c'e' piu': il negozio e' uno solo
+        ScriviMarca();
+        ScriviNegozio();
+        ScriviImpostazioni();
+        ScriviNassa();
+
+        int quiOra = LuogoQui();
+        if (livelloPescatore != zoneScritteLiv || quiOra != zoneScritteQui)
+        {
+            zoneScritteLiv = livelloPescatore;
+            zoneScritteQui = quiOra;
+            ScriviZone();
+        }
+        if (livelloPescatore != torneiScrittiLiv || torneoOra != torneiScrittiOra)
+        {
+            torneiScrittiLiv = livelloPescatore;
+            torneiScrittiOra = torneoOra;
+            ScriviTornei();
+        }
+        // il quaderno scrive anche il diario: quello va rifatto a ogni
+        // pesce, le trentasette pagine dello studio no
+        ScriviDiario();
+        if (livelloPescatore != quadernoScrittoLiv
+            || tenutaKg != quadernoScrittoKg)
+        {
+            quadernoScrittoLiv = livelloPescatore;
+            quadernoScrittoKg = tenutaKg;
+            ScriviQuaderno();
+        }
+    }
+
+    // ---------- esche artificiali (dati veri dal wiki) ----------
+    class Artificiale
+    {
+        public int Id;
+        public string Tipo, Nome, Colore, Grammi, Cm, Amo, Img;
+        public int Prezzo, LivWiki;
+    }
+    List<Artificiale> artificiali = new List<Artificiale>();
+
+    static readonly string[] ART_COD = new string[] {
+        "cucchiaino", "rotante", "minnow", "jig", "siliconico", "mare" };
+    static readonly string[] ART_NOME = new string[] {
+        "Cucchiaini", "Rotanti", "Minnow e popper", "Jig da bass",
+        "Siliconici", "Da mare" };
+    static readonly string[] ART_DESC = new string[] {
+        "Lamine di metallo che girano e brillano: luccio, persico, trota.",
+        "Palettina rotante: fa vibrare l'acqua, i predatori la sentono da lontano.",
+        "Pesciolini finti: crankbait, jerkbait, popper, rane e topolini.",
+        "Jig pesanti con la gonnella: il bass sotto le sponde.",
+        "Vermi, larve e code di silicone: si montano sull'amo o sulla testina.",
+        "Pilker, squid jig e octopus: roba pesante per il mare." };
+
+    void CaricaArtificiali()
+    {
+        artificiali.Clear();
+        string[] rows = LeggiRighe("artificiali.txt");
+        int i;
+        for (i = 0; i < rows.Length; i++)
+        {
+            string r = rows[i].Trim();
+            if (r.Length == 0 || r[0] == '#') continue;
+            string[] c = r.Split('|');
+            if (c.Length < 10) continue;
+            Artificiale x = new Artificiale();
+            int v;
+            int.TryParse(c[0], out v); x.Id = v;
+            x.Tipo = c[1].Trim(); x.Nome = c[2].Trim(); x.Colore = c[3].Trim();
+            x.Grammi = c[4].Trim(); x.Cm = c[5].Trim(); x.Amo = c[6].Trim();
+            int.TryParse(c[7], out v); x.Prezzo = v;
+            int.TryParse(c[8], out v); x.LivWiki = v;
+            x.Img = ImgOk("img\\artificiali\\" + c[9].Trim());
+            int k = artificiali.Count;
+            while (k > 0 && artificiali[k - 1].LivWiki > x.LivWiki) k--;
+            artificiali.Insert(k, x);
+        }
+    }
+
+    void ScriviNegozioArtificiali()
+    {
+        int t;
+        List<string> tipi = new List<string>();
+        for (t = 0; t < ART_COD.Length; t++)
+        {
+            List<string> v = new List<string>();
+            int i, quanti = 0;
+            for (i = 0; i < artificiali.Count; i++)
+            {
+                Artificiale x = artificiali[i];
+                if (x.Tipo != ART_COD[t]) continue;
+                string et = Unisci(EscaIt(x.Nome), ColoreIt(x.Colore));
+                if (x.Grammi.Length > 0) et += "   " + x.Grammi + " g";
+                string ds = "Liv." + x.LivWiki + "   $" + Dollari(x.Prezzo);
+                if (x.Amo.Length > 0) ds += "   Amo: " + x.Amo;
+                // SI VEDE TUTTO IL NEGOZIO, in ordine di livello.
+                // Quello che non puoi ancora comprare resta scritto, spento
+                // e non si preme: cosi' sai gia' dove stai andando.
+                bool ok = (x.LivWiki <= livelloPescatore);
+                if (v.Count == 0)
+                {
+                    v.Add("icone");
+                    v.Add("nota|Premi A per comprare");
+                }
+                v.Add(et + "|compra_artificiale " + x.Id
+                      + "|" + x.Img + "|" + ds + LivRosso(ok));
+                quanti++;
+            }
+            if (quanti == 0) continue;
+            ScriviVoci("a_" + ART_COD[t] + ".txt", v);
+            tipi.Add("sottofile|" + ART_NOME[t] + " (" + quanti + ")|a_" + ART_COD[t]
+                     + ".txt||" + Banner() + "|" + ART_DESC[t]);
+        }
+        ScriviVoci("a_tipi.txt", tipi);
+    }
+
+
+    // ============================================================
+    //  LA PESCATA: lancio, attesa, abboccata, recupero.
+    //  Versione essenziale per provare: niente animazioni, quelle
+    //  vengono dopo. Tutto quello che sta qui e' roba nostra.
+    //
+    //  Tasti (pad e tastiera insieme):
+    //    grilletto destro / clic sinistro  =  carica il lancio, ferra, recupera
+    // ============================================================
+
+    const int FASE_FERMO = 0;
+    const int FASE_CARICA = 1;
+    const int FASE_ACQUA = 2;
+    const int FASE_ABBOCCA = 3;
+    const int FASE_LOTTA = 4;
+    const int FASE_PRONTO = 5;
+    const int FASE_CARD = 6;    // il pesce in mano: tieni o ributti
+
+    int fase = FASE_FERMO;
+    // vero solo dopo che hai davvero mollato il grilletto: serve a non
+    // far ripartire un lancio con il dito ancora premuto dal recupero
+    bool grillettoMollato = false;
+    float potenza = 0f;          // 0..100 mentre carichi
+    bool potenzaSu = true;
+    int quandoAbbocca = 0;    // GameTime in cui il pesce prende
+    int giroMulinello = 0;    // il tic tic del mulinello mentre giri
+
+    // LA FRIZIONE: quattro tacche, si gira con destra e sinistra.
+    //   1 tacca accesa = frizione TIRATA: il mulinello non molla, guadagni
+    //                    lenza in fretta ma la tensione sale subito.
+    //   4 tacche       = frizione MORBIDA: la tensione sale piano, pero'
+    //                    il pesce si riprende il filo e non finisci mai.
+    // Sta a te trovare la via di mezzo col pesce che hai attaccato.
+    int frizione = 2;                 // 1..4
+    static readonly float[] FRIZ_REC = new float[] { 1.45f, 1.15f, 0.90f, 0.65f };
+    static readonly float[] FRIZ_TEN = new float[] { 1.65f, 1.25f, 0.95f, 0.70f };
+    // i metri che il pesce riesce a portarsi via quando parte:
+    // frizione tirata il mulinello non molla, morbida il filo scorre
+    static readonly float[] FRIZ_MET = new float[] { 0.50f, 0.80f, 1.15f, 1.60f };
+    // e i metri che guadagni tu quando lo tiri: tirata rende un filo di piu'
+    static readonly float[] FRIZ_GUA = new float[] { 1.20f, 1.05f, 0.92f, 0.80f };
+    int tastoFriz = 0;
+
+    // LO STRAPPO DEL PESCE.
+    // Un pesce non sta fermo mentre lo tiri: ogni tanto parte e si porta
+    // via lenza. E' qui che la frizione conta davvero:
+    //   tirata  -> il filo non da', la tensione schizza, ma di metri gliene
+    //              lasci pochi;
+    //   morbida -> il mulinello canta e lui se ne prende tanti, pero' la
+    //              lenza non rischia di spezzarsi.
+    int strappoFine = 0;      // fino a quando sta tirando adesso
+    int strappoDa = 0;        // quando puo' ripartire
+    float strappoForza = 0f;
+    float stanchezza = 0f;    // 0..1: quanto si e' consumato il pesce
+    int clickPesce = 0;
+
+    // IL PESCE APPENA PRESO: resta li' finche' non decidi.
+    // I punti li hai gia' fatti - quelli non si perdono mai. Qui scegli
+    // solo se tenerlo o rimetterlo in acqua, e se non ci sta nella nassa
+    // la scelta non c'e': si ributta e basta.
+    int cardPesce = -1;
+    float cardKg = 0f;
+    int cardXp = 0, cardVale = 0;
+    string cardTaglia = "";
+    string cardPerche = "";
+    bool cardPuoTenere = false;
+    int prossimoTocco = 0;    // quando il pesce assaggia
+    int toccoFine = 0;
+    int calmaFino = 0;        // fino a qui non si sente niente
+    int scadeFerrata = 0;
+    float tensione = 0f;         // 0..100: a 100 la lenza si spezza
+    float recuperato = 0f;       // 0..100: a 100 il pesce e' tuo
+    int pesceQui = -1;           // indice in pesci
+    int dentiDa = 0;             // da quando ha in bocca il filo nudo
+    float pesceKg = 0f;
+    int ultimoMsg = 0;
+    float metriLenza = 0f;
+    int tastoDa = 0;      // antirimbalzo: dopo un cambio di fase il tasto tace
+
+    void DisegnaRett(float px, float py, float pw, float ph, int r, int g, int b, int a)
+    {
+        Function.Call(Hash.DRAW_RECT, (px + pw * 0.5f) / 1280f, (py + ph * 0.5f) / 720f,
+                      pw / 1280f, ph / 720f, r, g, b, a);
+    }
+
+    void DisegnaTesto(string txt, float x, float y, float scala, int r, int g, int b)
+    {
+        try
+        {
+            TextElement el = new TextElement(txt, new PointF(x, y), scala);
+            el.Color = Color.FromArgb(255, r, g, b);
+            el.Font = GTA.UI.Font.ChaletLondon;
+            el.Alignment = Alignment.Center;
+            el.Outline = true;
+            el.Draw();
+        }
+        catch { }
+    }
+
+    // I tasti sono quelli della mod vecchia:
+    //   24  ATTACCO (RT sul pad, clic col mouse)  e  51  CONTESTO (E)
+    //       si tiene premuto per caricare, si molla per lanciare
+    //   203 X / FRONTEND_X      prende la canna in mano e la ripone.
+    //       Lo stesso tasto per tutti e due apposta: B e' "indietro"
+    //       nel menu, e usarlo qui faceva ritirare la canna mentre
+    //       tornavi indietro di una pagina.
+    //   44  RIPARO (Q / RB)     cambia esca
+    // IL GRILLETTO E' ANALOGICO, e questo e' il guaio.
+    // Con una soglia sola, un grilletto tenuto premuto che oscilla
+    // intorno a quella soglia sembra mollato e ripremuto decine di volte:
+    // e' per questo che appena lanciato ritirava la lenza da solo, col
+    // suo bip. Quindi due soglie: si conta premuto sopra 0.25, mollato
+    // solo quando scende sotto 0.10. In mezzo resta com'era.
+    static float ValoreRT()
+    {
+        float v = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 24);
+        float w = Function.Call<float>(Hash.GET_CONTROL_NORMAL, 0, 24);
+        if (w > v) v = w;
+        if (v <= 0f
+            && (Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 24)
+             || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 24)))
+            v = 1f;
+        return v;
+    }
+
+    bool rtGiuPrima = false;
+    bool rtFronte = false;
+
+    // il fronte si calcola UNA volta per fotogramma, in cima al giro:
+    // se lo calcolassimo dentro i rami, nei fotogrammi in cui quel ramo
+    // non gira lo stato resterebbe indietro
+    void LeggiTasto()
+    {
+        float v = ValoreRT();
+        bool ora = rtGiuPrima ? (v > 0.10f) : (v > 0.25f);
+        rtFronte = (ora && !rtGiuPrima);
+        rtGiuPrima = ora;
+    }
+
+    // dentro la pescata si guarda SEMPRE questo, mai il native diretto,
+    // se no si torna al tremolio di prima
+    bool TastoGiu() { return rtGiuPrima; }
+
+    bool TastoPremuto() { return rtFronte; }
+
+    // X: prende la canna in mano. Niente B, che nel menu torna indietro.
+    static bool TastoCanna()
+    {
+        return Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 203)
+            || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 203);
+    }
+
+
+    static bool TastoEsca()
+    {
+        return Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 44)
+            || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 44);
+    }
+
+    static void Aiuto(string t)
+    {
+        try { Screen.ShowHelpTextThisFrame(t); }
+        catch { }
+    }
+
+    // I SUONI FATTI DA NOI.
+    // I nomi dei suoni di GTA in tanti casi non si sentono: la banca
+    // audio non e' caricata e non c'e' verso di saperlo da fuori. Allora
+    // il fruscio del lancio ce lo mettiamo noi, con un file wav dentro
+    // la cartella "suoni". E' fuori dal mixer del gioco - il volume e'
+    // quello di Windows - ma si sente sempre e lo puoi cambiare tu:
+    // basta metterci il tuo wav con lo stesso nome.
+    static SoundPlayer lettore = null;
+
+    static void SuonoFile(string file)
+    {
+        if (file == null || file.Length == 0) return;
+        try
+        {
+            string f = Path.Combine(Path.Combine(MY_DIR, "suoni"), file);
+            if (!File.Exists(f)) return;
+            if (lettore == null) lettore = new SoundPlayer();
+            lettore.SoundLocation = f;
+            lettore.Play();
+        }
+        catch { }
+    }
+
+    // gli stessi suoni della mod vecchia
+    static void Suono(string nome, string set)
+    {
+        try { Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, nome, set, true); }
+        catch { }
+    }
+
+    static void Vibra(int ms, int forza)
+    {
+        try { Function.Call(Hash.SET_CONTROL_SHAKE, 0, ms, forza); }
+        catch { }
+    }
+
+    // quanto tiene l'attrezzatura montata: comanda il pezzo piu' debole
+    float TenutaBorsa()
+    {
+        float lenza = 0f, friz = 0f, canna = 0f;
+        int i;
+        foreach (KeyValuePair<string, int> kv in borsa)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length < 2) continue;
+            int id = Numero(c[1]);
+            if (c[0] == "lenza")
+                for (i = 0; i < lenze.Count; i++)
+                    if (lenze[i].Id == id && lenze[i].Kg > lenza) lenza = lenze[i].Kg;
+            if (c[0] == "mulinello")
+                for (i = 0; i < mulinelli.Count; i++)
+                    if (mulinelli[i].Id == id && mulinelli[i].Frizione > friz) friz = mulinelli[i].Frizione;
+            if (c[0] == "canna")
+                for (i = 0; i < canne.Count; i++)
+                    if (canne[i].Id == id)
+                    {
+                        float k = MaxKg(canne[i].LenzaKg);
+                        if (k > canna) canna = k;
+                    }
+        }
+        float t = lenza;
+        if (friz > 0f && friz < t) t = friz;
+        if (canna > 0f && canna < t) t = canna;
+        if (t <= 0f) t = 0.9f;
+        return t;
+    }
+
+    // "1.50 - 3.20" -> 3.20
+    static float MaxKg(string s)
+    {
+        if (s == null) return 0f;
+        string[] p = s.Split('-');
+        string ultimo = p[p.Length - 1].Trim();
+        float v;
+        if (float.TryParse(ultimo, NumberStyles.Float, CultureInfo.InvariantCulture, out v)) return v;
+        return 0f;
+    }
+
+
+    // ==================================================================
+    //  LE REGOLE VERE DELL'ABBOCCATA
+    //  Si accendono da Impostazioni. Spente, il pesce lo sceglie il caso
+    //  fra quelli della zona, come prima.
+    //  Accese, per abboccare devono tornare tutte queste:
+    //    1. il pesce vive in questa zona                (dato vero, wiki)
+    //    2. l'esca montata e' una delle sue             (dato vero, wiki)
+    //    3. la misura dell'amo e' la sua, o vicina      (dato vero, wiki)
+    //    4. la tua lenza lo regge
+    //    5. e' l'ora in cui quel pesce mangia           (biologia reale)
+    //    6. quanto e' raro                              (dato vero, wiki)
+    //    7. la canna e l'amo giusti per la sua famiglia
+    //  Temperatura e meteo non scelgono il pesce: allungano o accorciano
+    //  l'attesa di tutta l'acqua.
+    // ==================================================================
+    // Le regole vere dell'abboccata: pronte ma SPENTE.
+    // Non c'e' nessuna voce nel menu, si accendono solo da qui
+    // quando lo decidi tu.
+    bool regoleVere = false;
+
+    // la scala degli ami, dal piu' piccolo al piu' grosso.
+    // Sono le 27 misure che il negozio vende davvero.
+    static readonly string[] AMI_SCALA = new string[] {
+        "#16", "#14", "#12", "#10", "#8", "#6", "#4", "#2", "#1",
+        "#1/0", "#2/0", "#3/0", "#4/0", "#5/0", "#6/0", "#7/0", "#8/0", "#9/0",
+        "#10/0", "#11/0", "#12/0", "#13/0", "#14/0", "#15/0", "#16/0",
+        "#17/0", "#18/0" };
+
+    static int PostoAmo(string m)
+    {
+        if (m == null) return -1;
+        m = m.Trim();
+        if (m.Length == 0) return -1;
+        if (m[0] != '#') m = "#" + m;
+        int i;
+        for (i = 0; i < AMI_SCALA.Length; i++)
+            if (AMI_SCALA[i] == m) return i;
+        return -1;
+    }
+
+    // "#4 - #3/0" diventa da 6 a 11.  "#8" diventa da 4 a 4.
+    static void RangeAmo(string s, out int da, out int a)
+    {
+        da = -1; a = -1;
+        if (s == null) return;
+        string[] pz = s.Split('-');
+        da = PostoAmo(pz[0]);
+        a = (pz.Length > 1) ? PostoAmo(pz[pz.Length - 1]) : da;
+        if (da < 0) da = a;
+        if (a < 0) a = da;
+        if (a >= 0 && da >= 0 && a < da) { int t = da; da = a; a = t; }
+    }
+
+    // l'amo che hai in punta adesso: o l'amo, o quello della testina
+    int PostoAmoMontato()
+    {
+        int id; string img, nome;
+        if (!Montato("terminale", out id, out img, out nome)) return -1;
+        int i;
+        for (i = 0; i < terminali.Count; i++)
+            if (terminali[i].Id == id)
+            {
+                if (terminali[i].Cat == "amo") return PostoAmo(terminali[i].Misura);
+                if (terminali[i].Cat == "jig") return PostoAmo(terminali[i].Kg);
+                return -1;
+            }
+        return -1;
+    }
+
+    // Un pesce che prende il #10 col #8 o col #12 ci prova ancora, col
+    // #1/0 non ci pensa nemmeno: sono cinque misure di distanza.
+    static readonly float[] AMO_FUORI = new float[] { 1f, 0.55f, 0.25f, 0.08f };
+
+    float QuantoValeAmo(Specie s)
+    {
+        int mio = PostoAmoMontato();
+        if (mio < 0) return 1f;              // niente amo: non filtriamo
+        int da, a;
+        RangeAmo(s.Amo, out da, out a);
+        if (da < 0 || a < 0) return 1f;      // pesce senza misura sul wiki
+        int fuori = 0;
+        if (mio < da) fuori = da - mio;
+        else if (mio > a) fuori = mio - a;
+        if (fuori >= AMO_FUORI.Length) return 0f;
+        return AMO_FUORI[fuori];
+    }
+
+    // L'ESCA DEVE ESSERE UNA DELLE SUE.
+    // Le liste vengono dalla pagina del pesce sul wiki: "Preferred baits"
+    // e "Preferred lures". Il controllo e' secco tutte e due le volte:
+    // o quell'esca e' fra le sue, o quel pesce non c'e'.
+    bool EscaGiusta(Specie s)
+    {
+        int i;
+        int id; string img, nome;
+        if (Montato("artificiale", out id, out img, out nome))
+        {
+            if (s.Art == null || s.Art.Length == 0) return false;
+            for (i = 0; i < s.Art.Length; i++)
+                if (s.Art[i] == id) return true;
+            return false;
+        }
+        if (escaMontata >= 0 && s.Esche != null)
+            for (i = 0; i < s.Esche.Length; i++)
+                if (s.Esche[i] == escaMontata) return true;
+        if (s.Esche == null || s.Esche.Length == 0) return true;
+        return false;
+    }
+
+    // l'ora del giorno secondo l'abitudine vera della specie
+    float QuantoValeOra(string quando)
+    {
+        int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
+        bool notte = (hh >= 21 || hh < 5);
+        bool piena = (hh >= 8 && hh < 18);
+        bool mezza = (!notte && !piena);          // 5-8 e 18-21
+        if (quando == "notte") return notte ? 1f : (mezza ? 0.45f : 0.12f);
+        if (quando == "alba_tramonto") return mezza ? 1f : (piena ? 0.35f : 0.30f);
+        if (quando == "giorno") return piena ? 1f : (mezza ? 0.45f : 0.10f);
+        return 0.75f;                            // sempre: nessun picco suo
+    }
+
+    // quanto pesa la rarita': 1 comunissimo, 5 rarissimo
+    static readonly float[] PESO_RARITA = new float[] { 60f, 100f, 55f, 28f, 12f, 5f };
+
+    // LA TEMPERATURA. Stessa formula del trainer, tenerle uguali.
+    // GTA non ha una temperatura: questa ce la calcoliamo noi.
+    float GradiAria()
+    {
+        int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
+        int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
+        float ora = hh + mi / 60f;
+        float fase = (ora - 4f) / 24f * 6.2831853f;
+        float t = 20f + 7f * (-(float)Math.Cos(fase));
+        t += GradiDelMeteoPesca();
+        try
+        {
+            float z = Game.Player.Character.Position.Z;
+            if (z > 50f) t -= (z - 50f) * 0.006f;
+        }
+        catch { }
+        return t;
+    }
+
+    float GradiDelMeteoPesca()
+    {
+        string m = "CLEAR";
+        try
+        {
+            int h = Function.Call<int>(Hash.GET_PREV_WEATHER_TYPE_HASH_NAME);
+            string[] w = new string[] {
+                "EXTRASUNNY", "CLEAR", "CLOUDS", "SMOG", "FOGGY", "OVERCAST",
+                "RAIN", "THUNDER", "CLEARING", "NEUTRAL", "SNOW", "BLIZZARD",
+                "SNOWLIGHT", "XMAS", "HALLOWEEN" };
+            int i;
+            for (i = 0; i < w.Length; i++)
+                if (Function.Call<int>(Hash.GET_HASH_KEY, w[i]) == h)
+                { m = w[i]; break; }
+        }
+        catch { }
+        if (m == "EXTRASUNNY") return 4f;
+        if (m == "CLEAR") return 2f;
+        if (m == "CLEARING" || m == "SMOG") return 1f;
+        if (m == "OVERCAST") return -1f;
+        if (m == "FOGGY") return -2f;
+        if (m == "RAIN") return -4f;
+        if (m == "THUNDER") return -5f;
+        if (m == "SNOWLIGHT") return -10f;
+        if (m == "SNOW" || m == "XMAS") return -12f;
+        if (m == "BLIZZARD") return -15f;
+        return 0f;
+    }
+
+    // l'acqua e' lenta: si muove la meta' dell'aria
+    float GradiAcqua() { return 16f + (GradiAria() - 20f) * 0.45f; }
+
+    // quanto e' viva l'acqua adesso. Numero nostro: il wiki dice solo che
+    // col freddo si pesca meglio a mezzogiorno, non da' una formula.
+    float AttivitaAcqua()
+    {
+        float t = GradiAcqua();
+        float f = 1f - (float)Math.Abs(t - 20f) * 0.045f;
+        if (f < 0.25f) f = 0.25f;
+        if (f > 1f) f = 1f;
+        return f;
+    }
+
+    // quanto aspetti prima che qualcosa prenda
+    // COSA MANCA PER POTER LANCIARE.
+    // Serve del filo sul mulinello e, in punta, qualcosa che agganci:
+    // un amo, una testina, un rig o un artificiale. Il galleggiante e il
+    // piombo da soli non pescano niente.
+    string CosaMancaPerLanciare()
+    {
+        int id; string img, nome;
+        if (!Montato("lenza", out id, out img, out nome) || metriInBobina <= 0)
+            return "Non hai lenza sul mulinello: rimonta una bobina.";
+        bool aggancia = (Armato("terminale") >= 0) || (InUso("artificiale") >= 0);
+        if (!aggancia)
+            return "In punta non c'e' niente: monta un amo o un artificiale.";
+        return "";
+    }
+
+    int AttesaAbboccata(float potenza)
+    {
+        int attesa = 14000 - (int)(potenza * 90f);
+        if (attesa < 3000) attesa = 3000;
+        if (!regoleVere) return attesa + caso.Next(4000);
+        float att = AttivitaAcqua();
+        if (att < 0.15f) att = 0.15f;
+        attesa = (int)(attesa * 1.8f / att);
+        return attesa + caso.Next(6000);
+    }
+
+    // ---------- LA TECNICA ----------
+    // Il wiki dice QUALI PESCI PRENDONO L'ARTIFICIALE (sezione "Preferred
+    // lures" della loro pagina): quelli sono i predatori. La regola che
+    // ci mettiamo noi e' che il predatore a galleggiante con l'esca
+    // naturale abbocca poco, e quando abbocca e' piccolo. Col cucchiaino
+    // e la canna giusta abbocca spesso e si aprono i grossi. Non e' un
+    // divieto, e' una percentuale.
+    bool AllArtificiale()
+    {
+        int id; string img, nome;
+        return Montato("artificiale", out id, out img, out nome);
+    }
+
+    string TipoCannaOra()
+    {
+        int id; string img, nome;
+        if (!Montato("canna", out id, out img, out nome)) return "";
+        int i;
+        for (i = 0; i < canne.Count; i++)
+            if (canne[i].Id == id) return canne[i].Tipo;
+        return "";
+    }
+
+    static bool CannaDaLancio(string t)
+    {
+        return (t == "spinning" || t == "casting" || t == "mare");
+    }
+
+    // torna quanto pesa la tecnica, e quanto sono improbabili i grossi:
+    // pendenza 1 = tutti i pesi uguali, piu' e' alta piu' escono piccoli
+    float QuantoValeTecnica(Specie s, out float pendenza)
+    {
+        pendenza = 1.7f;                 // i grossi sono gia' piu' rari
+        bool predatore = (s.Pred == 1);
+        string tc = TipoCannaOra();
+        if (AllArtificiale())
+        {
+            // il cucchiaino con una match o una telescopica non lo lanci
+            if (!CannaDaLancio(tc)) return 0.15f;
+            pendenza = 1.2f;
+            return 1f;
+        }
+        if (predatore) { pendenza = 6f; return 0.25f; }
+        return 1f;
+    }
+
+    // ==============================================================
+    //  L'ATTREZZO GIUSTO PER QUEL PESCE
+    //  Non e' il peso: quello lo filtra gia' la lenza. E' che gli
+    //  attrezzi il wiki li chiama col nome del pesce a cui servono -
+    //  "Carp rods", "Carp Hooks", "Catfish", "Feeder rods", "Saltwater
+    //  rods" - e se esistono un motivo ce l'hanno. Con la canna e l'amo
+    //  suoi la carpa abbocca come deve; con una canna qualunque abbocca
+    //  lo stesso, ma parecchio meno.
+    //  L'accoppiata famiglia-attrezzo la scriviamo noi, ma il nome da
+    //  cui la ricaviamo e' del wiki.
+    // ==============================================================
+    static string[] CanneBuonePer(string famiglia)
+    {
+        if (famiglia == "Carp family")
+            return new string[] { "carpa", "feeder", "spod", "fondo" };
+        if (famiglia == "Bream and Roach family")
+            return new string[] { "match", "feeder", "telescopica" };
+        if (famiglia == "Panfish family" || famiglia == "Crappie family"
+            || famiglia == "Shinners and Minnows family" || famiglia == "Goby family")
+            return new string[] { "match", "telescopica", "feeder" };
+        if (famiglia == "Catfish family")
+            return new string[] { "fondo", "carpa", "mare" };
+        if (famiglia == "Sturgeon family")
+            return new string[] { "fondo", "carpa" };
+        if (famiglia == "Pike family" || famiglia == "Bass family"
+            || famiglia == "Perch family" || famiglia == "Gar family"
+            || famiglia == "Piranhas family")
+            return new string[] { "spinning", "casting" };
+        if (famiglia == "Trout and Char family" || famiglia == "Salmon family")
+            return new string[] { "spinning", "casting", "match" };
+        if (famiglia == "Saltwater Fish" || famiglia == "Tuna family"
+            || famiglia == "Marlin and Mackerel family" || famiglia == "Drum family")
+            return new string[] { "mare", "casting" };
+        return null;                       // famiglia non scritta: non giudichiamo
+    }
+
+    // l'amo specialista: il wiki li vende col nome del pesce
+    static string FamigliaDellAmo(string modello)
+    {
+        if (modello == null) return "";
+        if (modello.IndexOf("Carp") >= 0) return "Carp family";
+        if (modello.IndexOf("Catfish") >= 0) return "Catfish family";
+        if (modello.IndexOf("Offset") >= 0) return "Bass family";
+        if (modello.IndexOf("Livebait") >= 0) return "Saltwater Fish";
+        return "";                         // Kirby, Octopus e simili: per tutto
+    }
+
+    string ModelloAmoMontato()
+    {
+        int id; string img, nome;
+        if (!Montato("terminale", out id, out img, out nome)) return "";
+        int i;
+        for (i = 0; i < terminali.Count; i++)
+            if (terminali[i].Id == id)
+                return (terminali[i].Cat == "amo") ? terminali[i].Modello : "";
+        return "";
+    }
+
+    // canna giusta + amo giusto = percentuale piena. Canna qualunque =
+    // poco piu' della meta'. Canna di un altro mestiere = un terzo.
+    // Ma non e' mai zero.
+    float QuantoValeAttrezzo(Specie s)
+    {
+        float v = 1f;
+        string[] buone = CanneBuonePer(s.Famiglia);
+        if (buone != null)
+        {
+            string tc = TipoCannaOra();
+            bool giusta = false;
+            int i;
+            for (i = 0; i < buone.Length; i++)
+                if (buone[i] == tc) { giusta = true; break; }
+            if (!giusta)
+            {
+                if (tc == "telescopica" || tc == "fondo" || tc == "match") v *= 0.60f;
+                else v *= 0.35f;
+            }
+        }
+        string fa = FamigliaDellAmo(ModelloAmoMontato());
+        if (fa.Length > 0)
+        {
+            if (fa != s.Famiglia) v *= 0.55f;   // amo specialista di un altro
+        }
+        else v *= 0.80f;                        // amo generico: va, non e' il suo
+        return v;
+    }
+
+    // IL PESCE CHE PRENDE, con tutte le regole accese.
+    // Torna -1 se con quello che hai montato, qui e a quest'ora, non
+    // abbocca niente: e allora si continua ad aspettare.
+    int PescaUnPesceVero(float tenuta, out float kg)
+    {
+        kg = 0f;
+        int lu = LuogoQui();
+        int cal = CaldoDellEsca();
+        string spCal = (cal >= 0) ? pcSpecie[cal] : "";
+        float bonusTaglia = (cal >= 0) ? pcBonus[cal] : 1f;
+        List<int> buoni = new List<int>();
+        List<float> pesi = new List<float>();
+        float somma = 0f;
+        int i;
+        for (i = 0; i < pesci.Count; i++)
+        {
+            Specie s = pesci[i];
+            if (s.KgC > tenuta) continue;
+            if (lu >= 0 && s.Zone != null)
+            {
+                if (!PesceQui(s, lu)) continue;
+            }
+            if (!EscaGiusta(s)) continue;
+
+            float pa = QuantoValeAmo(s);
+            if (pa <= 0f) continue;
+            float po = QuantoValeOra(s.Quando);
+            float pend;
+            float pt = QuantoValeTecnica(s, out pend) * QuantoValeAttrezzo(s);
+            if (pt <= 0f) continue;
+            int r = s.Rarita;
+            if (r < 1 || r > 5) r = 3;
+            float peso = PESO_RARITA[r] * pa * po * pt;
+            // il punto caldo vale anche con le regole vere: se l'esca sta
+            // sopra il posto di quella specie, quel pesce pesa sei volte
+            if (spCal.Length > 0 && s.Nome == spCal) peso = peso * 6f;
+            if (peso <= 0.01f) continue;
+            buoni.Add(i);
+            pesi.Add(peso);
+            somma += peso;
+        }
+        if (buoni.Count == 0 || somma <= 0f) return -1;
+
+        float tiro = (float)caso.NextDouble() * somma;
+        int scelto = buoni[buoni.Count - 1];
+        for (i = 0; i < buoni.Count; i++)
+        {
+            tiro -= pesi[i];
+            if (tiro <= 0f) { scelto = buoni[i]; break; }
+        }
+
+        Specie sp = pesci[scelto];
+        float alto = TettoUnico(sp);
+        if (alto > tenuta) alto = tenuta;
+        float basso = sp.KgC * 0.6f;
+        if (basso < 0.05f) basso = 0.05f;
+        // la taglia non e' a caso piatta: con la tecnica sbagliata escono
+        // quasi solo i piccoli, con quella giusta si aprono i grossi
+        float pend2;
+        QuantoValeTecnica(sp, out pend2);
+        if (pend2 < 1f) pend2 = 1f;
+        float tt = (float)Math.Pow(caso.NextDouble(), pend2);
+        // sul punto profondo il sorteggio del peso si sposta verso l'alto
+        if (bonusTaglia > 1f) tt = (float)Math.Pow(tt, 1.0 / bonusTaglia);
+        kg = basso + tt * (alto - basso);
+        if (kg < 0.05f) kg = 0.05f;
+        return scelto;
+    }
+
+    // IL TETTO DEGLI UNICI.
+    // La tabella del wiki dice il peso dell'unico, ma in gioco ogni tanto
+    // esce qualcosa di piu' grosso ancora: Clear Muskie dati a 30 kg
+    // pescati da 35-37. Il tetto vero e' quello del wiki piu' una
+    // percentuale, "unico_extra" in config.ini (di suo +20%). E' raro:
+    // per arrivarci il sorteggio deve gia' essere sul massimo.
+    float TettoUnico(Specie sp)
+    {
+        float alto = sp.KgU > sp.KgC ? sp.KgU : sp.KgC;
+        if (sp.KgU <= sp.KgC) return alto;
+        float piu = LeggiF("unico_extra", 20f) / 100f;
+        if (piu < 0f) piu = 0f;
+        return alto * (1f + piu);
+    }
+
+    // i denti: senza leader il pesce che morde il filo te lo porta via.
+    // Pronta ma non ancora agganciata alla lotta.
+    bool ServeLeader(Specie s)
+    {
+        if (s == null || s.Denti == 0) return false;
+        // il leader ha la sua casella: o c'e' o non c'e'
+        return Armato("leader") < 0;
+    }
+
+    // sceglie un pesce fra quelli di questa acqua che l'attrezzatura regge
+    int PescaUnPesce(float tenuta, out float kg)
+    {
+        if (regoleVere) return PescaUnPesceVero(tenuta, out kg);
+        kg = 0f;
+        int lu = LuogoQui();
+        List<int> buoni = new List<int>();
+        int i;
+        for (i = 0; i < pesci.Count; i++)
+        {
+            Specie s = pesci[i];
+            if (s.KgC > tenuta) continue;
+            if (lu >= 0 && s.Zone != null)
+            {
+                if (!PesceQui(s, lu)) continue;
+            }
+            buoni.Add(i);
+        }
+        if (buoni.Count == 0) return -1;
+
+        // IL PUNTO CALDO.
+        // Se l'esca e' finita su un punto a specie, quel pesce pesa sei
+        // volte tanto nel sorteggio: non e' garantito, e' molto piu'
+        // probabile. Sul punto profondo la specie non cambia, cambia la
+        // taglia: si pesca piu' verso l'alto della forbice.
+        int cal = CaldoDellEsca();
+        string spCal = (cal >= 0) ? pcSpecie[cal] : "";
+        float bonusTaglia = (cal >= 0) ? pcBonus[cal] : 1f;
+
+        int scelto = -1;
+        if (spCal.Length > 0)
+        {
+            List<int> pesi = new List<int>();
+            for (i = 0; i < buoni.Count; i++)
+            {
+                pesi.Add(buoni[i]);
+                if (pesci[buoni[i]].Nome == spCal)
+                {
+                    int r5;
+                    for (r5 = 0; r5 < 5; r5++) pesi.Add(buoni[i]);
+                }
+            }
+            scelto = pesi[caso.Next(pesi.Count)];
+        }
+        else scelto = buoni[caso.Next(buoni.Count)];
+
+        Specie sp = pesci[scelto];
+        // peso fra il comune e il massimo che l'attrezzatura regge
+        float alto = TettoUnico(sp);
+        if (alto > tenuta) alto = tenuta;
+        float basso = sp.KgC * 0.6f;
+        if (basso < 0.05f) basso = 0.05f;
+        float t5 = (float)caso.NextDouble();
+        // sul punto profondo il sorteggio si sposta verso i pesci grossi
+        if (bonusTaglia > 1f) t5 = (float)Math.Pow(t5, 1.0 / bonusTaglia);
+        kg = basso + t5 * (alto - basso);
+        if (kg < 0.05f) kg = 0.05f;
+        return scelto;
+    }
+
+    Random caso = new Random();
+
+    void Pescata()
+    {
+        Ped p = Game.Player.Character;
+        if (p == null || !p.Exists() || p.IsDead)
+        {
+            if (inScena) ScenaGiu(p);
+            fase = FASE_FERMO;
+            return;
+        }
+
+        int now = Game.GameTime;
+        bool inRiva = VicinoAllAcqua();
+        LeggiTasto();
+        TieniProvaPesce(now);
+
+        // Mentre si pesca la levetta sinistra e' della pesca e non delle
+        // gambe, e i grilletti sono della canna e non delle armi.
+        // Sono gli stessi blocchi della mod vecchia, piu' la mischia.
+        if (fase != FASE_FERMO)
+        {
+            // destra e sinistra girano la frizione del mulinello
+            if (now > tastoFriz)
+            {
+                bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 174)
+                       || Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 174);
+                bool dx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 175)
+                       || Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 175);
+                if (sx && frizione > 1)
+                {
+                    frizione--; tastoFriz = now + 220;
+                    Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                }
+                else if (dx && frizione < 4)
+                {
+                    frizione++; tastoFriz = now + 220;
+                    Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                }
+            }
+            // CI SI GIRA COL DIREZIONALE, NON CON LA TELECAMERA.
+            // Prima il pescatore si metteva dove guardava la telecamera:
+            // bastava girargli intorno per vederlo in faccia e lui si
+            // voltava insieme a te, finendo a pescare nell'erba dietro le
+            // spalle. Adesso la telecamera e' libera - ci giri intorno
+            // quanto vuoi - e la canna la sposti tu con la levetta
+            // sinistra: la lenza in acqua spazza a destra e a sinistra e
+            // si porta dietro il pesce.
+            try
+            {
+                float ax = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 30);
+                float dtG = (float)(now - ultimoGiroCanna) / 1000f;
+                if (dtG <= 0f || dtG > 0.2f) dtG = 0.03f;
+                ultimoGiroCanna = now;
+                if (ax > 0.15f || ax < -0.15f)
+                {
+                    float g = ax * LeggiF("canna_gira_vel", 55f) * dtG;
+                    if (fase == FASE_PRONTO || fase == FASE_CARICA)
+                    {
+                        // canna fuori dall'acqua: miri dove ti pare
+                        Function.Call(Hash.SET_ENTITY_HEADING, p, p.Heading - g);
+                    }
+                    else
+                    {
+                        // lenza in acqua: la canna spazza, ma dentro un
+                        // settore, se no si finisce a pescare all'indietro
+                        // SI MUOVE LA CANNA, NON IL PESCATORE.
+                        // Prima girava tutto il corpo: sembrava che si
+                        // voltasse, non che accompagnasse la lenza. Ora
+                        // la canna va a destra e a sinistra da sola, e il
+                        // corpo la segue solo per la parte che gli dici
+                        // in "canna_gira_corpo" (0 = sta fermo).
+                        float max = LeggiF("canna_gira_max", 40f);
+                        scartoCanna -= g;
+                        if (scartoCanna > max) scartoCanna = max;
+                        if (scartoCanna < -max) scartoCanna = -max;
+                        RuotaCanna(p, 0f, scartoCanna);
+                        float qc = LeggiF("canna_gira_corpo", 0f);
+                        if (qc > 0f)
+                            Function.Call(Hash.SET_ENTITY_HEADING, p,
+                                          dirBase + scartoCanna * qc);
+                        // L'ESCA SI SPOSTA DI CENTIMETRI, NON DI GRADI.
+                        // Prima le passavo una frazione dell'angolo della
+                        // canna: ma un grado, a venti metri, sono trentacinque
+                        // centimetri d'arco - muovevi la canna di un palmo e
+                        // il galleggiante attraversava il lago. Adesso lo
+                        // spostamento e' una misura vera, e piu' lontano sei
+                        // meno angolo serve per farla.
+                        float perGrado = LeggiF("esca_trascina_cm", 0.15f) / 100f;
+                        escaScarto -= g * perGrado;
+                        float latMax = LeggiF("esca_trascina_max_cm", 12f) / 100f;
+                        if (escaScarto > latMax) escaScarto = latMax;
+                        if (escaScarto < -latMax) escaScarto = -latMax;
+                        float dist = metriLenza;
+                        if (dist < 1f) dist = 1f;
+                        escaDir = escaBase + (float)(Math.Atan2(escaScarto, dist)
+                                                     * 180.0 / Math.PI);
+                        AggiornaEsca(p, metriLenza);
+                    }
+                }
+                // levetta indietro: la strappata, tira la lenza verso di te
+                float ay = Function.Call<float>(Hash.GET_DISABLED_CONTROL_NORMAL, 0, 31);
+                if (ay > 0.5f && now > miaStrappataDa
+                    && (fase == FASE_ACQUA || fase == FASE_LOTTA))
+                {
+                    miaStrappataDa = now + (int)LeggiF("anim_strappo_ms", 420f) + 220;
+                    AvviaStrappo(p);
+                    // LA STRAPPATA NON RECUPERA.
+                    // E' solo il movimento della canna: il mulinello lo
+                    // giri con il grilletto, sempre quello, e basta.
+                    // Se in "strappo_metri" ci metti un numero, quella
+                    // strappata si porta a casa anche quei metri.
+                    float sm = LeggiF("strappo_metri", 0f);
+                    if (sm > 0f && fase == FASE_ACQUA)
+                    {
+                        metriLenza -= sm;
+                        if (metriLenza < 0f) metriLenza = 0f;
+                        AggiornaEsca(p, metriLenza);
+                    }
+                }
+            }
+            catch { }
+            // NON si tocca il 44 (RB): il trainer si apre con RB + GIU',
+            // e mentre peschi devi poter aprire inventario ed equipaggiamento.
+            // Il 27 e' il telefono: SU tirava fuori il cellulare in mezzo
+            // a una lotta. Fuori anche 172 e 176, che sono le sue frecce.
+            int[] via = new int[] { 30, 31, 24, 25, 22, 23, 21, 257,
+                                    140, 141, 142, 143, 263, 264, 45,
+                                    27, 172, 176 };
+            int qv;
+            for (qv = 0; qv < via.Length; qv++)
+                Function.Call(Hash.DISABLE_CONTROL_ACTION, 0, via[qv], true);
+        }
+
+        // ---- fermo: si comincia ----
+        if (fase == FASE_FERMO)
+        {
+            if (!inRiva) return;
+            if (p.IsInVehicle() && !p.IsSittingInVehicle()) return;
+            // SENZA LICENZA non si dice niente di attrezzatura: stai solo
+            // passando di li'. Al massimo il nome del posto, se lo vuoi.
+            // Cosa ti manca te lo dice quando hai pagato e vuoi pescare.
+            if (!inPesca)
+            {
+                // NIENTE SCRITTA IN GIRO PER LA MAPPA.
+                // Al bordo dei cinquanta metri si accendeva e si spegneva
+                // di continuo, e ogni volta suonava la notifica. Dove sei
+                // te lo dice il menu della pesca quando lo apri, che e'
+                // il posto giusto per saperlo.
+                return;
+            }
+
+            // IN RIVA NON SI SCRIVE NIENTE.
+            // Quello che manca te lo dice il menu quando premi
+            // "Inizia a pescare": stare in riva non e' un errore.
+            // L'unica cosa che si dice e' la licenza pagata altrove.
+            int luOra = LuogoQui();
+            if (luOra >= 0 && CodiceLuogo(luOra) != licZona)
+            {
+                string bzL;
+                Aiuto("Non sei nel posto della licenza: l'hai pagata per "
+                      + NomeChiosco(licZona, out bzL));
+            }
+            return;
+        }
+
+        // ---- canna in mano, pronta a lanciare ----
+        if (fase == FASE_PRONTO)
+        {
+            HudPesca();
+            PosaFerma(p);
+            Aiuto("Tieni ~INPUT_ATTACK~ per caricare il lancio - ~INPUT_FRONTEND_X~ per riporre - ~INPUT_COVER~ esca");
+            if (now > tastoDa && TastoCanna())
+            {
+                // niente suono qui: sembrava fosse successo qualcosa di grave.
+                // Il messaggio basta.
+                Messaggio("~y~Canna ritirata.");
+                ScenaGiu(p);
+                fase = FASE_FERMO;
+                return;
+            }
+            if (now > tastoDa && TastoEsca()) { CambiaEsca(); tastoDa = now + 300; }
+            // IL GRILLETTO VA MOLLATO PRIMA DI RILANCIARE.
+            // Recuperavi tenendo premuto, la lenza rientrava e con lo
+            // stesso dito ancora giu' ripartiva subito un lancio a caso.
+            if (!TastoGiu()) grillettoMollato = true;
+            if (now > tastoDa && grillettoMollato && TastoGiu())
+            {
+                // SENZA ARMATURA NON SI LANCIA.
+                // Dopo una rottura restavi con la canna in mano e la
+                // lenza nuda: rilanciavi e non poteva abboccare niente,
+                // perche' in punta non c'era piu' niente. Adesso te lo
+                // dice e non parte il lancio.
+                string manca = CosaMancaPerLanciare();
+                if (manca.Length > 0)
+                {
+                    Messaggio(manca);
+                    tastoDa = now + 1200;
+                    grillettoMollato = false;
+                    return;
+                }
+                grillettoMollato = false;
+                fase = FASE_CARICA;
+                potenza = 0f;
+                potenzaSu = true;
+            }
+            return;
+        }
+
+        // ---- carica il lancio ----
+        if (fase == FASE_CARICA)
+        {
+            // LA CARICA COSTA FATICA: la barra sale piu' piano di prima,
+            // cosi' il massimo lo prendi solo se lo tieni premuto davvero
+            float vc = LeggiF("carica_vel", 1.25f);
+            if (potenzaSu) potenza += vc; else potenza -= vc;
+            if (potenza >= 100f) { potenza = 100f; potenzaSu = false; }
+            if (potenza <= 0f) { potenza = 0f; potenzaSu = true; }
+
+            HudPesca();
+            BarraCanna(potenza / 100f, 165, 95, 235);   // viola: stai caricando
+            Metri(MetriDelLancio(potenza));
+            Aiuto("Rilascia ~INPUT_ATTACK~ per lanciare");
+            // il corpo si piega indietro e la canna va indietro con lui,
+            // tutti e due insieme alla carica
+            PosaCarica(p, potenza / 100f);
+
+            if (!TastoGiu())
+            {
+                // L'ESCA NON SI CONSUMA QUI.
+                // Prima ogni lancio si mangiava un boccone: ritiravi a
+                // vuoto cento volte e ti restava un verme. Ma il pane
+                // sull'amo, se non lo mangia nessuno, quando ritiri c'e'
+                // ancora. L'esca si perde quando abbocca il pesce - poi
+                // che lo prendi, che si slama o che ti spezza la lenza
+                // e' un altro discorso.
+                AvviaFrustata(p, potenza / 100f);
+                if (sulN.Length > 0) Suono(sulN, sulS);
+                SuonoFile(LeggiS("suono_lancio_file", "lancio.wav"));
+                dirBase = p.Heading;
+                scartoCanna = 0f;
+                escaDir = p.Heading;
+                escaBase = p.Heading;
+                escaScarto = 0f;
+                Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                fase = FASE_ACQUA;
+                // appena tocca l'acqua il cucchiaino e' in superficie:
+                // da li' comincia a scendere
+                profEsca = 0f;
+                // piu' forte lanci, prima abbocca (sei sul pesce vero).
+                // Con le regole vere accese contano anche l'ora, il meteo
+                // e la temperatura dell'acqua.
+                quandoAbbocca = now + AttesaAbboccata(potenza);
+                // se e' finita a terra lo si dice subito, non dopo
+                // trenta secondi di attesa a vuoto
+                metriLenza = MetriDelLancio(potenza);
+                AggiornaEsca(p, metriLenza);
+                // FUORI DALL'ACQUA NON SI PESCA.
+                // Erba, rocce, asfalto: la lenza rientra da sola e torni
+                // con la canna in mano, pronto a rilanciare. Il messaggio
+                // c'e', il suono no: quello a ripetizione era un martello.
+                if (!EscaSullAcqua())
+                {
+                    Messaggio("~y~Fuori dall'acqua: la lenza e' rientrata.");
+                    metriLenza = 0f;
+                    escaInAcqua = false;
+                    escaATerra = false;
+                    fase = FASE_PRONTO;
+                    grillettoMollato = false;
+                    tastoDa = now + 300;
+                    return;
+                }
+                tastoDa = now + 900;
+            }
+            return;
+        }
+
+        // ---- lenza in acqua ----
+        // Il recupero e' quello della mod vecchia, che funzionava:
+        //  - e' ANALOGICO: quanto premi decide quanto ritiri
+        //  - il click del mulinello va piu' fitto se giri forte
+        //  - recuperare piano AVVICINA l'abboccata: l'esca si muove e il
+        //    pesce si incuriosisce. Girare non e' una resa, e' un modo di
+        //    pescare.
+        //  - la lenza rientrata non e' un fallimento: nessun bip, solo
+        //    una riga che te lo dice
+        if (fase == FASE_ACQUA)
+        {
+            HudPesca();
+            BarraCanna(0f, 130, 225, 180);
+            TacchePrizione();
+            Metri(metriLenza);
+            DisegnaLenza(now, false);
+            // L'ESCA NON SI CAMBIA CON LA LENZA IN ACQUA.
+            // L'esca sta sull'amo, e l'amo sta in fondo al lago: per
+            // cambiarla si recupera. Prima si poteva, e cambiava il pesce
+            // che stava gia' abboccando.
+            if (now > tastoDa && TastoEsca())
+            {
+                Aiuto("Recupera la lenza per cambiare esca");
+                tastoDa = now + 600;
+            }
+
+            float dtA = Game.LastFrameTime;
+            // IL MULINELLO LO GIRA SOLO IL GRILLETTO.
+            // Prima recuperava anche la levetta tirata indietro - era
+            // cosi' dalla mod vecchia - e cosi' ogni volta che muovevi la
+            // canna ti ritirava la lenza. La levetta serve a muovere la
+            // canna, il grilletto a recuperare, e non si mischiano.
+            float ritiro = ValoreRT();
+            if (ritiro < 0.1f) ritiro = 0f;
+            if (ritiro > 1f) ritiro = 1f;
+
+            // A SPINNING L'ESCA VIVE IN VERTICALE.
+            // Ferma affonda, tirata sale: e' il tira-e-molla che la fa
+            // sembrare un pesciolino. Quanto in fretta lo dicono
+            // "spin_affonda" e "spin_sale" in config.ini.
+            if (!QuadranteGall())
+            {
+                if (ritiro > 0f)
+                    profEsca -= LeggiF("spin_sale", 0.55f) * ritiro * dtA;
+                else
+                    profEsca += LeggiF("spin_affonda", 0.30f) * dtA;
+                if (profEsca < 0f) profEsca = 0f;
+                if (profEsca > 1f) profEsca = 1f;
+            }
+            // il braccio gira il mulinello solo mentre lo giri tu, e va
+            // veloce quanto lo giri
+            if (!Frustata(p, now) && !Strappo(p, now))
+            {
+                if (ritiro > 0f) Posa(p, ClipMulinello(), 0.5f + ritiro * ritiro * 2.6f);
+                else PosaFerma(p);
+            }
+
+            if (ritiro > 0f)
+            {
+                // IL RECUPERO NON E' PIATTO.
+                // Premendo appena si accompagna l'esca, premendo a fondo si
+                // recupera davvero in fretta: la velocita' sale col quadrato
+                // di quanto premi, e la moltiplica il mulinello che hai.
+                // pianissimo se sfiori la leva, velocissimo a fondo:
+                // la curva e' ripida apposta, non lineare
+                float velRec = (0.10f + 13.5f * (float)Math.Pow(ritiro, 2.6))
+                             * FattoreRecupero();
+                metriLenza -= velRec * dtA;
+                AggiornaEsca(p, metriLenza);
+                quandoAbbocca -= (int)(600f * ritiro * dtA);
+                if (now > giroMulinello)
+                {
+                    // il click segue la velocita' vera, non quanto premi
+                    int passo = (int)(1100f / (velRec + 1.5f));
+                    if (passo < 14) passo = 14;
+                    if (passo > 240) passo = 240;
+                    giroMulinello = now + passo;
+                    try { Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "HACKING_CLICK", 0, true); }
+                    catch { }
+                }
+                if (metriLenza <= 0.2f)
+                {
+                    metriLenza = 0f;
+                    fase = FASE_PRONTO;
+                    grillettoMollato = false;
+                    tastoDa = now + 400;
+                    Messaggio("~y~Lenza ritirata.");
+                    return;
+                }
+            }
+
+            // L'ESCA A TERRA NON PESCA.
+            // Se il lancio e' finito sul prato, sull'asfalto o dentro una
+            // siepe, non c'e' niente da aspettare: l'attesa si sposta in
+            // avanti a ogni giro, quindi non abbocchera' mai, e te lo
+            // dice a chiare lettere invece di lasciarti li' a credere di
+            // stare pescando.
+            if (!EscaSullAcqua())
+            {
+                Messaggio("~y~Fuori dall'acqua: la lenza e' rientrata.");
+                metriLenza = 0f;
+                escaInAcqua = false;
+                fase = FASE_PRONTO;
+                grillettoMollato = false;
+                tastoDa = now + 300;
+                return;
+            }
+
+            // GLI ASSAGGI SONO POCHI E ARRIVANO ALLA FINE.
+            // Un pesce non mordicchia per minuti: o e' sotto e prende, o
+            // non c'e' e l'acqua sta ferma. I tocchi si sentono solo negli
+            // ultimi secondi prima dell'abboccata - quando il pesce e'
+            // davvero li' - e sono radi. Dopo uno spavento c'e' calma
+            // vera: finche' non passa, non tocca niente.
+            bool assaggio = false;
+            if (quandoAbbocca - now < (int)LeggiF("assaggio_finestra", 2600f)
+                && now > calmaFino)
+            {
+                if (now > prossimoTocco)
+                {
+                    prossimoTocco = now + (int)LeggiF("assaggio_pausa", 1200f)
+                                  + caso.Next((int)LeggiF("assaggio_pausa_piu", 1400f));
+                    toccoFine = now + (int)LeggiF("assaggio_dura", 260f);
+                    Vibra(90, 45);
+                }
+                if (now < toccoFine) assaggio = true;
+
+                // SE STRAPPI MENTRE MORDICCHIA, LO PERDI - MA SOLO A
+                // GALLEGGIANTE.
+                // Con l'esca ferma sotto il galleggiante il pesce si
+                // avvicina e assaggia: se gli strappi via il boccone si
+                // stacca. A spinning e' il contrario - recuperare E' la
+                // tecnica, l'artificiale deve muoversi per lavorare, e un
+                // pesce che insegue non si spaventa perche' tiri. Quindi
+                // questa regola vale solo se il galleggiante ce l'hai.
+                if (HoIlGalleggiante() && ritiro > LeggiF("strappa_via", 0.35f))
+                {
+                    // L'ATTESA NUOVA LA DECIDONO LE REGOLE, non un
+                    // numero fisso. Il pesce spaventato rimette
+                    // l'orologio a zero: quanto ci mette a tornare lo
+                    // dice la stessa funzione dell'attesa normale, che
+                    // guarda ora, meteo, esca e rarita'. Con le regole
+                    // spente sono pochi secondi; con quelle accese puo'
+                    // essere parecchio, ed e' giusto cosi'.
+                    int ferma = AttesaAbboccata(50f);
+                    int minimo = (int)LeggiF("dopo_spavento_ms", 6000f);
+                    if (ferma < minimo) ferma = minimo;
+                    quandoAbbocca = now + ferma;
+                    // e adesso l'acqua sta ferma davvero
+                    calmaFino = now + minimo;
+                    prossimoTocco = now + minimo;
+                    toccoFine = 0;
+                    assaggio = false;
+                    // niente suono: questa cosa capita spesso e quel
+                    // "pam pam" a ripetizione diventa un martello. Il
+                    // messaggio scritto basta.
+                    Messaggio("~y~Hai tirato troppo presto: se n'e' andato.");
+                }
+            }
+            if (QuadranteGall())
+                DisegnaGalleggiante(now, assaggio ? 5f : 0f, assaggio ? 1f : 0f);
+            else DisegnaSpinning(now, assaggio ? 1f : 0f);
+            GalleggianteInAcqua(now, 0f, assaggio ? 1f : 0f, ritiro);
+            Aiuto("~INPUT_ATTACK~ recuperi piano - ~INPUT_COVER~ esca");
+
+            if (now >= quandoAbbocca)
+            {
+                float tenuta = TenutaBorsa();
+                dentiDa = 0;
+                pesceQui = PescaUnPesce(tenuta, out pesceKg);
+                if (pesceQui < 0)
+                {
+                    // Con le regole vere non e' un errore: e' che con questa
+                    // esca, questo amo e a quest'ora qui non mangia niente.
+                    // La lenza resta in acqua e si continua ad aspettare.
+                    if (regoleVere)
+                    {
+                        quandoAbbocca = now + 6000 + caso.Next(8000);
+                        return;
+                    }
+                    Messaggio("~r~Qui non abbocca niente con questa attrezzatura.");
+                    fase = FASE_PRONTO;
+                    grillettoMollato = false;
+                    return;
+                }
+                // e qui si vede: il pesce spunta all'amo
+                MettiPesce();
+                // QUI SE LA MANGIA: e' adesso che il boccone se ne va.
+                if (escaMontata >= 0)
+                {
+                    if (!Consuma("esca", escaMontata))
+                    {
+                        Messaggio("~y~Esca finita.");
+                        escaMontata = -1;
+                    }
+                    else SalvaStato();
+                }
+                fase = FASE_ABBOCCA;
+                scadeFerrata = now + 1500;
+                Vibra(300, 160);
+            }
+            return;
+        }
+
+        // ---- abbocca: ferra! ----
+        if (fase == FASE_ABBOCCA)
+        {
+            HudPesca();
+            BarraCanna(0f, 250, 210, 90);
+            Metri(metriLenza);
+            DisegnaLenza(now, true);
+            if (QuadranteGall()) DisegnaGalleggiante(now, 14f, 2.2f);
+            else DisegnaSpinning(now, 2.2f);
+            GalleggianteInAcqua(now, 1f, 1f, 1f);
+            AggiornaPesce(p, now, true);
+            if (TastoPremuto())
+            {
+                fase = FASE_LOTTA;
+                tensione = 30f;
+                recuperato = 0f;
+                stanchezza = 0f;
+                strappoFine = 0;
+                strappoDa = 0;
+                tastoDa = now + 300;
+                return;
+            }
+            if (now >= scadeFerrata)
+            {
+                Suono("LOSER", "HUD_AWARDS");
+                Messaggio("~y~Se n'e' andato.");
+                TogliPesce();
+                fase = FASE_PRONTO;
+                grillettoMollato = false;
+                tastoDa = now + 500;
+            }
+            return;
+        }
+
+        // ---- il pesce in mano: METTILO NELLA RETE o RIBUTTALO IN ACQUA ----
+        if (fase == FASE_CARD)
+        {
+            PosaFerma(p);
+            HudPesca();
+            AggiornaPesce(p, now, false);
+            DisegnaFiloAppeso();
+            Specie sc = pesci[cardPesce];
+
+            // LA FINESTRA DEL PESCE si sposta e si rimpicciolisce dal
+            // config: in mezzo allo schermo copriva proprio il pesce
+            // che ti penzola dalla canna. Tutto quello che c'e' dentro
+            // segue la larghezza, quindi la scheda si scala intera.
+            float w = LeggiF("card_larga", 300f);
+            float k = w / 380f;
+            // i testi hanno un loro moltiplicatore: la finestra si puo'
+            // stringere senza che le scritte diventino illeggibili
+            float kt = k * LeggiF("card_testi", 1f);
+            float h = 200f * k;
+            float x = LeggiF("card_x", 1280f - 300f - 24f);
+            float y = LeggiF("card_y", 60f);
+            float cx = x + w * 0.5f;
+
+            // Un po' di verde d'acqua invece del nero: e' una pescata,
+            // non un rapporto di polizia.
+            DisegnaRett(x - 2f, y - 2f, w + 4f, h + 4f, 12, 26, 24, 240);
+            DisegnaRett(x, y, w, 20f * k, 26, 74, 62, 250);
+            DisegnaTesto(sc.Nome, cx, y + 2f * k, 0.33f * kt, 235, 245, 240);
+
+            // la foto del pesce
+            DisegnaRett(x, y + 20f * k, w, 122f * k, 46, 48, 54, 235);
+            Sprite(sc.Img, x + 7f * k, y + 25f * k, w - 14f * k, 112f * k);
+
+            // comune, trofeo o esemplare unico
+            int cr = 200, cg = 225, cb = 210;
+            if (cardTaglia == "TROFEO") { cr = 245; cg = 205; cb = 80; }
+            else if (cardTaglia == "ESEMPLARE UNICO") { cr = 210; cg = 160; cb = 250; }
+            DisegnaRett(x, y + 142f * k, w, 16f * k, 20, 46, 40, 245);
+            DisegnaTesto(cardTaglia, cx, y + 143f * k, 0.26f * kt, cr, cg, cb);
+
+            // peso, valore, punti
+            DisegnaRett(x, y + 158f * k, w, 20f * k, 16, 34, 30, 245);
+            DisegnaTesto(cardKg.ToString("0.##", CultureInfo.InvariantCulture) + " kg",
+                         x + 72f * k, y + 160f * k, 0.29f * kt, 235, 245, 240);
+            DisegnaTesto("$" + cardVale, cx, y + 160f * k, 0.29f * kt, 130, 225, 180);
+            DisegnaTesto("+" + cardXp + " XP", x + w - 72f * k, y + 160f * k, 0.29f * kt, 130, 200, 245);
+
+            // LE DUE SCELTE SU UNA RIGA SOLA: a sinistra tieni, a destra molla.
+            // I tasti si scrivono a lettere: qui il testo e' quello semplice,
+            // e i simboli ~INPUT_~ li sa espandere solo l'aiuto in basso.
+            DisegnaRett(x, y + 178f * k, w, 22f * k, 10, 22, 20, 250);
+            DisegnaRett(x + w * 0.5f - 1f, y + 180f * k, 2f, 18f * k, 60, 90, 80, 200);
+            if (cardPuoTenere)
+                DisegnaTesto("A   mettilo nella rete", x + w * 0.25f, y + 181f * k,
+                             0.25f * kt, 150, 235, 180);
+            else
+                DisegnaTesto(cardPerche, x + w * 0.25f, y + 181f * k, 0.23f * kt, 245, 205, 80);
+            // rosso come il tasto B: cosi' si capisce a colpo d'occhio
+            // che quello e' il pesce che se ne va
+            DisegnaTesto("B   ributtalo in acqua", x + w * 0.75f, y + 181f * k,
+                         0.25f * kt, 235, 90, 80);
+            bool tieni = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201)
+                      || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 201);
+            bool ributta = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 202)
+                        || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 202);
+
+            if (now > tastoDa && (tieni || ributta))
+            {
+                bool inRete = (tieni && cardPuoTenere);
+                if (inRete)
+                {
+                    kgNassa += cardKg;
+                    // se c'e' un torneo in corso questo pesce fa punteggio.
+                    // Nel diario e nella nassa ci finisce lo stesso, come
+                    // sempre: il torneo non toglie niente alla pescata.
+                    PesceDelTorneo(sc.Nome, cardKg, cardTaglia);
+                    Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                }
+                else Suono("BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+
+                // NELLA NASSA CI VA SOLO QUELLO CHE E' NELLA NASSA.
+                // Un pesce ributtato non sta nella rete, quindi non compare
+                // e non vale un soldo: di quella pescata ti restano gli XP,
+                // che quelli te li sei guadagnati lo stesso.
+                if (inRete)
+                    nassaOggi.Add(sc.Nome + "|niente|" + sc.Img
+                                  + "|+" + cardXp + " XP"
+                                  + "||" + cardKg.ToString("0.##", CultureInfo.InvariantCulture)
+                                  + " kg   $" + cardVale
+                                  + "|130,200,245|245,205,80");
+
+                cardPesce = -1;
+                // nella rete o rimesso in acqua, dalla lenza sparisce
+                TogliPesce();
+                fase = FASE_PRONTO;
+                grillettoMollato = false;
+                tastoDa = now + 400;
+                SalvaStato();
+                RiscriviTutto();
+            }
+            return;
+        }
+
+        // ---- tira e molla ----
+        if (fase == FASE_LOTTA)
+        {
+            DisegnaLenza(now, true);
+            AggiornaPesce(p, now, true);
+
+            // I DENTI TAGLIANO IL FILO.
+            // Un predatore coi denti, senza il cavetto davanti, la lenza
+            // te la sega e basta: non e' questione di quanto tiri. Regge
+            // qualche secondo, il tempo di illuderti, poi se ne va con
+            // tutto quello che aveva in bocca. Per quelli si monta il
+            // leader, e senza non li prendi.
+            // I PICCOLI NO.
+            // Il cucciolo di luccio da quattro etti la lenza non la sega:
+            // e' proprio quello che peschi senza cavetto, prima di
+            // passare a quelli da quattro-cinque chili. Il taglio scatta
+            // dal peso in su ("denti_kg" in config.ini).
+            if (pesceQui >= 0 && pesceQui < pesci.Count
+                && pesceKg >= LeggiF("denti_kg", 1.2f)
+                && ServeLeader(pesci[pesceQui]))
+            {
+                if (dentiDa == 0) dentiDa = now;
+                int quanto = (int)(LeggiF("denti_secondi", 3.5f) * 1000f);
+                if (now - dentiDa > quanto)
+                {
+                    dentiDa = 0;
+                    TogliPesce();
+                    PerdiArmatura();
+                    Vibra(400, 250);
+                    fase = FASE_PRONTO;
+                    grillettoMollato = false;
+                    tastoDa = now + 600;
+                    return;
+                }
+            }
+            float tenuta = TenutaBorsa();
+            float forza = pesceKg / tenuta;          // 0..1: quanto tira
+            if (forza > 1f) forza = 1f;
+
+            // LA CORDA TIRATA DA DUE PARTI.
+            // Se tiro io e tira lui, la lenza non fa metri: sta ferma e si
+            // carica. I metri li fa la DIFFERENZA fra le due forze, la
+            // tensione la loro SOMMA. Non ha senso guadagnare lenza mentre
+            // lui sta scappando.
+            float spinta = ValoreRT();
+            if (spinta < 0.1f) spinta = 0f;
+            if (spinta > 1f) spinta = 1f;
+
+            int fz = frizione - 1;
+            if (fz < 0) fz = 0;
+            if (fz > 3) fz = 3;
+            float dtL = Game.LastFrameTime;
+
+            // ---- ogni tanto il pesce parte ----
+            // SI STANCA. Piu' lo contrasti piu' si consuma, e da stanco
+            // tira meno forte, per meno tempo, con pause piu' lunghe.
+            stanchezza += (0.05f + spinta * 0.09f) * dtL;
+            if (stanchezza > 1f) stanchezza = 1f;
+
+            if (now > strappoFine && now > strappoDa)
+            {
+                // niente ritmo fisso: durata, pausa e forza cambiano
+                // ogni volta, se no dopo tre strappi sai gia' cosa fa
+                float fresco = 1f - stanchezza * 0.65f;
+                strappoFine = now + 400 + caso.Next(1600 + (int)(fresco * 600f));
+                strappoDa = strappoFine + 500 + caso.Next(2000)
+                          + (int)(stanchezza * 1800f);
+                strappoForza = (0.35f + forza * 0.85f) * fresco
+                             * (0.65f + (float)caso.NextDouble() * 0.7f);
+                if (strappoForza < 0.1f) strappoForza = 0.1f;
+                Vibra(150 + caso.Next(200), 90 + (int)(strappoForza * 90f));
+            }
+            bool tiraLui = (now < strappoFine);
+            // e dentro lo strappo non tira piatto: ondeggia
+            float onda = 0.75f + 0.25f * (float)Math.Sin(now * 0.011);
+            float forzaPesce = tiraLui ? (strappoForza * onda) : 0f;
+
+            // I METRI: la differenza. Positiva recuperi, negativa se ne va,
+            // vicino allo zero la corda e' tesa e non si muove nessuno.
+            // E ci passa in mezzo la FRIZIONE: tirata il mulinello non
+            // molla, lui fatica a prendere lenza e tu ne guadagni un po'
+            // di piu'; morbida gli lascia scorrere via i metri. E' questo
+            // che pareggia il conto con la tensione, che invece sale.
+            float netto = spinta - forzaPesce;
+            // mentre guadagni metri giri il mulinello, mentre lui scappa
+            // resti in tiro con la canna piegata
+            if (!Strappo(p, now))
+            {
+                if (netto > 0.05f) Posa(p, ClipMulinello(), 0.6f + netto * 0.9f);
+                else Posa(p, LeggiS("anim_tira", "idle_b"), 0.25f);
+            }
+            float mFriz = (netto < 0f) ? FRIZ_MET[fz] : FRIZ_GUA[fz];
+            metriLenza -= 3.0f * netto * mFriz * dtL;
+            // ANCHE IN LOTTA L'ESCA SI MUOVE.
+            // Qui non si aggiornava: i metri scendevano ma il punto restava
+            // piantato dove aveva abboccato, e la lenza sembrava bloccata.
+            AggiornaEsca(p, metriLenza);
+            recuperato += 16f * FRIZ_REC[fz] * netto * dtL;
+
+            // LA TENSIONE: la somma. Quanto tiro io, piu' quanto tira lui
+            // filtrato dalla frizione - tirata trasmette tutto, morbida
+            // lascia scorrere. E pesa di piu' se il pesce e' grosso per la
+            // lenza che hai montato: e' li' che si spezza.
+            float caricoLui = forzaPesce * FRIZ_TEN[fz];
+            float carico = spinta + caricoLui;
+            tensione += (6f + forza * 30f) * carico * dtL;
+            // e sempre un filo di sfogo, tanto piu' quanto meno tiri
+            tensione -= 34f * (1f - spinta * 0.7f) * dtL;
+
+            // il mulinello: canta quando cede lenza, ticchetta quando ne
+            // guadagni, tace quando siete fermi a tirare tutti e due
+            if (forzaPesce > 0f && netto < 0f)
+            {
+                if (now > clickPesce)
+                {
+                    clickPesce = now + 70 + (int)(70f * (1f - strappoForza));
+                    try { Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "HACKING_CLICK", 0, true); }
+                    catch { }
+                    Vibra(70, 45);
+                }
+            }
+            else if (netto > 0.05f && tensione < 85f && now > giroMulinello)
+            {
+                giroMulinello = now + 200 - (int)(netto * 130f);
+                try { Function.Call(Hash.PLAY_SOUND_FRONTEND, -1, "HACKING_CLICK", 0, true); }
+                catch { }
+            }
+
+            if (tensione < 0f) tensione = 0f;
+            if (recuperato < 0f) recuperato = 0f;
+            if (metriLenza < 0f) metriLenza = 0f;
+            HudPesca();
+            int tr = tensione >= 85f ? 245 : (tensione >= 60f ? 250 : 130);
+            int tg = tensione >= 85f ? 90 : (tensione >= 60f ? 210 : 225);
+            int tb = tensione >= 85f ? 90 : (tensione >= 60f ? 90 : 180);
+            BarraCanna(tensione / 100f, tr, tg, tb);
+            TacchePrizione();
+            // UN TESTO SOLO, sempre uguale: cambiarlo fa suonare il bip
+            // di GTA a ogni strappo. Che stia tirando lo vedi dalla barra,
+            // lo senti dal mulinello e te lo dice il pad.
+            Aiuto("~INPUT_ATTACK~ recupera - sinistra/destra la frizione");
+            Metri(metriLenza);
+
+            if (tensione >= 100f)
+            {
+                Suono("LOSER", "HUD_AWARDS");
+                PerdiArmatura();
+                Vibra(400, 250);
+                TogliPesce();
+                fase = FASE_PRONTO;
+                grillettoMollato = false;
+                tastoDa = now + 600;
+                return;
+            }
+            // IL PESCE E' TUO QUANDO E' A RIVA, cioe' quando i metri sono
+            // finiti. Prima si vinceva anche col contatore del recupero,
+            // che correva per conto suo: capitava di 'prendere' un pesce
+            // che stava ancora a sessanta metri.
+            // GLI ULTIMI METRI SONO I PIU' DURI.
+            // Sotto i tre metri il pesce vede la riva e si impunta: i metri
+            // vengono via a fatica. Serve anche a far capire che la presa
+            // avviene a zero e non a mezza strada.
+            if (metriLenza < 3f && netto > 0f)
+                metriLenza += 3.0f * netto * mFriz * dtL * 0.55f;
+
+            if (metriLenza <= 0.5f)
+            {
+                // la fase la decide Preso(): apre la finestra del pesce e
+                // ci resta finche' non scegli. Rimetterla qui a "pronto"
+                // chiudeva la finestra nello stesso fotogramma in cui si apriva.
+                tastoDa = now + 600;
+                Preso();
+            }
+            return;
+        }
+    }
+
+    // ============================================================
+    //  L'HUD DELLA PESCA - stessa disposizione della mod vecchia,
+    //  con l'attrezzatura nuova:
+    //    canna in piedi a destra          1174, 374   130x330
+    //    colonna del montaggio            1136, 650   112x44, sale di 54
+    //    esca in alto a destra            1172, 8     96x38 + quantita'
+    //    nassa in basso a sinistra        158, 589    256x102 + chili
+    //    barra verticale                  1012, 420   8x120
+    //    metri sopra la barra, galleggiante in colonna
+    // ============================================================
+    const float BAR_X = 1012f;
+    const float BAR_W = 8f;
+    const float BAR_H = 240f;   // il doppio di prima: era troppo corta
+
+    // DOVE COMINCIA LA BARRA. Da qui scendono la barra, le tacche della
+    // frizione e i metri: alzando "barra_y" si avvicina tutto all'acqua.
+    // Il quadrante invece sta per conto suo, a "quadrante_y".
+    float BarY() { return LeggiF("barra_y", 420f); }
+
+    // LE QUATTRO TACCHE DELLA FRIZIONE, in colonna accanto alla barra.
+    // Accese dal basso: una sola = tirata, tutte e quattro = morbida.
+    void TacchePrizione()
+    {
+        float w = 8f, h = 8f;
+        float x = BAR_X - 14f;
+        float y0 = BarY() + BAR_H - h;
+        int i;
+        for (i = 0; i < 4; i++)
+        {
+            float y = y0 - i * (h + 4f);
+            DisegnaRett(x - 1f, y - 1f, w + 2f, h + 2f, 0, 0, 0, 150);
+            if (i < frizione) DisegnaRett(x, y, w, h, 130, 200, 245, 240);
+            else DisegnaRett(x, y, w, h, 40, 44, 52, 210);
+        }
+    }
+
+    void BarraCanna(float fill01, int cr, int cg, int cb)
+    {
+        DisegnaRett(BAR_X - 3f, BarY() - 3f, BAR_W + 6f, BAR_H + 6f, 0, 0, 0, 120);
+        DisegnaRett(BAR_X, BarY(), BAR_W, BAR_H, 30, 32, 36, 90);
+        if (fill01 < 0f) fill01 = 0f;
+        if (fill01 > 1f) fill01 = 1f;
+        DisegnaRett(BAR_X, BarY() + BAR_H * (1f - fill01), BAR_W, BAR_H * fill01, cr, cg, cb, 240);
+    }
+
+    void Metri(float m)
+    {
+        // sul punto caldo i metri diventano ambrati: e' l'unico segno che
+        // hai messo l'esca dove il pesce c'e'. Non lo dice nessun menu,
+        // te ne accorgi guardando l'acqua e i numeri.
+        int cal = CaldoDellEsca();
+        int cr = 245, cg = 245, cb = 250;
+        if (cal >= 0)
+        {
+            if (pcSpecie[cal].Length > 0) { cr = 250; cg = 205; cb = 120; }
+            else { cr = 200; cg = 165; cb = 250; }
+        }
+        // UN DECIMALE. Con i metri interi il numero saltava 19, 18, 17 e
+        // sembrava che la lenza corresse a scatti: cosi' invece scorre.
+        float mm = (m < 0f) ? 0f : m;
+        // QUANTI METRI HAI FUORI SU QUANTI NE HAI IN TUTTO.
+        // Da soli i metri non dicono niente: dodici sono pochi con
+        // sessantacinque di filo in bobina e sono la fine del mondo se
+        // ne restano quindici. Il secondo numero e' quello che c'e'
+        // davvero sul mulinello adesso, non quello della confezione.
+        int idm2; string im2, nm2;
+        int tot = 0;
+        if (Montato("mulinello", out idm2, out im2, out nm2))
+            tot = MetriSuQuestoMulinello(idm2);
+        string testoM = mm.ToString("0.0", CultureInfo.InvariantCulture);
+        if (tot > 0) testoM += " / " + tot;
+        testoM += " m";
+        DisegnaTesto(testoM,
+                     BAR_X + BAR_W * 0.5f, BarY() - 34f, 0.38f, cr, cg, cb);
+        if (cal >= 0)
+            DisegnaTesto(pcSpecie[cal].Length > 0
+                         ? L("the water moves", "l'acqua si muove")
+                         : L("deep down here", "qui sotto e' fondo"),
+                         BAR_X + BAR_W * 0.5f, BarY() - 50f, 0.22f, cr, cg, cb);
+    }
+
+    // legge larghezza e altezza dall'IHDR del PNG, per non stirare niente
+    static bool MisuraPng(string file, out int w, out int h)
+    {
+        w = 0; h = 0;
+        try
+        {
+            byte[] b = new byte[26];
+            FileStream fs = File.OpenRead(file);
+            int letti = fs.Read(b, 0, 26);
+            fs.Close();
+            if (letti < 26) return false;
+            if (b[0] != 0x89 || b[1] != 0x50) return false;
+            w = (b[16] << 24) | (b[17] << 16) | (b[18] << 8) | b[19];
+            h = (b[20] << 24) | (b[21] << 16) | (b[22] << 8) | b[23];
+            return (w > 0 && h > 0);
+        }
+        catch { return false; }
+    }
+
+    // disegna dentro il riquadro w x h SENZA stirare: l'immagine ci sta
+    // dentro con le sue proporzioni vere, centrata
+    void Sprite(string rel, float x, float y, float w, float h)
+    {
+        if (rel == null || rel.Length == 0) return;
+        try
+        {
+            string f = Path.Combine(MY_DIR, rel);
+            if (!File.Exists(f)) return;
+            float dw = w, dh = h, dx = x, dy = y;
+            int iw, ih;
+            if (MisuraPng(f, out iw, out ih))
+            {
+                float sx = w / (float)iw, sy = h / (float)ih;
+                float sc = (sx < sy) ? sx : sy;
+                dw = iw * sc; dh = ih * sc;
+                dx = x + (w - dw) * 0.5f;
+                dy = y + (h - dh) * 0.5f;
+            }
+            CustomSprite s = new CustomSprite(f, new SizeF(dw, dh), new PointF(dx, dy));
+            s.Draw();
+        }
+        catch { }
+    }
+
+    // Come Sprite, ma girata. w x h e' il riquadro dell'immagine come sta
+    // nel catalogo, cioe' sdraiata; girandola di 90 gradi occupa h x w, e
+    // (x, y) e' l'angolo in alto a sinistra di quel riquadro girato.
+    // come Sprite(), ma inclinata di qualche grado. Il centro resta
+    // quello della casella: serve per il cucchiaino che punta in giu'.
+    void SpriteInclinata(string rel, float x, float y, float w, float h, float gradi)
+    {
+        if (rel == null || rel.Length == 0) return;
+        try
+        {
+            string f = Path.Combine(MY_DIR, rel);
+            if (!File.Exists(f)) return;
+            float dw = w, dh = h;
+            int iw, ih;
+            if (MisuraPng(f, out iw, out ih) && iw > 0 && ih > 0)
+            {
+                float sx = w / (float)iw, sy = h / (float)ih;
+                float sc = (sx < sy) ? sx : sy;
+                dw = iw * sc; dh = ih * sc;
+            }
+            float cx = x + w * 0.5f;
+            float cy = y + h * 0.5f;
+            CustomSprite sp = new CustomSprite(f, new SizeF(dw, dh),
+                                               new PointF(cx - dw * 0.5f, cy - dh * 0.5f));
+            sp.Rotation = gradi;
+            sp.Draw();
+        }
+        catch { }
+    }
+
+    void SpriteGirata(string rel, float x, float y, float w, float h, float gradi)
+    {
+        if (rel == null || rel.Length == 0) return;
+        try
+        {
+            string f = Path.Combine(MY_DIR, rel);
+            if (!File.Exists(f)) return;
+            float dw = w, dh = h;
+            int iw, ih;
+            if (MisuraPng(f, out iw, out ih))
+            {
+                float sx = w / (float)iw, sy = h / (float)ih;
+                float sc = (sx < sy) ? sx : sy;
+                dw = iw * sc; dh = ih * sc;
+            }
+            // ruotando resta fermo il centro: e' li' che va messa
+            float cx = x + h * 0.5f;
+            float cy = y + w * 0.5f;
+            CustomSprite s = new CustomSprite(f, new SizeF(dw, dh),
+                                              new PointF(cx - dw * 0.5f, cy - dh * 0.5f));
+            s.Rotation = gradi;
+            s.Draw();
+        }
+        catch { }
+    }
+
+    // un numero scritto in un campo di testo, virgola inglese
+    static float NumeroFloat(string s)
+    {
+        if (s == null) return 0f;
+        float v;
+        if (float.TryParse(s.Trim(), NumberStyles.Float,
+                           CultureInfo.InvariantCulture, out v)) return v;
+        return 0f;
+    }
+
+    // il campo esca_g della canna: "0.5 - 7", ma anche "18  154" senza trattino.
+    // Prende il primo numero come minimo e l'ultimo come massimo.
+    static void RangeGrammi(string s, out float gmin, out float gmax)
+    {
+        gmin = 0f; gmax = 0f;
+        if (s == null) return;
+        List<float> nums = new List<float>();
+        string cur = "";
+        int i;
+        for (i = 0; i <= s.Length; i++)
+        {
+            char ch = (i < s.Length) ? s[i] : ' ';
+            if ((ch >= '0' && ch <= '9') || ch == '.') cur += ch;
+            else
+            {
+                if (cur.Length > 0) nums.Add(NumeroFloat(cur));
+                cur = "";
+            }
+        }
+        if (nums.Count == 0) return;
+        gmin = nums[0];
+        gmax = nums[nums.Count - 1];
+        if (gmax < gmin) { float t = gmin; gmin = gmax; gmax = t; }
+    }
+
+    // IL PESO CHE HAI IN PUNTA, in grammi.
+    // Artificiale, testina piombata e piombo hanno un peso VERO preso dal
+    // wiki. Amo, esca naturale e galleggiante sul wiki NON hanno un peso:
+    // se non hai niente di pesante montato resta 1.5 g simbolici, e questo
+    // numero e' una scelta nostra, non un dato di Fishing Planet.
+    float GrammiInPunta()
+    {
+        float g = 0f;
+        int id; string img, nome;
+        int i;
+        if (Montato("artificiale", out id, out img, out nome))
+        {
+            for (i = 0; i < artificiali.Count; i++)
+                if (artificiali[i].Id == id)
+                { g += NumeroFloat(artificiali[i].Grammi); break; }
+        }
+        if (Montato("terminale", out id, out img, out nome))
+        {
+            for (i = 0; i < terminali.Count; i++)
+                if (terminali[i].Id == id)
+                { g += NumeroFloat(terminali[i].Grammi); break; }
+        }
+        if (g <= 0f) g = 1.5f;
+        return g;
+    }
+
+    // QUANTO LONTANO ARRIVI.
+    // Il wiki lo spiega: a lanciare non e' la lunghezza, e' il PESO che la
+    // canna e' tarata per tirare (il campo esca_g) contro il peso che hai
+    // davvero attaccato. Se il carico sta dentro il range della canna il
+    // lancio e' pieno; se e' troppo leggero la canna non si carica e il
+    // lancio si accorcia di brutto; se e' troppo pesante la canna non lo
+    // tira via. Poi contano la lunghezza e il diametro della lenza.
+    // QUANTO VA LONTANO QUESTO LANCIO.
+    // Prima erano "potenza per 0,9", poi tagliati dal massimo che la tua
+    // attrezzatura regge. Con la telescopica del livello uno quel massimo
+    // e' una dozzina di metri: bastava caricare al quindici per cento per
+    // essere gia' oltre il taglio, e da li' in poi caricavi a vuoto -
+    // tutti i lanci uguali. Adesso la barra dice una frazione del tuo
+    // massimo, e non e' una frazione dritta: e' curva, quindi i primi
+    // colpetti fanno pochi metri e gli ultimi valgono tanto. Caricare
+    // deve costare.
+    float MetriDelLancio(float pot)
+    {
+        float tetto = MetriMaxLancio();
+        if (tetto <= 0f) tetto = 12f;
+        float t = pot / 100f;
+        if (t < 0f) t = 0f;
+        if (t > 1f) t = 1f;
+        float cur = LeggiF("lancio_curva", 1.7f);
+        if (cur < 0.2f) cur = 0.2f;
+        float m = tetto * (float)Math.Pow(t, cur);
+        float minimo = LeggiF("lancio_minimo", 1.5f);
+        if (m < minimo) m = minimo;
+        return m;
+    }
+
+    float MetriMaxLancio()
+    {
+        float lung = 0f, gmin = 0f, gmax = 0f;
+        int idc; string ic, nc;
+        if (Montato("canna", out idc, out ic, out nc))
+        {
+            int i;
+            for (i = 0; i < canne.Count; i++)
+                if (canne[i].Id == idc)
+                {
+                    lung = NumeroFloat(canne[i].Lunghezza);
+                    RangeGrammi(canne[i].Esca, out gmin, out gmax);
+                    break;
+                }
+        }
+        if (lung <= 0f) lung = 2f;
+        float g = GrammiInPunta();
+        float d;
+
+        if (gmax <= 0f)
+        {
+            // canna da galleggiante (match, telescopica): sul wiki non ha un
+            // peso di lancio, la lenza la si accompagna. Conta la lunghezza,
+            // e un filo di peso in punta aiuta ad allungare.
+            d = 4f + 4f * lung;
+            float fg = 0.8f + 0.2f * (float)Math.Sqrt(g / 10f);
+            if (fg > 1.35f) fg = 1.35f;
+            d = d * fg;
+        }
+        else
+        {
+            if (gmin <= 0f || gmin >= gmax) gmin = gmax * 0.3f;
+
+            // quanto arriverebbe questa canna col carico giusto in punta
+            d = 6f + 5f * (float)Math.Sqrt(gmax) + 3f * lung;
+
+            // e quanto ci arriva col carico che hai adesso
+            float f;
+            if (g < gmin)
+            {
+                f = 0.75f * (float)Math.Pow(g / gmin, 0.7);
+                if (f < 0.15f) f = 0.15f;
+            }
+            else if (g > gmax)
+            {
+                f = gmax / g;
+                if (f < 0.20f) f = 0.20f;
+            }
+            else f = 0.75f + 0.25f * (g - gmin) / (gmax - gmin);
+            d = d * f;
+        }
+
+        // la lenza montata: sottile scorre, grossa frena
+        int idl; string il2, nl2;
+        if (Montato("lenza", out idl, out il2, out nl2))
+        {
+            int i;
+            for (i = 0; i < lenze.Count; i++)
+                if (lenze[i].Id == idl)
+                {
+                    float mm;
+                    if (float.TryParse(lenze[i].Mm, NumberStyles.Float,
+                                       CultureInfo.InvariantCulture, out mm))
+                    {
+                        float ff = 1.05f - mm * 0.4f;
+                        if (ff < 0.7f) ff = 0.7f;
+                        if (ff > 1.05f) ff = 1.05f;
+                        d = d * ff;
+                    }
+                    break;
+                }
+        }
+
+        // e comunque mai piu' della lenza che hai in bobina: un po' di filo
+        // sul mulinello resta sempre, quindi il 90 per cento
+        int idm; string im, nm;
+        if (Montato("mulinello", out idm, out im, out nm))
+        {
+            int m = MetriSuQuestoMulinello(idm);
+            if (m > 0 && d > m * 0.9f) d = m * 0.9f;
+        }
+        if (d < 5f) d = 5f;
+        return d;
+    }
+    // il primo pezzo equipaggiato di una categoria
+    // ------------------------------------------------------------
+    //  ARMATO E DISARMATO
+    //  Nello zaino ci sta anche la roba di scorta. Quello che pesca
+    //  davvero e' solo il pezzo ARMATO: una canna, un mulinello, una
+    //  lenza, un amo, un galleggiante. Il resto sta li' e aspetta.
+    //  Si arma e si disarma con A sulla riga dell'equipaggiamento.
+    // ------------------------------------------------------------
+    Dictionary<string, int> armato = new Dictionary<string, int>();
+
+    // QUELLO CHE E' GIA' STATO TOLTO DALLA CASSETTA.
+    // Un amo montato non sta piu' in cassetta, e il conto e' gia' stato
+    // fatto quando l'hai armato. Senza questo segno un salvataggio
+    // vecchio - montato prima che la regola esistesse - resterebbe con
+    // dieci ami in cassetta e uno sulla canna: undici in tutto.
+    Dictionary<string, int> presoSu = new Dictionary<string, int>();
+
+    // ============================================================
+    //  LA LENZA SI TAGLIA
+    // ============================================================
+    // Una bobina e' un PEZZO A SE', con i suoi metri. Quella nuova ha i
+    // metri del catalogo; quando la armi tagli quanto ne tiene il
+    // mulinello, e il resto resta in cassetta come bobina tagliata.
+    // Un rotolo da 137 su cui ne tagli 65 lascia una bobina da 72.
+    // Se poi smonti la lenza, quei 65 tornano in cassetta come una
+    // bobina SEPARATA da 65 - non si riattaccano ai 72. E se nel
+    // frattempo ne hai persi 7 strappando, torna una bobina da 58.
+    //   bobine  -> "376|65", una riga per ogni bobina tagliata
+    //   armato["lenza"] + metriInBobina -> quella che sta sul mulinello
+    List<string> bobine = new List<string>();
+    int metriInBobina = 0;
+
+    // i metri che il mulinello montato tiene di questa lenza
+    int MetriDaTagliare(int idLenza)
+    {
+        int idm; string im, nm;
+        if (!Montato("mulinello", out idm, out im, out nm)) return 0;
+        return MetriSulMulinello(idm, TipoLenza(idLenza));
+    }
+
+    int BobinaId(int i)
+    {
+        if (i < 0 || i >= bobine.Count) return -1;
+        string[] c = bobine[i].Split('|');
+        return (c.Length > 0) ? Numero(c[0]) : -1;
+    }
+
+    int BobinaMetri(int i)
+    {
+        if (i < 0 || i >= bobine.Count) return 0;
+        string[] c = bobine[i].Split('|');
+        return (c.Length > 1) ? Numero(c[1]) : 0;
+    }
+
+    void MettiBobina(int id, int metri)
+    {
+        if (id < 0 || metri <= 0) return;
+        bobine.Add(id + "|" + metri);
+    }
+
+    // TAGLIA: dal rotolo al mulinello. Torna quanto ha tagliato.
+    int Taglia(int idLenza, int daQuanti)
+    {
+        int quanto = MetriDaTagliare(idLenza);
+        if (quanto <= 0 || quanto > daQuanti) quanto = daQuanti;
+        metriInBobina = quanto;
+        return daQuanti - quanto;      // quello che avanza sul rotolo
+    }
+
+    // ARMA UNA LENZA NUOVA: si apre una confezione del catalogo.
+    bool ArmaLenzaNuova(int id)
+    {
+        if (Quanti(borsa, "lenza:" + id) <= 0)
+        { Messaggio("Non hai questa lenza in cassetta."); return false; }
+        string perche;
+        int idc = InUso("canna");
+        if (idc >= 0 && !VaConLaCanna("lenza", id, idc, out perche))
+        { Messaggio("Non e' equilibrata: " + perche); return false; }
+
+        DisarmaLenza();
+        Aggiungi(borsa, "lenza:" + id, -1);
+        int avanza = Taglia(id, MetriLenza(id));
+        MettiBobina(id, avanza);
+        armato["lenza"] = id;
+        Messaggio("Imbobinati " + metriInBobina + " m"
+                  + (avanza > 0 ? ("   restano " + avanza + " m sul rotolo") : ""));
+        return true;
+    }
+
+    // ARMA UNA BOBINA GIA' TAGLIATA.
+    bool ArmaLenzaBobina(int i)
+    {
+        int id = BobinaId(i);
+        int m = BobinaMetri(i);
+        if (id < 0 || m <= 0) return false;
+        string perche;
+        int idc = InUso("canna");
+        if (idc >= 0 && !VaConLaCanna("lenza", id, idc, out perche))
+        { Messaggio("Non e' equilibrata: " + perche); return false; }
+
+        bobine.RemoveAt(i);
+        DisarmaLenza();
+        int avanza = Taglia(id, m);
+        MettiBobina(id, avanza);
+        armato["lenza"] = id;
+        Messaggio("Imbobinati " + metriInBobina + " m"
+                  + (avanza > 0 ? ("   restano " + avanza + " m") : ""));
+        return true;
+    }
+
+    // SMONTA: quello che sta sul mulinello torna in cassetta come bobina
+    // sua, coi metri che gli sono rimasti. Separata da tutto il resto.
+    void DisarmaLenza()
+    {
+        int vecchia = Armato("lenza");
+        if (vecchia >= 0 && metriInBobina > 0)
+        {
+            MettiBobina(vecchia, metriInBobina);
+            Messaggio("Tolta: " + metriInBobina + " m tornano in cassetta.");
+        }
+        metriInBobina = 0;
+        if (armato.ContainsKey("lenza")) armato["lenza"] = -1;
+    }
+
+    // le categorie che si armano: il resto (esche, nasse, cassette)
+    // non si monta, si consuma o si porta e basta
+    static bool SiArma(string cat)
+    {
+        return cat == "canna" || cat == "mulinello" || cat == "lenza"
+            || cat == "terminale" || cat == "galleggiante" || cat == "artificiale";
+    }
+
+    // ============================================================
+    //  LE CASELLE DEL TERMINALE
+    // ============================================================
+    // "terminale" e' una categoria sola in negozio, ma sulla canna sono
+    // pezzi diversi che stanno insieme: il leader si lega alla lenza, il
+    // piombo sta sul filo, e in fondo c'e' quello che aggancia il pesce -
+    // amo, testina o rig. Percio' ognuno ha la sua casella, e la colonna
+    // dell'HUD cresce con quello che monti.
+    //   armato["terminale"] = quello che aggancia (amo, jig, rig)
+    //   armato["leader"]    = il leader
+    //   armato["piombo"]    = il piombo
+    static string CasellaTerm(string sotto)
+    {
+        if (sotto == "leader") return "leader";
+        if (sotto == "piombo") return "piombo";
+        return "terminale";
+    }
+
+    // di che tipo e' questo terminale
+    string SottoTerm(int id)
+    {
+        int i;
+        for (i = 0; i < terminali.Count; i++)
+            if (terminali[i].Id == id) return terminali[i].Cat;
+        return "amo";
+    }
+
+    // il pezzo montato in una casella del terminale
+    bool MontatoTerm(string casella, out int id, out string img, out string nome)
+    {
+        id = -1; img = ""; nome = "";
+        if (!armato.ContainsKey(casella)) return false;
+        int q = armato[casella];
+        if (q < 0) return false;
+        int p2, l2;
+        if (!Articolo("terminale", q, out nome, out img, out p2, out l2)) return false;
+        id = q;
+        return true;
+    }
+
+    int Armato(string cat)
+    {
+        if (armato.ContainsKey(cat)) return armato[cat];
+        return -1;
+    }
+
+    // Quello che sta pescando DAVVERO, ripiego compreso: se non hai mai
+    // armato niente sta pescando il primo pezzo che hai nello zaino, e
+    // il menu deve dirlo, se no ti mostra disarmato roba che e' in acqua.
+    int InUso(string cat)
+    {
+        int id; string img, nome;
+        if (Montato(cat, out id, out img, out nome)) return id;
+        return -1;
+    }
+
+    bool EArmato(string cat, int id)
+    {
+        // un terminale puo' stare in tre caselle: amo, leader o piombo
+        if (cat == "terminale") return Armato(CasellaTerm(SottoTerm(id))) == id;
+        return SiArma(cat) && InUso(cat) == id;
+    }
+
+    // A sulla riga: se e' armato lo disarma, se no lo arma al posto
+    // di quello che c'era. L'equilibrio si controlla qui.
+    bool Arma(string cat, int id)
+    {
+        if (!SiArma(cat)) return false;
+
+        // UN TERMINALE VA NELLA CASELLA DEL SUO TIPO.
+        // Leader, piombo e amo non si scacciano a vicenda: stanno sulla
+        // stessa lenza, uno sopra l'altro. Percio' la casella la decide
+        // il tipo del pezzo, non la categoria del negozio.
+        if (cat == "terminale") cat = CasellaTerm(SottoTerm(id));
+
+        if (QuantiPezzi("terminale", id) <= 0 && Armato(cat) != id
+            && (cat == "leader" || cat == "piombo")) return false;
+        if (cat != "leader" && cat != "piombo"
+            && QuantiPezzi(cat, id) <= 0 && InUso(cat) != id) return false;
+
+        if (Armato(cat) == id || InUso(cat) == id)
+        {
+            // SI SMONTA: quello che si era preso torna indietro.
+            // La lenza si riavvolge sulla bobina, l'amo e il galleggiante
+            // tornano nella cassetta. Non si butta niente smontando: si
+            // butta quando si spezza.
+            if (cat == "lenza") { DisarmaLenza(); return true; }
+            if (cat == "terminale" || cat == "galleggiante"
+                || cat == "leader" || cat == "piombo")
+            {
+                string cq = (cat == "galleggiante") ? "galleggiante" : "terminale";
+                if (presoSu.ContainsKey(cat)) { Rimetti(cq, id); presoSu.Remove(cat); }
+            }
+            // -1 vuol dire "disarmato apposta": senza questo tornerebbe
+            // buono il ripiego e il pezzo si rimonterebbe da solo
+            armato[cat] = -1;
+            Messaggio("Tolto dall'armatura");
+            return true;
+        }
+
+        // IL CUCCHIAINO E IL GALLEGGIANTE NON STANNO INSIEME.
+        // A spinning il cucchiaino E' l'amo: si lega direttamente alla
+        // lenza, senza galleggiante e senza amo sotto. Sono due modi di
+        // pescare diversi, e la canna non li tiene tutti e due. Percio'
+        // qui non si smonta niente da soli: si dice cosa va tolto prima.
+        // COSA ESCLUDE COSA.
+        // Il cucchiaino E' l'amo: si lega in punta alla lenza, e sotto non
+        // ci va ne' amo ne' galleggiante. Il leader invece ci sta - anzi,
+        // col luccio il cavetto di titanio serve proprio - e il piombo
+        // pure. Quindi il cucchiaino litiga solo con amo e galleggiante.
+        if (cat == "artificiale")
+        {
+            if (InUso("galleggiante") >= 0)
+            { Messaggio("Prima smonta il galleggiante."); return false; }
+            if (Armato("terminale") >= 0)
+            { Messaggio("Prima smonta " + NomeTerminale(Armato("terminale")) + "."); return false; }
+        }
+        if (cat == "galleggiante" || cat == "terminale")
+        {
+            if (InUso("artificiale") >= 0)
+            { Messaggio("Prima smonta il cucchiaino."); return false; }
+        }
+
+        // non si arma roba sbilanciata: e' la stessa regola del montaggio
+        string perche;
+        if (cat == "canna")
+        {
+            int q = InUso("lenza");
+            if (q >= 0 && !VaConLaCanna("lenza", q, id, out perche))
+            { Avviso("~r~Non e' equilibrata: ~s~" + perche); return false; }
+            q = InUso("mulinello");
+            if (q >= 0 && !VaConLaCanna("mulinello", q, id, out perche))
+            { Avviso("~r~Non e' equilibrata: ~s~" + perche); return false; }
+        }
+        else
+        {
+            int idc = InUso("canna");
+            if (idc >= 0 && !VaConLaCanna(cat, id, idc, out perche))
+            { Avviso("~r~Non e' equilibrata: ~s~" + perche); return false; }
+        }
+
+        // SI MONTA: e da qui in poi quel pezzo non sta piu' in cassetta,
+        // sta sulla canna. La lenza si imbobina - i metri se ne vanno
+        // dalla bobina - l'amo e il galleggiante si tolgono dalla borsa.
+        // la lenza ha i suoi comandi: ogni bobina e' un pezzo a se'
+        if (cat == "lenza") return ArmaLenzaNuova(id);
+        if (cat == "terminale" || cat == "galleggiante"
+            || cat == "leader" || cat == "piombo")
+        {
+            string cq = (cat == "galleggiante") ? "galleggiante" : "terminale";
+            if (QuantiPezzi(cq, id) <= 0)
+            { Messaggio("Non ne hai piu' in cassetta."); return false; }
+            // quello che c'era prima nella stessa casella torna in cassetta
+            int vecchio = Armato(cat);
+            if (vecchio >= 0 && vecchio != id && presoSu.ContainsKey(cat))
+                Rimetti(cq, vecchio);
+            Consuma(cq, id);
+            presoSu[cat] = 1;
+        }
+
+        armato[cat] = id;
+        Messaggio("Armato");
+        return true;
+    }
+
+    // QUANDO LA LENZA SI SPEZZA si perde tutto quello che stava sotto il
+    // punto di rottura: i metri che erano fuori, l'amo, il galleggiante
+    // e l'esca. L'armatura e' da rifare.
+    void PerdiArmatura()
+    {
+        // DOVE SI SPEZZA CAMBIA TUTTO.
+        // Se c'e' il leader, si spezza LUI: e' il pezzo debole messo li'
+        // apposta. Perdi il leader e quello che gli stava attaccato -
+        // amo o cucchiaino, e l'esca - ma la lenza madre resta intera,
+        // e quello che stava piu' su - piombo, galleggiante - resta al
+        // suo posto. Senza leader invece se ne va un pezzo di lenza.
+        int ld = Armato("leader");
+        bool colLeader = (ld >= 0);
+
+        int persi = 0;
+        if (!colLeader)
+        {
+            persi = (int)LeggiF("lenza_persa", 3f);
+            if (persi < 1) persi = 1;
+            metriInBobina -= persi;
+            if (metriInBobina < 0) metriInBobina = 0;
+            if (metriInBobina <= 0 && armato.ContainsKey("lenza")) armato["lenza"] = -1;
+        }
+
+        // quello che sta sotto la rottura se ne va, e non torna in cassetta
+        int t = InUso("terminale");
+        if (t >= 0) { armato["terminale"] = -1; presoSu.Remove("terminale"); }
+        int a = InUso("artificiale");
+        if (a >= 0) { armato["artificiale"] = -1; presoSu.Remove("artificiale"); }
+        bool avevaEsca = (escaMontata >= 0);
+        escaMontata = -1;
+        if (colLeader) { armato["leader"] = -1; presoSu.Remove("leader"); }
+
+        // piombo e galleggiante stanno sopra il leader: si perdono solo
+        // se a spezzarsi e' stata la lenza
+        int pb = -1, g = -1;
+        if (!colLeader)
+        {
+            pb = Armato("piombo");
+            if (pb >= 0) { armato["piombo"] = -1; presoSu.Remove("piombo"); }
+            g = InUso("galleggiante");
+            if (g >= 0) { armato["galleggiante"] = -1; presoSu.Remove("galleggiante"); }
+        }
+
+        string che = "";
+        if (colLeader) che = "il leader";
+        else che = persi + " m di lenza";
+        if (t >= 0) che += ", " + NomeTerminale(t);
+        if (pb >= 0) che += ", il piombo";
+        if (g >= 0) che += ", il galleggiante";
+        if (a >= 0) che += ", il cucchiaino";
+        if (avevaEsca) che += ", l'esca";
+
+        // se e' stato il pesce a segare il filo lo dice, che e' un'altra
+        // cosa dal tirare troppo
+        string testa = colLeader ? "Leader spezzato: persi "
+                                 : (dentiDa > 0 ? "Ti ha tranciato il filo: persi "
+                                                : "Lenza spezzata: persi ");
+        Messaggio(testa + che + ".");
+        SalvaStato();
+        RiscriviTutto();
+    }
+
+    // Il pezzo che sta pescando: quello armato. Se non hai armato niente
+    // vale il primo di quel tipo che trovi nello zaino, cosi' chi non ci
+    // vuole pensare non deve fare niente.
+    bool Montato(string cat, out int id, out string img, out string nome)
+    {
+        id = -1; img = ""; nome = "";
+        int scelto = Armato(cat);
+        // la lenza c'e' solo se sul mulinello ci sta ancora del filo
+        if (cat == "lenza" && metriInBobina <= 0) return false;
+        // ARMATO VUOL DIRE SULLA CANNA, non in borsa: l'amo e il
+        // galleggiante montati sono stati tolti dalla cassetta apposta.
+        if (scelto >= 0)
+        {
+            int p2, l2;
+            if (Articolo(cat, scelto, out nome, out img, out p2, out l2))
+            { id = scelto; return true; }
+        }
+        // NIENTE RIPIEGO SU QUELLO CHE HAI IN BORSA.
+        // Prima, se non avevi armato niente, la mod montava da sola il
+        // primo pezzo che trovava in cassetta: comodo finche' armare non
+        // costava niente, sbagliato adesso che montare toglie il pezzo
+        // dalla scatola e taglia i metri di lenza. Si ritrovava roba
+        // "armata" che non era mai stata montata, e i conti non
+        // tornavano. Adesso sulla canna c'e' solo quello che ci hai
+        // messo tu. La nassa fa eccezione: non si arma, o ce l'hai o no.
+        if (cat == "nassa")
+        {
+            foreach (KeyValuePair<string, int> kv in borsa)
+            {
+                string[] c = kv.Key.Split(':');
+                if (c.Length < 2 || c[0] != cat) continue;
+                int prezzo, liv;
+                if (!Articolo(cat, Numero(c[1]), out nome, out img, out prezzo, out liv)) continue;
+                id = Numero(c[1]);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // quanti pezzi ne restano: le confezioni che hai, meno quelli usati
+    int QuantiPezzi(string cat, int id)
+    {
+        int per = PerConfezione(cat, id);
+        int conf = Quanti(borsa, cat + ":" + id);
+        int tot = (per > 0) ? per * conf : conf;
+        int gia = Quanti(usati, cat + ":" + id);
+        int resta = tot - gia;
+        return (resta > 0) ? resta : 0;
+    }
+
+    int QuanteEsche(int id) { return QuantiPezzi("esca", id); }
+
+    // ne consuma uno. Quando la confezione e' finita sparisce dallo zaino.
+    // L'INVERSO DI CONSUMA: rimette UN pezzo, non una confezione.
+    // Gli ami stanno in scatole da dieci: smontandone uno deve tornare
+    // un amo, non dieci.
+    void Rimetti(string cat, int id)
+    {
+        string k = cat + ":" + id;
+        int per = PerConfezione(cat, id);
+        if (per > 1)
+        {
+            if (Quanti(usati, k) > 0) Aggiungi(usati, k, -1);
+            else { Aggiungi(borsa, k, 1); Aggiungi(usati, k, per - 1); }
+        }
+        else Aggiungi(borsa, k, 1);
+    }
+
+    bool Consuma(string cat, int id)
+    {
+        string k = cat + ":" + id;
+        if (QuantiPezzi(cat, id) <= 0) return false;
+        Aggiungi(usati, k, 1);
+        int per = PerConfezione(cat, id);
+        if (per > 1)
+        {
+            // finita una confezione intera: si toglie dallo zaino e il
+            // conto dei pezzi usati riparte da capo
+            while (Quanti(usati, k) >= per && Quanti(borsa, k) > 0)
+            {
+                Aggiungi(usati, k, -per);
+                Aggiungi(borsa, k, -1);
+            }
+        }
+        else
+        {
+            usati.Remove(k);
+            Aggiungi(borsa, k, -1);
+        }
+        if (Quanti(borsa, k) <= 0) usati.Remove(k);
+        return true;
+    }
+
+    // IL BLOCCO IN BASSO A DESTRA DELL'HUD: la canna e la colonna del
+    // montaggio. Sta in una funzione sua perche' lo disegna anche la
+    // pagina dell'inventario, per far vedere com'e' armata la canna.
+    void DisegnaAttrezzatura()
+    {
+        int id; string img, nome;
+        // la canna che hai montato davvero, con la sua immagine del catalogo.
+        // Le immagini delle canne sono lunghe e basse: le mettiamo a destra
+        // nel riquadro largo, senza stirarle.
+        // girata di 90 gradi in orario, poi giu' di 200 e a destra di 50
+        if (Montato("canna", out id, out img, out nome))
+        {
+            SpriteGirata(img, 1180f, 365f, 270f, 108f, 90f);
+            // i chili che regge, 8 pixel sotto la canna
+            string kgc = PortataCanna(KgCanna(id));
+            if (kgc.Length > 0)
+                DisegnaTesto(kgc, 1180f + 54f, 365f + 270f + 8f,
+                             0.19f, 245, 245, 250);
+        }
+
+        // la colonna del montaggio, dal basso in su:
+        // mulinello -> bobina di lenza -> terminale -> galleggiante
+        float mx = 1136f, my = 590f;
+        int piano = 0;
+        // A ogni pezzo la SUA misura, quella che conta guardandolo:
+        //   mulinello -> i metri di filo che ci stanno
+        //   lenza     -> i chili che regge prima di spezzarsi
+        //   amo       -> la misura
+        // Le scritte stanno a sinistra dell'icona, tutte incolonnate.
+        float tx = mx + 9f;
+
+        if (Montato("mulinello", out id, out img, out nome))
+        {
+            float ry = my - piano * 54f;
+            // il mulinello un po' piu' grande degli altri: e' il pezzo
+            // che si guarda di piu'. Resta dentro i 54 di passo della fila.
+            Sprite(img, mx - 8f, ry - 3f, 128f, 50f);
+            // la frizione e i metri: i due numeri che guardi mentre lotti
+            float fr = FrizioneMul(id);
+            int metri = MetriSuQuestoMulinello(id);
+            string rm = "";
+            if (fr > 0f) rm = fr.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+            if (metri > 0) rm = (rm.Length > 0) ? (rm + "  " + metri + " m") : (metri + " m");
+            // i dati del mulinello stanno quattro pixel piu' a sinistra
+            // degli altri: l'icona e' piu' larga e ci finivano sotto
+            if (rm.Length > 0)
+                DisegnaTesto(rm, tx - 7f, ry + 15f, 0.19f, 245, 245, 250);
+            piano++;
+        }
+
+        if (Montato("lenza", out id, out img, out nome))
+        {
+            float ry = my - piano * 54f;
+            Sprite(img, mx, ry, 112f, 44f);
+            float kg = KgLenza(id);
+            if (kg > 0f)
+                DisegnaTesto(kg.ToString("0.##", CultureInfo.InvariantCulture) + " kg",
+                             tx, ry + 15f, 0.19f, 245, 245, 250);
+            piano++;
+        }
+
+        // SOPRA LA LENZA CI VA QUELLO CHE MONTI, IN ORDINE.
+        // Prima il leader, che si lega alla lenza; poi il piombo; poi
+        // quello che aggancia il pesce. Ognuno con la SUA immagine, non
+        // con la scatola: il leader e' un rotolo di filo, si vede.
+        if (MontatoTerm("leader", out id, out img, out nome))
+        {
+            float ryL = my - piano * 54f;
+            string fl = FormaTerminale(id);
+            Sprite(fl.Length > 0 ? fl : img, mx, ryL, 112f, 44f);
+            string ml = MisuraTerminale(id);
+            if (ml.Length > 0) DisegnaTesto(ml, tx, ryL + 15f, 0.19f, 245, 245, 250);
+            piano++;
+        }
+        if (MontatoTerm("piombo", out id, out img, out nome))
+        {
+            float ryP = my - piano * 54f;
+            string fp = FormaTerminale(id);
+            Sprite(fp.Length > 0 ? fp : img, mx, ryP, 112f, 44f);
+            string mp = MisuraTerminale(id);
+            if (mp.Length > 0) DisegnaTesto(mp, tx, ryP + 15f, 0.19f, 245, 245, 250);
+            piano++;
+        }
+        if (Montato("galleggiante", out id, out img, out nome))
+        { Sprite(img, mx, my - piano * 54f, 112f, 44f); piano++; }
+
+        if (Montato("terminale", out id, out img, out nome))
+        {
+            float ry = my - piano * 54f;
+            string fa = FormaTerminale(id);
+            Sprite(fa.Length > 0 ? fa : img, mx, ry, 112f, 44f);
+            string mis = MisuraTerminale(id);
+            if (mis.Length > 0)
+                DisegnaTesto(mis, tx, ry + 15f, 0.19f, 245, 245, 250);
+            piano++;
+        }
+
+    }
+
+    void HudPesca()
+    {
+        int id; string img, nome;
+        DisegnaCanna();
+
+        // LA FASCIA DEL TORNEO: sta in alto al centro e dice solo quello
+        // che serve mentre peschi: quanto manca, quanti chili hai fatto e
+        // a che medaglia sei.
+        if (torneoOra >= 0 && torneoOra < tornei.Count)
+        {
+            Torneo tg = tornei[torneoOra];
+            int med = Medaglia(tg, torneoKg);
+            float pros = (med == 0) ? tg.KgBronzo
+                       : (med == 1) ? tg.KgArgento
+                       : (med == 2) ? tg.KgOro : 0f;
+            DisegnaRett(440f, 40f, 400f, 34f, 12, 26, 24, 225);
+            DisegnaTesto(tg.Nome, 640f, 42f, 0.24f, 235, 245, 240);
+            DisegnaTesto(TempoTorneo(), 460f, 58f, 0.24f, 245, 205, 80);
+            DisegnaTesto(Kg(torneoKg) + " kg", 640f, 58f, 0.24f, 235, 245, 240);
+            string dx2 = (pros > 0f)
+                ? (Kg(pros) + " kg -> " + NomeMedaglia(med + 1))
+                : NomeMedaglia(3).ToUpper();
+            DisegnaTesto(dx2, 820f, 58f, 0.22f, 130, 200, 245);
+        }
+
+        DisegnaAttrezzatura();
+        // LA NASSA IN BASSO A SINISTRA.
+        // Non la foto del prodotto: un disegno solo, sempre lo stesso,
+        // come il galleggiante e il cucchiaino del quadrante. La foto
+        // della nassa che hai comprato sta in cassetta, qui serve solo
+        // sapere quanti chili ci stanno dentro.
+        //   nassa_x/nassa_y  dove sta, nassa_lato quanto e' grande,
+        //   nassa_testo_y    l'altezza della scritta.
+        if (Montato("nassa", out id, out img, out nome))
+        {
+            // sta in alto a sinistra dell'esca: icona piccola e, di
+            // fianco, i chili che porti su quanti ne reggi
+            float nx = LeggiF("nassa_x", 1058f);
+            float ny = LeggiF("nassa_y", 20f);
+            float nl = LeggiF("nassa_lato", 25f);
+            Sprite("img\\nasse\\nassa_base.png", nx, ny, nl, nl);
+            string kgN = KgNassaDentro().ToString("0.0", CultureInfo.InvariantCulture)
+                       + "/" + ((int)KgNassaMax()) + " kg";
+            float scN = LeggiF("nassa_testo", 0.30f);
+            float txN = nx + nl + LeggiF("nassa_testo_x", 34f);
+            float tyN = ny + nl * 0.5f - LeggiF("nassa_testo_su", 11f);
+            DisegnaTesto(kgN, txN, tyN, scN, 245, 245, 250);
+            // sotto, piccolo: il pesce piu' grosso che ci sta dentro.
+            // Oltre quello lo rilasci, per quanto sia grande la rete.
+            float kgMaxP = KgPesceMax();
+            if (kgMaxP > 0f)
+                DisegnaTesto("max " + kgMaxP.ToString("0.##", CultureInfo.InvariantCulture)
+                             + " kg", txN, tyN + LeggiF("nassa_riga2", 14f),
+                             LeggiF("nassa_testo2", 0.22f), 245, 245, 250);
+        }
+
+        // L'ESCA, IN ALTO A DESTRA.
+        // A spinning l'esca E' il cucchiaino: non c'e' il pane, e nella
+        // casella dell'esca ci sta l'artificiale che hai montato, con
+        // quanti ne hai. E' li' che si guarda cosa stai offrendo.
+        int idEsca = escaMontata;
+        string imgEsca = "", nomeEsca = "";
+        int prezzoE, livE;
+        int idArt; string imgArt, nomeArt;
+        bool conArt = Montato("artificiale", out idArt, out imgArt, out nomeArt);
+        if (conArt)
+        {
+            float ax2 = 1172f, ay2 = -42f, al2 = 100f;
+            Sprite(imgArt, ax2 + 2f, ay2 + (al2 - 48f) / 2f + 25f, 120f, 48f);
+            DisegnaTesto("x" + QuantiPezzi("artificiale", idArt),
+                         ax2 + 63f, ay2 + al2 - 5f, 0.38f, 245, 245, 250);
+        }
+        else if (idEsca < 0 || !Articolo("esca", idEsca, out nomeEsca, out imgEsca, out prezzoE, out livE))
+        {
+            if (Montato("esca", out id, out img, out nome))
+            { idEsca = id; imgEsca = img; }
+            else idEsca = -1;
+        }
+        if (!conArt && idEsca >= 0)
+        {
+            float qx = 1172f, qy = -42f, ql = 100f;
+            // immagine un po' piu' grande e scesa di 20
+            Sprite(imgEsca, qx + 2f, qy + (ql - 48f) / 2f + 25f, 120f, 48f);
+            // il testo spostato di 4 a destra
+            DisegnaTesto("x" + QuanteEsche(idEsca), qx + 63f, qy + ql - 5f,
+                         0.38f, 245, 245, 250);
+        }
+    }
+
+    // la misura dell'amo (o del terminale) montato
+    // NELL'HUD L'AMO E' L'AMO, non la scatola.
+    // La scatolina va bene in negozio, in cassetta e a casa: li' stai
+    // comprando o spostando una confezione. Sulla canna invece ci sta
+    // l'amo montato, e il wiki il disegno ce l'ha: e' il campo "forma".
+    string FormaTerminale(int id)
+    {
+        int i;
+        for (i = 0; i < terminali.Count; i++)
+            if (terminali[i].Id == id)
+                return (terminali[i].Forma.Length > 0)
+                       ? terminali[i].Forma : terminali[i].Img;
+        return "";
+    }
+
+    // "amo" va bene per gli ami, ma nella stessa categoria ci stanno
+    // anche leader, rig e piombi: il messaggio deve dire quello giusto
+    string NomeTerminale(int id)
+    {
+        int i;
+        for (i = 0; i < terminali.Count; i++)
+            if (terminali[i].Id == id)
+            {
+                string c = terminali[i].Cat;
+                if (c == "leader") return "il leader";
+                if (c == "rig") return "il rig";
+                if (c == "piombo") return "il piombo";
+                if (c == "jig") return "la testina";
+                return "l'amo";
+            }
+        return "l'amo";
+    }
+
+    string MisuraArtificiale(int id)
+    {
+        int i;
+        for (i = 0; i < artificiali.Count; i++)
+            if (artificiali[i].Id == id)
+            {
+                string r = "";
+                if (artificiali[i].Grammi.Length > 0) r = artificiali[i].Grammi + " g";
+                if (artificiali[i].Cm.Length > 0)
+                    r = (r.Length > 0) ? (r + "  " + artificiali[i].Cm + " cm")
+                                       : (artificiali[i].Cm + " cm");
+                return r;
+            }
+        return "";
+    }
+
+    string MisuraTerminale(int id)
+    {
+        int i;
+        for (i = 0; i < terminali.Count; i++)
+            if (terminali[i].Id == id) return terminali[i].Misura;
+        return "";
+    }
+
+    // i chili che regge una lenza prima di spezzarsi
+    float KgLenza(int id)
+    {
+        int i;
+        for (i = 0; i < lenze.Count; i++)
+            if (lenze[i].Id == id) return lenze[i].Kg;
+        return 0f;
+    }
+
+    // la portata della canna scritta corta: "1.50 - 4.00" -> "1.5/4 kg"
+    static string PortataCanna(string s)
+    {
+        if (s == null || s.Length == 0) return "";
+        string[] p = s.Split('-');
+        float a, b;
+        if (p.Length < 2)
+        {
+            if (!float.TryParse(p[0].Trim(), NumberStyles.Float,
+                                CultureInfo.InvariantCulture, out a)) return "";
+            return a.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+        }
+        if (!float.TryParse(p[0].Trim(), NumberStyles.Float,
+                            CultureInfo.InvariantCulture, out a)) return "";
+        if (!float.TryParse(p[1].Trim(), NumberStyles.Float,
+                            CultureInfo.InvariantCulture, out b)) return "";
+        return a.ToString("0.##", CultureInfo.InvariantCulture) + "/"
+             + b.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+    }
+
+    // la portata di una canna, come sta scritta nel wiki: "1.50 - 4.00"
+    string KgCanna(int id)
+    {
+        int i;
+        for (i = 0; i < canne.Count; i++)
+            if (canne[i].Id == id) return canne[i].LenzaKg;
+        return "";
+    }
+
+    // il tipo di una lenza: mono, fluoro, braid, mare
+    string TipoLenza(int id)
+    {
+        int i;
+        for (i = 0; i < lenze.Count; i++)
+            if (lenze[i].Id == id) return lenze[i].Tipo;
+        return "";
+    }
+
+    // QUANTO FILO STA SU UN MULINELLO.
+    // Il wiki da' per ogni mulinello la capacita' a un diametro di
+    // riferimento, un valore per tipo di filo:
+    //     "mono 0.25/100;  braid 0.20/125"
+    // cioe' 100 metri di monofilo dello 0.25, oppure 125 metri di
+    // trecciato dello 0.20. Sulla bobina del mulinello c'e' un volume
+    // fisso: piu' il filo e' sottile, piu' ne sta.
+    // Il fluorocarbon e le lenze da mare li trattiamo come il monofilo,
+    // perche' il wiki per loro non da' una riga a parte.
+    int MetriSulMulinello(int idMul, string tipoLenza)
+    {
+        string cap = "";
+        int i;
+        for (i = 0; i < mulinelli.Count; i++)
+            if (mulinelli[i].Id == idMul) { cap = mulinelli[i].Capacita; break; }
+        if (cap == null || cap.Length == 0) return 0;
+
+        string cerco = (tipoLenza == "braid") ? "braid" : "mono";
+        string[] pezzi = cap.Split(';');
+        for (i = 0; i < pezzi.Length; i++)
+        {
+            string s = pezzi[i].Trim().ToLower();
+            if (s.Length == 0) continue;
+            if (!s.StartsWith(cerco)) continue;
+            // l'ultima barra, non la prima: un mulinello nel wiki ha
+            // "0.18//80" con due barre
+            int barra = s.LastIndexOf('/');
+            if (barra < 0) continue;
+            return Numero(s.Substring(barra + 1).Trim());
+        }
+        return 0;
+    }
+
+    // I metri di filo che stanno sul mulinello montato, calcolati col
+    // tipo di lenza che ci hai messo sopra.
+    // QUANTO RECUPERA IL MULINELLO CHE HAI MONTATO.
+    // Sul wiki ogni mulinello ha i centimetri di filo per giro di manovella
+    // ("recupero_cm"). Ottanta e' la media: sopra recuperi piu' in fretta,
+    // sotto piu' piano. Cosi' un mulinello grosso si sente davvero.
+    float FattoreRecupero()
+    {
+        int id; string img, nome;
+        if (!Montato("mulinello", out id, out img, out nome)) return 1f;
+        int i;
+        for (i = 0; i < mulinelli.Count; i++)
+        {
+            if (mulinelli[i].Id != id) continue;
+            float cm = NumeroPiuAlto(mulinelli[i].Recupero);
+            if (cm <= 0f) return 1f;
+            float f = cm / 80f;
+            if (f < 0.6f) f = 0.6f;
+            if (f > 1.8f) f = 1.8f;
+            return f;
+        }
+        return 1f;
+    }
+
+    int MetriSuQuestoMulinello(int idMul)
+    {
+        int idl; string il, nl;
+        if (!Montato("lenza", out idl, out il, out nl)) return 0;
+        // se la lenza e' imbobinata, i metri veri sono quelli che ci sono
+        // rimasti sopra, non quelli scritti sulla confezione
+        if (metriInBobina > 0) return metriInBobina;
+        int m = MetriSulMulinello(idMul, TipoLenza(idl));
+        if (m <= 0) return 0;
+        int bobina = MetriLenza(idl);
+        if (bobina > 0 && m > bobina) m = bobina;
+        return m;
+    }
+
+    // I metri che hai davvero in acqua: li decide il mulinello montato.
+    // Se la bobina che hai ne contiene meno, di piu' non ne puoi mettere.
+    int MetriMontati(int idLenza)
+    {
+        int idm; string im, nm;
+        if (!Montato("mulinello", out idm, out im, out nm)) return 0;
+        int m = MetriSulMulinello(idm, TipoLenza(idLenza));
+        if (m <= 0) return 0;
+        int bobina = MetriLenza(idLenza);
+        if (bobina > 0 && m > bobina) m = bobina;
+        return m;
+    }
+
+    // i metri della bobina di lenza montata
+    int MetriLenza(int id)
+    {
+        int i;
+        for (i = 0; i < lenze.Count; i++)
+            if (lenze[i].Id == id) return lenze[i].Metri;
+        return 0;
+    }
+
+    // quanto pesa il pescato che hai nella nassa e quanto ce ne sta
+    float KgNassaDentro() { return kgNassa; }
+    float kgNassa = 0f;
+
+    // il pesce piu' grosso che ci sta dentro: oltre questo lo rilasci,
+    // per quanto sia grande la rete
+    float KgPesceMax()
+    {
+        int id; string img, nome;
+        if (!Montato("nassa", out id, out img, out nome)) return 0f;
+        int i;
+        for (i = 0; i < nasse.Count; i++)
+            if (nasse[i].Id == id) return nasse[i].KgPesce;
+        return 0f;
+    }
+
+    float KgNassaMax()
+    {
+        int id; string img, nome;
+        if (!Montato("nassa", out id, out img, out nome)) return 0f;
+        int i;
+        for (i = 0; i < nasse.Count; i++)
+            if (nasse[i].Id == id) return nasse[i].KgTotale;
+        return 0f;
+    }
+
+    // Q / RB: gira fra le esche che hai in borsa
+    int escaMontata = -1;
+
+    void CambiaEsca()
+    {
+        // A SPINNING IL TASTO CAMBIA IL CUCCHIAINO.
+        // Non c'e' esca da infilare: quello che offri e' l'artificiale,
+        // e con lo stesso tasto giri fra quelli che ti sei portato.
+        if (InUso("artificiale") >= 0) { CambiaArtificiale(); return; }
+
+        List<int> ids = new List<int>();
+        foreach (KeyValuePair<string, int> kv in borsa)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length < 2 || c[0] != "esca") continue;
+            ids.Add(Numero(c[1]));
+        }
+        if (ids.Count == 0)
+        {
+            Avviso("~y~Non hai esche in borsa.");
+            return;
+        }
+        int dove = ids.IndexOf(escaMontata);
+        escaMontata = ids[(dove + 1) % ids.Count];
+        string nome, img;
+        int prezzo, liv;
+        if (Articolo("esca", escaMontata, out nome, out img, out prezzo, out liv))
+            Avviso("~g~Esca: ~s~" + nome + "  x" + QuanteEsche(escaMontata));
+        Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+    }
+
+    void CambiaArtificiale()
+    {
+        List<int> ids = new List<int>();
+        foreach (KeyValuePair<string, int> kv in borsa)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length < 2 || c[0] != "artificiale") continue;
+            ids.Add(Numero(c[1]));
+        }
+        int ora = InUso("artificiale");
+        if (ora >= 0 && !ids.Contains(ora)) ids.Add(ora);
+        if (ids.Count < 2) { Messaggio("Non hai altri artificiali in cassetta."); return; }
+        ids.Sort();
+        int dove = ids.IndexOf(ora);
+        int nuovo = ids[(dove + 1) % ids.Count];
+        if (nuovo == ora) return;
+        if (Arma("artificiale", nuovo))
+        {
+            string nome, img;
+            int prezzo, liv;
+            if (Articolo("artificiale", nuovo, out nome, out img, out prezzo, out liv))
+                Messaggio(nome + "   x" + QuantiPezzi("artificiale", nuovo));
+            Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            SalvaStato();
+            RiscriviTutto();
+        }
+    }
+
+    void Preso()
+    {
+        // FUORI DALL'ACQUA, APPESO AL FILO.
+        // Il pesce che stava lottando non sparisce: passa sotto la punta
+        // della canna e ci resta finche' non decidi se tenerlo.
+        pesceAppeso = true;
+        Specie s = pesci[pesceQui];
+        string kg = pesceKg.ToString("0.##", CultureInfo.InvariantCulture);
+
+        // XP: la formula sta in livelli.txt
+        int volte = Quanti(quaderno, s.Nome);
+        float b = 20f + pesceKg * 15f;
+        float r = (volte == 0) ? 8f : (volte < 5 ? 3f : (volte < 20 ? 1.5f : 1.3f));
+        float t = 1f;
+        if (pesceKg >= s.KgU && s.KgU > 0f) t = 3f;
+        else if (pesceKg >= s.KgT && s.KgT > 0f) t = 2f;
+        Suono("CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET");
+
+        // LA NASSA HA DUE LIMITI, e sono due cose diverse: il pesce
+        // singolo piu' grosso che ci entra, e quanti chili in tutto.
+        // L'ULTIMO pesce puo' sforare: finche' nella rete c'e' ancora
+        // spazio il pesce entra lo stesso, anche se col suo peso si va
+        // oltre. Quindi il massimo vero che puoi arrivare a portare a
+        // casa e' kg_totale + kg_pesce_max. Piena vuol dire che sei gia'
+        // arrivato al limite, non che il prossimo pesce lo supererebbe.
+        // Qui non si decide niente: si guarda solo se ci starebbe.
+        float max = KgNassaMax();
+        float maxPesce = KgPesceMax();
+        cardPuoTenere = true;
+        cardPerche = "";
+        if (max <= 0f)
+        {
+            cardPuoTenere = false;
+            cardPerche = "Non hai una nassa dove metterlo";
+        }
+        else if (maxPesce > 0f && pesceKg > maxPesce)
+        {
+            cardPuoTenere = false;
+            cardPerche = "Troppo grosso per questa nassa (max "
+                       + maxPesce.ToString("0.##", CultureInfo.InvariantCulture) + " kg)";
+        }
+        else if (kgNassa >= max)
+        {
+            cardPuoTenere = false;
+            cardPerche = "La nassa e' piena";
+        }
+        int guadagno = (int)(b * r * t);
+        xpTot += guadagno;
+
+        // quanto vale: comune, trofeo o esemplare unico secondo il peso
+        int prezzoPesce = s.PrC;
+        if (s.KgU > 0f && pesceKg >= s.KgU) prezzoPesce = s.PrU;
+        else if (s.KgT > 0f && pesceKg >= s.KgT) prezzoPesce = s.PrT;
+        int vale = Dollari(prezzoPesce);
+
+        Aggiungi(quaderno, s.Nome, 1);
+        // il diario tiene il piu' grosso, non l'ultimo
+        float vecchio = record.ContainsKey(s.Nome) ? record[s.Nome] : 0f;
+        if (pesceKg > vecchio)
+        {
+            record[s.Nome] = pesceKg;
+            int luR = LuogoQui();
+            string bzR;
+            dovePreso[s.Nome] = (luR >= 0)
+                              ? NomeChiosco(CodiceLuogo(luR), out bzR) : "";
+            // con che esca e con che amo: e' questo che fa di un elenco
+            // un diario. Senza, non sai come ripetere la pescata.
+            string ne2 = "", ie2; int pe2, le2;
+            if (escaMontata >= 0
+                && Articolo("esca", escaMontata, out ne2, out ie2, out pe2, out le2))
+                recEsca[s.Nome] = ne2;
+            else recEsca.Remove(s.Nome);
+            int idT; string imT, nmT;
+            if (Montato("terminale", out idT, out imT, out nmT))
+                recAmo[s.Nome] = MisuraTerminale(idT);
+            else recAmo.Remove(s.Nome);
+            recXp[s.Nome] = guadagno;
+            recVale[s.Nome] = vale;
+        }
+        int livPrima = livelloPescatore;
+        livelloPescatore = LivelloDa(xpTot);
+
+
+        if (livelloPescatore > livPrima)
+            Avviso("~y~LIVELLO " + livelloPescatore + "!");
+        Vibra(300, 120);
+
+        // la finestra della cattura: resta li' finche' non scegli
+        cardPesce = pesceQui;
+        cardKg = pesceKg;
+        cardXp = guadagno;
+        cardVale = vale;
+        if (s.KgU > 0f && pesceKg >= s.KgU) cardTaglia = "ESEMPLARE UNICO";
+        else if (s.KgT > 0f && pesceKg >= s.KgT) cardTaglia = "TROFEO";
+        else cardTaglia = "COMUNE";
+        fase = FASE_CARD;
+
+        SalvaStato();
+        RiscriviTutto();
+    }
+
+    // IL DIARIO DI PESCA.
+    // quaderno: quante volte hai preso ogni specie.
+    // record:   il piu' grosso di quella specie che hai tirato su.
+    // dovePreso: in che acqua l'hai fatto quel record.
+    // Insieme fanno il diario: non un elenco di catture, ma il meglio
+    // che hai fatto con ognuna delle 239 specie.
+    // IMPOSTAZIONI DELLA MOD.
+    // Se la pesca la fai quando ne hai voglia, la scritta "Zona di
+    // pesca" ogni volta che passi vicino a una riva rompe. Si spegne.
+    bool avvisaZona = true;
+    bool diarioChiesto = false;
+    bool resetChiesto = false;   // conferma per azzerare il diario
+
+    // QUELLO CHE HAI CONSUMATO.
+    // Le esche si comprano a confezioni ma si usano a pezzi: cento
+    // bocconi di pane sono una confezione sola, e ogni volta che ne
+    // infili uno sull'amo ne resta uno di meno. Qui teniamo il conto
+    // dei pezzi gia' usati di ogni articolo; quando finiscono si
+    // consuma una confezione e si riparte.
+    Dictionary<string, int> usati = new Dictionary<string, int>();
+
+    Dictionary<string, int> quaderno = new Dictionary<string, int>();
+    Dictionary<string, float> record = new Dictionary<string, float>();
+    Dictionary<string, string> dovePreso = new Dictionary<string, string>();
+    // e con cosa l'hai preso, quando hai fatto quel record
+    Dictionary<string, string> recEsca = new Dictionary<string, string>();
+    Dictionary<string, string> recAmo = new Dictionary<string, string>();
+    Dictionary<string, int> recXp = new Dictionary<string, int>();
+    Dictionary<string, int> recVale = new Dictionary<string, int>();
+
+
+    // ============================================================
+    //  LA SCENA: canna in mano, posa del pescatore, galleggiante.
+    //  Ripreso dalla mod vecchia, che queste cose le faceva bene.
+    // ============================================================
+
+    // i valori regolati a mano stanno in config.ini, come nella mod vecchia:
+    // cosi' si ritoccano a gioco acceso senza ricompilare
+    float LeggiF(string chiave, float dif)
+    {
+        try
+        {
+            string f = Path.Combine(MY_DIR, "config.ini");
+            if (!File.Exists(f)) return dif;
+            string[] r = File.ReadAllLines(f);
+            int i;
+            for (i = 0; i < r.Length; i++)
+            {
+                string l = r[i].Trim();
+                if (l.Length == 0 || l[0] == '#') continue;
+                int eq = l.IndexOf('=');
+                if (eq < 1) continue;
+                if (l.Substring(0, eq).Trim() != chiave) continue;
+                float v;
+                if (float.TryParse(l.Substring(eq + 1).Trim(),
+                        NumberStyles.Float, CultureInfo.InvariantCulture, out v)) return v;
+            }
+        }
+        catch { }
+        return dif;
+    }
+
+    string LeggiS(string chiave, string dif)
+    {
+        try
+        {
+            string f = Path.Combine(MY_DIR, "config.ini");
+            if (!File.Exists(f)) return dif;
+            string[] r = File.ReadAllLines(f);
+            int i;
+            for (i = 0; i < r.Length; i++)
+            {
+                string l = r[i].Trim();
+                if (l.Length == 0 || l[0] == '#') continue;
+                int eq = l.IndexOf('=');
+                if (eq < 1) continue;
+                if (l.Substring(0, eq).Trim() != chiave) continue;
+                string v = l.Substring(eq + 1).Trim();
+                if (v.Length > 0) return v;
+            }
+        }
+        catch { }
+        return dif;
+    }
+
+    Prop cannaProp = null;
+    string clipInCorso = "";
+    bool inScena = false;
+
+    void OnAborted(object sender, EventArgs e)
+    {
+        try
+        {
+            TogliCanna();
+            TogliBlipPunti();
+            Ped p = Game.Player.Character;
+            if (p != null && p.Exists()) p.Task.ClearAll();
+            if (orologioPreso) Function.Call(Hash.PAUSE_CLOCK, false);
+        }
+        catch { }
+    }
+
+    // le canne rimaste appese da una ricarica precedente
+    void PulisciCanneRimaste()
+    {
+        try
+        {
+            Ped p = Game.Player.Character;
+            if (p == null || !p.Exists()) return;
+            int mdl = Function.Call<int>(Hash.GET_HASH_KEY, "prop_fishing_rod_01");
+            int q;
+            for (q = 0; q < 6; q++)
+            {
+                int ent = Function.Call<int>(Hash.GET_CLOSEST_OBJECT_OF_TYPE,
+                            p.Position.X, p.Position.Y, p.Position.Z, 3f, mdl, false, false, false);
+                if (ent == 0) break;
+                Prop vecchia = (Prop)Entity.FromHandle(ent);
+                if (!vecchia.Exists()) break;
+                vecchia.IsPersistent = true;
+                vecchia.Delete();
+            }
+        }
+        catch { }
+    }
+
+    void MettiCanna(Ped p)
+    {
+        TogliCanna();
+        try
+        {
+            Model m = new Model("prop_fishing_rod_01");
+            if (!m.IsValid || !m.IsInCdImage) return;
+            m.Request();
+            int w = 0;
+            while (!m.IsLoaded && w < 1500) { Script.Wait(50); w += 50; }
+            if (!m.IsLoaded) return;
+            cannaProp = World.CreateProp(m, p.Position + new GTA.Math.Vector3(0f, 0f, 1f), false, false);
+            m.MarkAsNoLongerNeeded();
+            if (cannaProp == null || !cannaProp.Exists()) { cannaProp = null; return; }
+            int osso = Function.Call<int>(Hash.GET_PED_BONE_INDEX, p, 18905);  // mano destra
+            Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, cannaProp, p, osso,
+                          LeggiF("canna_x", 0.13f), LeggiF("canna_y", 0.10f),
+                          LeggiF("canna_z", 0.01f), LeggiF("canna_rx", 0f),
+                          LeggiF("canna_ry", 90f), LeggiF("canna_rz", 70f),
+                          false, false, false, false, 2, true);
+        }
+        catch { }
+    }
+
+    // ============================================================
+    //  LA LENZA
+    //  Un filo disegnato dalla punta della canna al punto dove sta l'esca.
+    //  Non e' una corda fisica di GTA - quelle sono capricciose e cadono
+    //  a terra - e' una riga tirata a ogni fotogramma, che segue la canna
+    //  quando lui si muove e l'esca quando la recuperi.
+    // ============================================================
+    // i metri della canna montata, letti da canne.txt
+    float LunghezzaCannaMontata()
+    {
+        int id; string img, nome;
+        if (!Montato("canna", out id, out img, out nome)) return 0f;
+        int i;
+        for (i = 0; i < canne.Count; i++)
+            if (canne[i].Id == id) return NumeroPiuAlto(canne[i].Lunghezza);
+        return 0f;
+    }
+
+    // dove sta la punta nel modello: l'asse piu' lungo e quanto misura
+    int puntaAsse = 2;
+    float puntaVal = 0f;
+    bool puntaFatta = false;
+
+    void MisuraCanna()
+    {
+        if (puntaFatta) return;
+        puntaFatta = true;
+        try
+        {
+            OutputArgument omin = new OutputArgument();
+            OutputArgument omax = new OutputArgument();
+            int hash = Function.Call<int>(Hash.GET_HASH_KEY, "prop_fishing_rod_01");
+            Function.Call(Hash.GET_MODEL_DIMENSIONS, hash, omin, omax);
+            GTA.Math.Vector3 mn = omin.GetResult<GTA.Math.Vector3>();
+            GTA.Math.Vector3 mx = omax.GetResult<GTA.Math.Vector3>();
+            float dx = mx.X - mn.X, dy = mx.Y - mn.Y, dz = mx.Z - mn.Z;
+            if (dx >= dy && dx >= dz) { puntaAsse = 0; puntaVal = mx.X; }
+            else if (dy >= dx && dy >= dz) { puntaAsse = 1; puntaVal = mx.Y; }
+            else { puntaAsse = 2; puntaVal = mx.Z; }
+            Diario("punta canna: asse " + puntaAsse + " a "
+                   + puntaVal.ToString("0.##", CultureInfo.InvariantCulture) + " m");
+        }
+        catch { puntaAsse = 2; puntaVal = 1.4f; }
+    }
+
+    // ============================================================
+    //  LA CANNA CHE SI PIEGA - PROVA
+    // ============================================================
+    // Il modello della canna e' rigido: non ha ossa e non si deforma.
+    // La lenza pero' la disegniamo noi, segmento per segmento, e lo
+    // stesso si puo' fare con la canna. Con "canna_disegnata=1" il
+    // modello si nasconde e la canna la disegniamo: dal calcio alla
+    // punta, curvandola verso il pesce di quanto tira.
+    //   canna_piega      quanto si piega alla tensione massima (in parte
+    //                    della lunghezza della canna)
+    //   canna_spessore   quante righe affiancate per fare lo spessore
+    // Se non convince, si rimette "canna_disegnata=0" e torna com'era.
+    bool CannaDisegnata() { return LeggiF("canna_disegnata", 0f) > 0.5f; }
+
+    // il calcio della canna: l'origine del modello in mano
+    GTA.Math.Vector3 CalcioCanna()
+    {
+        try
+        {
+            if (cannaProp != null && cannaProp.Exists())
+                return Function.Call<GTA.Math.Vector3>(
+                    Hash.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS,
+                    cannaProp, 0f, 0f, 0f);
+        }
+        catch { }
+        return GTA.Math.Vector3.Zero;
+    }
+
+    // IL CALCIO ARRIVA IN MANO.
+    // L'origine del modello non e' il fondo della canna: disegnandola da
+    // li' il calcio restava fuori dalle dita. Si allunga all'indietro di
+    // "canna_calcio" metri, lungo l'asse della canna.
+    GTA.Math.Vector3 CalcioEsteso()
+    {
+        GTA.Math.Vector3 b = CalcioCanna();
+        GTA.Math.Vector3 t = PuntaDritta();
+        if (b == GTA.Math.Vector3.Zero || t == GTA.Math.Vector3.Zero) return b;
+        GTA.Math.Vector3 d = t - b;
+        float l = d.Length();
+        if (l < 0.01f) return b;
+        return b - (d / l) * LeggiF("canna_calcio", 0.12f);
+    }
+
+    // la punta VERA quando la canna e' piegata: e' li' che nasce la lenza
+    GTA.Math.Vector3 PuntaPiegata()
+    {
+        GTA.Math.Vector3 b = CalcioEsteso();
+        GTA.Math.Vector3 t = PuntaDritta();
+        if (b == GTA.Math.Vector3.Zero || t == GTA.Math.Vector3.Zero) return t;
+        return PuntoSullaCanna(b, t, 1f);
+    }
+
+    // un punto lungo la canna, da 0 (calcio) a 1 (punta). La curva e' una
+    // Bezier: il calcio resta dritto, la punta va verso il pesce.
+    GTA.Math.Vector3 PuntoSullaCanna(GTA.Math.Vector3 b, GTA.Math.Vector3 t, float u)
+    {
+        float ten = tensione / 100f;
+        if (ten < 0f) ten = 0f;
+        if (ten > 1f) ten = 1f;
+        float piega = LeggiF("canna_piega", 0.28f) * ten;
+
+        // verso dove tira: l'esca in acqua
+        GTA.Math.Vector3 verso = new GTA.Math.Vector3(0f, 0f, -1f);
+        if (escaInAcqua)
+        {
+            GTA.Math.Vector3 e = new GTA.Math.Vector3(escaX, escaY, AcquaSottoEsca());
+            GTA.Math.Vector3 d = e - t;
+            float l = d.Length();
+            if (l > 0.01f) verso = d / l;
+        }
+
+        float lung = (t - b).Length();
+        // il punto di controllo sta a due terzi, tirato verso il pesce
+        // il verso della piega: se il modello e' orientato al contrario
+        // la canna si inarca in su invece che verso il pesce. "canna_verso"
+        // lo gira: 1 o -1.
+        float vs = LeggiF("canna_verso", -1f);
+        GTA.Math.Vector3 c = b + (t - b) * 0.66f + verso * (lung * piega * vs);
+        float w = 1f - u;
+        return b * (w * w) + c * (2f * w * u) + t * (u * u);
+    }
+
+    // la punta che usa tutto il resto della mod: se la canna la
+    // disegniamo noi e' quella piegata, se no quella del modello
+    GTA.Math.Vector3 PuntaCanna()
+    {
+        if (CannaDisegnata()) return PuntaPiegata();
+        return PuntaDritta();
+    }
+
+    // LA PUNTA COM'E' DISEGNATA NEL MODELLO, senza piega.
+    GTA.Math.Vector3 PuntaDritta()
+    {
+        try
+        {
+            if (cannaProp != null && cannaProp.Exists())
+            {
+                // LA PUNTA VERA DEL MODELLO.
+                // Il modello della canna in mano e' sempre lo stesso, quindi
+                // la punta sta dove sta: la si chiede al gioco con le misure
+                // del modello, invece di indovinare un numero. La lunghezza
+                // scritta in canne.txt qui non c'entra: usarla mandava la
+                // lenza a mezz'aria, oltre la punta che si vede.
+                MisuraCanna();
+                float agg = LeggiF("canna_agg", 0f);
+                float ox = 0f, oy = 0f, oz = 0f;
+                if (puntaAsse == 0) ox = puntaVal + agg;
+                else if (puntaAsse == 1) oy = puntaVal + agg;
+                else oz = puntaVal + agg;
+                return Function.Call<GTA.Math.Vector3>(
+                    Hash.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS,
+                    cannaProp, ox, oy, oz);
+            }
+        }
+        catch { }
+        Ped p = Game.Player.Character;
+        if (p != null && p.Exists()) return p.Position + new GTA.Math.Vector3(0f, 0f, 1.2f);
+        return GTA.Math.Vector3.Zero;
+    }
+
+    // LA CANNA DISEGNATA: una spezzata dal calcio alla punta, con lo
+    // spessore fatto di righe affiancate e il colore che si schiarisce
+    // verso il cimino, come una canna vera.
+    void DisegnaCanna()
+    {
+        if (!CannaDisegnata())
+        {
+            // spenta la prova, il modello torna a vedersi
+            try
+            {
+                if (cannaProp != null && cannaProp.Exists())
+                {
+                    Function.Call(Hash.SET_ENTITY_VISIBLE, cannaProp, true, false);
+                    Function.Call(Hash.RESET_ENTITY_ALPHA, cannaProp);
+                }
+            }
+            catch { }
+            return;
+        }
+        try
+        {
+            GTA.Math.Vector3 b = CalcioEsteso();
+            GTA.Math.Vector3 t = PuntaDritta();
+            if (b == GTA.Math.Vector3.Zero || t == GTA.Math.Vector3.Zero) return;
+
+            // il modello sparisce: al suo posto disegniamo noi.
+            // Due modi: invisibile e trasparente. Su Enhanced uno dei due
+            // ogni tanto non basta da solo.
+            if (cannaProp != null && cannaProp.Exists())
+            {
+                Function.Call(Hash.SET_ENTITY_VISIBLE, cannaProp, false, false);
+                Function.Call(Hash.SET_ENTITY_ALPHA, cannaProp, 0, false);
+            }
+
+            int n = (int)LeggiF("canna_tratti", 14f);
+            if (n < 4) n = 4;
+
+            // LO SPESSORE E' FINTO.
+            // DRAW_LINE fa sempre una riga da un pixel, non si puo'
+            // ingrossare. L'unico modo e' affiancarne qualcuna a un
+            // pelo di distanza: poche e vicinissime sembrano una riga
+            // piu' grossa, tante e larghe sembrano un tubo - e il tubo
+            // faceva perdere il senso della canna.
+            //   canna_righe   quante righe affiancate (1 = una sola)
+            //   canna_passo   quanto sono distanti in metri
+            int righe = (int)LeggiF("canna_righe", 7f);
+            if (righe < 1) righe = 1;
+            // IL PASSO LO DECIDE LA TELECAMERA.
+            // In metri il passo e' sbagliato quasi sempre: da vicino le
+            // righe si sovrappongono, da lontano si aprono e si vedono
+            // le fessure. Un metro a dieci metri di distanza copre meno
+            // pixel che a due. Quindi il passo si misura in DISTANZA:
+            // piu' e' lontana la canna, piu' le righe vanno staccate per
+            // restare a un pixel l'una dall'altra.
+            float dist = 2f;
+            try
+            {
+                GTA.Math.Vector3 cam = Function.Call<GTA.Math.Vector3>(
+                    Hash.GET_GAMEPLAY_CAM_COORD);
+                dist = (b - cam).Length();
+                if (dist < 0.5f) dist = 0.5f;
+                if (dist > 40f) dist = 40f;
+            }
+            catch { }
+            float passo = dist * LeggiF("canna_passo_k", 0.0011f);
+            bool prova = LeggiF("canna_prova_rossa", 0f) > 0.5f;
+
+            GTA.Math.Vector3 prec = PuntoSullaCanna(b, t, 0f);
+            int i, k;
+            for (i = 1; i <= n; i++)
+            {
+                float u = (float)i / (float)n;
+                GTA.Math.Vector3 q = PuntoSullaCanna(b, t, u);
+
+                int col = (int)LeggiF("canna_col_giu", 22f)
+                        + (int)(LeggiF("canna_col_su", 60f) * u);
+                int rr = prova ? 250 : col;
+                int gg = prova ? 40 : col;
+                int bb = prova ? 40 : (col + 8);
+
+                // in punta si assottiglia: una riga sola
+                int quante = 1 + (int)((righe - 1) * (1f - u));
+                for (k = 0; k < quante; k++)
+                {
+                    float off = (k - (quante - 1) * 0.5f) * passo;
+                    Function.Call(Hash.DRAW_LINE,
+                                  prec.X + off, prec.Y, prec.Z,
+                                  q.X + off, q.Y, q.Z, rr, gg, bb, 255);
+                    Function.Call(Hash.DRAW_LINE,
+                                  prec.X, prec.Y + off, prec.Z,
+                                  q.X, q.Y + off, q.Z, rr, gg, bb, 255);
+                }
+                prec = q;
+            }
+        }
+        catch { }
+    }
+
+    // IL PELO DELL'ACQUA DOVE STA L'ESCA.
+    // GET_WATER_HEIGHT sui laghetti piccoli e sui fiumi spesso non risponde:
+    // e' lo stesso buco che avevamo trovato cercando la riva. Allora si
+    // prova in tre modi, dal piu' preciso al piu' rozzo, e solo se falliscono
+    // tutti si ripiega sul terreno.
+    float acquaZmem = 0f;
+    bool acquaZval = false;
+
+    // L'ESCA E' FINITA IN ACQUA O SUL PRATO?
+    // AcquaSottoEsca() si ricorda l'ultima quota buona, perche' vicino a
+    // riva la sonda ogni tanto non risponde e il filo spariva dentro la
+    // sponda. Quella memoria pero' nasconde proprio il caso che qui ci
+    // serve: il lancio finito sull'erba. Questa invece non ricorda
+    // niente - chiede e basta - e controlla anche che l'acqua stia sopra
+    // il terreno, se no una pozza sotto una collina varrebbe come lago.
+    bool EscaSullAcqua()
+    {
+        try
+        {
+            float z = 0f;
+            bool trovata = false;
+            OutputArgument oz = new OutputArgument();
+            if (Function.Call<bool>(Hash.GET_WATER_HEIGHT, escaX, escaY, 400f, oz))
+            { z = oz.GetResult<float>(); trovata = true; }
+            else if (Function.Call<bool>(Hash.GET_WATER_HEIGHT_NO_WAVES,
+                                         escaX, escaY, 400f, oz))
+            { z = oz.GetResult<float>(); trovata = true; }
+            else
+            {
+                OutputArgument oh = new OutputArgument();
+                if (Function.Call<bool>(Hash.TEST_VERTICAL_PROBE_AGAINST_ALL_WATER,
+                                        escaX, escaY, 400f, 0, oh))
+                { z = oh.GetResult<float>(); trovata = true; }
+            }
+            if (!trovata) return false;
+            return AcquaSopraIlFondo(escaX, escaY, z);
+        }
+        catch { }
+        return false;
+    }
+
+    float AcquaSottoEsca()
+    {
+        try
+        {
+            OutputArgument oz = new OutputArgument();
+            if (Function.Call<bool>(Hash.GET_WATER_HEIGHT, escaX, escaY, 400f, oz))
+            {
+                float z = oz.GetResult<float>();
+                acquaZmem = z; acquaZval = true;
+                return z;
+            }
+            if (Function.Call<bool>(Hash.GET_WATER_HEIGHT_NO_WAVES, escaX, escaY, 400f, oz))
+            {
+                float z = oz.GetResult<float>();
+                acquaZmem = z; acquaZval = true;
+                return z;
+            }
+            // la sonda verticale: parte da cento metri sopra e scende
+            OutputArgument oh = new OutputArgument();
+            if (Function.Call<bool>(Hash.TEST_VERTICAL_PROBE_AGAINST_ALL_WATER,
+                                    escaX, escaY, 400f, 0, oh))
+            {
+                float z = oh.GetResult<float>();
+                // quella nativa quando non c'e' acqua restituisce il suolo:
+                // si accetta solo se sta sotto i piedi di chi pesca
+                Ped pp = Game.Player.Character;
+                float mio = (pp != null && pp.Exists()) ? pp.Position.Z : z;
+                if (z < mio + 0.5f) { acquaZmem = z; acquaZval = true; return z; }
+            }
+        }
+        catch { }
+        // l'ultima acqua trovata da queste parti: meglio di niente.
+        // Vicino a riva la sonda smette di rispondere, e senza questa
+        // memoria il filo spariva dentro la sponda a sette-otto metri.
+        if (acquaZval) return acquaZmem;
+        Ped p = Game.Player.Character;
+        return (p != null && p.Exists()) ? p.Position.Z - 1f : 0f;
+    }
+
+    // ============================================================
+    //  IL PESCE CHE ABBOCCA SI VEDE.
+    //  Quando abbocca si tira su un pesce vero del gioco e lo si mette
+    //  all'amo: nuota a destra e a sinistra tirandosi dietro la lenza,
+    //  e quando lo porti a riva resta appeso al filo sotto la punta
+    //  della canna. Non e' un'animazione: e' un'entita' che spostiamo
+    //  noi a ogni fotogramma, quindi fa esattamente quello che fa la
+    //  lenza.
+    // ============================================================
+    Ped pescePed = null;
+    bool pesceAppeso = false;
+    float pesceAppesoX = 0f, pesceAppesoY = 0f, pesceAppesoZ = 0f;
+    float pesceBoccaX = 0f, pesceBoccaY = 0f, pesceBoccaZ = 0f;
+    float pesceSbanda = 0f;      // di quanto sta sbandando adesso
+    int pesceCambio = 0;         // quando decide di cambiare direzione
+    float pesceVerso = 1f;
+
+    // I PESCI RIMASTI IN GIRO.
+    // Se lo script muore o lo ricarichi mentre un pesce e' fuori, quello
+    // resta li' e nessuno se lo ricorda piu'. All'avvio si guardano i
+    // ped qui intorno: quelli dei nostri modelli, fermi e senza gravita',
+    // sono roba nostra rimasta orfana e si buttano. I pesci veri del
+    // gioco nuotano e non sono congelati, quindi non li tocca.
+    void PuliziaPesciOrfani()
+    {
+        try
+        {
+            Ped p = Game.Player.Character;
+            if (p == null || !p.Exists()) return;
+            Ped[] vicini = World.GetNearbyPeds(p, 120f);
+            int i;
+            for (i = 0; i < vicini.Length; i++)
+            {
+                Ped q = vicini[i];
+                if (q == null || !q.Exists()) continue;
+                int mh = q.Model.Hash;
+                if (mh != Function.Call<int>(Hash.GET_HASH_KEY, "a_c_fish")
+                    && mh != Function.Call<int>(Hash.GET_HASH_KEY, "a_c_sharktiger")
+                    && mh != Function.Call<int>(Hash.GET_HASH_KEY, "a_c_sharkhammer")
+                    && mh != Function.Call<int>(Hash.GET_HASH_KEY, "a_c_stingray"))
+                    continue;
+                // i nostri orfani stanno per aria o per terra: un pesce
+                // vero del gioco e' sempre in acqua
+                if (Function.Call<bool>(Hash.IS_ENTITY_IN_WATER, q)) continue;
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, q, true, true);
+                Function.Call(Hash.FREEZE_ENTITY_POSITION, q, false);
+                q.Delete();
+            }
+        }
+        catch { }
+    }
+
+    void MettiPesce()
+    {
+        TogliPesce();
+        try
+        {
+            string nomeM = (pesceQui >= 0 && pesceQui < pesci.Count)
+                           ? ModelloDi(pesci[pesceQui].Nome) : "a_c_fish";
+            Model m = new Model(nomeM);
+            m.Request(600);
+            // se quel modello non c'e', si ripiega sul pesce normale
+            if (!m.IsLoaded)
+            {
+                m = new Model("a_c_fish");
+                m.Request(600);
+                if (!m.IsLoaded) return;
+            }
+            float z = AcquaSottoEsca();
+            pescePed = World.CreatePed(m, new GTA.Math.Vector3(escaX, escaY, z - 0.3f));
+            m.MarkAsNoLongerNeeded();
+            if (pescePed == null || !pescePed.Exists()) { pescePed = null; return; }
+            Function.Call(Hash.SET_ENTITY_INVINCIBLE, pescePed, true);
+            Function.Call(Hash.SET_ENTITY_COLLISION, pescePed, false, false);
+            Function.Call(Hash.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS, pescePed, true);
+            Function.Call(Hash.SET_PED_CAN_RAGDOLL, pescePed, false);
+            Function.Call(Hash.SET_ENTITY_CAN_BE_DAMAGED, pescePed, false);
+            Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, pescePed, false);
+            Function.Call(Hash.FREEZE_ENTITY_POSITION, pescePed, true);
+            // SENZA QUESTO NON SI CANCELLA.
+            // Un ped creato dallo script GTA lo tratta come roba
+            // dell'ambiente: la cancellazione la ignora e il pesce ti
+            // resta piantato per terra. Dichiarandolo entita' di
+            // missione diventa nostro, e se ne va quando glielo diciamo.
+            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pescePed, true, true);
+            // LA SAGOMA GIUSTA: quella della specie che ha abboccato,
+            // non quella che sceglie il gioco a caso
+            if (pesceQui >= 0 && pesceQui < pesci.Count)
+                Function.Call(Hash.SET_PED_COMPONENT_VARIATION, pescePed, 0,
+                              FormaDi(pesci[pesceQui].Nome), 0, 0);
+            pesceAppeso = false;
+            pesceSbanda = 0f;
+            pesceVerso = 1f;
+            pesceCambio = 0;
+        }
+        catch { pescePed = null; }
+    }
+
+    // LA TAGLIA DEL PESCE.
+    // GTA non sa ridimensionare un ped: la funzione non esiste (in RDR2
+    // si', nella cinque no). L'unico modo e' riscrivere a mano la
+    // MATRICE dell'entita' - le sue tre direzioni piu' la posizione - e
+    // moltiplicare le direzioni per un fattore. Di solito e' una
+    // porcheria, perche' fisica e animazioni te la resettano; qui no,
+    // perche' il pesce lo pilotiamo noi a ogni fotogramma e la riscriviamo
+    // subito dopo.
+    // Il fattore viene dal peso vero: un persico da due etti resta
+    // piccolo, un siluro da ventisei chili viene grosso. Si usa la
+    // radice cubica perche' il peso va col volume, non con la lunghezza.
+    // LA TAGLIA PER ORA NON SI PUO' FARE.
+    // Ridimensionare un ped in GTA si potrebbe solo riscrivendo la sua
+    // matrice, e questa versione di ScriptHookVDotNet quella funzione
+    // non ce l'ha: chiamarla a mano col numero, senza esserne sicuri,
+    // vuol dire rischiare di far crashare il gioco. Quindi il pesce
+    // resta della sua misura, e la taglia si vede dal modello.
+    void PesceInPosa(float px, float py, float pz, float gradi, float rollio)
+    {
+        if (pescePed == null || !pescePed.Exists()) return;
+        try
+        {
+            Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, pescePed,
+                          px, py, pz, false, false, false);
+            Function.Call(Hash.SET_ENTITY_ROTATION, pescePed,
+                          rollio, 0f, gradi, 2, true);
+        }
+        catch { }
+    }
+
+    void TogliPesce()
+    {
+        try
+        {
+            if (pescePed != null && pescePed.Exists())
+            {
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pescePed, true, true);
+                Function.Call(Hash.FREEZE_ENTITY_POSITION, pescePed, false);
+                pescePed.Delete();
+            }
+        }
+        catch { }
+        pescePed = null;
+        pesceAppeso = false;
+    }
+
+    // il pesce sta all'amo: lo si mette li' a ogni giro
+    // "tira" = sta lottando, quindi sbanda e si porta dietro la lenza
+    void AggiornaPesce(Ped p, int now, bool tira)
+    {
+        if (pescePed == null || !pescePed.Exists()) return;
+        try
+        {
+            if (pesceAppeso)
+            {
+                // FUORI DALL'ACQUA, A CIONDOLONI.
+                // Sotto la punta della canna, a testa in giu', e si
+                // dimena: un pendolo lento piu' uno scossone corto, come
+                // un pesce appena tirato su.
+                GTA.Math.Vector3 pt = PuntaCanna();
+                if (pt == GTA.Math.Vector3.Zero) return;
+                float giu = LeggiF("pesce_appeso_giu", 0.55f);
+                float t = now / 1000f;
+                float amp = LeggiF("pesce_dondola", 0.10f);
+                float dx = (float)Math.Sin(t * 2.1) * amp;
+                float dy = (float)Math.Cos(t * 1.7) * amp;
+                pesceAppesoX = pt.X + dx;
+                pesceAppesoY = pt.Y + dy;
+                pesceAppesoZ = pt.Z - giu;
+                Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, pescePed,
+                              pesceAppesoX, pesceAppesoY, pesceAppesoZ,
+                              false, false, false);
+                // L'AMO STA IN BOCCA, non su una branchia.
+                // Il gioco mette il pesce col suo centro sul punto che
+                // gli diamo, e il centro sta a meta' corpo: il filo
+                // finiva sul dorso. Qui si chiede al gioco dov'e' finita
+                // la punta del muso e si sposta il pesce di quel tanto,
+                // cosi' e' la bocca a stare appesa.
+                float av = LeggiF("pesce_bocca_avanti", 0.22f);
+                float sp = LeggiF("pesce_bocca_lato", 0f);
+                // PRIMA SI CHIEDE AL GIOCO DOV'E' LA TESTA.
+                // Il pesce e' inarcato dall'animazione e i modelli non
+                // sono tutti della stessa lunghezza: uno spostamento
+                // fisso dal centro non puo' andare bene per tutti. Se il
+                // pesce ha l'osso della testa - e ce l'ha - quello e' il
+                // punto vero, curvatura compresa. I numeri del config
+                // restano come ritocco, e come ripiego se l'osso non
+                // c'e'.
+                GTA.Math.Vector3 bocca = GTA.Math.Vector3.Zero;
+                bool ossoOk = false;
+                try
+                {
+                    int osso = Function.Call<int>(Hash.GET_PED_BONE_INDEX,
+                                                  pescePed, 31086);   // SKEL_Head
+                    if (osso > 0)
+                    {
+                        GTA.Math.Vector3 ct = Function.Call<GTA.Math.Vector3>(
+                            Hash.GET_WORLD_POSITION_OF_ENTITY_BONE, pescePed, osso);
+                        GTA.Math.Vector3 c0 = pescePed.Position;
+                        float dx2 = ct.X - c0.X, dy2 = ct.Y - c0.Y, dz2 = ct.Z - c0.Z;
+                        float d2 = dx2 * dx2 + dy2 * dy2 + dz2 * dz2;
+                        // se l'osso e' li' vicino e' quello buono
+                        if (d2 > 0.0001f && d2 < 4f) { bocca = ct; ossoOk = true; }
+                    }
+                }
+                catch { }
+                if (!ossoOk)
+                    bocca = Function.Call<GTA.Math.Vector3>(
+                        Hash.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS,
+                        pescePed, sp, av, LeggiF("pesce_bocca_su", 0f));
+                else
+                {
+                    // dall'osso della testa alla punta del muso, in avanti
+                    GTA.Math.Vector3 dif = Function.Call<GTA.Math.Vector3>(
+                        Hash.GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS,
+                        pescePed, sp, LeggiF("pesce_muso", 0.08f),
+                        LeggiF("pesce_bocca_su", 0f));
+                    GTA.Math.Vector3 c1 = pescePed.Position;
+                    bocca = new GTA.Math.Vector3(bocca.X + (dif.X - c1.X),
+                                                 bocca.Y + (dif.Y - c1.Y),
+                                                 bocca.Z + (dif.Z - c1.Z));
+                }
+                GTA.Math.Vector3 orig = pescePed.Position;
+                pesceBoccaX = bocca.X; pesceBoccaY = bocca.Y; pesceBoccaZ = bocca.Z;
+                PesceInPosa(pesceAppesoX - (bocca.X - orig.X),
+                            pesceAppesoY - (bocca.Y - orig.Y),
+                            pesceAppesoZ - (bocca.Z - orig.Z),
+                            (float)((t * 26.0) % 360.0),
+                            LeggiF("pesce_appeso_becca", 78f));
+                return;
+            }
+
+            // IN ACQUA: sbanda a destra e a sinistra, e la lenza lo segue
+            if (tira)
+            {
+                if (now > pesceCambio)
+                {
+                    pesceVerso = -pesceVerso;
+                    pesceCambio = now + 600 + caso.Next(1400);
+                }
+                float dt = Game.LastFrameTime;
+                // QUANTO SI SPOSTA LO DECIDE IL PESCE, NON IL CONFIG.
+                // Un pesce da mezzo chilo si dimena sul posto; uno che
+                // sta al limite di quello che regge la tua attrezzatura
+                // ti porta la lenza da una parte all'altra. E piu' si
+                // stanca, meno raggio fa: alla fine viene su dritto.
+                // I numeri del config sono quelli del pesce AL LIMITE.
+                float tenutaP = TenutaBorsa();
+                float quanto = (tenutaP > 0f) ? (pesceKg / tenutaP) : 0.5f;
+                if (quanto > 1f) quanto = 1f;
+                if (quanto < 0f) quanto = 0f;
+                float minP = LeggiF("pesce_sbanda_min", 0.35f);
+                float scala = minP + (1f - minP) * quanto;
+                scala *= 1f - stanchezza * LeggiF("pesce_sbanda_stanco", 0.45f);
+                if (scala < 0.05f) scala = 0.05f;
+
+                float forza = LeggiF("pesce_sbanda", 14f) * scala;
+                pesceSbanda += pesceVerso * forza * dt;
+                float max = LeggiF("pesce_sbanda_max", 22f) * scala;
+                if (pesceSbanda > max) pesceSbanda = max;
+                if (pesceSbanda < -max) pesceSbanda = -max;
+                // e' il pesce che si porta dietro l'esca, non la canna
+                escaDir += pesceVerso * forza * dt * LeggiF("pesce_tira_lenza", 0.35f);
+                AggiornaEsca(p, metriLenza);
+            }
+            else pesceSbanda *= 0.96f;
+
+            float za = AcquaSottoEsca();
+            float giu2 = LeggiF("pesce_sotto", 0.25f);
+            // guarda verso il pescatore, storto di quanto sta sbandando
+            GTA.Math.Vector3 o = p.Position;
+            double ang = Math.Atan2(o.X - escaX, o.Y - escaY) * 180.0 / Math.PI;
+            PesceInPosa(escaX, escaY, za - giu2,
+                        (float)(-ang) + pesceSbanda, 0f);
+        }
+        catch { }
+    }
+
+    // IL COLORE DELLA LENZA.
+    // Non e' inventato e non e' scritto da nessuna parte: si prende
+    // dalla foto della bobina che hai montato. Si guarda un pixel ogni
+    // otto, si buttano via il bianco dello sfondo e il quasi-nero, e
+    // quello che resta e' il colore vero di quel filo - il verdolino
+    // dei monofili, il grigio dei fluorocarbon, l'oliva dei trecciati.
+    // Si calcola una volta sola per bobina.
+    string lenzaImgVista = "";
+    int lenzaR = 235, lenzaG = 240, lenzaB = 245;
+
+    void ColoreDellaLenza()
+    {
+        string img = "", nome = "";
+        int id;
+        if (!Montato("lenza", out id, out img, out nome)) return;
+        if (img == null || img.Length == 0) return;
+        if (img == lenzaImgVista) return;
+        lenzaImgVista = img;
+        lenzaR = 235; lenzaG = 240; lenzaB = 245;
+        try
+        {
+            string f = Path.Combine(MY_DIR, img);
+            if (!File.Exists(f)) return;
+            using (Bitmap bm = new Bitmap(f))
+            {
+                long sr = 0, sg = 0, sb = 0, q = 0;
+                int x, y;
+                for (y = 0; y < bm.Height; y += 8)
+                    for (x = 0; x < bm.Width; x += 8)
+                    {
+                        Color c = bm.GetPixel(x, y);
+                        if (c.A < 200) continue;
+                        int mx = c.R; if (c.G > mx) mx = c.G; if (c.B > mx) mx = c.B;
+                        int mn = c.R; if (c.G < mn) mn = c.G; if (c.B < mn) mn = c.B;
+                        if (mx > 240 && mn > 230) continue;   // sfondo bianco
+                        if (mx < 30) continue;                // ombre
+                        sr += c.R; sg += c.G; sb += c.B; q++;
+                    }
+                if (q < 10) return;
+                int r = (int)(sr / q), g = (int)(sg / q), b = (int)(sb / q);
+                // un filo si vede solo se e' piu' chiaro dell'acqua:
+                // si tiene la tinta e si alza la luce
+                int mx2 = r; if (g > mx2) mx2 = g; if (b > mx2) mx2 = b;
+                if (mx2 < 1) mx2 = 1;
+                float k = 210f / (float)mx2;
+                if (k > 1f)
+                {
+                    r = (int)(r * k); g = (int)(g * k); b = (int)(b * k);
+                    if (r > 255) r = 255;
+                    if (g > 255) g = 255;
+                    if (b > 255) b = 255;
+                }
+                lenzaR = r; lenzaG = g; lenzaB = b;
+            }
+        }
+        catch { }
+    }
+
+    // IL GALLEGGIANTE IN ACQUA.
+    // Quello che c'era e' un disegno sul bordo dello schermo: dice cosa
+    // sta succedendo ma non sta in acqua. Questo invece sta li' dove il
+    // filo entra, ondeggia con l'onda, balla quando il pesce assaggia e
+    // sparisce sotto quando abbocca.
+    // Si vede solo se un galleggiante ce l'hai montato: a spinning non
+    // c'e', e infatti non deve esserci.
+    // Il colore lo prende dalla foto del galleggiante che hai comprato,
+    // con lo stesso sistema della lenza.
+    // OGNI GALLEGGIANTE E' IL SUO.
+    // Non un pallino uguale per tutti: forma, misure e colori vengono
+    // dalla riga di galleggianti.txt di quello che hai montato, che sono
+    // dati veri del wiki. "5 1/2" x 4/5"(14 x 2 cm) Oval" vuol dire
+    // quattordici centimetri di lunghezza, due di spessore, forma ovale;
+    // "Natural / Red / Green" sono le fasce, dal basso verso la punta.
+    int gallVisto = -1;
+    float gallLung = 0.14f;      // metri
+    float gallSpess = 0.02f;
+    bool gallPalla = false;
+    bool gallLuce = false;       // i "Glow": fosforescenti
+    List<int> gallCol = new List<int>();   // r,g,b, r,g,b, ...
+
+    static void ColoreNome(string n, out int r, out int g, out int b)
+    {
+        string q = n.Trim().ToLower();
+        r = 235; g = 235; b = 240;
+        if (q.Length == 0) return;
+        if (q.IndexOf("light green") >= 0) { r = 150; g = 225; b = 130; return; }
+        if (q.IndexOf("natural") >= 0)     { r = 215; g = 185; b = 135; return; }
+        if (q.IndexOf("orange") >= 0)      { r = 245; g = 140; b = 40;  return; }
+        if (q.IndexOf("yellow") >= 0)      { r = 250; g = 215; b = 60;  return; }
+        if (q.IndexOf("green") >= 0)       { r = 70;  g = 175; b = 80;  return; }
+        if (q.IndexOf("blue") >= 0)        { r = 60;  g = 120; b = 225; return; }
+        if (q.IndexOf("black") >= 0)       { r = 35;  g = 35;  b = 40;  return; }
+        if (q.IndexOf("white") >= 0)       { r = 245; g = 245; b = 248; return; }
+        if (q.IndexOf("red") >= 0)         { r = 225; g = 55;  b = 45;  return; }
+    }
+
+    // "(14 x 2 cm)" -> lunghezza 14, spessore 2. "(10 cm)" -> palla da 10.
+    void MisureGalleggiante(string mis)
+    {
+        gallLung = 0.14f; gallSpess = 0.02f; gallPalla = false;
+        if (mis == null) return;
+        int a = mis.LastIndexOf('(');
+        int b = mis.IndexOf(')', a + 1);
+        if (a < 0 || b < 0) return;
+        string dentro = mis.Substring(a + 1, b - a - 1).Replace("cm", " ").Trim();
+        string[] pz = dentro.Split('x');
+        float l = NumeroFloat(pz[0].Trim());
+        if (l > 0f) gallLung = l / 100f;
+        if (pz.Length > 1)
+        {
+            float d = NumeroFloat(pz[1].Trim());
+            if (d > 0f) gallSpess = d / 100f;
+        }
+        else
+        {
+            // una misura sola: e' una palla, e quella misura e' il diametro
+            gallPalla = true;
+            gallSpess = gallLung;
+        }
+    }
+
+    void DatiGalleggiante()
+    {
+        string img = "", nome = "";
+        int id;
+        if (!Montato("galleggiante", out id, out img, out nome)) { gallVisto = -1; return; }
+        if (id == gallVisto) return;
+        gallVisto = id;
+        gallCol.Clear();
+        int i;
+        for (i = 0; i < galleggianti.Count; i++)
+        {
+            if (galleggianti[i].Id != id) continue;
+            MisureGalleggiante(galleggianti[i].Misura);
+            // I FOSFORESCENTI.
+            // "Glow Bobber" e "Glowing Slim Float" sono quelli da notte:
+            // il colore va acceso al massimo tenendo la tinta, se no di
+            // notte un giallo mezzo spento non lo vedi.
+            gallLuce = (galleggianti[i].Nome.ToLower().IndexOf("glow") >= 0);
+            // i colori: separati da "/" o da "-n-", dal basso alla punta
+            string c = galleggianti[i].Colore.Replace("-n-", "/");
+            string[] pz = c.Split('/');
+            int q;
+            for (q = 0; q < pz.Length; q++)
+            {
+                int r2, g2, b2;
+                ColoreNome(pz[q], out r2, out g2, out b2);
+                if (gallLuce)
+                {
+                    // I FOSFORESCENTI HANNO TINTE LORO.
+                    // Il verde di un Glow Bobber non e' il verde di un
+                    // prato: e' quel giallo-verde acido che si vede al
+                    // buio. Alzare la luce del verde normale dava un
+                    // verde pieno, non quello. Qui le tinte fluo sono
+                    // scritte a mano, una per colore.
+                    string qq = pz[q].Trim().ToLower();
+                    if (qq.IndexOf("green") >= 0)
+                    { r2 = 200; g2 = 255; b2 = 40; }
+                    else if (qq.IndexOf("yellow") >= 0)
+                    { r2 = 250; g2 = 255; b2 = 80; }
+                    else if (qq.IndexOf("orange") >= 0)
+                    { r2 = 255; g2 = 165; b2 = 30; }
+                    else if (qq.IndexOf("red") >= 0)
+                    { r2 = 255; g2 = 80; b2 = 70; }
+                    else if (qq.IndexOf("blue") >= 0)
+                    { r2 = 90; g2 = 200; b2 = 255; }
+                    else
+                    {
+                        int mx = r2; if (g2 > mx) mx = g2; if (b2 > mx) mx = b2;
+                        if (mx > 40)
+                        {
+                            float kk = 255f / (float)mx;
+                            r2 = (int)(r2 * kk); g2 = (int)(g2 * kk); b2 = (int)(b2 * kk);
+                            if (r2 > 255) r2 = 255;
+                            if (g2 > 255) g2 = 255;
+                            if (b2 > 255) b2 = 255;
+                        }
+                    }
+                }
+                gallCol.Add(r2); gallCol.Add(g2); gallCol.Add(b2);
+            }
+            break;
+        }
+        if (gallCol.Count == 0)
+        { gallCol.Add(225); gallCol.Add(55); gallCol.Add(45); }
+    }
+
+    // 0 = com'e' davvero, poi via via piu' grosso
+    static readonly float[] GALL_ZOOM = new float[] { 1f, 1.3f, 1.6f, 2f, 2.6f };
+    int gallZoom = 0;
+
+    string GallZoomTxt()
+    {
+        if (gallZoom <= 0) return "Vera";
+        return "x" + GALL_ZOOM[gallZoom].ToString("0.0",
+               CultureInfo.InvariantCulture);
+    }
+
+    float GallZoom()
+    {
+        if (gallZoom < 0 || gallZoom >= GALL_ZOOM.Length) return 1f;
+        return GALL_ZOOM[gallZoom];
+    }
+
+    // un pezzo di antennina, da un punto all'altro: tre righe appaiate,
+    // se no da lontano un filo solo sparisce
+    void RigaGall(GTA.Math.Vector3 a, GTA.Math.Vector3 b2, int r, int g, int b)
+    {
+        Function.Call(Hash.DRAW_LINE, a.X, a.Y, a.Z, b2.X, b2.Y, b2.Z,
+                      r, g, b, 245);
+        Function.Call(Hash.DRAW_LINE, a.X + 0.008f, a.Y, a.Z,
+                      b2.X + 0.008f, b2.Y, b2.Z, r, g, b, 245);
+        Function.Call(Hash.DRAW_LINE, a.X, a.Y + 0.008f, a.Z,
+                      b2.X, b2.Y + 0.008f, b2.Z, r, g, b, 245);
+    }
+
+    bool HoIlGalleggiante()
+    {
+        string img = "", nome = "";
+        int id;
+        return Montato("galleggiante", out id, out img, out nome);
+    }
+
+    // affonda: 0 sta a galla, 1 e' sparito sotto
+    // scossa: quanto balla adesso
+    void GalleggianteInAcqua(int now, float affonda, float scossa, float tira)
+    {
+        if (!escaInAcqua) return;
+        if (!HoIlGalleggiante()) return;
+        try
+        {
+            DatiGalleggiante();
+            float z = AcquaSottoEsca();
+            float onda = (float)Math.Sin(now * 0.003) * 0.02f;
+            float ballo = (float)Math.Sin(now * 0.045) * 0.05f * scossa;
+            float giu = affonda * LeggiF("gall_affonda", 0.34f);
+            float zc = z + onda + ballo - giu;
+            int nc = gallCol.Count / 3;
+            if (nc < 1) return;
+            float zoom = GallZoom();
+
+            if (gallPalla)
+            {
+                // le sferiche: mezza di un colore e mezza dell'altro.
+                // La sfera del gioco vuole il RAGGIO, non il diametro:
+                // passandogli i dieci centimetri della scheda veniva
+                // larga venti, ed e' per questo che sembrava una boa.
+                float d = gallSpess * zoom * 0.5f;
+                // QUALE MEZZA STA SOPRA.
+                // Nelle foto l'ordine dei due colori non e' coerente: il
+                // "White-n-Red" ha il bianco sopra, il "Yellow-n-Green"
+                // ha il verde - cioe' il secondo. Quindi non si indovina:
+                // "gall_palla_gira" a 1 scambia le due mezze, ed e' un
+                // numero che si cambia a gioco acceso.
+                int sopra = 0, sotto = (nc > 1) ? 3 : 0;
+                if (LeggiF("gall_palla_gira", 1f) > 0.5f && nc > 1)
+                { sopra = 3; sotto = 0; }
+                Function.Call(Hash.DRAW_MARKER, 28, escaX, escaY, zc + d * 0.18f,
+                              0f, 0f, 0f, 0f, 0f, 0f, d, d, d,
+                              gallCol[sopra], gallCol[sopra + 1], gallCol[sopra + 2],
+                              240, false, false, 2, false, 0, 0, false);
+                Function.Call(Hash.DRAW_MARKER, 28, escaX, escaY, zc - d * 0.18f,
+                              0f, 0f, 0f, 0f, 0f, 0f, d * 0.98f, d * 0.98f, d * 0.98f,
+                              gallCol[sotto], gallCol[sotto + 1], gallCol[sotto + 2],
+                              240, false, false, 2, false, 0, 0, false);
+                return;
+            }
+
+            // COM'E' FATTO DAVVERO UN GALLEGGIANTE.
+            // Guardando le foto: il PRIMO colore e' il corpo, il bulbo
+            // che sta a pelo d'acqua; l'ULTIMO e' la punta, un pezzetto
+            // corto in cima; quelli in mezzo sono lo stelo, che e' la
+            // parte lunga. Il Waggler Heavy e' bulbo rosso, stelo nero,
+            // punta gialla - e prima io facevo tre fasce uguali, quindi
+            // la punta non si vedeva.
+            float sp = gallSpess * zoom * 0.5f;
+            if (sp < 0.008f) sp = 0.008f;
+            Function.Call(Hash.DRAW_MARKER, 28, escaX, escaY, zc,
+                          0f, 0f, 0f, 0f, 0f, 0f, sp, sp, sp,
+                          gallCol[0], gallCol[1], gallCol[2], 240,
+                          false, false, 2, false, 0, 0, false);
+            float ant = gallLung * LeggiF("gall_fuori", 0.55f) * zoom;
+            float punta = LeggiF("gall_punta", 0.22f);      // quanto e' corta la cima
+
+            // SI INCLINA VERSO CHI TIRA.
+            // Il filo parte dal fondo del galleggiante e va verso la
+            // canna: se recuperi, quel filo tira in avanti e il
+            // galleggiante si corica verso di te. Piu' recuperi, piu' si
+            // corica - e quando molli si rialza da solo.
+            GTA.Math.Vector3 verso = GTA.Math.Vector3.Zero;
+            try
+            {
+                Ped pg = Game.Player.Character;
+                if (pg != null && pg.Exists())
+                {
+                    float dx = pg.Position.X - escaX, dy = pg.Position.Y - escaY;
+                    float dl = (float)Math.Sqrt(dx * dx + dy * dy);
+                    if (dl > 0.01f)
+                    {
+                        float inc = LeggiF("gall_inclina", 0.75f) * tira;
+                        verso = new GTA.Math.Vector3(dx / dl * ant * inc,
+                                                     dy / dl * ant * inc, 0f);
+                    }
+                }
+            }
+            catch { }
+
+            GTA.Math.Vector3 basso = new GTA.Math.Vector3(escaX, escaY, zc);
+            GTA.Math.Vector3 cima = new GTA.Math.Vector3(escaX + verso.X,
+                                                         escaY + verso.Y, zc + ant);
+            int steli = nc - 2;                             // i colori dello stelo
+            if (steli < 1) steli = 1;
+            int primoStelo = (nc > 2) ? 1 : 0;              // se ce n'e' uno solo, quello
+            float fStelo = 1f - punta;
+            int i2;
+            for (i2 = 0; i2 < steli; i2++)
+            {
+                float t1 = fStelo * i2 / steli;
+                float t2 = fStelo * (i2 + 1) / steli;
+                int k2 = (primoStelo + i2) * 3;
+                if (k2 + 2 >= gallCol.Count) k2 = 0;
+                RigaGall(basso + (cima - basso) * t1, basso + (cima - basso) * t2,
+                         gallCol[k2], gallCol[k2 + 1], gallCol[k2 + 2]);
+            }
+            // la punta, sempre l'ultimo colore
+            int kp = (nc - 1) * 3;
+            RigaGall(basso + (cima - basso) * fStelo, cima,
+                     gallCol[kp], gallCol[kp + 1], gallCol[kp + 2]);
+        }
+        catch { }
+    }
+
+    // il filo corto che regge il pesce appeso alla canna
+    void DisegnaFiloAppeso()
+    {
+        if (pescePed == null || !pescePed.Exists() || !pesceAppeso) return;
+        try
+        {
+            GTA.Math.Vector3 a = PuntaCanna();
+            if (a == GTA.Math.Vector3.Zero) return;
+            ColoreDellaLenza();
+            int alfa2 = (int)LeggiF("lenza_alfa", 130f) + 40;
+            if (alfa2 > 255) alfa2 = 255;
+            // il filo arriva UN PELO PIU' GIU' del punto calcolato: fra
+            // quando spostiamo il pesce e quando il gioco ci dice dov'e'
+            // finito l'osso passa un fotogramma, e resta un dito di
+            // stacco. "lenza_giu_extra" lo chiude.
+            float giuE = LeggiF("lenza_giu_extra", 0.12f);
+            Function.Call(Hash.DRAW_LINE, a.X, a.Y, a.Z,
+                          pesceAppesoX, pesceAppesoY, pesceAppesoZ - giuE,
+                          lenzaR, lenzaG, lenzaB, alfa2);
+        }
+        catch { }
+    }
+
+    // il filo, e il puntino dell'esca sul pelo dell'acqua
+    void DisegnaLenza(int now, bool tesa)
+    {
+        if (!escaInAcqua) return;
+        try
+        {
+            GTA.Math.Vector3 a = PuntaCanna();
+            if (a == GTA.Math.Vector3.Zero) return;
+            float zAcqua = AcquaSottoEsca();
+            GTA.Math.Vector3 b = new GTA.Math.Vector3(escaX, escaY, zAcqua);
+
+            // L'ESCA RESTA IN ACQUA FINO ALLA FINE.
+            // Zero metri vuol dire l'esca davanti ai piedi di chi pesca,
+            // sul pelo dell'acqua: non in cima alla canna. Prima negli
+            // ultimi metri la tiravo su verso la punta e volava per aria.
+
+            // con la lenza molle il filo scende a pancia; tesa e' dritto
+            ColoreDellaLenza();
+            int alfa = (int)LeggiF("lenza_alfa", 130f);
+            if (tesa) alfa += 30;
+            if (alfa < 20) alfa = 20;
+            if (alfa > 255) alfa = 255;
+            // LA PANCIA NON E' SIMMETRICA.
+            // Un filo teso fra due punti farebbe una curva uguale da tutte
+            // e due le parti. Qui pero' da un capo c'e' la canna che tira
+            // in alto e dall'altro l'acqua: verso l'acqua il filo si
+            // appoggia, arriva quasi disteso invece che a picco. Quindi la
+            // pancia si sposta verso il lato dell'esca.
+            int n = 10;
+            float pancia = tesa ? LeggiF("lenza_pancia_tesa", 0.06f)
+                                : LeggiF("lenza_pancia_molle", 0.24f);
+            // e ondeggia appena, che un filo fermo sembra un bastone
+            pancia += 0.02f * (float)Math.Sin(now * 0.004);
+            float vRiva = LeggiF("lenza_appoggio", 0.9f);
+            GTA.Math.Vector3 prec = a;
+            int i;
+            for (i = 1; i <= n; i++)
+            {
+                float t = (float)i / n;
+                GTA.Math.Vector3 q = a + (b - a) * t;
+                q.Z -= pancia * (float)Math.Sin(t * Math.PI) * (1f - vRiva + vRiva * 2f * t);
+                Function.Call(Hash.DRAW_LINE, prec.X, prec.Y, prec.Z,
+                              q.X, q.Y, q.Z, lenzaR, lenzaG, lenzaB, alfa);
+                prec = q;
+            }
+
+            // L'ONDA DOVE IL FILO TOCCA L'ACQUA.
+            // Un cerchietto piatto che respira: si vede dove sta l'esca
+            // anche da lontano, e da' l'idea che qualcosa galleggi.
+            float r = 0.16f + 0.05f * (float)Math.Sin(now * 0.005);
+            Function.Call(Hash.DRAW_MARKER, 25, b.X, b.Y, b.Z + 0.03f,
+                          0f, 0f, 0f, 0f, 0f, 0f, r, r, r,
+                          235, 240, 245, 90, false, false, 2,
+                          false, 0, 0, false);
+        }
+        catch { }
+    }
+
+    void TogliCanna()
+    {
+        try
+        {
+            if (cannaProp != null && cannaProp.Exists()) cannaProp.Delete();
+        }
+        catch { }
+        cannaProp = null;
+    }
+
+    // la posa del pescatore, suonata come animazione e non come scenario:
+    // cosi' si puo' cambiare clip quando si tira
+    const string DIZ_PESCA = "amb@world_human_stand_fishing@idle_a";
+
+    void Posa(Ped p, string clip)
+    {
+        Posa(p, clip, 0.10f);
+    }
+
+    // LA CANNA SI TIENE FERMA.
+    // La clip "idle_c" e' quella in cui gira il mulinello: usata sempre,
+    // faceva trin-trin dall'inizio alla fine. Adesso da fermo si tiene
+    // "idle_a" quasi congelata - respira e basta - e il mulinello lo si
+    // gira solo quando lo giri davvero.
+    void Posa(Ped p, string clip, float velocita)
+    {
+        if (clipInCorso == clip) return;
+        faseInCorso = -1f;
+        try
+        {
+            Function.Call(Hash.REQUEST_ANIM_DICT, DIZ_PESCA);
+            int w = 0;
+            while (!Function.Call<bool>(Hash.HAS_ANIM_DICT_LOADED, DIZ_PESCA) && w < 1000)
+            { Script.Wait(50); w += 50; }
+            Function.Call(Hash.TASK_PLAY_ANIM, p, DIZ_PESCA, clip,
+                          8.0f, -8.0f, -1, 1, 0.0f, false, false, false);
+            try { Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, velocita); }
+            catch { }
+            clipInCorso = clip;
+        }
+        catch { }
+    }
+
+    // quello che si vede quando stai fermo con la canna in mano
+    string ClipFerma()
+    {
+        return LeggiS("anim_calma", "idle_a");
+    }
+
+    // LA POSA CONGELATA.
+    // Rallentare non basta: tutte le clip della pesca a un certo punto
+    // girano il mulinello. Qui l'animazione si inchioda su un fotogramma
+    // preciso e ci resta, quindi la canna sta ferma davvero.
+    // "anim_fermo_fase" nel config sceglie quale fotogramma: 0 = inizio,
+    // 1 = fine. Se ne cambi il valore cambi la posa senza ricompilare.
+    void Congela(Ped p, string clip)
+    {
+        FermaSu(p, clip, LeggiF("anim_fermo_fase", 0.22f));
+    }
+
+    // LA POSA SU UN FOTOGRAMMA, MESSA COME SI DEVE.
+    // Prima si faceva partire la clip e subito le si metteva velocita'
+    // zero: cosi' pero' si fermava anche la fusione con la posa di
+    // prima, e il corpo restava com'era - si muoveva solo la canna.
+    // Qui il fotogramma si passa alla TASK_PLAY_ANIM come punto di
+    // partenza, quindi il pescatore ci va davvero, e ci va in un
+    // decimo di secondo: e' quello lo scatto.
+    float faseInCorso = -1f;
+
+    void PosaSuFase(Ped p, string clip, float f, float fusione)
+    {
+        if (f < 0f) f = 0f;
+        if (f > 0.99f) f = 0.99f;
+        if (clipInCorso == clip && faseInCorso >= 0f
+            && f - faseInCorso < 0.002f && faseInCorso - f < 0.002f) return;
+        try
+        {
+            Function.Call(Hash.REQUEST_ANIM_DICT, DIZ_PESCA);
+            int w = 0;
+            while (!Function.Call<bool>(Hash.HAS_ANIM_DICT_LOADED, DIZ_PESCA) && w < 1000)
+            { Script.Wait(50); w += 50; }
+            Function.Call(Hash.TASK_PLAY_ANIM, p, DIZ_PESCA, clip,
+                          fusione, -8.0f, -1, 1, f, false, false, false);
+            Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, 0.0f);
+            Function.Call(Hash.SET_ENTITY_ANIM_CURRENT_TIME, p, DIZ_PESCA, clip, f);
+            clipInCorso = clip;
+            faseInCorso = f;
+        }
+        catch { }
+    }
+
+    // inchioda la clip su un fotogramma preciso (0 = inizio, 1 = fine)
+    void FermaSu(Ped p, string clip, float f)
+    {
+        try
+        {
+            if (f < 0f) f = 0f;
+            if (f > 0.99f) f = 0.99f;
+            Function.Call(Hash.SET_ENTITY_ANIM_SPEED, p, DIZ_PESCA, clip, 0.0f);
+            Function.Call(Hash.SET_ENTITY_ANIM_CURRENT_TIME, p, DIZ_PESCA, clip, f);
+        }
+        catch { }
+    }
+
+    // ferma: mette la posa e la inchioda
+    void PosaFerma(Ped p)
+    {
+        // se una frustata era rimasta a meta' (il pesce abbocca subito),
+        // la canna torna dritta prima di rimettersi in posa
+        if (frustaFino != 0) { frustaFino = 0; RuotaCanna(p, 0f); }
+        if (miaStrappataFino != 0) { miaStrappataFino = 0; RuotaCanna(p, 0f); }
+        string c = ClipFerma();
+        Posa(p, c);
+        Congela(p, c);
+    }
+
+    // quello che si vede quando giri davvero il mulinello
+    string ClipMulinello()
+    {
+        return LeggiS("anim_recupero", "idle_c");
+    }
+
+    // IL LANCIO.
+    // Il dritto del tennis muoveva il braccio ma non era un lancio.
+    // La clip del mulinello, invece, dentro ce l'ha gia': il busto che
+    // va indietro e poi torna avanti. Non la si fa suonare, se ne
+    // guidano i fotogrammi a mano - indietro mentre carichi, avanti di
+    // colpo quando molli - e la canna gira insieme al corpo.
+    // I tre fotogrammi e la durata stanno nel config: si cambiano senza
+    // ricompilare.
+    int frustaDa = 0;
+    int frustaFino = 0;
+    float frustaGiro = 0f;
+
+    // la canna ruotata di "giro" gradi (avanti e indietro) e di
+    // "lato" gradi (destra e sinistra) rispetto a come la tiene di solito
+    void RuotaCanna(Ped p, float giro)
+    {
+        RuotaCanna(p, giro, scartoCanna);
+    }
+
+    void RuotaCanna(Ped p, float giro, float lato)
+    {
+        try
+        {
+            if (cannaProp == null || !cannaProp.Exists()) return;
+            int oc = Function.Call<int>(Hash.GET_PED_BONE_INDEX, p, 18905);
+            float rx = LeggiF("canna_rx", 0f);
+            float ry = LeggiF("canna_ry", 90f);
+            float rz = LeggiF("canna_rz", 70f) + giro;
+            // SU QUALE ASSE LA CANNA VA DI LATO.
+            // Il modello e' gia' girato di novanta gradi in mano, quindi
+            // quale dei tre assi porti la punta a destra e a sinistra non
+            // e' scontato. Sta nel config: se muovendola va storta invece
+            // che di lato, si cambia la lettera in "canna_lato_asse".
+            // "no" = la canna non si storce: a portarla di lato ci
+            // pensa il corpo, che le gira insieme.
+            string asse = LeggiS("canna_lato_asse", "no");
+            if (asse == "x") rx += lato;
+            else if (asse == "y") ry += lato;
+            else if (asse == "z") rz += lato;
+            Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, cannaProp, p, oc,
+                          LeggiF("canna_x", 0.13f), LeggiF("canna_y", 0.10f),
+                          LeggiF("canna_z", 0.01f), rx, ry, rz,
+                          false, false, false, false, 2, true);
+        }
+        catch { }
+    }
+
+    // mentre carichi: piu' carichi, piu' va indietro
+    void PosaCarica(Ped p, float carica)
+    {
+        if (carica < 0f) carica = 0f;
+        if (carica > 1f) carica = 1f;
+        // IL MULINELLO NON GIRA NEMMENO MENTRE CARICHI.
+        // Prima il fotogramma seguiva la barra della carica, che sale e
+        // scende in continuazione: e la manovella girava con lei. Adesso
+        // il corpo si piega indietro una volta sola e resta li'; a dire
+        // quanto hai caricato ci pensa la canna, che va indietro da sola.
+        PosaSuFase(p, ClipMulinello(), LeggiF("anim_lancio_a", 0.62f), 8.0f);
+        RuotaCanna(p, LeggiF("canna_indietro", 35f) * carica);
+    }
+
+    // parte la frustata
+    void AvviaFrustata(Ped p, float carica)
+    {
+        string c = ClipMulinello();
+        Posa(p, c);
+        frustaDa = Game.GameTime;
+        int ms = (int)LeggiF("anim_lancio_ms", 420f);
+        if (ms < 120) ms = 120;
+        frustaFino = frustaDa + ms;
+        frustaGiro = LeggiF("canna_indietro", 35f) * carica;
+    }
+
+    // LA STRAPPATA.
+    // Levetta indietro: il pescatore tira verso di se', come quando
+    // lancia ma al contrario, e si porta a casa qualche decimo di
+    // lenza. Stesso trucco della frustata: due pose, e il movimento lo
+    // fa la fusione tra le due. Niente manovella.
+    int miaStrappataFino = 0;
+    int miaStrappataDa = 0;
+
+    void AvviaStrappo(Ped p)
+    {
+        miaStrappataFino = Game.GameTime + (int)LeggiF("anim_strappo_ms", 420f);
+    }
+
+    bool Strappo(Ped p, int now)
+    {
+        if (miaStrappataFino == 0) return false;
+        if (now >= miaStrappataFino)
+        {
+            miaStrappataFino = 0;
+            RuotaCanna(p, 0f);
+            clipInCorso = "";
+            return false;
+        }
+        PosaSuFase(p, LeggiS("anim_tira", "idle_b"),
+                   LeggiF("anim_strappo_fase", 0.45f), 12.0f);
+        RuotaCanna(p, LeggiF("canna_strappo", 22f));
+        return true;
+    }
+
+    // true finche' la frustata e' in corso: chi la chiama, in quel
+    // mentre, non tocca ne' la posa ne' la canna
+    bool Frustata(Ped p, int now)
+    {
+        if (frustaFino == 0) return false;
+        if (now >= frustaFino)
+        {
+            // finita la frustata l'esca ha toccato l'acqua
+            SuonoFile(LeggiS("suono_tonfo_file", "tonfo.wav"));
+            frustaFino = 0;
+            RuotaCanna(p, 0f);
+            clipInCorso = "";
+            return false;
+        }
+        float t = (float)(now - frustaDa) / (float)(frustaFino - frustaDa);
+        if (t < 0f) t = 0f;
+        if (t > 1f) t = 1f;
+        // IL MULINELLO NON GIRA MENTRE LANCI.
+        // Scorrere i fotogrammi della clip del mulinello, avanti o
+        // indietro che sia, la manovella la fa girare lo stesso. Quindi
+        // non si scorre niente: si resta inchiodati sul fotogramma
+        // piegato indietro e poi, di colpo, si passa alla posa dritta.
+        // E' la fusione tra le due pose - un ottavo di secondo - a fare
+        // il movimento in avanti. Le mani non toccano la manovella.
+        if (t < LeggiF("anim_lancio_scatto", 0.25f))
+        {
+            // ancora piegato indietro
+            PosaSuFase(p, ClipMulinello(), LeggiF("anim_lancio_a", 0.62f), 8.0f);
+        }
+        else
+        {
+            // e via: la fusione veloce fra le due pose e' la frustata
+            PosaSuFase(p, ClipFerma(), LeggiF("anim_fermo_fase", 0.22f), 24.0f);
+        }
+        // la canna: da dietro passa avanti oltre il normale, poi rientra
+        float av = LeggiF("canna_avanti", 28f);
+        float g;
+        if (t < 0.5f) g = frustaGiro + (-av - frustaGiro) * (t / 0.5f);
+        else g = -av * (1f - (t - 0.5f) / 0.5f);
+        RuotaCanna(p, g);
+        return true;
+    }
+
+    void ScenaSu(Ped p)
+    {
+        if (inScena && cannaProp != null && cannaProp.Exists()) return;
+        inScena = true;
+        TogliCanna();
+        MettiCanna(p);
+        PosaFerma(p);
+    }
+
+    void ScenaGiu(Ped p)
+    {
+        if (!inScena) return;
+        inScena = false;
+        TogliPesce();
+        TogliCanna();
+        clipInCorso = "";
+        try { if (p != null && p.Exists()) p.Task.ClearAll(); }
+        catch { }
+    }
+
+    // il galleggiante: la PNG vera che ondeggia sul pelo dell'acqua.
+    // "giu" lo spinge sotto: 5 quando il pesce assaggia, 14 quando abbocca.
+    // ============================================================
+    //  IL QUADRANTE DELLO SPINNING
+    // ============================================================
+    // A spinning il galleggiante non c'e': l'esca e' un cucchiaino che
+    // affonda da solo e si alza mentre recuperi. Quello che serve vedere
+    // e' a che altezza sta fra il pelo dell'acqua e il fondo, perche' e'
+    // li' che si decide se il predatore la vede. Tirando e mollando -
+    // stop and go, jerking - il cucchiaino sale e riscende: e' cosi' che
+    // si imita un pesciolino spaventato.
+    //   profEsca: 0 = a pelo d'acqua, 1 = sul fondo
+    float profEsca = 1f;
+    float profPrec = 1f;      // dov'era il giro prima: da qui il verso
+    float inclEsca = 0f;      // di quanto e' inclinata adesso
+
+    // QUALE QUADRANTE SI VEDE.
+    // Di suo quello del galleggiante se il galleggiante c'e'. Mettendo
+    // "spin_prova 1" in config.ini si vede sempre quello dello spinning,
+    // anche con la canna telescopica: serve per provarlo senza dover
+    // smontare l'armatura. In acqua non cambia niente.
+    bool QuadranteGall()
+    {
+        if (LeggiF("spin_prova", 0f) > 0.5f) return false;
+        return HoIlGalleggiante();
+    }
+
+    void DisegnaSpinning(int now, float scossa)
+    {
+        float cx = BAR_X + BAR_W * 0.5f;
+        float alt = LeggiF("spin_alt", 62f);
+        // IL QUADRANTE STA SOPRA I METRI.
+        // Quello del galleggiante e' basso e ci sta; questo e' il doppio
+        // e finiva sopra al numero dei metri. Si misura dal basso: il
+        // fondo del quadrante resta "spin_su" pixel sopra la barra.
+        float top = LeggiF("quadrante_y", 296f);
+        float largo = 48f;
+
+        // l'acqua fra il pelo e il fondo
+        DisegnaRett(cx - largo * 0.5f, top, largo, alt, 40, 80, 130, 150);
+        // il pelo dell'acqua
+        DisegnaRett(cx - largo * 0.5f, top, largo, 2f, 150, 195, 235, 235);
+        // il fondo
+        DisegnaRett(cx - largo * 0.5f, top + alt - 2f, largo, 2f, 150, 130, 95, 235);
+
+        // il cucchiaino, di lato, dove sta adesso
+        float eh = LeggiF("spin_esca_h", 16f);
+        float ew = eh * 3f;
+        float p = profEsca;
+        if (p < 0f) p = 0f;
+        if (p > 1f) p = 1f;
+        float ey = top + 3f + p * (alt - 6f - eh);
+        // un filo di ondeggio, che sta ferma non e' credibile
+        ey += (float)Math.Sin(now * 0.006) * 1.2f;
+
+        // IL COLPO QUANDO MORDE.
+        // Il galleggiante affonda e balla, e si vede. Qui non c'era
+        // niente: sentivi il pad vibrare e sullo schermo non succedeva
+        // nulla. Adesso l'esca sussulta - trema e viene tirata in giu' -
+        // di quanto e' forte il tocco.
+        float exx = 0f;
+        if (scossa > 0f)
+        {
+            float amp = LeggiF("spin_scossa", 3.4f) * scossa;
+            exx = (float)Math.Sin(now * 0.055) * amp;
+            ey += (float)Math.Sin(now * 0.041) * amp * 0.8f
+                + LeggiF("spin_scossa_giu", 2.2f) * scossa;
+        }
+
+        // IL MUSO SEGUE IL MOVIMENTO.
+        // Il cucchiaino e' legato per la testa: quando affonda scende di
+        // testa in giu', quando lo tiri sale di testa per prima e il
+        // corpo viene dietro. Percio' si inclina, e l'inclinazione la
+        // decide se sta scendendo o salendo.
+        float verso = profEsca - profPrec;
+        profPrec = profEsca;
+        float mira = 0f;
+        float gr = LeggiF("spin_incl", 32f);
+        if (verso > 0.0004f) mira = gr;          // sta scendendo
+        else if (verso < -0.0004f) mira = -gr;   // sta salendo
+        // ci arriva piano, se no scatta
+        float vel = LeggiF("spin_incl_vel", 4f) * Game.LastFrameTime;
+        if (vel > 1f) vel = 1f;
+        inclEsca += (mira - inclEsca) * vel;
+
+        // QUI CI VA IL DISEGNO, NON LA FOTO.
+        // Il quadrante dice a che altezza sta l'esca, non quale sia:
+        // quale sia si legge nell'armatura, dove c'e' la foto vera.
+        // COL CUCCHIAINO si vede il cucchiaino, e si inclina col
+        // movimento. CON L'AMO E L'ESCA FRESCA si vede l'amo col verme,
+        // che scende dritto e non fa il pesciolino: sono due modi di
+        // pescare diversi e si devono distinguere a colpo d'occhio.
+        if (InUso("artificiale") >= 0)
+            SpriteInclinata("img\\artificiali\\cucchiaino_base.png",
+                            cx - ew * 0.5f + exx, ey, ew, eh,
+                            inclEsca + exx * 1.8f);
+        else
+        {
+            float aw = eh * 1.15f;
+            SpriteInclinata("img\\terminali\\amo_base.png",
+                            cx - aw * 0.5f + exx, ey - eh * 0.15f,
+                            aw, eh * 1.3f, exx * 2.2f);
+        }
+    }
+
+    // l'immagine dell'artificiale montato
+    string ImgArtificiale()
+    {
+        int id; string img, nome;
+        if (Montato("artificiale", out id, out img, out nome)) return img;
+        return "";
+    }
+
+    void DisegnaGalleggiante(int now, float giu, float scossa)
+    {
+        // STESSO QUADRANTE DELLO SPINNING, con dentro il montaggio a
+        // galleggiante: il pelo dell'acqua in alto, il fondo in basso,
+        // il galleggiante che sta a galla e l'amo con l'esca appeso
+        // sotto. Il galleggiante si muove come si e' sempre mosso -
+        // ondeggia e affonda quando morde - solo che adesso si vede
+        // anche dove sta l'esca.
+        float cx = BAR_X + BAR_W * 0.5f;
+        float alt = LeggiF("spin_alt", 62f);
+        float top = LeggiF("quadrante_y", 296f);
+        float largo = 48f;
+
+        DisegnaRett(cx - largo * 0.5f, top, largo, alt, 40, 80, 130, 150);
+        DisegnaRett(cx - largo * 0.5f, top, largo, 2f, 150, 195, 235, 235);
+        DisegnaRett(cx - largo * 0.5f, top + alt - 2f, largo, 2f, 150, 130, 95, 235);
+
+        // L'AMO CON L'ESCA, appeso sotto: sta a mezz'acqua, alla
+        // profondita' che gli da' il galleggiante ("gall_prof").
+        float eh = LeggiF("spin_esca_h", 16f);
+        float ah = eh * 1.3f;
+        float aw = eh * 1.15f;
+        float prof = LeggiF("gall_prof", 0.62f);
+        if (prof < 0f) prof = 0f;
+        if (prof > 1f) prof = 1f;
+        float ay = top + 6f + prof * (alt - 12f - ah);
+        float sx = 0f;
+        if (scossa > 0f)
+        {
+            float amp = LeggiF("spin_scossa", 3.4f) * scossa;
+            sx = (float)Math.Sin(now * 0.055) * amp;
+            ay += (float)Math.Sin(now * 0.041) * amp * 0.8f;
+        }
+        SpriteInclinata("img\\terminali\\amo_base.png",
+                        cx - aw * 0.5f + sx, ay, aw, ah, sx * 2.2f);
+
+        // IL GALLEGGIANTE, a galla sul pelo dell'acqua. Ondeggio e
+        // affondata sono quelli di sempre: "giu" e' quanto e' sotto.
+        float ondeggio = (float)Math.Sin(now * 0.004) * 2f;
+        float gh = 29f;
+        float gw = gh * 440f / 175f;      // proporzioni vere della PNG
+        float gy = top - gh * 0.62f + ondeggio + giu;
+        Sprite("img\\galleggianti\\galleggiante_base.png",
+               cx - gw * 0.5f, gy, gw, gh);
+    }
+
+
+}

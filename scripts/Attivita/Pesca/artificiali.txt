@@ -1,0 +1,530 @@
+# id|tipo|nome|colore|grammi|cm|amo|prezzo|liv_wiki|img
+# ESCHE ARTIFICIALI - dati veri dal wiki di Fishing Planet
+# tipo: cucchiaino, rotante, minnow, jig, siliconico, mare
+1|cucchiaino|Casting Spoon|Silver|5|3|#2|100|3|388.png
+2|cucchiaino|Casting Spoon|Gold|5|3|#2|100|3|389.png
+3|cucchiaino|Slop Spoon|Silver|5|4|#4|60|3|723.png
+4|cucchiaino|Slop Spoon|Gold|5|4|#4|60|3|724.png
+5|cucchiaino|Casting Spoon|Silver|9|3|#1|130|4|388.png
+6|cucchiaino|Casting Spoon|Gold|9|3|#1|130|4|389.png
+7|cucchiaino|Slop Spoon|Silver|7|4|#2|80|4|723.png
+8|cucchiaino|Slop Spoon|Gold|7|4|#2|80|4|724.png
+9|cucchiaino|Narrow Spoon|Silver|7|5|#1/0|210|5|936.png
+10|cucchiaino|Narrow Spoon|Gold|7|5|#1/0|210|5|937.png
+11|cucchiaino|Slop Spoon|Silver|9|5|#1|100|5|723.png
+12|cucchiaino|Slop Spoon|Gold|9|5|#1|100|5|724.png
+13|cucchiaino|Casting Spoon|Silver|7|5|#1/0|170|7|388.png
+14|cucchiaino|Casting Spoon|Gold|7|5|#1/0|170|7|389.png
+15|cucchiaino|Narrow Spoon|Ammolite|7|5|#1/0|260|7|939.png
+16|cucchiaino|Narrow Spoon|Black Gloss|7|5|#1/0|260|7|941.png
+17|cucchiaino|Casting Spoon|Blue Holographic|7|5|#1/0|260|8|2706.png
+18|cucchiaino|Casting Spoon|Red Holographic|7|5|#1/0|260|8|2709.png
+19|cucchiaino|Slop Spoon|Silver|14|5|#1/0|120|10|723.png
+20|cucchiaino|Slop Spoon|Gold|14|5|#1/0|120|10|724.png
+21|cucchiaino|Slop Spoon|Silver|21|6.5|#2/0|150|11|723.png
+22|cucchiaino|Slop Spoon|Gold|21|6.5|#2/0|150|11|724.png
+23|cucchiaino|Nano Spoon|Black & Pink|2|2.5|#2|200|12|1575.png
+24|cucchiaino|Nano Spoon|Black & Pink|4|3.5|#1|250|12|1575.png
+25|cucchiaino|Nano Spoon|Green & Black|2|2.5|#2|200|12|1573.png
+26|cucchiaino|Nano Spoon|Green & Black|4|3.5|#1|250|12|1573.png
+27|cucchiaino|Nano Spoon|Silver & Green Perch|2|2.5|#2|200|12|1577.png
+28|cucchiaino|Nano Spoon|Silver & Green Perch|4|3.5|#1|250|12|1577.png
+29|cucchiaino|Casting Spoon|Silver|14|5|#2/0|220|13|388.png
+30|cucchiaino|Casting Spoon|Gold|14|5|#2/0|220|13|389.png
+31|cucchiaino|Medium Spoon|Silver|7|5|#1/0|240|14|930.png
+32|cucchiaino|Medium Spoon|Gold|7|5|#1/0|240|14|923.png
+33|cucchiaino|Medium Spoon|Lemon Tiger|7|5|#1/0|270|15|934.png
+34|cucchiaino|Medium Spoon|Red Tiger|7|5|#1/0|270|15|932.png
+35|cucchiaino|Narrow Spoon|Green Holographic|21|9|#3/0|500|17|2701.png
+36|cucchiaino|Narrow Spoon|Red Holographic|21|9|#3/0|500|17|2699.png
+37|cucchiaino|Medium Spoon|Lemon Tiger|14|7.5|#3/0|380|22|934.png
+38|cucchiaino|Medium Spoon|Red Tiger|14|7.5|#3/0|380|22|932.png
+39|cucchiaino|Medium Spoon|Lemon Tiger|42|11|#4/0|420|24|934.png
+40|cucchiaino|Medium Spoon|Red Tiger|42|11|#4/0|420|24|932.png
+41|cucchiaino|Nano Spoon|Black & Pink|6|4.5|#1/0|350|27|1575.png
+42|cucchiaino|Nano Spoon|Green & Black|6|4.5|#1/0|350|27|1573.png
+43|cucchiaino|Nano Spoon|Silver & Green Perch|6|4.5|#1/0|350|27|1577.png
+44|cucchiaino|Casting Spoon|Silver|21|6|#3/0|280|30|388.png
+45|cucchiaino|Casting Spoon|Gold|21|6|#3/0|280|30|389.png
+46|cucchiaino|Casting Spoon|Blue Holographic|42|10.5|#5/0|550|32|2706.png
+47|cucchiaino|Casting Spoon|Red Holographic|42|10.5|#5/0|550|32|2709.png
+48|cucchiaino|Medium Spoon|Lemon Tiger|24|10|#6/0|510|36|934.png
+49|cucchiaino|Medium Spoon|Red Tiger|24|10|#6/0|510|36|932.png
+50|cucchiaino|Medium Spoon|Rose and Blue Trout Holographic|28|10|#4/0|600|38|2720.png
+51|cucchiaino|Medium Spoon|Rainbow Holographic|28|10|#4/0|600|38|2719.png
+52|cucchiaino|Single Spoon|Green and Black|10|28|#2/0|800|40|2590.png
+53|cucchiaino|Single Spoon|Green and Black|12.5|42|#4/0|1000|40|2590.png
+54|cucchiaino|Single Spoon|Black and Pink|10|28|#2/0|800|40|2592.png
+55|cucchiaino|Single Spoon|Black and Pink|12.5|42|#4/0|1000|40|2592.png
+56|cucchiaino|Cicada|Green/Yellow/Silver|12|6|#2/0|1050|46|12935.png
+57|cucchiaino|Cicada|Silver|12|6|#2/0|1050|46|12936.png
+58|cucchiaino|Cicada|Green/Yellow/Silver|18|7|#3/0|1290|47|12935.png
+59|cucchiaino|Cicada|Silver|18|7|#3/0|1290|47|12936.png
+60|cucchiaino|Cicada|Green/Yellow/Silver|28|9|#5/0|1580|48|12935.png
+61|cucchiaino|Cicada|Silver|28|9|#5/0|1580|48|12936.png
+62|cucchiaino|Narrow Spoon|Silver|28|7|#4/0|1150|48|936.png
+63|cucchiaino|Narrow Spoon|Gold|28|7|#4/0|1150|48|937.png
+64|cucchiaino|Narrow Spoon|Ammolite|28|7|#4/0|1150|48|939.png
+65|cucchiaino|Narrow Spoon|Black Gloss|28|7|#4/0|1150|48|941.png
+66|cucchiaino|Cicada|Green/Yellow/Silver|36|9|#7/0|1720|49|12935.png
+67|cucchiaino|Cicada|Silver|36|9|#7/0|1720|49|12936.png
+68|cucchiaino|Jigging Spoon|Black/Silver|56|12|#6/0|1280|64|10540.png
+69|cucchiaino|Jigging Spoon|Yellow/Silver|56|12|#6/0|1280|64|10542.png
+70|cucchiaino|Jigging Spoon|Blue/Silver|56|12|#6/0|1280|64|10548.png
+71|cucchiaino|Jigging Spoon|Black/Silver|71|14|#7/0|1560|66|10540.png
+72|cucchiaino|Jigging Spoon|Yellow/Silver|71|14|#7/0|1560|66|10542.png
+73|cucchiaino|Jigging Spoon|Blue/Silver|71|14|#7/0|1560|66|10548.png
+74|cucchiaino|Jigging Spoon|Black/Silver|84|16|#8/0|1770|70|10540.png
+75|cucchiaino|Jigging Spoon|Yellow/Silver|84|16|#8/0|1770|70|10542.png
+76|cucchiaino|Jigging Spoon|Blue/Silver|84|16|#8/0|1770|70|10548.png
+77|cucchiaino|Flat Spoon|Silver|7|7|#2/0|2110|71|10826.png
+78|cucchiaino|Flat Spoon|Copper|7|7|#2/0|2110|71|10833.png
+79|cucchiaino|Flat Spoon|Silver|18|8|#3/0|2250|75|10826.png
+80|cucchiaino|Flat Spoon|Copper|18|8|#3/0|2250|75|10833.png
+81|cucchiaino|Flat Spoon|Silver|28|9|#4/0|2340|76|10826.png
+82|cucchiaino|Flat Spoon|Copper|28|9|#4/0|2340|76|10833.png
+83|cucchiaino|Flat Spoon|Silver|42|10|#6/0|2525|79|10826.png
+84|cucchiaino|Flat Spoon|Copper|42|10|#6/0|2525|79|10833.png
+85|cucchiaino|Flat Spoon|Silver|56|12|#8/0|2670|80|10826.png
+86|cucchiaino|Flat Spoon|Copper|56|12|#8/0|2670|80|10833.png
+87|jig||Watermelon|4||#1/0|350|10|951.png
+88|jig||White|4||#1/0|350|10|960.png
+89|jig||Black&Blue|4||#1/0|350|10|950.png
+90|jig||Watermelon|5||#2/0|430|11|951.png
+91|jig||Watermelon|7||#2/0|460|11|951.png
+92|jig||White|5||#2/0|430|11|960.png
+93|jig||White|7||#2/0|460|11|960.png
+94|jig||Black&Blue|5||#2/0|430|11|950.png
+95|jig||Black&Blue|7||#2/0|460|11|950.png
+96|jig||Pumpkin Melon|4||#3/0|500|12|955.png
+97|jig||Green Salad White|4||#3/0|500|12|957.png
+98|jig||Pumpkin Melon|9||#3/0|550|13|955.png
+99|jig||Green Salad White|9||#3/0|550|13|957.png
+100|jig||Watermelon|28||#2/0|520|18|951.png
+101|jig||White|28||#2/0|520|18|960.png
+102|jig||Black&Blue|28||#2/0|520|18|950.png
+103|jig||Pumpkin Melon|28||#2/0|520|18|955.png
+104|jig||Green Salad White|28||#2/0|520|18|957.png
+105|jig||Watermelon|21||#3/0|600|20|951.png
+106|jig||White|21||#3/0|600|20|960.png
+107|jig||Black&Blue|21||#3/0|600|20|950.png
+108|jig||Pumpkin Melon|21||#3/0|600|20|955.png
+109|jig||Green Salad White|21||#3/0|600|20|957.png
+110|jig||Green Pumpkin|14||#3/0|700|20|963.png
+111|jig||Acid Yellow Brown|14||#3/0|700|20|967.png
+112|jig||Watermelon|14||#4/0|660|26|951.png
+113|jig||White|14||#4/0|660|26|960.png
+114|jig||Black&Blue|14||#4/0|660|26|950.png
+115|jig||Transparent Weed|28||#4/0|780|27|959.png
+116|jig||Brown Orange|28||#4/0|780|27|961.png
+117|jig||Acid Yellow Brown|28||#4/0|780|27|967.png
+118|jig||Black&Blue|42||#4/0|830|28|950.png
+119|jig||Pumpkin Melon|42||#4/0|830|28|955.png
+120|jig||Brown Orange|56||#6/0|1000|31|961.png
+121|jig||Acid Yellow Brown|56||#6/0|1000|31|967.png
+122|mare|Mini Pilker|Blue/Pink|35|10|#3/0|8330|81|12372.png
+123|mare|Mini Pilker|Striped Green|35|10|#3/0|8330|81|12373.png
+124|mare|Mini Pilker|Striped Grey|35|10|#3/0|8330|81|12374.png
+125|mare|Bucktail|Green/White|14|7|#3/0|3780|82|12384.png
+126|mare|Bucktail|Pink/White|14|7|#3/0|3780|82|12385.png
+127|mare|Bucktail|White/Silver|14|7|#3/0|3780|82|12387.png
+128|mare|Mini Pilker|Blue/Pink|50|11|#3/0|9410|82|12372.png
+129|mare|Mini Pilker|Striped Green|50|11|#3/0|9410|82|12373.png
+130|mare|Mini Pilker|Striped Grey|50|11|#3/0|9410|82|12374.png
+131|mare|Bucktail|Green/White|21|9|#4/0|4985|83|12384.png
+132|mare|Bucktail|Pink/White|21|9|#4/0|4985|83|12385.png
+133|mare|Bucktail|White/Silver|21|9|#4/0|4985|83|12387.png
+134|mare|Plug|Light Wood|75|12.5|#6/0|17450|83|12370.png
+135|mare|Plug|Light Wood|85|12.5|#8/0|19300|83|12370.png
+136|mare|Plug|Light Wood|115|15|#8/0|21720|83|12370.png
+137|mare|Plug|Dark Wood|75|12.5|#6/0|17450|83|12371.png
+138|mare|Plug|Dark Wood|85|12.5|#8/0|19300|83|12371.png
+139|mare|Plug|Dark Wood|115|15|#8/0|21720|83|12371.png
+140|mare|Single Hook Pilker|Blue|60|14|#4/0|12650|83|12375.png
+141|mare|Single Hook Pilker|Green|60|14|#4/0|12650|83|12376.png
+142|mare|Bucktail|Green/White|35|11|#5/0|6250|84|12384.png
+143|mare|Bucktail|Pink/White|35|11|#5/0|6250|84|12385.png
+144|mare|Bucktail|White/Silver|35|11|#5/0|6250|84|12387.png
+145|mare|Single Hook Pilker|Blue|80|15.5|#5/0|14330|84|12375.png
+146|mare|Single Hook Pilker|Green|80|15.5|#5/0|14330|84|12376.png
+147|mare|Squid Jig|Green/Yellow|15|10|#2/0|3190|84|12395.png
+148|mare|Squid Jig|Dark Blue|15|10|#2/0|3190|84|12396.png
+149|mare|Bucktail|Green/White|50|13|#6/0|7625|85|12384.png
+150|mare|Bucktail|Pink/White|50|13|#6/0|7625|85|12385.png
+151|mare|Bucktail|White/Silver|50|13|#6/0|7625|85|12387.png
+152|mare|Plug|Light Wood|150|17.5|#10/0|22540|85|12370.png
+153|mare|Plug|Light Wood|190|20|#10/0|23110|85|12370.png
+154|mare|Plug|Dark Wood|150|17.5|#10/0|22540|85|12371.png
+155|mare|Plug|Dark Wood|190|20|#10/0|23110|85|12371.png
+156|mare|Squid Jig|Green/Yellow|25|13|#3/0|3770|85|12395.png
+157|mare|Squid Jig|Dark Blue|25|13|#3/0|3770|85|12396.png
+158|mare|Trolling Octopus|Red|28|9|#3/0|23580|85|12389.png
+159|mare|Trolling Octopus|Light Green/Yellow|28|9|#3/0|23580|85|12391.png
+160|mare|Single Hook Pilker|Blue|100|17|#6/0|15260|86|12375.png
+161|mare|Single Hook Pilker|Green|100|17|#6/0|15260|86|12376.png
+162|mare|Squid Chain|Black||15||6690|86|12397.png
+163|mare|Squid Chain|Green||15||6690|86|12399.png
+164|mare|Squid Chain|Red||15||6690|86|12401.png
+165|mare|Trolling Octopus|Red|43|12|#4/0|25860|86|12389.png
+166|mare|Trolling Octopus|Light Green/Yellow|43|12|#4/0|25860|86|12391.png
+167|mare|Double Hook Pilker|Light Blue/Green|125|16|#6/0|17150|87|12380.png
+168|mare|Double Hook Pilker|Light Blue/Green|150|18|#7/0|18490|87|12380.png
+169|mare|Double Hook Pilker|Dark Blue|125|16|#6/0|17150|87|12382.png
+170|mare|Double Hook Pilker|Dark Blue|150|18|#7/0|18490|87|12382.png
+171|mare|Trolling Octopus|Red|57|15|#5/0|27015|87|12389.png
+172|mare|Trolling Octopus|Light Green/Yellow|57|15|#5/0|27015|87|12391.png
+173|mare|Double Hook Pilker|Light Blue/Green|175|20|#8/0|19270|88|12380.png
+174|mare|Double Hook Pilker|Dark Blue|175|20|#8/0|19270|88|12382.png
+175|mare|Trolling Octopus|Red|71|18|#6/0|28180|89|12389.png
+176|mare|Trolling Octopus|Light Green/Yellow|71|18|#6/0|28180|89|12391.png
+177|mare|Squid Chain|Black||20||8725|90|12402.png
+178|mare|Squid Chain|Green||20||8725|90|12404.png
+179|mare|Trolling Octopus|Red|85|20|#7/0|29340|90|12389.png
+180|mare|Trolling Octopus|Light Green/Yellow|85|20|#7/0|29340|90|12391.png
+181|minnow|Walker|Natural|10|7.5|#1/0|1000|14|3660.png
+182|minnow|Jerkbait|Red & White|18|12|#3/0|2850|20|1148.png
+183|minnow|Popper|Silver&Green With Red Head|14|9|#2/0|2200|20|3626.png
+184|minnow|Popper|White With Black Back|14|9|#2/0|2200|20|3624.png
+185|minnow|Popper|Yellow with Red Back|14|9|#2/0|2200|20|3622.png
+186|minnow|Jerkbait|Wine & Silver|18|12|#3/0|2850|21|1150.png
+187|minnow|Walker|Natural|14|10|#3/0|3250|21|3660.png
+188|minnow|Jerkbait|Lemon With Black Stripes|18|12|#3/0|2850|22|694.png
+189|minnow|Jerkbait|Tiger|18|12|#3/0|2850|23|397.png
+190|minnow|Triple Runner|Purple|14|12|#1/0|2000|24|7022.png
+191|minnow|Triple Runner|White With Blue Head|14|12|#1/0|2000|24|7030.png
+192|minnow|Hunched Runner|Roach|14|12|#1/0|2000|25|7009.png
+193|minnow|Hunched Runner|Roach|21|13|#2/0|2500|25|7009.png
+194|minnow|Crankbait|Crawfish|21|10|#2/0|2500|26|1221.png
+195|minnow|Crankbait|Rainbow|21|10|#2/0|2500|26|1220.png
+196|minnow|Crankbait|Crawfish|18|8.5|#3/0|3000|27|1221.png
+197|minnow|Crankbait|Dim Green/Glow Green|18|8.5|#2/0|4000|27|2757.png
+198|minnow|Hunched Runner|Roach|24|14|#2/0|2500|27|7009.png
+199|minnow|Hunched Runner|Perch|24|14|#2/0|2500|27|7010.png
+200|minnow|Crankbait|Crawfish|28|12.5|#4/0|3500|28|1221.png
+201|minnow|Frog|Yellow|14|7.5|#2/0|2750|28|3652.png
+202|minnow|Frog|Green And Acid Green|14|7.5|#2/0|2750|28|3650.png
+203|minnow|Frog|Green And Orange|14|7.5|#2/0|2750|28|3656.png
+204|minnow|Frog|Black And Yellow|14|7.5|#2/0|2750|28|3654.png
+205|minnow|Frog|Acid Green And Yellow|14|7.5|#2/0|2750|28|3658.png
+206|minnow|Triple Runner|Purple|24|14|#2/0|2500|28|7022.png
+207|minnow|Triple Runner|White With Blue Head|24|14|#2/0|2500|28|7030.png
+208|minnow|Crankbait|Smoke|28|12.5|#4/0|4000|29|1217.png
+209|minnow|Crankbait|Perch|28|12.5|#4/0|4000|29|1218.png
+210|minnow|Crankbait|Dim Green/Glow Green|24|11|#3/0|4500|29|2757.png
+211|minnow|Popper|Silver&Green With Red Head|21|10|#4/0|3100|30|3626.png
+212|minnow|Popper|White With Black Back|21|10|#4/0|3100|30|3624.png
+213|minnow|Popper|Yellow with Red Back|21|10|#4/0|3100|30|3622.png
+214|minnow|Crankbait|Lemon|21|10|#2/0|3000|31|1222.png
+215|minnow|Crankbait|Smoke|21|10|#2/0|3000|31|1217.png
+216|minnow|Jerkbait|Red & White|42|15|#6/0|4250|31|1148.png
+217|minnow|Crankbait|Lemon|28|12.5|#4/0|3500|32|1222.png
+218|minnow|Hunched Runner|Roach|42|16|#2/0|3100|32|7009.png
+219|minnow|Hunched Runner|Perch|42|16|#2/0|3100|32|7010.png
+220|minnow|Jerkbait|Wine & Silver|42|15|#6/0|4250|32|1150.png
+221|minnow|Frog|Yellow|21|6.5|#4/0|3630|33|3652.png
+222|minnow|Frog|Green And Acid Green|21|6.5|#4/0|3630|33|3650.png
+223|minnow|Frog|Green And Orange|21|6.5|#4/0|3630|33|3656.png
+224|minnow|Frog|Black And Yellow|21|6.5|#4/0|3630|33|3654.png
+225|minnow|Frog|Acid Green And Yellow|21|6.5|#4/0|3630|33|3658.png
+226|minnow|Jerkbait|Lemon With Black Stripes|42|15|#6/0|4250|33|694.png
+227|minnow|Triple Runner|Purple|18|12|#3/0|3000|33|7022.png
+228|minnow|Crankbait|Crawfish|24|11|#3/0|3000|34|1221.png
+229|minnow|Crankbait|Rainbow|24|11|#3/0|3000|34|1220.png
+230|minnow|Jerkbait|Tiger|42|15|#6/0|4250|34|397.png
+231|minnow|Crankbait|Lemon|24|11|#3/0|3000|35|1222.png
+232|minnow|Crankbait|Smoke|24|11|#3/0|3000|35|1217.png
+233|minnow|Triple Runner|Purple|28|14|#3/0|3500|35|7022.png
+234|minnow|Triple Runner|White With Blue Head|28|14|#3/0|3500|35|7030.png
+235|minnow|Walker|Natural|28|7.5|#3/0|4050|35|3660.png
+236|minnow|Crankbait|Dim Green/Glow Green|28|12.5|#4/0|5000|36|2757.png
+237|minnow|Hunched Runner|Roach|28|14|#3/0|4250|37|7009.png
+238|minnow|Hunched Runner|Perch|28|14|#4/0|4500|37|7010.png
+239|minnow|Topper|Silver and Red|18|8|#2/0|2920|37|11932.png
+240|minnow|Topper|Green&Silver|18|8|#2/0|2920|37|11944.png
+241|minnow|Triple Runner|White With Blue Head|12|10|#2/0|2500|37|7030.png
+242|minnow|Triple Runner|White With Blue Head|36|10|#4/0|4500|37|7030.png
+243|minnow|Triple Runner|White With Blue Head|18|12|#3/0|3500|37|7030.png
+244|minnow|Crankbait|Lemon|42|14|#5/0|4000|38|1222.png
+245|minnow|Crankbait|Smoke|42|14|#5/0|4000|38|1217.png
+246|minnow|Crankbait|Perch|42|14|#5/0|4000|38|1218.png
+247|minnow|Deep Runner|Orange Fish|28|14|#4/0|5200|38|6966.png
+248|minnow|Deep Runner|Green With Black Dot|28|14|#4/0|5200|38|6970.png
+249|minnow|Hunched Runner|Roach|48|16|#4/0|5200|38|7009.png
+250|minnow|Hunched Runner|Perch|48|16|#4/0|5200|38|7010.png
+251|minnow|Crankbait|Rainbow|42|14|#5/0|4000|39|1220.png
+252|minnow|Crankbait|White & Blue|42|14|#5/0|4000|39|1219.png
+253|minnow|Walker|Natural|42|7.5|#4/0|4610|39|3660.png
+254|minnow|Crankbait|Lemon|56|15|#6/0|4500|40|1222.png
+255|minnow|Crankbait|Rainbow|56|15|#6/0|4500|40|1220.png
+256|minnow|Crankbait|White & Blue|56|15|#6/0|4500|40|1219.png
+257|minnow|Deep Runner|Orange Fish|36|14|#6/0|6000|40|6966.png
+258|minnow|Deep Runner|Green With Black Dot|36|14|#6/0|6000|40|6970.png
+259|minnow|Major Popper|Black&Silver|24|10|#3/0|3240|40|8233.png
+260|minnow|Major Popper|Blue&Silver|24|10|#3/0|3240|40|8239.png
+261|minnow|Deep Runner|Orange Fish|42|15|#4/0|5500|42|6966.png
+262|minnow|Deep Runner|Green With Black Dot|42|15|#4/0|5500|42|6970.png
+263|minnow|Topper|Silver and Red|28|8.5|#4/0|4170|42|11932.png
+264|minnow|Topper|Green&Silver|28|8.5|#4/0|4170|42|11944.png
+265|minnow|Swimbait|Tiger|28|10|#1/0|3730|43|8920.png
+266|minnow|Swimbait|Silver&Pink|28|10|#1/0|3730|43|8919.png
+267|minnow|Deep Runner|Orange Fish|48|15|#6/0|6500|44|6966.png
+268|minnow|Deep Runner|Green With Black Dot|48|15|#6/0|6500|44|6970.png
+269|minnow|Deep Runner|Orange Fish|50|16|#6/0|6800|47|6966.png
+270|minnow|Deep Runner|Green With Black Dot|50|16|#6/0|6800|47|6970.png
+271|minnow|Major Popper|Black&Silver|42|12.5|#5/0|4310|47|8233.png
+272|minnow|Major Popper|Blue&Silver|42|12.5|#5/0|4310|47|8239.png
+273|minnow|Twerky Runner|Night Hunter|28|(in.)|#3/0|5250|47|13144.png
+274|minnow|Twerky Runner|Clown|28|(in.)|#3/0|5210|47|13145.png
+275|minnow|Freaky Walker|Black/Red|15|7.5|#2/0|4510|48|12942.png
+276|minnow|Freaky Walker|Silver/Gray|15|7.5|#2/0|4510|48|12943.png
+277|minnow|Hunched Runner|Roach|36|12|#4/0|5700|48|7009.png
+278|minnow|Hunched Runner|Roach|56|16|#4/0|5700|48|7009.png
+279|minnow|Hunched Runner|Perch|56|16|#4/0|5700|48|7010.png
+280|minnow|Mini Crank|Green Tiger|5|4|#1|3150|48|11379.png
+281|minnow|Mini Crank|Brown and Yellow|5|4|#1|3150|48|11449.png
+282|minnow|Swimbait|Tiger|42|12.5|#2/0|4470|48|8920.png
+283|minnow|Swimbait|Silver&Pink|42|12.5|#2/0|4470|48|8919.png
+284|minnow|Topper|Silver and Red|36|9|#6/0|5250|48|11932.png
+285|minnow|Topper|Green&Silver|36|9|#6/0|5250|48|11944.png
+286|minnow|Triple Runner|White With Blue Head|48|12|#5/0|6300|48|7030.png
+287|minnow|Freaky Walker|Black/Red|21|7.5|#3/0|4780|49|12942.png
+288|minnow|Freaky Walker|Silver/Gray|21|7.5|#3/0|4780|49|12943.png
+289|minnow|Mini Crank|Green Tiger|7|5|#1/0|3350|49|11379.png
+290|minnow|Mini Crank|Brown and Yellow|7|5|#1/0|3350|49|11449.png
+291|minnow|Mouse Lure|Black|14|10|#2/0|5450|49|11370.png
+292|minnow|Twerky Runner|Night Hunter|30|6.3|#5/0|5960|49|13144.png
+293|minnow|Twerky Runner|Clown|30|6.3|#5/0|5820|49|13145.png
+294|minnow|Walker|Natural|56|10|#4/0|4975|49|3660.png
+295|minnow|Deep Runner|Orange Fish|56|16|#8/0|7750|50|6966.png
+296|minnow|Deep Runner|Green With Black Dot|56|16|#8/0|7750|50|6970.png
+297|minnow|Mini Crank|Green Tiger|9|6|#2/0|3750|51|11379.png
+298|minnow|Mini Crank|Brown and Yellow|9|6|#2/0|3750|51|11449.png
+299|minnow|Twerky Runner|Night Hunter|32|6.3|#7/0|6880|51|13144.png
+300|minnow|Twerky Runner|Clown|32|6.3|#7/0|6840|51|13145.png
+301|minnow|Swimbait|Tiger|48|15|#3/0|5320|52|8920.png
+302|minnow|Swimbait|Silver&Pink|48|15|#3/0|5320|52|8919.png
+303|minnow|Mini Crank|Green Tiger|12|6.5|#3/0|4350|53|11379.png
+304|minnow|Mini Crank|Brown and Yellow|12|6.5|#3/0|4350|53|11449.png
+305|minnow|Mouse Lure|Black|21|12|#3/0|5450|53|11370.png
+306|minnow|Major Popper|Black&Silver|70|15|#7/0|5510|55|8233.png
+307|minnow|Major Popper|Blue&Silver|70|15|#7/0|5510|55|8239.png
+308|minnow|Hunched Runner|Roach|64|16|#4/0|6285|56|7009.png
+309|minnow|Hunched Runner|Perch|64|16|#4/0|6285|56|7010.png
+310|minnow|Mouse Lure|Black|36|14|#5/0|5830|56|11370.png
+311|minnow|Swimbait|Tiger|64|15|#4/0|5500|57|8920.png
+312|minnow|Swimbait|Silver&Pink|64|15|#4/0|5500|57|8919.png
+313|minnow|Walker|Natural|64|10|#5/0|5300|58|3660.png
+314|minnow|Hunched Runner|Roach|48|13|#6/0|7100|59|7009.png
+315|minnow|Hunched Runner|Roach|56|14|#7/0|7570|59|7009.png
+316|minnow|Mouse Lure|Black|48|16|#7/0|5450|59|11370.png
+317|minnow|Swimbait|Tiger|71|15|#5/0|6160|59|8920.png
+318|minnow|Swimbait|Silver&Pink|71|15|#5/0|6160|59|8919.png
+319|minnow|Swimbait|Tiger|92|15|#6/0|6550|60|8920.png
+320|minnow|Swimbait|Silver&Pink|92|15|#6/0|6550|60|8919.png
+321|minnow|Duo Swimbait|Natural Green|28|10|#3/0|6380|66|9507.png
+322|minnow|Duo Swimbait|Natural Red|28|10|#3/0|6380|66|9511.png
+323|minnow|Duo Swimbait|Natural Green|56|12|#4/0|6650|68|9507.png
+324|minnow|Duo Swimbait|Natural Red|56|12|#4/0|6650|68|9511.png
+325|minnow|Duo Swimbait|Natural Green|71|15|#8/0|7230|70|9507.png
+326|minnow|Duo Swimbait|Natural Red|71|15|#8/0|7230|70|9511.png
+327|rotante|Nano Spinner|Gold and Black Trout|2|4|#2|350|9|1544.png
+328|rotante|Nano Spinner|Gold and Black Trout|4|5|#1|400|9|1544.png
+329|rotante|Nano Spinner|Yellow Tiger Bug|2|4|#2|350|9|1546.png
+330|rotante|Nano Spinner|Yellow Tiger Bug|4|5|#1|400|9|1546.png
+331|rotante|Nano Spinner|Yellow Perch|2|4|#2|350|9|1550.png
+332|rotante|Nano Spinner|Yellow Perch|4|5|#1|400|9|1550.png
+333|rotante|Spinner|Silver|4|5|#1/0|320|9|944.png
+334|rotante|Spinner|Gold|4|5|#1/0|320|9|943.png
+335|rotante|Nano Spinner|Gold and Black Trout|6|6|#1/0|480|15|1544.png
+336|rotante|Nano Spinner|Yellow Tiger Bug|6|6|#1/0|480|15|1546.png
+337|rotante|Nano Spinner|Yellow Perch|6|6|#1/0|480|15|1550.png
+338|rotante|Spinner|Beetle|14|7.5|#3/0|450|17|946.png
+339|rotante|Spinner|Rainbow|14|7.5|#3/0|450|17|948.png
+340|rotante|Spinner Tail|Brown||5||120|22|7662.png
+341|rotante|Spinner Tail|White||5||120|22|7656.png
+342|rotante|Spinner Tail|Blue||5||120|26|7664.png
+343|rotante|Spinner Tail|Yellow||5||120|26|7654.png
+344|rotante|Spinnerbait|Lemon Skirt And Blades|14|6|#2/0|850|26|2405.png
+345|rotante|Spinnerbait|Dark Blue Skirt And Gold&Silver Blades|14|6|#2/0|850|26|2411.png
+346|rotante|Spinnerbait|Lemon Skirt And Blades|21|8|#3/0|950|27|2405.png
+347|rotante|Spinnerbait|Dark Blue Skirt And Gold&Silver Blades|21|8|#3/0|950|27|2411.png
+348|rotante|Spinnerbait|Lemon Skirt And Blades|28|10|#4/0|1050|28|2405.png
+349|rotante|Spinnerbait|Dark Blue Skirt And Gold&Silver Blades|28|10|#4/0|1050|28|2411.png
+350|rotante|Spinner|Beetle|21|7.5|#6/0|580|31|946.png
+351|rotante|Spinner|Rainbow|21|7.5|#6/0|580|31|948.png
+352|rotante|Spinner Tail|Green||5||120|31|7660.png
+353|rotante|Spinner Tail|Red||5||120|31|7658.png
+354|rotante|Bullet Spinner|Black Beetle|24|7.5|#2/0|800|38|2610.png
+355|rotante|Bullet Spinner|Rose and Blue Trout|24|7.5|#2/0|800|38|2604.png
+356|rotante|Bullet Spinner|Yellow Beetle|24|7.5|#2/0|800|38|2608.png
+357|rotante|Bullet Spinner|Silver and Blue|24|7.5|#2/0|800|38|2602.png
+358|rotante|Bullet Spinner|Black Beetle|36|8.5|#4/0|1000|39|2610.png
+359|rotante|Bullet Spinner|Rose and Blue Trout|36|8.5|#4/0|1000|39|2604.png
+360|rotante|Bullet Spinner|Yellow Beetle|36|8.5|#4/0|1000|39|2608.png
+361|rotante|Bullet Spinner|Silver and Blue|36|8.5|#4/0|1000|39|2602.png
+362|rotante|Buzzbait|Black|18|8|#3/0|1595|42|8136.png
+363|rotante|Buzzbait|White|18|8|#3/0|1595|42|8142.png
+364|rotante|Buzzbait|Black|24|9|#4/0|1750|43|8136.png
+365|rotante|Buzzbait|White|24|9|#4/0|1750|43|8142.png
+366|rotante|Buzzbait|Black|28|10|#5/0|2110|44|8136.png
+367|rotante|Buzzbait|White|28|10|#5/0|2110|44|8142.png
+368|siliconico|Shad|White||3||50|4|980.png
+369|siliconico|Shad|Yellow||3||50|4|981.png
+370|siliconico|Shad|White||5||70|5|980.png
+371|siliconico|Shad|Yellow||5||70|5|981.png
+372|siliconico|Shad|Swamp Green||5||70|5|971.png
+373|siliconico|Shad|White||7||120|6|980.png
+374|siliconico|Shad|Yellow||7||120|6|981.png
+375|siliconico|Shad|Swamp Green||7||120|6|971.png
+376|siliconico|Grub|Red||3||70|8|990.png
+377|siliconico|Grub|Yellow||3||70|8|700.png
+378|siliconico|Grub|Red||5||90|9|990.png
+379|siliconico|Grub|Yellow||5||90|9|700.png
+380|siliconico|Grub|Dark Green||5||90|9|991.png
+381|siliconico|Shad|White & Red Head/Glow White & Red Head||3||75|9|2725.png
+382|siliconico|Shad|White & Red Head/Glow White & Red Head||5||100|9|2725.png
+383|siliconico|Grub|Red||7||150|10|990.png
+384|siliconico|Grub|Yellow||7||150|10|700.png
+385|siliconico|Grub|Dark Green||7||150|10|991.png
+386|siliconico|Tube|Watermelon Seed||5||100|10|1002.png
+387|siliconico|Tube|Pumpkin Seed||5||100|10|1003.png
+388|siliconico|Tube|Green Pumpkin||5||100|10|1005.png
+389|siliconico|Tube|Salt & Pepper||5||100|10|1004.png
+390|siliconico|Craw|Green Pumpkin||2.5||100|11|1605.png
+391|siliconico|Craw|Green Pumpkin||4||140|11|1605.png
+392|siliconico|Craw|Dark Space Blue||2.5||100|11|1604.png
+393|siliconico|Craw|Dark Space Blue||4||140|11|1604.png
+394|siliconico|Grub|Acid Yellow||7||150|11|983.png
+395|siliconico|Grub|Amber||7||150|11|987.png
+396|siliconico|Twin Tail Spider Grub|Salt & Pepper||3||125|11|8204.png
+397|siliconico|Twin Tail Spider Grub|Red/Black Flake||3||125|11|8206.png
+398|siliconico|Grub|White||7||150|12|1006.png
+399|siliconico|Grub|Orange||7||150|12|1007.png
+400|siliconico|Grub|Ruby||7||150|12|985.png
+401|siliconico|Nymphes|Green and Yellow||5||270|12|2391.png
+402|siliconico|Nymphes|Red and Yellow||5||270|12|2395.png
+403|siliconico|Nymphes|Strawberry||5||270|12|2578.png
+404|siliconico|Nymphes|Slice Fish||5||270|12|2580.png
+405|siliconico|Craw|Green Pumpkin||5||180|13|1605.png
+406|siliconico|Craw|Green Pumpkin||7.5||250|13|1605.png
+407|siliconico|Craw|Dark Space Blue||5||180|13|1604.png
+408|siliconico|Craw|Dark Space Blue||7.5||250|13|1604.png
+409|siliconico|Nymphes|Green and Yellow||7.5||340|13|2391.png
+410|siliconico|Nymphes|Red and Yellow||7.5||340|13|2395.png
+411|siliconico|Twin Tail Spider Grub|Watermelon/Red Flake||3||155|13|8210.png
+412|siliconico|Twin Tail Spider Grub|Purple||3||155|13|8208.png
+413|siliconico|Craw|Dim Green/Glow Green||2.5||200|14|2734.png
+414|siliconico|Craw|Dim Green/Glow Green||5||230|14|2734.png
+415|siliconico|Craw|Dim Green/Glow Green||7.5||300|16|2734.png
+416|siliconico|Craw|Dim Green/Glow Green||10||350|16|2734.png
+417|siliconico|Slug|Green||5||250|16|8158.png
+418|siliconico|Slug|Yellow and White||5||250|16|8160.png
+419|siliconico|Slug|Black and Green||5||250|18|8162.png
+420|siliconico|Slug|Orange||5||250|18|8156.png
+421|siliconico|Twin Tail Spider Grub|Purple||5||185|21|8208.png
+422|siliconico|Twin Tail Spider Grub|Red/Black Flake||5||185|21|8206.png
+423|siliconico|Worm|Acid Green||7||170|21|1001.png
+424|siliconico|Worm|Black||7||170|21|999.png
+425|siliconico|Worm|Light Green||7||170|21|998.png
+426|siliconico|Worm|Purple||7||170|21|997.png
+427|siliconico|Shad|White & Red Head||7||150|22|973.png
+428|siliconico|Shad|Yellow & Red Tail||7||150|22|702.png
+429|siliconico|Worm|Dim Green/Glow Green||7||220|22|2729.png
+430|siliconico|Shad|Yellow & Red||7||150|23|975.png
+431|siliconico|Shad|Black||7||150|23|977.png
+432|siliconico|Shad|Grass Green||7||150|23|979.png
+433|siliconico|Shad|White & Red Head/Glow White & Red Head||7||190|23|2725.png
+434|siliconico|Twin Tail Spider Grub|Salt & Pepper||5||210|23|8204.png
+435|siliconico|Twin Tail Spider Grub|Watermelon/Red Flake||5||210|23|8210.png
+436|siliconico|Newts|Black||5||250|26|2379.png
+437|siliconico|Newts|Brown and Yellow||5||250|26|2381.png
+438|siliconico|Worm|Pearl||10||220|26|993.png
+439|siliconico|Worm|Chocolate||10||220|26|994.png
+440|siliconico|Worm|Blue||10||220|26|996.png
+441|siliconico|Worm|Yellow||10||220|26|995.png
+442|siliconico|Newts|Black||7.5||300|27|2379.png
+443|siliconico|Newts|Brown and Yellow||7.5||300|27|2381.png
+444|siliconico|Twin Tail Spider Grub|Salt & Pepper||7||230|27|8204.png
+445|siliconico|Twin Tail Spider Grub|Watermelon/Red Flake||7||230|27|8210.png
+446|siliconico|Twin Tail Spider Grub|Red/Black Flake||7||230|27|8206.png
+447|siliconico|Worm|Black||10||220|27|999.png
+448|siliconico|Newts|Black||10||350|28|2379.png
+449|siliconico|Newts|Brown and Yellow||10||350|28|2381.png
+450|siliconico|Worm|Acid Green||10||220|28|1001.png
+451|siliconico|Worm|Light Green||10||220|28|998.png
+452|siliconico|Worm|Purple||10||220|28|997.png
+453|siliconico|Crayfish|Black and Blue||7.5||370|29|1771.png
+454|siliconico|Crayfish|Carolina Pumpkin||7.5||370|29|2162.png
+455|siliconico|Twin Tail Spider Grub|Purple||7||270|29|8208.png
+456|siliconico|Worm|Acid Green||12.5||260|29|1001.png
+457|siliconico|Worm|Purple||12.5||260|29|997.png
+458|siliconico|Worm|Dim Green/Glow Green||10||280|29|2729.png
+459|siliconico|Shad|White||10||180|30|980.png
+460|siliconico|Shad|Yellow||10||180|30|981.png
+461|siliconico|Shad|Swamp Green||10||180|30|971.png
+462|siliconico|Worm|Dim Green/Glow Green||12.5||380|30|2729.png
+463|siliconico|Shad|White & Red Head||10||220|31|973.png
+464|siliconico|Shad|Yellow & Red Tail||10||220|31|702.png
+465|siliconico|Crayfish|Black and Blue||10||450|32|1771.png
+466|siliconico|Crayfish|Carolina Pumpkin||10||450|32|2162.png
+467|siliconico|Larva|Purple||5||375|32|8182.png
+468|siliconico|Larva|Red||5||375|32|8186.png
+469|siliconico|Shad|Yellow & Red||10||220|32|975.png
+470|siliconico|Shad|Black||10||220|32|977.png
+471|siliconico|Shad|Grass Green||10||220|32|979.png
+472|siliconico|Slug|Green||7||370|32|8158.png
+473|siliconico|Slug|Yellow and White||7||370|32|8160.png
+474|siliconico|Shad|White & Red Head/Glow White & Red Head||10||280|33|2725.png
+475|siliconico|Worm|Acid Green||15||300|33|1001.png
+476|siliconico|Worm|Purple||15||300|33|997.png
+477|siliconico|Larva|Yellow||5||390|36|8180.png
+478|siliconico|Larva|Acid Green||5||390|36|8184.png
+479|siliconico|Nymphes|Green and Yellow||10||500|40|2391.png
+480|siliconico|Nymphes|Red and Yellow||10||500|40|2395.png
+481|siliconico|Slug|Green||10||500|44|8158.png
+482|siliconico|Slug|Yellow and White||10||500|44|8160.png
+483|siliconico|Bionic Slug|Blue||12||570|46|12950.png
+484|siliconico|Bionic Slug|Dark Green/Green||12||570|46|12951.png
+485|siliconico|Bionic Slug|Pink/Golden||12||570|46|12953.png
+486|siliconico|Grub|Red||10||330|46|990.png
+487|siliconico|Grub|Dark Green||10||330|46|991.png
+488|siliconico|Grub|Yellow||10||330|47|700.png
+489|siliconico|Grub|Amber||10||330|47|987.png
+490|siliconico|Grub|Orange||10||330|48|1007.png
+491|siliconico|Larva|Purple||7.5||630|49|8182.png
+492|siliconico|Larva|Red||7.5||630|49|8186.png
+493|siliconico|Shad|Yellow||15||330|53|981.png
+494|siliconico|Shad|Black||15||330|53|977.png
+495|siliconico|Larva|Purple||10||790|55|8182.png
+496|siliconico|Larva|Red||10||790|55|8186.png
+497|siliconico|Slug|Green||15||610|57|8158.png
+498|siliconico|Slug|Yellow and White||15||500|57|8160.png
+499|siliconico|Grub|White||10||330|58|1006.png
+500|siliconico|Twin Tail Spider Grub|Salt & Pepper||10||570|58|8204.png
+501|siliconico|Twin Tail Spider Grub|Red/Black Flake||10||570|58|8206.png
+502|siliconico|Twin Tail Spider Grub|Watermelon/Red Flake||10||570|60|8210.png
+503|siliconico|Twin Tail Spider Grub|Purple||10||570|60|8208.png
+504|siliconico|Shad|White & Red Head||15||330|62|973.png
+505|siliconico|Shad|Yellow & Red Tail||15||330|62|702.png
+506|siliconico|Craw|Green Pumpkin||15||250|65|1605.png
+507|siliconico|Craw|Dark Space Blue||15||250|65|1604.png
+508|siliconico|Craw|Dim Green/Glow Green||15||350|65|2734.png
+509|siliconico|Twin Tail Spider Grub|Watermelon/Red Flake||15||650|66|8210.png
+510|siliconico|Twin Tail Spider Grub|Purple||15||650|66|8208.png
+511|siliconico|Shad|Yellow & Red||15||330|67|975.png
+512|siliconico|Shad|Grass Green||15||330|67|979.png
+513|siliconico|Shad|White & Red Head/Glow White & Red Head||15||330|67|2725.png
+514|siliconico|Twin Tail Spider Grub|Salt & Pepper||15||650|69|8204.png
+515|siliconico|Twin Tail Spider Grub|Red/Black Flake||15||650|69|8206.png
+516|siliconico|Ribbed Shad|Blue and Acid Green||7||380|73|11051.png
+517|siliconico|Ribbed Shad|Purple Dust||7||380|73|11052.png
+518|siliconico|Ribbed Shad|Blue and Acid Green||10||640|74|11051.png
+519|siliconico|Ribbed Shad|Purple Dust||10||640|74|11052.png
+520|siliconico|Minnow Grub|Rose with Dots||7||460|75|11060.png
+521|siliconico|Minnow Grub|Perch||7||460|75|11061.png
+522|siliconico|Ribbed Shad|Blue and Acid Green||15||790|75|11051.png
+523|siliconico|Ribbed Shad|Purple Dust||15||790|75|11052.png
+524|siliconico|Minnow Grub|Rose with Dots||10||780|77|11060.png
+525|siliconico|Minnow Grub|Perch||10||780|77|11061.png
+526|siliconico|Minnow Grub|Rose with Dots||15||990|78|11060.png
+527|siliconico|Minnow Grub|Perch||15||990|78|11061.png

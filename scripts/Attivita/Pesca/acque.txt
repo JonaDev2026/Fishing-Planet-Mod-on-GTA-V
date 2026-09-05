@@ -1,0 +1,2010 @@
+# LE ACQUE DI PESCA. Registrate andandoci sopra, un punto ogni dieci metri.
+# area|tipo|x|y|z|zona_gta|gruppo
+# area   = il posto di pesca vero, quello che conta
+# gruppo = l'acqua a cui appartiene (per la licenza)
+# zona_gta e' il nome che il gioco dava in QUEL punto: e' servito a
+# capire dove tagliare, non si usa per raggruppare.
+# I tagli sono sulla LUNGHEZZA percorsa, non sul numero di punti.
+# Il giro del porto di Los Santos e' stato scartato: non e' pesca.
+# Un posto appartiene all'area del punto piu' vicino.
+Riva ovest di Alamo|lago|-105.4|4200.9|29.9|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-114.9|4197.5|29.7|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-124.4|4192.5|30.2|CALAFB|Alamo Sea
+Riva ovest di Alamo|lago|-135.2|4186.1|29.9|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-143.4|4177.8|30.6|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-150.4|4167.0|30.4|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-158.1|4154.0|30.2|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-164.1|4144.6|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-170.2|4135.4|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-176.5|4126.3|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-182.5|4117.3|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-188.3|4108.5|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-192.9|4099.5|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-194.2|4086.3|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-191.9|4073.0|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-188.3|4059.0|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-182.5|4045.9|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-176.0|4033.4|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-171.2|4020.4|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-169.8|4005.4|30.2|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-168.3|3992.1|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-166.3|3975.6|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-161.0|3959.2|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-154.2|3942.9|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-147.9|3927.7|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-143.6|3916.5|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-142.0|3904.8|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-143.4|3894.2|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-149.9|3886.1|29.9|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-160.6|3880.8|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-172.3|3876.7|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-181.2|3871.0|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-187.4|3862.4|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-190.1|3852.3|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-181.5|3845.1|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-169.6|3851.5|29.9|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-159.3|3852.6|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-146.7|3851.7|30.2|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-136.7|3848.7|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-123.8|3840.0|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-114.3|3831.6|30.2|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-106.9|3824.0|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-99.9|3812.3|30.2|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-97.0|3799.2|30.2|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-95.3|3784.8|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-97.3|3774.5|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-100.8|3764.1|30.1|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-105.5|3752.9|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-109.5|3743.4|30.0|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-104.7|3734.2|29.8|ALAMO|Alamo Sea
+Riva ovest di Alamo|lago|-94.8|3738.9|30.1|ALAMO|Alamo Sea
+Slab|lago|-83.6|3745.2|30.0|SLAB|Alamo Sea
+Slab|lago|-70.7|3752.5|30.0|SLAB|Alamo Sea
+Slab|lago|-55.7|3761.7|30.1|SLAB|Alamo Sea
+Slab|lago|-39.3|3771.9|30.1|SLAB|Alamo Sea
+Slab|lago|-22.2|3782.7|30.1|SLAB|Alamo Sea
+Slab|lago|-13.6|3788.2|30.1|SLAB|Alamo Sea
+Slab|lago|-5.1|3793.6|30.1|SLAB|Alamo Sea
+Slab|lago|3.3|3798.9|30.1|SLAB|Alamo Sea
+Slab|lago|20.5|3807.4|30.0|SLAB|Alamo Sea
+Slab|lago|38.1|3813.5|30.1|SLAB|Alamo Sea
+Slab|lago|56.2|3815.2|30.1|SLAB|Alamo Sea
+Slab|lago|73.0|3813.2|30.2|SLAB|Alamo Sea
+Slab|lago|90.5|3810.4|30.0|SLAB|Alamo Sea
+Slab|lago|108.3|3805.5|30.1|SLAB|Alamo Sea
+Slab|lago|123.8|3797.5|30.1|SLAB|Alamo Sea
+Slab|lago|139.0|3788.4|30.2|SLAB|Alamo Sea
+Slab|lago|148.7|3779.4|30.1|SLAB|Alamo Sea
+Slab|lago|153.9|3769.4|30.1|SLAB|Alamo Sea
+Slab|lago|159.6|3756.4|30.0|SLAB|Alamo Sea
+Slab|lago|165.4|3740.7|30.1|SLAB|Alamo Sea
+Slab|lago|171.5|3722.9|30.1|SLAB|Alamo Sea
+Slab|lago|176.3|3704.8|30.1|SLAB|Alamo Sea
+Slab|lago|180.8|3685.6|30.1|SLAB|Alamo Sea
+Slab|lago|183.0|3675.7|30.1|SLAB|Alamo Sea
+Slab|lago|186.6|3656.5|30.1|SLAB|Alamo Sea
+Slab|lago|188.1|3637.4|30.0|SLAB|Alamo Sea
+Foce dello Zancudo|lago|184.5|3620.9|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|180.5|3603.1|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|175.8|3584.9|30.0|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|171.0|3567.7|29.9|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|166.4|3551.5|30.0|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|162.0|3535.4|30.2|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|158.2|3521.0|30.2|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|155.0|3507.7|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|152.7|3496.3|30.2|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|152.2|3484.1|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|159.4|3475.6|29.9|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|173.8|3475.6|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|187.9|3476.9|30.0|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|202.0|3482.9|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|216.8|3491.0|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|230.7|3501.5|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|244.6|3513.3|30.0|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|257.8|3526.4|30.0|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|268.2|3541.5|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|278.0|3557.7|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|288.2|3574.6|30.1|ZANCUDO|Alamo Sea
+Foce dello Zancudo|lago|293.7|3583.1|30.1|ZANCUDO|Alamo Sea
+Sponda sud di Alamo|lago|305.6|3598.5|30.1|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|318.9|3610.8|30.1|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|333.2|3622.2|30.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|348.7|3633.6|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|365.2|3643.1|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|383.1|3651.4|29.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|401.4|3658.9|29.4|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|419.1|3664.7|29.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|431.8|3666.3|29.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|446.9|3663.8|30.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|462.5|3661.1|31.2|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|481.1|3657.0|30.9|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|500.5|3652.4|30.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|510.6|3649.7|30.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|520.4|3646.9|30.8|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|530.7|3643.7|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|540.4|3640.6|30.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|550.3|3637.8|31.0|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|560.5|3635.6|30.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|570.6|3633.8|30.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|581.2|3632.5|30.4|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|600.6|3632.3|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|620.2|3632.7|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|639.7|3634.5|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|658.9|3637.7|30.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|668.9|3639.7|30.1|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|687.5|3645.5|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|705.8|3652.0|30.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|715.3|3655.5|30.4|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|725.4|3659.1|29.8|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|744.2|3664.8|31.4|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|754.2|3667.8|30.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|764.5|3670.9|30.2|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|774.1|3674.2|30.2|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|783.8|3677.4|30.1|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|802.5|3684.8|30.2|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|821.2|3692.3|30.2|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|830.6|3696.0|30.2|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|847.7|3704.0|30.2|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|864.9|3713.9|30.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|874.3|3719.4|29.9|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|884.7|3729.8|30.2|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|892.6|3737.2|30.9|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|903.1|3742.6|30.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|912.8|3739.3|30.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|921.9|3732.2|30.8|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|934.8|3722.2|30.8|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|950.4|3710.5|29.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|966.2|3699.3|29.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|983.5|3691.7|29.4|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1001.4|3686.5|30.8|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1011.4|3684.2|30.6|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1021.5|3682.6|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1031.8|3681.6|30.1|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1051.5|3680.8|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1061.7|3680.5|30.0|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1082.0|3680.1|30.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1092.1|3680.3|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1111.5|3681.8|30.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1131.3|3683.2|30.3|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1141.5|3683.7|30.1|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1151.7|3684.2|30.7|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1162.0|3684.8|30.6|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1172.4|3685.3|30.5|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1182.9|3685.6|30.0|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1193.6|3685.9|29.6|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1204.0|3686.3|29.6|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1223.2|3687.9|30.6|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1242.9|3691.4|29.9|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1259.0|3694.5|29.9|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1270.8|3698.0|30.0|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1282.6|3702.2|30.2|ALAMO|Alamo Sea
+Sponda sud di Alamo|lago|1291.5|3709.3|30.1|ALAMO|Alamo Sea
+Sandy Shores|lago|1302.2|3717.9|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1314.5|3726.7|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1328.8|3738.3|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1343.6|3750.4|30.4|SANDY|Alamo Sea
+Sandy Shores|lago|1351.2|3756.9|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1363.2|3769.0|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1368.5|3779.3|30.4|SANDY|Alamo Sea
+Sandy Shores|lago|1374.0|3789.4|30.0|SANDY|Alamo Sea
+Sandy Shores|lago|1380.8|3800.9|30.7|SANDY|Alamo Sea
+Sandy Shores|lago|1388.2|3813.5|30.5|SANDY|Alamo Sea
+Sandy Shores|lago|1395.0|3824.9|30.0|SANDY|Alamo Sea
+Sandy Shores|lago|1400.4|3834.2|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1407.6|3846.4|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1414.7|3855.0|30.6|SANDY|Alamo Sea
+Sandy Shores|lago|1424.9|3857.8|29.9|SANDY|Alamo Sea
+Sandy Shores|lago|1433.1|3851.4|29.7|SANDY|Alamo Sea
+Sandy Shores|lago|1436.2|3840.8|29.8|SANDY|Alamo Sea
+Sandy Shores|lago|1436.7|3826.8|30.0|SANDY|Alamo Sea
+Sandy Shores|lago|1436.6|3812.2|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1435.1|3800.7|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1438.9|3789.4|30.4|SANDY|Alamo Sea
+Sandy Shores|lago|1449.8|3785.6|30.5|SANDY|Alamo Sea
+Sandy Shores|lago|1461.7|3788.8|30.5|SANDY|Alamo Sea
+Sandy Shores|lago|1471.9|3793.3|30.3|SANDY|Alamo Sea
+Sandy Shores|lago|1482.7|3799.0|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1494.5|3805.3|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1505.8|3812.0|30.4|SANDY|Alamo Sea
+Sandy Shores|lago|1517.0|3820.2|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1528.1|3828.5|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1538.1|3837.7|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1546.8|3847.0|30.0|SANDY|Alamo Sea
+Sandy Shores|lago|1549.8|3859.0|30.5|SANDY|Alamo Sea
+Sandy Shores|lago|1544.8|3869.3|30.3|SANDY|Alamo Sea
+Sandy Shores|lago|1536.2|3882.1|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1528.1|3889.2|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1518.3|3894.6|30.3|SANDY|Alamo Sea
+Sandy Shores|lago|1507.2|3899.6|30.3|SANDY|Alamo Sea
+Sandy Shores|lago|1495.2|3903.4|30.6|SANDY|Alamo Sea
+Sandy Shores|lago|1482.3|3907.8|30.5|SANDY|Alamo Sea
+Sandy Shores|lago|1470.7|3912.1|29.6|SANDY|Alamo Sea
+Sandy Shores|lago|1461.1|3919.1|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1459.0|3928.9|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1463.6|3939.4|30.6|SANDY|Alamo Sea
+Sandy Shores|lago|1476.5|3948.4|29.9|SANDY|Alamo Sea
+Sandy Shores|lago|1485.0|3956.0|30.7|SANDY|Alamo Sea
+Sandy Shores|lago|1497.4|3960.7|29.6|SANDY|Alamo Sea
+Sandy Shores|lago|1508.6|3953.9|29.7|SANDY|Alamo Sea
+Sandy Shores|lago|1516.9|3943.5|30.7|SANDY|Alamo Sea
+Sandy Shores|lago|1527.8|3938.5|30.6|SANDY|Alamo Sea
+Sandy Shores|lago|1542.6|3932.5|30.5|SANDY|Alamo Sea
+Sandy Shores|lago|1559.7|3926.4|30.5|SANDY|Alamo Sea
+Sandy Shores|lago|1576.4|3922.1|31.2|SANDY|Alamo Sea
+Sandy Shores|lago|1590.8|3918.7|30.3|SANDY|Alamo Sea
+Sandy Shores|lago|1605.8|3919.3|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1621.4|3923.4|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1636.6|3930.8|30.0|SANDY|Alamo Sea
+Sandy Shores|lago|1651.7|3940.0|30.0|SANDY|Alamo Sea
+Sandy Shores|lago|1667.9|3950.1|29.9|SANDY|Alamo Sea
+Sandy Shores|lago|1684.7|3960.6|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1693.2|3966.0|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1701.7|3971.5|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1710.2|3976.9|30.3|SANDY|Alamo Sea
+Sandy Shores|lago|1718.8|3982.3|30.3|SANDY|Alamo Sea
+Sandy Shores|lago|1727.4|3987.5|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1736.2|3992.4|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1753.4|4000.0|30.5|SANDY|Alamo Sea
+Sandy Shores|lago|1770.9|4004.0|30.6|SANDY|Alamo Sea
+Sandy Shores|lago|1789.7|4006.5|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1808.2|4008.1|30.7|SANDY|Alamo Sea
+Sandy Shores|lago|1827.6|4009.2|31.2|SANDY|Alamo Sea
+Sandy Shores|lago|1847.4|4010.1|31.3|SANDY|Alamo Sea
+Sandy Shores|lago|1857.7|4010.6|30.6|SANDY|Alamo Sea
+Sandy Shores|lago|1867.7|4011.1|30.6|SANDY|Alamo Sea
+Sandy Shores|lago|1878.5|4011.4|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1888.7|4011.2|31.1|SANDY|Alamo Sea
+Sandy Shores|lago|1898.8|4010.6|31.6|SANDY|Alamo Sea
+Sandy Shores|lago|1918.4|4008.3|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|1936.3|4002.4|30.3|SANDY|Alamo Sea
+Sandy Shores|lago|1953.8|3995.4|30.3|SANDY|Alamo Sea
+Sandy Shores|lago|1972.1|3987.6|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|1990.4|3980.2|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|2007.5|3973.7|30.2|SANDY|Alamo Sea
+Sandy Shores|lago|2020.3|3969.1|30.0|SANDY|Alamo Sea
+Sandy Shores|lago|2034.9|3966.3|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|2046.0|3965.0|29.9|SANDY|Alamo Sea
+Sandy Shores|lago|2057.6|3963.7|29.8|SANDY|Alamo Sea
+Sandy Shores|lago|2068.6|3958.9|29.8|SANDY|Alamo Sea
+Sandy Shores|lago|2081.1|3950.4|29.8|SANDY|Alamo Sea
+Sandy Shores|lago|2093.9|3943.2|30.0|SANDY|Alamo Sea
+Sandy Shores|lago|2109.3|3934.9|30.0|SANDY|Alamo Sea
+Sandy Shores|lago|2126.5|3928.8|30.1|SANDY|Alamo Sea
+Sandy Shores|lago|2144.4|3923.2|30.3|SANDY|Alamo Sea
+Riva est di Alamo|lago|2162.9|3919.2|30.2|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2182.2|3917.4|29.9|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2199.9|3919.7|29.7|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2216.0|3925.3|29.6|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2232.2|3933.1|29.7|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2247.9|3942.2|29.8|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2264.0|3952.5|29.9|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2274.2|3965.4|30.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2279.7|3978.5|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2288.0|3987.5|30.3|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2300.1|3995.3|30.3|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2314.5|4004.6|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2328.3|4016.1|30.4|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2335.9|4030.0|30.7|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2339.1|4046.6|30.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2341.9|4064.3|30.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2344.1|4083.2|30.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2345.4|4102.3|30.3|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2344.8|4120.2|31.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2344.2|4136.9|30.7|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2345.8|4154.8|30.6|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2348.3|4174.7|30.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2349.6|4184.7|30.3|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2351.0|4194.6|30.6|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2352.5|4205.2|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2354.0|4215.7|30.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2355.6|4225.8|30.6|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2357.3|4236.0|31.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2359.1|4246.3|30.9|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2360.9|4257.2|30.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2362.7|4267.9|30.2|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2364.4|4278.2|30.8|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2366.3|4289.0|31.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2368.1|4300.1|30.5|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2369.9|4311.4|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2371.5|4322.3|30.4|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2373.1|4332.5|30.7|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2374.6|4342.6|30.9|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2377.1|4360.9|30.2|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2379.3|4375.0|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2383.1|4389.9|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2387.5|4406.9|30.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2392.3|4425.6|30.1|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2396.5|4443.1|30.2|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2397.0|4454.6|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2394.3|4464.5|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2381.6|4466.3|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2370.7|4473.6|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2365.2|4486.7|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2361.9|4498.1|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2363.0|4512.3|30.0|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2368.4|4525.5|29.9|ALAMO|Alamo Sea
+Riva est di Alamo|lago|2372.6|4534.7|30.0|ALAMO|Alamo Sea
+Grapeseed|lago|2379.1|4547.4|30.2|GRAPES|Alamo Sea
+Grapeseed|lago|2385.2|4558.1|30.0|GRAPES|Alamo Sea
+Grapeseed|lago|2394.5|4565.6|30.0|GRAPES|Alamo Sea
+Grapeseed|lago|2402.5|4573.4|30.1|GRAPES|Alamo Sea
+Grapeseed|lago|2401.4|4583.7|29.8|GRAPES|Alamo Sea
+Grapeseed|lago|2393.2|4591.2|30.0|GRAPES|Alamo Sea
+Grapeseed|lago|2379.3|4591.7|29.9|GRAPES|Alamo Sea
+Grapeseed|lago|2366.5|4589.9|30.0|GRAPES|Alamo Sea
+Grapeseed|lago|2350.0|4587.5|30.0|GRAPES|Alamo Sea
+Grapeseed|lago|2333.2|4582.8|30.0|GRAPES|Alamo Sea
+Grapeseed|lago|2317.7|4576.4|30.5|GRAPES|Alamo Sea
+Grapeseed|lago|2300.3|4572.6|30.8|GRAPES|Alamo Sea
+Grapeseed|lago|2281.8|4568.6|30.3|GRAPES|Alamo Sea
+Grapeseed|lago|2267.3|4566.5|30.4|GRAPES|Alamo Sea
+Grapeseed|lago|2256.1|4565.9|30.9|GRAPES|Alamo Sea
+Grapeseed|lago|2244.7|4566.4|30.3|GRAPES|Alamo Sea
+Grapeseed|lago|2232.6|4569.5|30.4|GRAPES|Alamo Sea
+Grapeseed|lago|2223.7|4574.7|30.5|GRAPES|Alamo Sea
+Grapeseed|lago|2217.3|4582.8|30.0|GRAPES|Alamo Sea
+Grapeseed|lago|2218.6|4593.4|30.2|GRAPES|Alamo Sea
+Grapeseed|lago|2224.8|4602.0|30.2|GRAPES|Alamo Sea
+Grapeseed|lago|2234.6|4608.5|30.0|GRAPES|Alamo Sea
+Grapeseed|lago|2245.1|4611.7|30.2|GRAPES|Alamo Sea
+Grapeseed|lago|2255.0|4618.6|30.8|GRAPES|Alamo Sea
+Grapeseed|lago|2263.2|4625.2|30.8|GRAPES|Alamo Sea
+Grapeseed|lago|2269.2|4633.8|30.5|GRAPES|Alamo Sea
+Grapeseed|lago|2262.3|4646.0|30.4|GRAPES|Alamo Sea
+Grapeseed|lago|2250.8|4647.8|29.9|GRAPES|Alamo Sea
+Grapeseed|lago|2238.9|4643.4|30.3|GRAPES|Alamo Sea
+Grapeseed|lago|2230.5|4635.4|30.1|GRAPES|Alamo Sea
+Grapeseed|lago|2219.5|4635.3|30.0|GRAPES|Alamo Sea
+Grapeseed|lago|2207.9|4636.0|30.5|GRAPES|Alamo Sea
+Grapeseed|lago|2193.9|4632.6|30.7|GRAPES|Alamo Sea
+Grapeseed|lago|2179.8|4625.1|30.4|GRAPES|Alamo Sea
+Grapeseed|lago|2165.2|4615.7|30.4|GRAPES|Alamo Sea
+Grapeseed|lago|2150.8|4604.9|30.8|GRAPES|Alamo Sea
+Grapeseed|lago|2135.5|4592.8|30.5|GRAPES|Alamo Sea
+Grapeseed|lago|2127.4|4586.7|30.3|GRAPES|Alamo Sea
+Grapeseed|lago|2119.4|4580.2|30.4|GRAPES|Alamo Sea
+Grapeseed|lago|2104.2|4568.1|30.6|GRAPES|Alamo Sea
+Grapeseed|lago|2089.2|4556.5|30.6|GRAPES|Alamo Sea
+Grapeseed|lago|2072.9|4546.4|30.3|GRAPES|Alamo Sea
+Riva nord-est di Alamo|lago|2055.9|4538.2|30.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|2038.5|4532.8|30.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|2020.3|4528.2|30.4|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|2001.6|4523.4|30.3|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1982.6|4518.5|30.4|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1963.7|4514.2|30.8|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1947.0|4511.5|30.4|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1934.8|4510.2|30.2|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1923.3|4509.6|30.0|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1911.1|4509.8|30.0|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1898.1|4511.4|30.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1884.1|4513.5|30.0|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1873.8|4516.0|30.0|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1864.4|4519.8|30.0|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1858.4|4529.3|30.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1854.2|4541.7|30.3|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1847.9|4552.2|30.1|GRAPES|Alamo Sea
+Riva nord-est di Alamo|lago|1841.2|4543.1|30.5|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1837.4|4532.6|30.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1828.4|4522.1|30.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1818.3|4512.8|29.9|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1806.6|4505.6|29.8|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1795.4|4499.4|29.7|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1783.2|4497.1|29.7|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1772.6|4495.3|29.8|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1762.4|4491.9|30.0|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1751.8|4487.5|29.7|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1740.3|4481.2|30.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1726.8|4472.1|30.3|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1711.8|4461.6|30.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1695.6|4450.1|30.6|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1687.1|4444.1|31.0|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1678.4|4438.1|30.6|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1669.5|4431.9|31.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1660.8|4425.9|30.9|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1652.1|4419.8|31.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1643.1|4413.6|30.6|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1634.4|4407.4|30.7|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1626.0|4401.5|31.1|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1617.6|4395.5|31.2|ALAMO|Alamo Sea
+Riva nord-est di Alamo|lago|1608.9|4389.4|30.8|ALAMO|Alamo Sea
+Mount Chiliad|lago|1599.8|4382.9|30.3|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1591.2|4376.9|30.2|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1582.6|4370.9|29.9|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1566.2|4359.9|30.3|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1549.6|4349.2|30.8|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1540.2|4344.0|30.4|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1530.8|4339.1|30.1|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1521.7|4334.8|30.2|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1503.6|4327.3|30.2|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1487.2|4323.2|30.4|MTCHIL|Alamo Sea
+Mount Chiliad|lago|1475.8|4323.3|30.2|MTCHIL|Alamo Sea
+Riva nord di Alamo|lago|1465.6|4321.1|29.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1456.8|4313.3|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1447.0|4301.6|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1435.5|4287.1|29.7|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1423.3|4271.3|29.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1417.0|4263.0|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1406.7|4248.3|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1396.9|4237.9|29.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1387.5|4232.9|29.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1374.6|4229.9|29.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1364.0|4230.9|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1353.8|4239.1|30.7|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1345.6|4246.3|30.7|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1334.1|4252.4|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1323.4|4249.8|30.6|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1317.1|4239.8|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1318.3|4228.9|29.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1318.2|4217.7|29.6|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1312.9|4208.0|29.7|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1303.6|4203.7|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1292.7|4213.2|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1288.1|4223.5|30.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1289.2|4236.1|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1288.5|4247.6|29.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1281.6|4258.7|29.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1272.2|4269.6|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1261.6|4279.7|30.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1252.6|4286.5|30.7|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1238.0|4289.1|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1223.5|4289.7|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1206.3|4290.0|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1188.0|4289.9|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1169.9|4286.4|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1154.9|4278.7|30.6|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1143.2|4267.1|31.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1131.7|4253.3|31.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1119.6|4237.8|30.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1113.2|4229.6|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1100.5|4214.6|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1086.5|4202.1|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1071.9|4195.8|30.6|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1055.6|4191.5|30.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1041.0|4190.6|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1029.0|4195.9|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1024.1|4209.1|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1025.0|4220.6|30.6|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1023.0|4232.7|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1013.3|4240.8|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|1001.3|4244.5|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|988.4|4241.7|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|975.2|4235.1|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|961.5|4225.4|29.7|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|949.2|4213.3|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|937.0|4199.9|30.7|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|930.1|4192.0|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|923.4|4184.3|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|916.6|4176.3|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|909.7|4168.6|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|894.5|4157.0|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|880.2|4153.3|30.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|868.3|4150.5|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|855.3|4149.2|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|839.7|4146.6|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|821.8|4143.1|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|803.0|4139.6|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|783.6|4136.2|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|764.2|4133.8|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|747.8|4132.0|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|734.0|4130.6|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|719.7|4130.1|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|704.7|4131.1|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|689.9|4133.3|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|672.0|4136.3|30.7|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|651.7|4139.4|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|641.5|4140.8|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|630.8|4142.2|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|620.6|4143.0|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|610.3|4143.6|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|600.0|4144.2|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|589.8|4144.5|29.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|570.3|4143.7|29.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|550.9|4142.5|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|540.9|4141.9|29.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|521.9|4142.2|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|507.2|4147.3|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|494.8|4155.1|29.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|484.3|4165.8|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|472.6|4179.2|29.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|459.0|4189.8|30.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|442.4|4199.0|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|433.3|4203.4|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|414.5|4212.0|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|404.4|4216.3|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|394.7|4220.3|31.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|384.7|4224.3|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|374.6|4228.0|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|364.7|4230.2|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|347.1|4229.8|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|329.2|4228.7|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|310.2|4228.3|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|291.8|4230.5|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|274.2|4235.0|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|258.2|4243.0|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|241.6|4251.4|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|230.3|4260.6|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|225.4|4269.9|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|220.7|4281.2|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|215.4|4293.6|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|210.1|4303.1|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|198.9|4307.7|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|189.5|4303.7|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|176.1|4296.9|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|159.8|4288.9|29.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|145.5|4285.2|29.8|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|132.2|4287.9|29.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|122.5|4293.1|30.1|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|117.0|4306.0|30.0|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|113.3|4319.1|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|103.2|4325.9|29.7|MTCHIL|Alamo Sea
+Riva nord di Alamo|lago|90.1|4323.4|29.6|MTCHIL|Alamo Sea
+Riva nord di Alamo|lago|79.3|4317.8|29.9|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|69.8|4310.7|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|61.6|4304.4|30.2|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|49.9|4296.7|30.3|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|37.7|4293.9|30.6|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|26.0|4294.6|30.4|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|16.5|4298.1|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|7.1|4304.6|30.6|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|-1.0|4313.5|30.5|ALAMO|Alamo Sea
+Riva nord di Alamo|lago|-7.4|4321.6|30.4|ALAMO|Alamo Sea
+Ponte Calafia|lago|-11.8|4334.6|30.4|MTCHIL|Alamo Sea
+Ponte Calafia|lago|-11.2|4346.4|30.3|MTCHIL|Alamo Sea
+Ponte Calafia|lago|-9.1|4359.5|30.4|MTCHIL|Alamo Sea
+Ponte Calafia|lago|-6.3|4372.1|29.8|MTCHIL|Alamo Sea
+Ponte Calafia|lago|-1.0|4381.1|29.9|MTCHIL|Alamo Sea
+Ponte Calafia|lago|5.6|4389.0|30.3|MTCHIL|Alamo Sea
+Ponte Calafia|lago|14.9|4396.0|30.1|MTCHIL|Alamo Sea
+Ponte Calafia|lago|8.7|4388.0|29.6|MTCHIL|Alamo Sea
+Ponte Calafia|lago|0.6|4381.3|29.8|MTCHIL|Alamo Sea
+Ponte Calafia|lago|-8.7|4370.0|29.8|MTCHIL|Alamo Sea
+Ponte Calafia|lago|-15.6|4355.5|30.0|MTCHIL|Alamo Sea
+Ponte Calafia|lago|-21.7|4338.8|30.0|MTCHIL|Alamo Sea
+Ponte Calafia|lago|-28.0|4321.7|30.4|ALAMO|Alamo Sea
+Ponte Calafia|lago|-36.1|4304.7|30.4|ALAMO|Alamo Sea
+Ponte Calafia|lago|-45.1|4290.2|30.2|ALAMO|Alamo Sea
+Ponte Calafia|lago|-52.5|4278.6|30.1|ALAMO|Alamo Sea
+Ponte Calafia|lago|-60.0|4267.2|30.0|ALAMO|Alamo Sea
+Ponte Calafia|lago|-67.8|4258.4|30.1|ALAMO|Alamo Sea
+Ponte Calafia|lago|-76.1|4252.1|30.1|ALAMO|Alamo Sea
+Ponte Calafia|lago|-86.3|4245.2|30.0|ALAMO|Alamo Sea
+Ponte Calafia|lago|-98.9|4240.0|30.0|ALAMO|Alamo Sea
+Ponte Calafia|lago|-111.8|4237.1|30.1|ALAMO|Alamo Sea
+Ponte Calafia|lago|-125.4|4237.2|30.1|CALAFB|Alamo Sea
+Ponte Calafia|lago|-137.4|4238.1|29.9|CALAFB|Alamo Sea
+Ponte Calafia|lago|-147.9|4234.4|29.9|CALAFB|Alamo Sea
+Ponte Calafia|lago|-153.7|4225.7|29.9|CALAFB|Alamo Sea
+Ponte Calafia|lago|-157.6|4213.9|29.9|CALAFB|Alamo Sea
+Fiume Zancudo alto|fiume|142.2|3388.4|30.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|136.9|3377.2|30.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|131.3|3365.4|30.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|126.1|3354.6|30.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|122.1|3344.5|30.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|118.5|3332.6|30.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|115.9|3322.6|30.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|113.0|3311.0|30.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|108.9|3300.0|30.1|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|101.9|3290.3|29.7|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|94.5|3280.5|29.1|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|89.2|3270.9|28.3|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|87.4|3258.3|26.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|88.0|3246.0|25.8|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|84.8|3236.5|25.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|81.0|3227.0|25.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|76.7|3216.5|25.7|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|71.9|3204.4|25.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|67.0|3191.9|25.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|61.4|3179.4|25.7|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|55.3|3167.4|25.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|49.3|3155.8|26.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|44.9|3144.6|25.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|39.1|3135.3|25.9|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|28.3|3132.2|25.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|18.1|3128.4|25.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|7.9|3123.7|25.8|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-3.0|3119.1|25.9|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-14.6|3116.5|25.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-27.9|3115.4|25.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-41.3|3112.6|25.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-51.7|3112.0|25.4|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-62.5|3111.2|25.1|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-75.7|3110.1|25.9|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-86.2|3109.1|25.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-96.4|3108.6|23.7|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-107.7|3109.0|22.3|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-119.5|3110.0|22.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-132.0|3109.2|21.8|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-142.9|3102.8|20.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-146.8|3093.2|20.1|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-150.4|3083.6|18.8|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-158.9|3074.1|18.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-168.6|3065.9|18.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-176.3|3057.1|18.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-185.9|3046.4|18.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-196.7|3035.0|18.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-207.1|3024.1|18.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-214.9|3016.3|18.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-228.2|3009.8|18.4|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-238.9|3007.9|18.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-250.8|3006.4|18.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-262.1|3008.0|18.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-270.6|3013.5|18.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-283.7|3020.2|18.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-297.7|3022.9|18.0|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-311.0|3022.7|16.9|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-324.7|3022.1|15.7|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-337.6|3021.9|14.3|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-347.8|3021.0|14.2|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-359.0|3018.0|13.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-369.3|3013.5|13.6|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-377.3|3006.1|13.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-384.5|2995.3|13.4|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-394.0|2982.1|13.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-404.6|2967.5|13.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-416.8|2952.5|13.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-429.1|2940.7|13.5|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-439.2|2931.4|13.4|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-449.4|2923.2|13.4|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-460.9|2916.4|13.4|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-473.5|2912.6|13.4|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-487.0|2912.1|13.4|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-500.6|2913.4|13.4|ZANCUDO|Zancudo
+Fiume Zancudo alto|fiume|-515.2|2917.3|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-530.7|2922.5|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-546.0|2928.8|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-561.6|2935.7|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-576.9|2942.6|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-592.1|2949.1|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-604.2|2953.8|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-615.4|2957.9|13.3|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-626.2|2960.0|13.3|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-635.5|2954.7|13.3|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-642.3|2946.6|13.3|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-652.3|2937.2|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-664.2|2927.0|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-676.7|2916.3|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-689.4|2905.3|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-702.1|2894.2|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-715.7|2883.2|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-729.3|2873.5|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-743.7|2864.3|13.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-758.1|2855.4|13.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-774.1|2845.6|11.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-789.9|2836.0|10.8|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-806.2|2826.1|9.8|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-821.9|2817.6|9.9|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-838.7|2810.8|9.8|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-855.3|2808.1|10.0|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-872.6|2806.6|10.0|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-889.9|2805.6|10.0|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-907.1|2805.2|10.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-925.2|2807.6|10.0|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-941.6|2814.2|9.9|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-957.9|2821.1|6.9|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-969.1|2824.9|6.6|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-980.6|2824.6|7.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-992.9|2824.3|6.3|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1004.7|2827.1|4.6|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1015.5|2831.9|4.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1026.9|2833.0|4.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1037.4|2827.9|4.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1048.3|2823.1|4.4|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1061.0|2821.7|4.1|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1076.2|2819.5|2.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1092.1|2812.9|1.8|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1110.1|2801.8|-0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1128.0|2790.7|0.0|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1136.6|2785.3|0.8|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1145.9|2778.7|0.1|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1158.6|2764.4|1.8|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1171.3|2750.1|0.5|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1178.4|2742.6|0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1192.3|2728.4|0.3|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1199.7|2721.4|0.1|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1207.4|2714.6|0.3|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1215.5|2707.9|0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1223.5|2701.7|0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1231.7|2695.4|0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1248.2|2684.5|0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1265.7|2674.7|0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1283.3|2665.5|0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1301.3|2657.3|0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1320.0|2651.5|0.2|ZANCUDO|Zancudo
+Fiume Zancudo basso|fiume|-1339.2|2647.2|0.2|ZANCUDO|Zancudo
+Palude di Zancudo ovest|palude|-2140.5|2592.5|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2150.9|2594.7|0.4|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2161.3|2596.8|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2171.4|2598.7|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2181.5|2600.3|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2191.9|2601.8|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2202.5|2603.2|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2212.8|2604.3|0.4|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2223.6|2605.2|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2234.1|2605.6|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2244.6|2605.4|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2254.9|2604.7|0.4|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2265.6|2603.9|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2276.1|2602.9|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2287.0|2601.9|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2297.3|2601.0|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2307.7|2600.0|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2318.4|2599.0|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2328.7|2598.0|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2338.8|2597.0|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2349.4|2595.9|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2359.4|2594.9|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2374.2|2593.4|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2385.4|2592.3|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2396.7|2591.1|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2409.7|2589.7|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2424.7|2588.0|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2438.0|2586.5|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2450.1|2585.9|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2462.8|2586.4|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2476.8|2586.0|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2491.7|2585.0|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2507.0|2585.2|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2522.1|2587.2|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2537.0|2590.9|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2551.3|2596.6|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2564.1|2605.7|0.4|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2577.2|2615.6|0.5|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2590.8|2625.3|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2602.2|2629.7|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2613.9|2631.0|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2624.3|2629.7|0.1|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2634.1|2621.8|0.1|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2638.2|2612.2|0.1|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2640.1|2597.9|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2635.2|2580.9|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2625.9|2564.1|0.5|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2617.0|2554.2|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2605.3|2553.0|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2590.3|2552.2|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2571.9|2552.7|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2557.0|2553.1|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2543.4|2551.4|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2532.2|2546.5|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2523.0|2540.7|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2514.3|2534.3|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2505.5|2524.0|0.1|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2499.9|2512.7|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2498.8|2500.5|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2500.9|2485.4|0.3|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2502.5|2474.0|1.0|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2505.5|2464.2|0.8|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2509.3|2454.1|0.2|LAGO|Zancudo
+Palude di Zancudo ovest|palude|-2506.6|2464.2|0.1|LAGO|Zancudo
+Torrente di Tongva alto|torrente|-1635.3|1347.5|125.8|TONGVAH|Tongva
+Torrente di Tongva alto|torrente|-1630.1|1356.2|124.8|TONGVAH|Tongva
+Torrente di Tongva alto|torrente|-1624.2|1364.8|123.9|TONGVAH|Tongva
+Torrente di Tongva alto|torrente|-1618.2|1373.6|122.7|TONGVAH|Tongva
+Torrente di Tongva alto|torrente|-1610.9|1381.6|121.6|TONGVAH|Tongva
+Torrente di Tongva alto|torrente|-1604.5|1392.0|120.5|TONGVAH|Tongva
+Torrente di Tongva alto|torrente|-1596.1|1400.2|119.4|TONGVAH|Tongva
+Torrente di Tongva alto|torrente|-1589.2|1407.9|118.7|TONGVAH|Tongva
+Torrente di Tongva alto|torrente|-1579.9|1418.2|117.8|TONGVAH|Tongva
+Torrente di Tongva alto|torrente|-1572.8|1425.7|117.3|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1565.6|1433.0|116.8|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1558.0|1439.8|116.4|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1549.0|1446.9|116.0|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1541.4|1455.7|115.4|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1535.0|1464.9|109.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1532.0|1476.1|109.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1530.0|1487.7|109.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1528.1|1498.7|109.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1526.1|1510.2|109.8|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1522.7|1521.0|109.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1517.2|1531.6|109.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1511.4|1543.2|107.9|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1506.5|1553.9|106.4|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1506.8|1564.2|104.8|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1510.4|1577.0|104.1|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1513.6|1587.6|103.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1517.7|1597.6|102.0|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1522.5|1607.9|101.0|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1525.9|1617.3|99.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1526.8|1629.2|97.6|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1526.5|1639.3|96.6|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1526.2|1650.8|95.9|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1526.7|1663.7|94.8|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1528.2|1676.5|93.9|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1531.9|1686.7|93.5|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1540.9|1691.7|92.9|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1544.4|1701.4|92.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1536.4|1709.7|92.0|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1531.4|1721.0|89.5|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1526.2|1734.9|87.2|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1521.2|1748.4|85.7|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1516.2|1761.1|85.0|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1511.4|1771.2|82.5|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1505.5|1782.1|82.0|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1497.1|1793.5|81.2|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1488.8|1805.3|80.3|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1482.2|1815.4|79.6|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1476.4|1824.7|78.2|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1471.1|1835.5|76.6|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1467.3|1848.6|75.3|TONGVAV|Tongva
+Torrente di Tongva alto|torrente|-1465.3|1861.4|72.3|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1463.3|1876.1|71.0|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1463.8|1891.0|68.5|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1464.1|1906.8|67.5|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1464.9|1921.1|67.6|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1465.9|1932.9|65.3|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1472.5|1940.9|61.6|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1469.3|1951.9|59.8|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1465.1|1962.0|59.9|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1459.6|1972.7|59.0|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1452.8|1982.3|57.9|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1444.5|1993.4|56.8|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1435.3|1999.2|56.8|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1425.4|2004.3|56.9|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1412.7|2006.5|58.6|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1402.6|2005.9|60.1|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1391.9|2003.8|61.6|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1382.1|2001.6|63.0|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1392.3|2003.1|61.6|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1402.3|2004.4|60.1|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1413.0|2006.5|58.6|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1422.2|2002.0|57.2|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1433.5|2003.2|56.7|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1440.5|2012.0|56.7|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1444.4|2025.2|55.1|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1447.7|2036.1|54.9|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1452.1|2049.1|54.1|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1454.0|2059.6|53.8|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1454.5|2070.0|53.4|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1453.1|2080.5|52.4|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1451.2|2091.8|49.7|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1449.2|2102.6|40.5|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1446.0|2114.1|40.7|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1440.2|2124.5|34.1|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1434.1|2136.0|30.1|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1428.9|2146.0|30.0|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1422.7|2156.9|28.4|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1417.4|2166.2|27.1|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1413.4|2175.8|22.6|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1414.5|2187.3|23.2|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1417.2|2200.3|23.3|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1420.5|2209.9|23.0|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1424.8|2220.6|21.4|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1428.8|2230.3|19.3|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1432.8|2239.7|18.4|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1438.6|2252.7|17.0|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1443.3|2264.6|16.6|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1446.3|2275.4|15.4|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1448.2|2286.1|13.9|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1450.1|2298.0|13.5|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1452.5|2312.9|12.7|TONGVAV|Tongva
+Torrente di Tongva basso|torrente|-1455.3|2325.2|12.4|TONGVAV|Tongva
+Palude di Zancudo est|palude|-1358.6|2643.1|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1378.5|2639.1|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1398.1|2635.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1408.2|2634.6|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1428.0|2634.0|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1448.2|2634.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1467.9|2636.2|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1487.5|2638.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1507.3|2641.1|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1517.5|2642.0|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1535.7|2641.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1548.6|2640.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1560.2|2639.3|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1573.1|2637.2|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1587.5|2634.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1602.7|2631.3|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1617.8|2626.4|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1633.6|2620.8|0.5|LAGO|Zancudo
+Palude di Zancudo est|palude|-1650.6|2615.1|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-1667.2|2610.1|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1682.9|2605.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1697.9|2602.0|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1713.2|2599.0|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-1728.6|2600.7|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-1744.2|2603.5|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1760.3|2602.1|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1775.1|2599.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1786.7|2597.7|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-1798.7|2595.6|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1813.4|2593.1|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1831.3|2590.1|0.4|LAGO|Zancudo
+Palude di Zancudo est|palude|-1841.2|2588.2|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1851.1|2586.3|0.4|LAGO|Zancudo
+Palude di Zancudo est|palude|-1861.5|2584.3|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1871.8|2582.3|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1882.4|2580.3|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1892.8|2578.2|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1902.7|2576.1|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1912.5|2573.6|0.4|LAGO|Zancudo
+Palude di Zancudo est|palude|-1922.8|2570.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1933.1|2567.5|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-1943.5|2564.3|0.4|LAGO|Zancudo
+Palude di Zancudo est|palude|-1954.0|2561.0|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1964.2|2557.7|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-1973.8|2554.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1990.0|2550.2|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-2007.0|2549.5|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-2025.0|2552.9|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-2043.6|2558.5|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-2053.2|2562.2|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-2062.4|2566.2|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-2071.9|2570.4|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-2081.2|2574.6|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-2090.7|2578.7|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-2100.2|2581.9|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-2109.8|2584.8|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-2120.3|2587.6|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-2130.4|2590.2|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1457.8|2335.8|11.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1460.5|2346.5|10.9|LAGO|Zancudo
+Palude di Zancudo est|palude|-1463.4|2357.3|7.4|LAGO|Zancudo
+Palude di Zancudo est|palude|-1466.9|2369.7|7.1|LAGO|Zancudo
+Palude di Zancudo est|palude|-1471.7|2383.0|6.6|LAGO|Zancudo
+Palude di Zancudo est|palude|-1476.9|2396.0|4.4|LAGO|Zancudo
+Palude di Zancudo est|palude|-1482.7|2407.7|4.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-1489.2|2420.0|2.9|LAGO|Zancudo
+Palude di Zancudo est|palude|-1497.6|2434.3|1.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-1507.4|2448.5|0.7|LAGO|Zancudo
+Palude di Zancudo est|palude|-1518.0|2460.3|0.7|LAGO|Zancudo
+Palude di Zancudo est|palude|-1530.0|2468.2|0.5|LAGO|Zancudo
+Palude di Zancudo est|palude|-1540.0|2477.7|0.7|LAGO|Zancudo
+Palude di Zancudo est|palude|-1549.3|2486.8|0.7|LAGO|Zancudo
+Palude di Zancudo est|palude|-1558.1|2496.7|0.5|LAGO|Zancudo
+Palude di Zancudo est|palude|-1567.3|2506.4|0.5|LAGO|Zancudo
+Palude di Zancudo est|palude|-1578.0|2513.6|0.8|LAGO|Zancudo
+Palude di Zancudo est|palude|-1590.5|2522.4|0.3|LAGO|Zancudo
+Palude di Zancudo est|palude|-1604.6|2531.9|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1617.4|2543.3|0.2|LAGO|Zancudo
+Palude di Zancudo est|palude|-1626.9|2552.9|0.1|LAGO|Zancudo
+Palude di Zancudo est|palude|-1634.8|2561.6|0.1|LAGO|Zancudo
+Cassidy Creek alto|torrente|-177.8|4261.6|29.9|CALAFB|Cassidy
+Cassidy Creek alto|torrente|-187.6|4269.4|30.0|CALAFB|Cassidy
+Cassidy Creek alto|torrente|-198.4|4279.3|30.1|CALAFB|Cassidy
+Cassidy Creek alto|torrente|-211.4|4291.5|30.1|CALAFB|Cassidy
+Cassidy Creek alto|torrente|-225.1|4304.8|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-239.2|4318.6|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-253.3|4332.6|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-260.3|4339.7|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-274.2|4353.8|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-286.0|4366.9|30.2|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-294.1|4377.4|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-301.9|4387.8|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-310.4|4399.8|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-321.1|4410.7|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-333.3|4419.2|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-346.9|4424.2|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-362.5|4427.3|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-379.8|4429.8|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-397.8|4431.4|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-415.6|4432.3|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-432.7|4432.7|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-449.1|4432.1|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-465.6|4431.0|30.2|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-478.2|4431.1|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-488.6|4436.7|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-495.9|4444.2|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-506.3|4446.3|30.0|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-517.1|4443.8|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-516.9|4431.4|30.1|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-519.1|4421.1|29.9|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-529.6|4417.9|29.9|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-541.6|4419.9|29.3|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-553.8|4421.2|16.6|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-567.7|4423.2|14.7|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-579.4|4424.3|14.8|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-593.9|4425.2|14.7|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-604.2|4425.6|14.7|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-616.3|4426.1|14.7|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-629.4|4426.9|14.8|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-643.3|4428.2|14.7|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-657.1|4429.8|14.8|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-671.1|4431.6|14.9|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-685.5|4433.7|14.7|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-699.7|4436.2|14.7|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-713.7|4438.7|14.6|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-727.8|4441.2|14.6|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-742.0|4443.0|14.9|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-756.1|4443.6|14.8|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-770.0|4444.0|14.8|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-783.9|4443.8|14.7|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-797.8|4442.7|14.8|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-811.8|4441.1|14.8|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-825.0|4438.5|14.8|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-837.9|4434.9|14.8|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-850.4|4430.2|14.7|CCREAK|Cassidy
+Cassidy Creek alto|torrente|-862.7|4424.8|14.6|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-874.4|4418.0|14.4|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-884.7|4409.8|13.5|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-896.2|4401.1|12.0|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-906.8|4394.1|9.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-918.2|4389.7|10.0|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-931.7|4384.6|9.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-945.3|4379.7|9.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-958.4|4376.1|9.6|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-970.6|4375.0|9.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-983.1|4375.3|9.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-995.8|4376.3|9.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1007.8|4378.5|9.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1018.9|4382.8|9.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1031.2|4386.8|9.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1044.3|4390.6|9.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1057.9|4393.6|9.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1071.7|4395.7|9.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1085.8|4397.7|9.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1098.7|4399.4|9.9|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1112.3|4400.9|9.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1122.6|4401.9|9.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1134.7|4400.1|9.3|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1148.8|4397.1|8.9|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1161.2|4393.5|5.0|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1174.1|4390.2|4.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1185.9|4391.8|4.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1200.4|4392.6|4.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1210.7|4393.1|4.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1225.0|4390.6|4.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1235.3|4387.9|4.7|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1245.6|4384.4|4.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1256.3|4380.4|4.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1267.3|4375.3|5.1|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1280.1|4369.4|4.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1294.8|4362.2|4.8|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1311.6|4353.9|4.9|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1328.3|4345.4|5.1|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1341.3|4338.5|4.4|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1351.1|4334.8|5.2|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1365.7|4330.3|1.0|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1378.6|4328.4|0.0|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1393.9|4327.6|0.1|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1411.3|4327.8|0.3|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1427.7|4330.1|-0.1|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1444.6|4333.8|0.0|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1461.9|4338.6|0.6|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1479.8|4343.4|0.2|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1498.9|4348.1|0.0|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1518.4|4352.1|0.2|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1536.2|4355.9|0.3|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1549.4|4358.7|0.2|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1559.4|4360.9|-0.2|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1572.9|4366.5|0.1|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1581.5|4372.4|0.0|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1588.2|4380.2|0.0|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1594.4|4390.3|0.1|CCREAK|Cassidy
+Cassidy Creek basso|torrente|-1600.3|4403.1|0.0|CCREAK|Cassidy
+Foce del Cassidy|mare|-1608.5|4418.7|0.0|CANNY|Cassidy
+Foce del Cassidy|mare|-1618.1|4434.4|-0.1|CANNY|Cassidy
+Foce del Cassidy|mare|-1631.2|4446.2|-0.1|CANNY|Cassidy
+Foce del Cassidy|mare|-1645.6|4458.0|0.0|CANNY|Cassidy
+Foce del Cassidy|mare|-1661.2|4466.3|0.0|CANNY|Cassidy
+Foce del Cassidy|mare|-1678.0|4473.0|0.0|CANNY|Cassidy
+Foce del Cassidy|mare|-1695.6|4479.8|0.1|CANNY|Cassidy
+Foce del Cassidy|mare|-1711.6|4488.8|0.1|CANNY|Cassidy
+Foce del Cassidy|mare|-1726.7|4499.4|0.1|CANNY|Cassidy
+Foce del Cassidy|mare|-1741.5|4511.0|0.1|CANNY|Cassidy
+Foce del Cassidy|mare|-1755.5|4523.8|0.1|CANNY|Cassidy
+Foce del Cassidy|mare|-1768.8|4536.5|0.3|CANNY|Cassidy
+Foce del Cassidy|mare|-1778.6|4546.3|0.1|CANNY|Cassidy
+Foce del Cassidy|mare|-1785.8|4553.9|0.0|CANNY|Cassidy
+Foce del Cassidy|mare|-1795.1|4565.2|0.0|CMSW|Cassidy
+Foce del Cassidy|mare|-1800.4|4573.7|0.0|CMSW|Cassidy
+Foce del Cassidy|mare|-1805.9|4582.8|0.0|CMSW|Cassidy
+Foce del Cassidy|mare|-1810.9|4591.8|0.1|CMSW|Cassidy
+Foce del Cassidy|mare|-1816.3|4602.1|0.0|CMSW|Cassidy
+Foce del Cassidy|mare|-1820.0|4612.7|-0.1|CMSW|Cassidy
+Foce del Cassidy|mare|-1815.4|4621.7|-0.1|CMSW|Cassidy
+Foce del Cassidy|mare|-1804.6|4628.6|0.0|CMSW|Cassidy
+Foce del Cassidy|mare|-1793.1|4634.3|0.0|CANNY|Cassidy
+Foce del Cassidy|mare|-1783.3|4639.9|0.0|CANNY|Cassidy
+Foce del Cassidy|mare|-1775.0|4645.7|0.0|CANNY|Cassidy
+Lago di Vinewood|lago|-239.4|879.7|195.9|CHIL|Vinewood
+Lago di Vinewood|lago|-249.9|882.7|196.0|CHIL|Vinewood
+Lago di Vinewood|lago|-261.6|884.4|195.8|CHIL|Vinewood
+Lago di Vinewood|lago|-271.7|884.2|195.9|CHIL|Vinewood
+Lago di Vinewood|lago|-282.8|879.5|196.0|CHIL|Vinewood
+Lago di Vinewood|lago|-291.0|871.5|196.1|CHIL|Vinewood
+Lago di Vinewood|lago|-299.9|861.3|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|-307.7|851.8|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-311.6|838.9|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|-310.5|828.6|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-301.4|818.8|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|-290.0|813.9|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|-280.2|809.9|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|-268.8|805.6|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-259.7|798.6|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-251.9|790.2|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|-243.5|782.2|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|-236.3|774.1|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|-228.5|764.7|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|-220.3|754.8|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|-211.5|748.5|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|-200.3|744.4|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|-187.3|739.3|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-174.0|733.8|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|-163.6|726.4|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|-153.2|718.5|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|-141.6|710.4|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|-128.8|701.4|197.1|CHIL|Vinewood
+Lago di Vinewood|lago|-116.3|692.0|197.0|CHIL|Vinewood
+Lago di Vinewood|lago|-105.4|681.2|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|-93.9|669.6|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|-82.5|658.0|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|-71.0|648.7|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|-58.3|642.8|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|-44.5|637.6|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-30.3|637.6|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|-13.6|639.2|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|4.9|641.6|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|22.1|644.0|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|34.6|644.2|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|45.1|644.2|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|58.0|645.3|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|66.1|652.6|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|70.9|665.1|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|73.8|677.6|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|77.1|693.0|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|79.8|710.2|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|79.7|726.4|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|77.7|741.0|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|75.2|753.2|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|73.6|764.5|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|75.6|774.9|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|79.5|786.8|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|87.1|798.5|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|96.1|811.4|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|104.4|822.3|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|112.8|828.1|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|127.9|830.4|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|140.3|830.3|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|154.0|828.6|197.3|CHIL|Vinewood
+Lago di Vinewood|lago|169.8|826.6|197.2|CHIL|Vinewood
+Lago di Vinewood|lago|183.5|824.6|196.9|BAYTRE|Vinewood
+Lago di Vinewood|lago|195.2|824.1|196.7|BAYTRE|Vinewood
+Lago di Vinewood|lago|206.4|823.9|196.5|BAYTRE|Vinewood
+Lago di Vinewood|lago|217.8|829.1|196.6|BAYTRE|Vinewood
+Lago di Vinewood|lago|226.3|841.0|196.6|BAYTRE|Vinewood
+Lago di Vinewood|lago|224.9|852.2|196.8|BAYTRE|Vinewood
+Lago di Vinewood|lago|215.1|862.7|197.0|BAYTRE|Vinewood
+Lago di Vinewood|lago|204.4|865.5|197.1|BAYTRE|Vinewood
+Lago di Vinewood|lago|189.8|867.3|196.6|BAYTRE|Vinewood
+Lago di Vinewood|lago|173.2|867.9|197.0|CHIL|Vinewood
+Lago di Vinewood|lago|156.6|868.3|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|142.7|869.6|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|133.2|874.1|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|123.8|885.9|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|116.1|897.1|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|106.0|910.9|197.1|CHIL|Vinewood
+Lago di Vinewood|lago|96.9|921.6|197.1|CHIL|Vinewood
+Lago di Vinewood|lago|85.7|930.0|197.1|CHIL|Vinewood
+Lago di Vinewood|lago|73.2|938.0|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|63.3|943.3|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|51.4|947.8|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|39.8|944.6|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|37.7|930.6|196.1|CHIL|Vinewood
+Lago di Vinewood|lago|39.6|918.7|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|41.4|905.0|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|41.9|893.9|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|42.0|881.7|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|42.2|871.0|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|41.2|859.7|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|35.9|850.5|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|27.6|844.9|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|17.9|840.2|196.2|CHIL|Vinewood
+Lago di Vinewood|lago|13.9|830.0|196.2|CHIL|Vinewood
+Lago di Vinewood|lago|22.2|820.4|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|28.6|808.1|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|34.3|795.8|197.0|CHIL|Vinewood
+Lago di Vinewood|lago|37.8|784.9|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|39.9|770.5|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|38.9|759.2|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|36.2|745.4|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|31.7|735.1|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|24.8|726.8|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|16.0|719.7|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|5.5|714.1|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|-5.1|709.7|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|-17.3|708.8|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-31.4|710.7|196.6|CHIL|Vinewood
+Lago di Vinewood|lago|-46.4|715.8|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|-62.9|722.6|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|-79.2|730.3|197.1|CHIL|Vinewood
+Lago di Vinewood|lago|-96.3|739.7|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|-112.3|749.9|197.0|CHIL|Vinewood
+Lago di Vinewood|lago|-128.6|760.8|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|-142.4|769.8|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|-153.5|774.0|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|-163.8|777.1|196.9|CHIL|Vinewood
+Lago di Vinewood|lago|-177.6|781.3|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-190.1|785.1|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|-200.6|790.7|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-204.8|802.9|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|-210.3|817.9|196.8|CHIL|Vinewood
+Lago di Vinewood|lago|-217.0|833.1|196.4|CHIL|Vinewood
+Lago di Vinewood|lago|-224.6|849.6|196.7|CHIL|Vinewood
+Lago di Vinewood|lago|-231.2|863.3|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|-236.1|872.6|196.5|CHIL|Vinewood
+Lago di Vinewood|lago|-243.3|881.2|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|-254.4|885.0|196.3|CHIL|Vinewood
+Lago di Vinewood|lago|-264.2|886.8|196.4|CHIL|Vinewood
+Diga di Land Act|lago|1677.4|-23.5|160.7|LDAM|Land Act
+Diga di Land Act|lago|1682.0|-34.6|161.2|LDAM|Land Act
+Diga di Land Act|lago|1684.9|-45.8|161.0|LDAM|Land Act
+Diga di Land Act|lago|1695.2|-51.5|161.0|LDAM|Land Act
+Diga di Land Act|lago|1707.7|-53.9|160.6|TATAMO|Land Act
+Diga di Land Act|lago|1717.6|-56.4|160.5|TATAMO|Land Act
+Diga di Land Act|lago|1728.8|-62.5|160.3|TATAMO|Land Act
+Diga di Land Act|lago|1740.6|-64.3|160.6|TATAMO|Land Act
+Diga di Land Act|lago|1754.3|-60.1|160.9|TATAMO|Land Act
+Diga di Land Act|lago|1768.2|-55.0|160.9|TATAMO|Land Act
+Diga di Land Act|lago|1784.3|-49.9|160.7|TATAMO|Land Act
+Diga di Land Act|lago|1798.7|-46.6|160.9|TATAMO|Land Act
+Diga di Land Act|lago|1811.1|-46.3|160.3|TATAMO|Land Act
+Diga di Land Act|lago|1824.7|-47.2|160.2|TATAMO|Land Act
+Diga di Land Act|lago|1839.5|-50.0|160.5|TATAMO|Land Act
+Diga di Land Act|lago|1853.2|-50.2|160.3|TATAMO|Land Act
+Diga di Land Act|lago|1862.8|-46.3|160.4|TATAMO|Land Act
+Diga di Land Act|lago|1870.2|-38.7|160.6|TATAMO|Land Act
+Diga di Land Act|lago|1879.0|-27.2|160.3|LACT|Land Act
+Diga di Land Act|lago|1888.5|-13.1|160.5|LACT|Land Act
+Diga di Land Act|lago|1899.2|2.3|160.9|LACT|Land Act
+Diga di Land Act|lago|1910.2|15.3|160.3|LACT|Land Act
+Diga di Land Act|lago|1919.9|21.4|160.1|LACT|Land Act
+Diga di Land Act|lago|1931.8|25.9|160.5|LACT|Land Act
+Diga di Land Act|lago|1945.1|29.2|160.1|LACT|Land Act
+Diga di Land Act|lago|1956.9|29.7|160.5|LACT|Land Act
+Diga di Land Act|lago|1970.2|30.0|160.8|LACT|Land Act
+Diga di Land Act|lago|1982.3|32.7|160.6|LACT|Land Act
+Diga di Land Act|lago|1993.5|38.8|160.8|LACT|Land Act
+Diga di Land Act|lago|2004.0|48.5|160.7|LACT|Land Act
+Diga di Land Act|lago|2014.9|60.9|160.7|LACT|Land Act
+Diga di Land Act|lago|2024.4|72.1|160.7|LACT|Land Act
+Diga di Land Act|lago|2034.1|79.3|160.6|LACT|Land Act
+Diga di Land Act|lago|2042.9|84.9|160.7|LACT|Land Act
+Diga di Land Act|lago|2048.5|95.1|160.4|LACT|Land Act
+Diga di Land Act|lago|2049.6|106.0|160.7|LACT|Land Act
+Diga di Land Act|lago|2044.8|117.5|160.7|LACT|Land Act
+Diga di Land Act|lago|2037.7|130.7|160.7|LACT|Land Act
+Diga di Land Act|lago|2031.5|146.3|160.5|LACT|Land Act
+Diga di Land Act|lago|2029.8|160.2|160.7|LACT|Land Act
+Diga di Land Act|lago|2031.8|173.6|161.1|LACT|Land Act
+Diga di Land Act|lago|2035.2|190.2|160.7|LACT|Land Act
+Diga di Land Act|lago|2039.0|206.7|161.0|LACT|Land Act
+Diga di Land Act|lago|2043.3|220.0|161.1|LACT|Land Act
+Diga di Land Act|lago|2048.4|231.8|161.3|LACT|Land Act
+Diga di Land Act|lago|2054.1|246.6|160.8|LACT|Land Act
+Diga di Land Act|lago|2057.5|262.7|161.4|LACT|Land Act
+Diga di Land Act|lago|2057.9|274.9|161.3|LACT|Land Act
+Diga di Land Act|lago|2054.5|284.5|160.8|LACT|Land Act
+Diga di Land Act|lago|2048.6|295.7|160.9|LACT|Land Act
+Diga di Land Act|lago|2039.8|308.1|160.9|LACT|Land Act
+Diga di Land Act|lago|2028.4|320.0|160.8|LACT|Land Act
+Diga di Land Act|lago|2015.0|329.9|160.7|LACT|Land Act
+Diga di Land Act|lago|2000.3|340.2|160.9|LACT|Land Act
+Diga di Land Act|lago|1986.5|350.4|160.2|LACT|Land Act
+Land Act nord|lago|1977.7|358.5|160.6|LACT|Land Act
+Land Act nord|lago|1974.4|370.4|160.6|LACT|Land Act
+Land Act nord|lago|1974.9|381.5|160.6|LACT|Land Act
+Land Act nord|lago|1979.0|392.8|160.8|LACT|Land Act
+Land Act nord|lago|1985.2|406.1|161.4|LACT|Land Act
+Land Act nord|lago|1991.7|418.5|161.5|TATAMO|Land Act
+Land Act nord|lago|1999.8|429.4|161.0|TATAMO|Land Act
+Land Act nord|lago|2009.1|439.1|160.5|TATAMO|Land Act
+Land Act nord|lago|2018.1|443.9|160.4|TATAMO|Land Act
+Land Act nord|lago|2027.3|449.6|160.3|TATAMO|Land Act
+Land Act nord|lago|2029.8|459.5|160.3|TATAMO|Land Act
+Land Act nord|lago|2023.7|469.0|160.5|TATAMO|Land Act
+Land Act nord|lago|2009.6|472.8|160.9|TATAMO|Land Act
+Land Act nord|lago|1995.7|472.7|161.2|TATAMO|Land Act
+Land Act nord|lago|1981.4|470.9|161.7|TATAMO|Land Act
+Land Act nord|lago|1968.5|469.2|160.9|TATAMO|Land Act
+Land Act nord|lago|1958.4|470.7|161.2|TATAMO|Land Act
+Land Act nord|lago|1956.2|481.5|161.0|TATAMO|Land Act
+Land Act nord|lago|1960.4|494.6|160.8|TATAMO|Land Act
+Land Act nord|lago|1965.0|508.3|161.1|TATAMO|Land Act
+Land Act nord|lago|1969.0|519.8|161.2|TATAMO|Land Act
+Land Act nord|lago|1972.1|532.2|160.9|TATAMO|Land Act
+Land Act nord|lago|1972.5|543.7|160.8|TATAMO|Land Act
+Land Act nord|lago|1975.7|556.5|160.8|TATAMO|Land Act
+Land Act nord|lago|1978.3|566.9|160.5|TATAMO|Land Act
+Land Act nord|lago|1981.7|579.1|161.0|TATAMO|Land Act
+Land Act nord|lago|1984.5|589.0|161.0|TATAMO|Land Act
+Land Act nord|lago|1988.4|603.7|160.6|TATAMO|Land Act
+Land Act nord|lago|1990.1|615.0|160.6|TATAMO|Land Act
+Land Act nord|lago|1989.2|627.4|160.9|TATAMO|Land Act
+Land Act nord|lago|1989.8|639.7|160.5|TATAMO|Land Act
+Land Act nord|lago|1991.5|651.3|160.4|TATAMO|Land Act
+Land Act nord|lago|1995.9|641.4|161.1|TATAMO|Land Act
+Land Act nord|lago|1996.5|629.6|161.0|TATAMO|Land Act
+Land Act nord|lago|1995.1|614.8|161.2|TATAMO|Land Act
+Land Act nord|lago|1995.0|599.2|161.2|TATAMO|Land Act
+Land Act nord|lago|1995.2|584.3|161.0|TATAMO|Land Act
+Land Act nord|lago|1995.3|573.3|160.9|TATAMO|Land Act
+Land Act nord|lago|1993.5|562.2|160.8|TATAMO|Land Act
+Land Act nord|lago|1987.5|551.9|160.8|TATAMO|Land Act
+Land Act nord|lago|1980.5|544.7|160.8|TATAMO|Land Act
+Land Act nord|lago|1973.3|532.9|160.6|TATAMO|Land Act
+Land Act nord|lago|1969.2|521.2|160.5|TATAMO|Land Act
+Land Act nord|lago|1965.3|505.9|160.6|TATAMO|Land Act
+Land Act nord|lago|1961.3|489.3|160.9|TATAMO|Land Act
+Land Act nord|lago|1957.4|477.5|160.8|TATAMO|Land Act
+Land Act nord|lago|1949.9|466.8|160.6|TATAMO|Land Act
+Land Act nord|lago|1941.9|456.8|160.7|TATAMO|Land Act
+Land Act nord|lago|1941.1|444.5|160.9|TATAMO|Land Act
+Land Act nord|lago|1941.2|429.7|160.6|TATAMO|Land Act
+Land Act nord|lago|1937.9|419.0|160.7|TATAMO|Land Act
+Land Act nord|lago|1935.6|406.3|160.6|TATAMO|Land Act
+Land Act nord|lago|1934.4|390.2|160.6|LACT|Land Act
+Land Act nord|lago|1933.3|372.8|160.4|LACT|Land Act
+Land Act nord|lago|1931.5|355.0|160.4|LACT|Land Act
+Land Act nord|lago|1930.3|340.2|160.4|LACT|Land Act
+Land Act nord|lago|1922.0|333.3|160.3|LACT|Land Act
+Land Act nord|lago|1913.3|343.6|160.7|LACT|Land Act
+Land Act ovest|lago|1908.9|354.2|161.0|LACT|Land Act
+Land Act ovest|lago|1904.3|364.1|160.8|LACT|Land Act
+Land Act ovest|lago|1896.6|373.2|160.4|LACT|Land Act
+Land Act ovest|lago|1886.9|383.0|160.5|LACT|Land Act
+Land Act ovest|lago|1878.6|390.6|160.3|LACT|Land Act
+Land Act ovest|lago|1867.7|399.6|160.4|LACT|Land Act
+Land Act ovest|lago|1856.5|403.5|160.7|LACT|Land Act
+Land Act ovest|lago|1847.9|409.1|160.4|LACT|Land Act
+Land Act ovest|lago|1840.7|420.0|160.7|TATAMO|Land Act
+Land Act ovest|lago|1833.2|427.3|160.2|TATAMO|Land Act
+Land Act ovest|lago|1824.3|433.4|160.5|TATAMO|Land Act
+Land Act ovest|lago|1816.5|426.1|160.4|TATAMO|Land Act
+Land Act ovest|lago|1825.3|419.5|160.5|TATAMO|Land Act
+Land Act ovest|lago|1833.0|411.4|161.4|TATAMO|Land Act
+Land Act ovest|lago|1840.9|404.0|160.9|LACT|Land Act
+Land Act ovest|lago|1851.6|398.1|161.4|LACT|Land Act
+Land Act ovest|lago|1866.8|389.9|160.8|LACT|Land Act
+Land Act ovest|lago|1882.7|380.9|161.0|LACT|Land Act
+Land Act ovest|lago|1892.9|371.6|161.1|LACT|Land Act
+Land Act ovest|lago|1902.3|360.8|161.2|LACT|Land Act
+Land Act ovest|lago|1907.5|350.7|161.0|LACT|Land Act
+Land Act ovest|lago|1913.8|337.1|161.1|LACT|Land Act
+Land Act ovest|lago|1919.9|322.4|161.1|LACT|Land Act
+Land Act ovest|lago|1923.7|308.4|161.3|LACT|Land Act
+Land Act ovest|lago|1925.5|297.0|161.3|LACT|Land Act
+Land Act ovest|lago|1921.8|284.2|160.9|LACT|Land Act
+Land Act ovest|lago|1916.3|273.2|160.9|LACT|Land Act
+Land Act ovest|lago|1906.8|262.3|160.9|LACT|Land Act
+Land Act ovest|lago|1897.0|249.5|160.9|LACT|Land Act
+Land Act ovest|lago|1888.9|233.9|161.0|LACT|Land Act
+Land Act ovest|lago|1883.7|218.4|160.8|LACT|Land Act
+Land Act ovest|lago|1881.7|202.5|160.8|LACT|Land Act
+Land Act ovest|lago|1882.2|186.4|160.8|LACT|Land Act
+Land Act ovest|lago|1880.1|169.3|160.8|LACT|Land Act
+Land Act ovest|lago|1877.2|154.7|160.4|LACT|Land Act
+Land Act ovest|lago|1871.1|142.3|160.3|LACT|Land Act
+Land Act ovest|lago|1861.7|131.0|160.4|LACT|Land Act
+Land Act ovest|lago|1848.8|122.1|160.8|LACT|Land Act
+Land Act ovest|lago|1833.9|111.8|160.9|LACT|Land Act
+Land Act ovest|lago|1817.6|101.3|160.8|LACT|Land Act
+Land Act ovest|lago|1800.4|90.7|160.5|LACT|Land Act
+Land Act ovest|lago|1791.7|85.6|160.5|LACT|Land Act
+Land Act ovest|lago|1774.6|75.7|160.6|LACT|Land Act
+Land Act ovest|lago|1757.4|65.9|160.5|LACT|Land Act
+Land Act ovest|lago|1740.3|55.9|160.7|LACT|Land Act
+Land Act ovest|lago|1724.3|45.6|160.5|LACT|Land Act
+Land Act ovest|lago|1709.7|34.6|160.7|LACT|Land Act
+Land Act ovest|lago|1700.2|25.0|160.6|LACT|Land Act
+Land Act ovest|lago|1693.6|14.2|160.5|LDAM|Land Act
+Land Act ovest|lago|1686.8|1.9|160.7|LDAM|Land Act
+Land Act ovest|lago|1683.3|-7.6|160.7|LDAM|Land Act
+Land Act ovest|lago|1680.0|-17.8|160.5|LDAM|Land Act
+Land Act ovest|lago|1678.2|-28.2|160.4|LDAM|Land Act
+Mirror Park|lago|1068.0|-711.8|55.2|MIRR|Mirror Park
+Mirror Park|lago|1062.5|-701.8|55.3|MIRR|Mirror Park
+Mirror Park|lago|1059.1|-690.7|55.2|MIRR|Mirror Park
+Mirror Park|lago|1061.6|-679.9|55.3|MIRR|Mirror Park
+Mirror Park|lago|1062.2|-669.0|55.2|MIRR|Mirror Park
+Mirror Park|lago|1054.1|-663.1|55.2|MIRR|Mirror Park
+Mirror Park|lago|1045.3|-656.1|55.3|MIRR|Mirror Park
+Mirror Park|lago|1047.1|-644.5|55.2|MIRR|Mirror Park
+Mirror Park|lago|1053.2|-635.4|55.3|MIRR|Mirror Park
+Mirror Park|lago|1062.7|-626.2|55.3|MIRR|Mirror Park
+Mirror Park|lago|1072.2|-614.8|55.3|MIRR|Mirror Park
+Mirror Park|lago|1077.5|-602.0|55.3|MIRR|Mirror Park
+Mirror Park|lago|1078.7|-589.8|55.3|MIRR|Mirror Park
+Mirror Park|lago|1081.0|-578.6|55.3|MIRR|Mirror Park
+Mirror Park|lago|1084.5|-568.8|55.3|MIRR|Mirror Park
+Mirror Park|lago|1091.1|-560.5|55.3|MIRR|Mirror Park
+Mirror Park|lago|1100.9|-556.4|55.3|MIRR|Mirror Park
+Mirror Park|lago|1112.2|-557.8|55.3|MIRR|Mirror Park
+Mirror Park|lago|1122.4|-564.8|55.2|MIRR|Mirror Park
+Mirror Park|lago|1126.3|-574.9|55.3|MIRR|Mirror Park
+Mirror Park|lago|1124.2|-587.3|55.2|MIRR|Mirror Park
+Mirror Park|lago|1118.7|-596.3|55.3|MIRR|Mirror Park
+Mirror Park|lago|1111.9|-608.9|55.4|MIRR|Mirror Park
+Mirror Park|lago|1106.8|-620.2|55.3|MIRR|Mirror Park
+Mirror Park|lago|1105.4|-630.6|55.3|MIRR|Mirror Park
+Mirror Park|lago|1104.8|-644.2|55.5|MIRR|Mirror Park
+Mirror Park|lago|1105.7|-655.3|55.4|MIRR|Mirror Park
+Mirror Park|lago|1110.9|-664.3|55.3|MIRR|Mirror Park
+Mirror Park|lago|1119.7|-669.9|55.4|MIRR|Mirror Park
+Mirror Park|lago|1127.4|-680.1|55.2|MIRR|Mirror Park
+Mirror Park|lago|1129.8|-691.0|55.3|MIRR|Mirror Park
+Mirror Park|lago|1131.3|-703.8|55.4|MIRR|Mirror Park
+Mirror Park|lago|1128.2|-716.4|55.2|MIRR|Mirror Park
+Mirror Park|lago|1118.6|-725.7|55.2|MIRR|Mirror Park
+Mirror Park|lago|1108.1|-728.8|55.3|MIRR|Mirror Park
+Mirror Park|lago|1096.8|-728.6|55.3|MIRR|Mirror Park
+Mirror Park|lago|1085.3|-724.6|55.4|MIRR|Mirror Park
+Mirror Park|lago|1076.7|-717.3|55.3|MIRR|Mirror Park
+Laghetti del golf|lago|-1146.8|38.4|52.1|golf|Golf
+Vespucci Beach e molo di Del Perro|mare|-1270.2|-1905.3|0.7|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1265.3|-1895.1|1.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1266.0|-1881.4|1.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1268.7|-1870.0|1.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1272.4|-1856.4|1.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1278.7|-1840.9|0.9|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1286.4|-1824.4|0.7|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1291.0|-1815.4|-0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1300.6|-1798.3|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1312.1|-1782.2|0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1318.3|-1773.4|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1324.6|-1764.9|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1330.7|-1756.8|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1337.0|-1748.4|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1343.2|-1740.0|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1349.7|-1731.3|0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1355.8|-1723.2|0.7|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1361.9|-1715.1|1.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1368.1|-1706.7|0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1374.3|-1698.4|0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1380.5|-1689.7|0.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1386.4|-1681.3|0.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1392.2|-1672.9|0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1398.0|-1664.4|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1403.7|-1655.9|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1409.4|-1647.4|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1415.0|-1639.0|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1420.5|-1630.5|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1426.0|-1622.0|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1431.4|-1613.5|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1436.8|-1605.0|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1442.2|-1596.5|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1447.6|-1587.9|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1453.1|-1579.5|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1463.9|-1563.0|0.7|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1470.0|-1554.2|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1482.1|-1538.3|0.7|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1488.1|-1530.1|0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1494.3|-1521.9|0.9|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1500.5|-1513.6|0.7|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1507.1|-1504.9|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1513.2|-1496.8|0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1519.2|-1488.8|0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1525.4|-1480.2|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1531.7|-1471.5|0.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1538.3|-1462.1|-0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1544.5|-1453.5|-0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1550.6|-1444.6|0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1557.2|-1435.1|-0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1562.8|-1426.2|0.9|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1568.3|-1417.0|1.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1574.6|-1406.9|0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1580.3|-1397.4|1.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1586.0|-1387.7|1.7|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1591.9|-1377.8|1.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1597.9|-1367.7|2.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1604.2|-1357.5|1.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1610.9|-1346.7|-0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1617.2|-1336.7|0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1623.6|-1327.2|1.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1629.7|-1318.1|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1636.7|-1309.2|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1643.8|-1301.9|0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1651.2|-1295.0|-0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1659.0|-1288.5|-1.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1673.3|-1276.4|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1687.8|-1263.7|-0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1695.3|-1257.0|-2.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1709.9|-1244.0|-0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1718.4|-1236.5|-0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1726.7|-1229.2|-0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1734.8|-1222.1|-0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1743.1|-1214.9|-0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1751.0|-1208.0|-0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1758.9|-1200.8|-0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1766.5|-1193.8|0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1774.4|-1186.9|0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1784.9|-1174.9|-0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1786.1|-1161.1|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1787.4|-1148.3|-0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1792.7|-1138.7|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1800.3|-1124.4|0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1808.7|-1108.2|0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1815.7|-1094.7|0.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1820.7|-1080.9|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1824.7|-1068.9|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1827.3|-1059.1|0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1827.2|-1047.2|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1818.8|-1039.0|0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1809.3|-1034.8|0.9|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1799.0|-1035.7|0.9|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1791.8|-1047.4|1.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1792.5|-1060.0|0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1798.1|-1072.5|0.8|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1806.3|-1086.6|0.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1816.0|-1100.5|2.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1825.6|-1114.3|0.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1836.3|-1129.8|-0.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1842.4|-1138.7|-0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1848.3|-1147.5|0.9|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1858.7|-1163.3|1.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1868.5|-1178.6|4.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1877.5|-1192.9|0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1882.4|-1204.7|2.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1885.0|-1215.0|1.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1880.7|-1226.2|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1872.5|-1235.7|0.2|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1861.8|-1247.2|0.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1849.1|-1259.0|2.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1837.4|-1268.9|0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1824.3|-1272.2|0.9|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1808.8|-1265.6|1.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1795.1|-1258.8|0.5|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1778.4|-1249.7|-0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1760.7|-1239.8|2.7|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1750.5|-1233.9|2.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1740.9|-1228.5|0.3|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1731.6|-1223.2|0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1722.8|-1218.3|2.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1713.9|-1213.4|2.6|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1696.7|-1203.8|0.1|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1687.8|-1199.0|0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1670.8|-1190.2|2.7|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1655.5|-1182.0|2.0|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1642.9|-1174.9|0.4|OCEANA|Vespucci
+Vespucci Beach e molo di Del Perro|mare|-1633.3|-1171.3|0.3|OCEANA|Vespucci
+Isolotto di San Chianski|mare|3483.7|2514.6|0.7|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3476.1|2522.4|0.6|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3465.6|2525.1|1.1|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3451.2|2523.3|1.4|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3437.4|2520.6|0.6|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3424.1|2519.8|0.9|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3413.5|2521.3|0.7|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3403.6|2529.5|0.6|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3396.7|2541.9|0.4|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3395.5|2556.7|0.2|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3397.1|2570.5|0.4|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3399.7|2587.2|1.2|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3403.8|2604.0|0.1|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3410.9|2617.3|0.9|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3421.0|2627.4|0.6|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3432.7|2637.3|-0.2|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3445.6|2643.9|2.3|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3459.0|2649.9|-1.0|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3472.1|2653.4|-1.5|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3487.5|2651.8|-1.0|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3499.0|2646.7|-0.5|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3510.3|2638.7|1.4|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3521.9|2630.3|2.6|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3535.0|2621.9|3.3|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3547.5|2614.1|-0.2|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3558.2|2609.1|1.8|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3567.9|2604.0|-0.1|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3577.1|2594.8|0.6|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3589.2|2588.0|0.3|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3599.7|2578.0|-1.0|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3605.4|2566.0|-0.9|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3607.1|2551.6|0.0|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3605.2|2535.8|-0.5|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3597.0|2524.8|-1.0|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3585.7|2515.5|-0.3|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3571.8|2506.6|0.0|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3556.9|2501.5|1.4|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3545.1|2501.3|2.2|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3534.7|2502.8|0.7|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3523.2|2505.2|2.8|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3507.9|2509.3|3.6|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3491.2|2514.0|2.0|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3471.1|2517.7|1.2|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3460.0|2519.6|0.7|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3449.7|2521.1|1.6|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3439.2|2522.7|1.8|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3421.7|2525.7|1.2|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3410.4|2529.9|0.8|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3402.5|2539.9|0.5|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3400.0|2553.6|0.7|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3399.6|2565.1|0.9|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3402.0|2579.1|0.7|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3408.1|2593.3|0.5|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3416.4|2608.9|-0.4|OCEANA|San Chianski
+Isolotto di San Chianski|mare|3424.8|2619.4|0.1|OCEANA|San Chianski
+Faro di El Gordo|mare|3375.2|5185.0|-0.1|ELGORL|El Gordo
+Faro di El Gordo|mare|3369.8|5194.1|-0.1|ELGORL|El Gordo
+Faro di El Gordo|mare|3380.0|5194.7|-0.6|ELGORL|El Gordo
+Faro di El Gordo|mare|3391.4|5195.7|0.5|ELGORL|El Gordo
+Faro di El Gordo|mare|3405.7|5193.4|0.6|ELGORL|El Gordo
+Faro di El Gordo|mare|3418.2|5192.5|2.1|ELGORL|El Gordo
+Faro di El Gordo|mare|3429.0|5192.7|1.1|ELGORL|El Gordo
+Faro di El Gordo|mare|3442.8|5189.2|1.9|ELGORL|El Gordo
+Faro di El Gordo|mare|3452.3|5184.1|-0.2|ELGORL|El Gordo
+Faro di El Gordo|mare|3458.7|5174.8|0.4|ELGORL|El Gordo
+Faro di El Gordo|mare|3457.8|5163.1|0.2|ELGORL|El Gordo
+Faro di El Gordo|mare|3450.3|5151.3|0.3|ELGORL|El Gordo
+Faro di El Gordo|mare|3439.3|5143.5|1.0|ELGORL|El Gordo
+Faro di El Gordo|mare|3430.0|5139.6|1.1|ELGORL|El Gordo
+Faro di El Gordo|mare|3417.2|5134.3|2.0|ELGORL|El Gordo
+Faro di El Gordo|mare|3406.2|5129.8|3.3|ELGORL|El Gordo
+Faro di El Gordo|mare|3396.0|5125.6|1.4|ELGORL|El Gordo
+Faro di El Gordo|mare|3386.1|5122.0|2.6|ELGORL|El Gordo
+Faro di El Gordo|mare|3376.3|5119.7|2.3|ELGORL|El Gordo
+Faro di El Gordo|mare|3366.2|5122.4|1.2|ELGORL|El Gordo
+Faro di El Gordo|mare|3363.4|5132.7|-0.1|ELGORL|El Gordo
+Faro di El Gordo|mare|3367.2|5146.5|0.0|ELGORL|El Gordo
+Faro di El Gordo|mare|3369.6|5157.7|0.1|ELGORL|El Gordo
+Faro di El Gordo|mare|3372.6|5170.2|0.0|ELGORL|El Gordo
+Faro di El Gordo|mare|3375.0|5179.9|-0.1|ELGORL|El Gordo
+Molo di Paleto Cove|mare|-1571.5|5206.6|0.4|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1582.0|5205.4|0.1|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1581.0|5218.4|0.0|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1583.8|5231.0|0.1|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1587.3|5245.6|0.2|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1590.5|5256.7|0.0|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1596.3|5268.0|0.2|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1606.8|5272.9|0.4|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1618.3|5273.6|0.3|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1627.8|5268.3|0.5|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1631.6|5256.8|0.4|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1627.7|5247.2|0.2|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1623.7|5234.6|0.2|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1621.4|5221.6|0.0|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1620.8|5207.8|0.1|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1620.3|5195.5|0.1|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1622.8|5182.8|0.7|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1626.9|5172.2|0.9|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1624.3|5161.7|0.8|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1622.0|5150.2|0.8|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1629.6|5143.2|0.5|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1640.1|5147.6|0.5|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1643.9|5157.5|0.5|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1648.1|5171.6|0.8|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1652.0|5182.9|0.5|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1657.0|5196.9|0.9|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1661.6|5213.8|0.6|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1663.1|5231.2|1.6|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1661.8|5246.9|0.8|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1656.8|5258.6|0.5|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1647.8|5268.3|1.0|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1634.7|5272.2|0.5|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1618.8|5274.6|0.2|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1602.9|5274.3|0.4|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1591.1|5268.3|0.1|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1582.5|5257.2|0.0|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1578.2|5244.7|0.3|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1578.3|5232.1|0.1|PALCOV|Paleto Cove
+Molo di Paleto Cove|mare|-1579.8|5222.0|0.1|PALCOV|Paleto Cove
+Paleto Bay ovest|mare|-1024.1|6276.6|0.8|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-1013.8|6276.3|0.6|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-1000.6|6277.2|0.8|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-989.0|6271.2|0.8|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-978.0|6264.8|1.1|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-965.1|6256.6|0.8|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-951.9|6247.5|0.5|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-939.0|6238.0|0.4|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-926.0|6228.1|0.3|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-913.4|6217.7|0.4|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-903.0|6206.1|0.7|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-894.2|6193.6|0.9|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-884.3|6179.7|0.8|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-874.5|6165.2|0.8|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-865.1|6150.2|0.7|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-858.5|6135.0|0.6|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-851.9|6119.0|0.5|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-845.2|6103.5|0.5|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-835.4|6091.8|0.5|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-823.3|6085.5|0.8|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-810.2|6082.1|0.9|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-797.6|6084.3|1.0|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-782.8|6088.1|1.0|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-766.0|6093.1|-0.1|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-751.5|6100.9|0.0|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-738.1|6110.1|0.0|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-726.1|6120.9|0.0|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-714.9|6133.5|0.0|PALFOR|Paleto Bay
+Paleto Bay ovest|mare|-705.6|6147.4|0.1|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-697.1|6162.1|0.0|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-688.7|6178.1|0.3|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-681.2|6195.5|0.4|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-675.9|6214.7|0.8|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-673.5|6234.5|1.0|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-672.8|6244.7|1.1|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-672.1|6255.3|1.0|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-671.5|6265.6|1.6|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-671.0|6276.0|1.5|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-670.4|6286.4|0.6|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-667.6|6306.2|0.6|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-662.1|6324.5|1.0|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-654.0|6341.3|0.9|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-644.2|6358.4|0.3|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-638.9|6367.1|0.6|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-633.3|6375.9|0.4|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-627.0|6384.9|0.3|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-613.2|6398.4|0.2|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-598.2|6410.1|1.1|OCEANA|Paleto Bay
+Paleto Bay ovest|mare|-589.8|6416.2|0.5|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-580.7|6422.1|0.1|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-571.5|6427.6|-0.1|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-562.6|6432.4|0.2|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-545.0|6440.1|0.1|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-535.7|6444.0|0.1|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-518.5|6452.3|0.8|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-501.5|6462.0|0.5|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-492.4|6467.2|0.3|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-483.7|6472.4|0.2|PALETO|Paleto Bay
+Paleto Bay ovest|mare|-474.8|6477.6|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-466.0|6482.8|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-457.2|6487.8|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-448.3|6492.7|0.0|OCEANA|Paleto Bay
+Paleto Bay est|mare|-439.5|6497.7|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-430.6|6502.5|0.0|OCEANA|Paleto Bay
+Paleto Bay est|mare|-421.9|6507.5|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-404.8|6517.7|0.0|OCEANA|Paleto Bay
+Paleto Bay est|mare|-389.2|6529.0|0.0|OCEANA|Paleto Bay
+Paleto Bay est|mare|-373.6|6540.8|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-357.6|6553.1|0.1|PALETO|Paleto Bay
+Paleto Bay est|mare|-349.6|6559.3|0.1|PALETO|Paleto Bay
+Paleto Bay est|mare|-341.6|6565.6|0.1|PALETO|Paleto Bay
+Paleto Bay est|mare|-333.7|6571.9|0.1|PALETO|Paleto Bay
+Paleto Bay est|mare|-319.5|6583.3|0.1|PALETO|Paleto Bay
+Paleto Bay est|mare|-308.9|6591.9|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-299.8|6599.5|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-292.1|6608.4|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-283.9|6617.0|0.6|OCEANA|Paleto Bay
+Paleto Bay est|mare|-273.9|6627.3|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-265.4|6635.7|0.6|OCEANA|Paleto Bay
+Paleto Bay est|mare|-259.3|6643.8|0.2|OCEANA|Paleto Bay
+Paleto Bay est|mare|-270.1|6650.1|0.5|OCEANA|Paleto Bay
+Paleto Bay est|mare|-274.6|6661.0|0.6|OCEANA|Paleto Bay
+Paleto Bay est|mare|-268.6|6670.0|0.6|OCEANA|Paleto Bay
+Paleto Bay est|mare|-256.5|6675.6|0.6|OCEANA|Paleto Bay
+Paleto Bay est|mare|-247.1|6681.6|0.2|OCEANA|Paleto Bay
+Paleto Bay est|mare|-233.8|6689.3|-0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-217.6|6697.2|-0.9|OCEANA|Paleto Bay
+Paleto Bay est|mare|-201.9|6706.1|1.0|OCEANA|Paleto Bay
+Paleto Bay est|mare|-185.2|6716.0|0.8|OCEANA|Paleto Bay
+Paleto Bay est|mare|-176.5|6721.6|0.7|OCEANA|Paleto Bay
+Paleto Bay est|mare|-166.9|6727.1|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-157.7|6732.0|0.3|PALETO|Paleto Bay
+Paleto Bay est|mare|-148.7|6737.7|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-140.5|6744.0|0.1|PALETO|Paleto Bay
+Paleto Bay est|mare|-129.4|6758.3|0.0|OCEANA|Paleto Bay
+Paleto Bay est|mare|-121.1|6773.4|0.8|OCEANA|Paleto Bay
+Paleto Bay est|mare|-111.7|6791.1|-0.5|OCEANA|Paleto Bay
+Paleto Bay est|mare|-102.2|6808.9|0.3|PALETO|Paleto Bay
+Paleto Bay est|mare|-97.3|6818.2|0.6|PALETO|Paleto Bay
+Paleto Bay est|mare|-92.0|6828.5|0.2|PALETO|Paleto Bay
+Paleto Bay est|mare|-87.0|6838.1|0.4|PALETO|Paleto Bay
+Paleto Bay est|mare|-82.3|6847.6|0.4|PALETO|Paleto Bay
+Paleto Bay est|mare|-77.6|6857.4|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-73.1|6866.9|0.2|PALETO|Paleto Bay
+Paleto Bay est|mare|-68.7|6876.5|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-64.7|6885.9|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-61.2|6895.3|0.0|OCEANA|Paleto Bay
+Paleto Bay est|mare|-55.7|6913.8|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-52.7|6930.8|0.2|OCEANA|Paleto Bay
+Paleto Bay est|mare|-50.2|6943.3|0.1|OCEANA|Paleto Bay
+Paleto Bay est|mare|-48.0|6955.0|0.0|OCEANA|Paleto Bay
+Paleto Bay est|mare|-45.6|6968.2|0.2|OCEANA|Paleto Bay
+Paleto Bay est|mare|-43.2|6978.3|0.1|PALETO|Paleto Bay
+Paleto Bay est|mare|-37.2|6990.4|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-28.0|6997.3|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-20.0|7006.6|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-17.7|7019.8|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-12.6|7031.3|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|-4.8|7045.3|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|4.9|7060.3|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|13.6|7076.4|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|19.1|7093.4|0.0|PALETO|Paleto Bay
+Paleto Bay est|mare|22.2|7110.7|0.2|PALETO|Paleto Bay
+Paleto Bay est|mare|22.9|7123.6|0.2|PALETO|Paleto Bay
+Spiaggia e molo di Chumash|mare|-3253.1|844.2|0.3|CHU|Chumash
+Spiaggia e molo di Chumash|mare|-3259.1|854.7|0.4|CHU|Chumash
+Spiaggia e molo di Chumash|mare|-3269.1|868.5|0.3|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3278.3|881.5|0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3286.6|894.0|-0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3293.3|904.5|0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3299.9|914.5|0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3306.3|924.3|0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3313.3|932.3|0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3321.5|938.7|-0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3331.5|945.1|-0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3343.5|950.0|0.4|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3357.4|953.2|0.4|CHU|Chumash
+Spiaggia e molo di Chumash|mare|-3371.2|952.9|0.5|CHU|Chumash
+Spiaggia e molo di Chumash|mare|-3384.1|949.1|0.8|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3398.5|944.8|1.0|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3413.3|941.2|0.5|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3427.2|941.2|0.2|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3438.2|946.7|0.8|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3447.0|957.3|0.0|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3453.6|970.8|0.9|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3456.1|987.0|0.0|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3453.1|1002.2|0.0|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3445.8|1009.2|0.5|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3436.6|1014.4|0.3|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3426.6|1015.5|-0.2|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3417.0|1011.4|-0.4|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3406.7|1004.5|-0.5|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3393.6|996.8|-0.3|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3378.3|990.0|0.6|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3362.6|988.4|0.5|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3346.7|990.3|0.4|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3333.1|997.9|-0.3|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3324.4|1009.9|0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3318.9|1024.4|-0.2|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3316.2|1040.8|-0.2|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3313.9|1059.0|0.3|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3311.8|1078.4|0.2|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3309.1|1097.7|0.7|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3306.0|1118.1|0.6|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3304.4|1128.2|0.6|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3302.8|1138.3|0.6|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3301.2|1148.4|0.4|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3299.4|1159.0|0.2|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3297.4|1168.9|0.6|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3293.7|1188.6|0.5|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3291.6|1198.5|0.4|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3289.5|1208.6|0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3285.2|1228.1|0.8|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3282.9|1238.4|1.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3280.7|1248.8|0.8|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3278.2|1259.7|0.3|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3275.8|1270.4|0.0|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3273.5|1280.5|0.7|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3270.9|1290.8|0.9|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3264.6|1308.4|0.3|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3259.1|1320.8|0.1|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3252.3|1332.2|0.4|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3246.4|1341.9|0.3|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3240.8|1352.7|0.3|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3236.7|1365.0|0.7|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3232.6|1374.5|0.7|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3227.1|1384.1|0.7|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3221.5|1394.0|0.7|OCEANA|Chumash
+Spiaggia e molo di Chumash|mare|-3216.2|1403.1|0.7|OCEANA|Chumash
+Spiaggia di Pacific Bluffs|mare|-3161.5|324.2|0.0|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3169.6|312.8|0.3|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3175.6|301.7|0.3|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3181.2|288.0|1.0|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3182.0|272.8|1.1|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3178.2|258.0|1.0|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3171.1|243.4|0.8|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3163.5|227.4|0.9|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3157.0|210.2|1.3|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3152.7|191.9|1.2|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3148.0|173.2|2.0|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3142.5|153.3|2.8|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3139.5|142.4|2.3|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3136.0|130.6|1.1|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3132.5|119.3|0.8|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3129.3|108.2|0.4|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3126.3|97.9|0.2|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3123.1|87.5|0.1|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3116.2|69.1|0.0|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3107.9|52.3|0.2|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3097.3|36.6|0.0|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3085.9|21.4|0.2|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3072.4|10.3|0.2|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3057.3|2.0|0.3|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3042.3|-8.2|0.6|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3026.7|-18.2|1.1|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-3010.1|-27.5|1.4|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2992.2|-35.9|1.2|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2983.0|-39.9|0.9|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2973.7|-43.6|0.8|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2964.2|-47.0|0.7|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2945.8|-52.7|0.9|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2927.1|-57.9|0.9|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2907.5|-63.4|1.1|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2897.2|-66.1|0.9|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2887.3|-68.9|0.8|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2877.6|-71.6|0.4|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2859.9|-77.5|1.0|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2844.1|-87.3|1.0|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2827.3|-97.5|0.7|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2810.6|-108.2|0.4|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2795.0|-117.9|0.3|PBLUFF|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2783.1|-124.5|0.1|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2771.0|-127.3|0.1|OCEANA|Pacific Bluffs
+Spiaggia di Pacific Bluffs|mare|-2759.4|-125.7|0.2|OCEANA|Pacific Bluffs
+Palomino Highlands|mare|2847.9|-1232.2|0.0|OCEANA|Palomino
+Palomino Highlands|mare|2859.2|-1236.8|0.2|OCEANA|Palomino
+Palomino Highlands|mare|2868.7|-1244.6|-0.1|OCEANA|Palomino
+Palomino Highlands|mare|2878.8|-1254.3|1.6|OCEANA|Palomino
+Palomino Highlands|mare|2888.4|-1266.2|1.3|OCEANA|Palomino
+Palomino Highlands|mare|2895.7|-1277.5|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2899.8|-1287.9|1.2|OCEANA|Palomino
+Palomino Highlands|mare|2901.0|-1300.5|0.1|OCEANA|Palomino
+Palomino Highlands|mare|2905.6|-1313.4|0.1|OCEANA|Palomino
+Palomino Highlands|mare|2911.4|-1326.0|0.7|OCEANA|Palomino
+Palomino Highlands|mare|2916.4|-1342.4|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2919.3|-1360.3|0.3|OCEANA|Palomino
+Palomino Highlands|mare|2920.8|-1379.3|0.4|OCEANA|Palomino
+Palomino Highlands|mare|2921.2|-1399.4|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2920.9|-1409.6|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2920.3|-1419.9|0.3|OCEANA|Palomino
+Palomino Highlands|mare|2919.6|-1430.3|0.3|OCEANA|Palomino
+Palomino Highlands|mare|2918.8|-1440.9|0.2|OCEANA|Palomino
+Palomino Highlands|mare|2918.0|-1451.3|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2917.2|-1461.5|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2915.8|-1471.8|0.1|OCEANA|Palomino
+Palomino Highlands|mare|2909.1|-1488.5|0.0|OCEANA|Palomino
+Palomino Highlands|mare|2901.5|-1505.1|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2893.1|-1522.5|1.3|OCEANA|Palomino
+Palomino Highlands|mare|2888.4|-1532.0|1.3|OCEANA|Palomino
+Palomino Highlands|mare|2883.6|-1541.4|0.9|OCEANA|Palomino
+Palomino Highlands|mare|2878.7|-1550.9|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2873.8|-1560.2|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2868.8|-1569.1|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2857.7|-1585.3|1.3|OCEANA|Palomino
+Palomino Highlands|mare|2851.8|-1593.4|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2845.5|-1601.7|-0.1|OCEANA|Palomino
+Palomino Highlands|mare|2839.1|-1609.5|-0.1|OCEANA|Palomino
+Palomino Highlands|mare|2825.7|-1620.7|1.2|OCEANA|Palomino
+Palomino Highlands|mare|2813.1|-1629.7|1.1|OCEANA|Palomino
+Palomino Highlands|mare|2801.7|-1638.4|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2789.5|-1647.5|1.0|OCEANA|Palomino
+Palomino Highlands|mare|2774.0|-1658.9|0.9|OCEANA|Palomino
+Palomino Highlands|mare|2760.1|-1667.2|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2748.4|-1669.2|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2736.4|-1667.7|0.9|OCEANA|Palomino
+Palomino Highlands|mare|2725.5|-1662.3|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2717.4|-1653.4|1.2|OCEANA|Palomino
+Palomino Highlands|mare|2712.9|-1643.2|1.1|OCEANA|Palomino
+Palomino Highlands|mare|2713.4|-1631.8|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2710.7|-1618.2|0.2|OCEANA|Palomino
+Palomino Highlands|mare|2704.9|-1609.6|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2691.5|-1603.8|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2680.0|-1602.9|0.7|OCEANA|Palomino
+Palomino Highlands|mare|2664.2|-1602.7|0.3|OCEANA|Palomino
+Palomino Highlands|mare|2645.8|-1602.7|1.2|OCEANA|Palomino
+Palomino Highlands|mare|2627.1|-1602.6|0.7|OCEANA|Palomino
+Palomino Highlands|mare|2608.2|-1602.4|1.9|OCEANA|Palomino
+Palomino Highlands|mare|2590.6|-1601.9|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2578.1|-1600.9|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2568.5|-1596.5|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2572.7|-1586.7|0.9|OCEANA|Palomino
+Palomino Highlands|mare|2576.4|-1576.5|0.0|OCEANA|Palomino
+Palomino Highlands|mare|2567.9|-1563.5|1.2|OCEANA|Palomino
+Palomino Highlands|mare|2558.6|-1550.9|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2547.5|-1535.4|0.4|OCEANA|Palomino
+Palomino Highlands|mare|2541.7|-1527.2|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2533.4|-1510.2|1.1|OCEANA|Palomino
+Palomino Highlands|mare|2529.5|-1492.8|0.4|OCEANA|Palomino
+Palomino Highlands|mare|2527.6|-1476.4|1.5|OCEANA|Palomino
+Palomino Highlands|mare|2526.7|-1462.5|0.9|OCEANA|Palomino
+Palomino Highlands|mare|2527.0|-1451.1|0.7|OCEANA|Palomino
+Palomino Highlands|mare|2531.7|-1439.6|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2533.4|-1425.1|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2533.4|-1409.9|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2531.2|-1398.1|0.7|OCEANA|Palomino
+Palomino Highlands|mare|2523.7|-1388.9|0.4|OCEANA|Palomino
+Palomino Highlands|mare|2520.3|-1377.8|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2523.7|-1367.4|1.0|OCEANA|Palomino
+Palomino Highlands|mare|2526.7|-1355.0|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2526.8|-1342.3|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2522.9|-1328.6|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2516.4|-1314.0|0.6|OCEANA|Palomino
+Palomino Highlands|mare|2513.7|-1297.7|0.7|OCEANA|Palomino
+Palomino Highlands|mare|2516.3|-1285.4|0.7|OCEANA|Palomino
+Palomino Highlands|mare|2526.9|-1275.0|0.3|OCEANA|Palomino
+Palomino Highlands|mare|2538.7|-1267.5|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2553.7|-1258.3|0.4|OCEANA|Palomino
+Palomino Highlands|mare|2569.9|-1247.7|0.3|OCEANA|Palomino
+Palomino Highlands|mare|2586.5|-1236.6|0.1|OCEANA|Palomino
+Palomino Highlands|mare|2594.8|-1230.9|0.3|OCEANA|Palomino
+Palomino Highlands|mare|2603.1|-1225.1|0.4|OCEANA|Palomino
+Palomino Highlands|mare|2617.6|-1214.9|0.5|OCEANA|Palomino
+Palomino Highlands|mare|2628.6|-1207.3|1.0|OCEANA|Palomino
+Palomino Highlands|mare|2639.0|-1201.4|0.3|OCEANA|Palomino
+Palomino Highlands|mare|2650.3|-1198.9|0.3|OCEANA|Palomino
+Palomino Highlands|mare|2661.7|-1198.1|0.8|OCEANA|Palomino
+Palomino Highlands|mare|2675.2|-1199.7|1.8|OCEANA|Palomino
+Palomino Highlands|mare|2689.9|-1201.5|2.4|OCEANA|Palomino
+Palomino Highlands|mare|2705.8|-1202.9|1.9|OCEANA|Palomino
+Palomino Highlands|mare|2721.6|-1205.9|1.2|OCEANA|Palomino
+Palomino Highlands|mare|2738.7|-1210.1|3.8|OCEANA|Palomino
+Palomino Highlands|mare|2755.8|-1214.5|1.9|OCEANA|Palomino
+Palomino Highlands|mare|2775.2|-1220.1|-0.2|OCEANA|Palomino
+Palomino Highlands|mare|2792.7|-1225.6|2.5|OCEANA|Palomino

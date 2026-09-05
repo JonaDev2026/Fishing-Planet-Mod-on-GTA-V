@@ -1,0 +1,28 @@
+# id|tipo|nome|colore|misura|forma|portata|materiale|prezzo|liv_wiki|img
+# galleggianti - dati veri dal wiki di Fishing Planet
+# portata = quanto peso di piombo regge (Low/Medium/High)
+1|classico|Oval|Natural / Red / Green|5 1/2" x 4/5"/(14 x 2 cm)|Oval|Medium|Plastic|20|1|116.png
+2|classico|Oval|Black / Red / Light Green|5 1/2" x 4/5"(14 x 2 cm)|Oval|Medium|Plastic|20|2|1142.png
+3|classico|Chubby|Natural / Red / Green|6" x 1 1/2"(15 x 4 cm)|Chubby|High|Plastic|50|3|458.png
+4|classico|Chubby|Black / Red / Light Green|6" x 1 1/2"(15 x 4 cm)|Chubby|High|Plastic|50|3|1144.png
+5|classico|Slim|Natural / Red / Green|5" x 2/5"(13 x 1 cm)|Slim|Low|Plastic|70|4|115.png
+6|classico|Slim|Black / Red / Light Green|5" x 2/5"(13 x 1 cm)|Slim|Low|Plastic|70|4|1143.png
+7|classico|Sport Bobber|White-n-Red|10" x 4/5"(25 x 2 cm)|Sport|X Low|Balsa|160|10|463.png
+8|classico|Sport Bobber|Black-n-Blue|10" x 4/5"(25 x 2 cm)|Sport|X Low|Balsa|160|10|483.png
+9|classico|Glowing Slim Float|Natural/Red|6.5" x 2/5"(17 x 1 cm)|Slim|Low|Plastic|250|14|2687.png
+10|classico|Glowing Slim Float|Natural/Blue|6.5" x 2/5"(17 x 1 cm)|Slim|Low|Plastic|250|14|2681.png
+11|classico|Pear Shaped Float|Red/White/Yellow|4" x 3"(10 x 7 cm)|Pear|X High|Plastic|280|26|1769.png
+12|classico|Pear Shaped Float|Red/Black/Yellow|4" x 3"(10 x 7 cm)|Pear|X High|Plastic|280|26|1895.png
+13|classico|Pear Shaped Float|Red/Yellow|4" x 3"(10 x 7 cm)|Pear|X High|Plastic|280|26|1897.png
+14|classico|Pear Shaped Float|Yellow/Red|4" x 3"(10 x 7 cm)|Pear|X High|Plastic|280|26|1893.png
+15|classico|Ball Bobbers|White-n-Red|4"(10 cm)|Ball|X High|Plastic|300|27|1146.png
+16|classico|Ball Bobbers|Yellow-n-Orange|4"(10 cm)|Ball|X High|Plastic|300|27|1147.png
+17|classico|Glow Bobber|Yellow-n-Green|4"(10 cm)|Ball|X High|Plastic|390|28|1277.png
+18|classico|Glow Bobber|Orange-n-Black|4"(10 cm)|Ball|X High|Plastic|390|28|1287.png
+19|slider|Slider Light|Red/White/Yellow|6" x 2/7"(15 x 0.7 cm)|Slider|Low|Plastic|330|25|8800.png
+20|slider|Slider Medium|Yellow/Green/Red|10" x 4/5"(25 x 2 cm)|Slider|Medium|Polyurethane|380|29|8806.png
+21|slider|Slider Heavy|Red/White/Yellow|10" x 4/5"(30 x 2.5 cm)|Slider|High|Balsa|420|33|8802.png
+22|waggler|Waggler Light|Red/Black/White|6" x 2/5"(15 x 1 cm)|Waggler|Low|Plastic|450|35|8799.png
+23|waggler|Waggler Medium|Yellow/Red/Blue/White|10" x 4/5"(25 x 2 cm)|Waggler|Medium|Polyurethane|480|39|8804.png
+24|waggler|Waggler Heavy|Red/Black/Yellow|12" x 1"(30 x 2.5 cm)|Waggler|High|Balsa|530|43|8808.png
+25|waggler|Waggler  Heavy|Red/Black/Yellow|15.7"x 1"(40 x 2.5 cm)|Waggler|X High|Balsa|570|47|8808.png

@@ -1,0 +1,289 @@
+# LE ESCHE IN ITALIANO.  nome_inglese|nome_italiano
+# ATTENZIONE: queste traduzioni le abbiamo fatte noi. Il wiki di
+# Fishing Planet le pagine in italiano non ce le ha, quindi qui non
+# c'e' un dato preso da loro: c'e' il nome inglese vero (quello si')
+# e accanto come si dice in italiano. Dove in italiano si usa la
+# parola inglese - popper, shad, crankbait, boilies - e' rimasta
+# quella, perche' e' come la chiamano i pescatori.
+# Un'esca che qui non c'e' resta col suo nome inglese.
+
+# --- esche naturali e da fondo ---
+African Giant Water Bug|Cimice d'acqua gigante africana
+Amazonian Sardine|Sardina amazzonica
+Aracu Minnow|Pesciolino aracu
+Artificial Salmon Eggs|Uova di salmone artificiali
+Atlantic Herring|Aringa atlantica
+Atlantic Mackerel ut Baits|Trance di sgombro
+Baby Halibuts|Halibut piccoli
+Banana Bread|Pane alla banana
+Banana bread|Pane alla banana
+Banana Pop-up Boilies|Boilies galleggianti alla banana
+Banana Sinking Boilies|Boilies affondanti alla banana
+Banded Aracu|Aracu fasciato
+Banded Aracu Minnow|Pesciolino aracu fasciato
+Bark Beetle Larva|Larva di bostrico
+Black Lugworms|Arenicole nere
+Blood|Sangue
+Bloodworm Pop-up Pellets|Pellet galleggianti al chironomo
+Bloodworm Sinking Pellets|Pellet affondanti al chironomo
+Bloodworms|Chironomi
+Blue-Winged Grasshopper|Cavalletta dalle ali azzurre
+Bluey|Lanzardo
+Boiled Red Roe|Uova rosse lessate
+Boilies|Boilies
+Bread|Pane
+Bread with Honey|Pane e miele
+Buffalo Kidneys|Rognoni di bufalo
+Caddis Larva|Larva di friganea
+Camu-Camu|Camu-camu
+Canned Meat|Carne in scatola
+Caster Maggots|Caster
+Caviar Pop-up Pellets|Pellet galleggianti al caviale
+Caviar Sinking Pellets|Pellet affondanti al caviale
+Centipedes|Centopiedi
+Cheese|Formaggio
+Chicken Liver|Fegato di pollo
+Chocolate Pop-up Boilies|Boilies galleggianti al cioccolato
+Chocolate Sinking Boilies|Boilies affondanti al cioccolato
+Cicada|Cicala
+Citrus Pop-up Boilies|Boilies galleggianti agli agrumi
+Citrus Sinking Boilies|Boilies affondanti agli agrumi
+Clam Meat|Polpa di vongola
+Cockchafer|Maggiolino
+Common Minnow|Sanguinerola
+Corn|Mais
+Crab|Granchio
+Crab Pop-up Boilies|Boilies galleggianti al granchio
+Crab Sinking Boilies|Boilies affondanti al granchio
+Crawfish|Gambero d'acqua dolce
+Crawfish Cut|Trance di gambero
+Crawfish Cuts|Trance di gambero
+Crawling Worm and Selective Crawling worm|Verme strisciante
+Crayfish|Gambero d'acqua dolce
+Crayfishs|Gamberi d'acqua dolce
+Crickets|Grilli
+Curd Dough|Pasta di ricotta
+Dead Lambari Fish|Lambari morto
+Dobsonfly|Coridalo
+Dobsonfly Larva|Larva di coridalo
+Dough Ball|Pallina di pasta
+Dough Balls|Palline di pasta
+Dragonflies|Libellule
+Dragonfly|Libellula
+Duck Mussel Meat|Polpa di anodonta
+Filamentous Red Algae|Alga rossa filamentosa
+Finger Mullets|Cefaletti
+Fish Head|Testa di pesce
+Fishmeal Pop-up Boilies|Boilies galleggianti alla farina di pesce
+Fishmeal Sinking Boilies|Boilies affondanti alla farina di pesce
+Flies|Mosche
+Flying Fish|Pesce volante
+Freshwater Crab|Granchio di fiume
+Freshwater Prawns|Gamberetti d'acqua dolce
+Frog|Rana
+Frogs|Rane
+Garlic Pop-up Pellets|Pellet galleggianti all'aglio
+Garlic Sinking Pellets|Pellet affondanti all'aglio
+Giant Silk Moth Larva|Larva di saturnia
+Giant Tiger Prawn|Mazzancolla tigre gigante
+Glowing Squids|Calamari luminosi
+Glowing Trolling Octopuses|Polpi luminosi da traina
+Grasshoppers|Cavallette
+Gulf Shrimp|Gambero del Golfo
+Gutted Fish|Pesce eviscerato
+Halibut Pop-up Pellet|Pellet galleggianti all'halibut
+Halibut Sinking Pellet|Pellet affondanti all'halibut
+Hemp Pop-up Pellets|Pellet galleggianti alla canapa
+Hemp Sinking Pellets|Pellet affondanti alla canapa
+Honey Pop-up Pellets|Pellet galleggianti al miele
+Honey Sinking Pellets|Pellet affondanti al miele
+Huge Cutbait|Trancio di pesce enorme
+Indian Ocean Squid|Calamaro dell'Oceano Indiano
+Indo-Pacific Swimming Crab|Granchio nuotatore indopacifico
+Japanese Anchovy|Acciuga giapponese
+Japanese Flying Squid|Calamaro volante giapponese
+Japanese flying squid|Calamaro volante giapponese
+Japanese Jack Mackerel|Sugarello giapponese
+Japanese Spiny Lobster|Aragosta giapponese
+Jauari Palm Fruit|Frutto di palma jauari
+Krill Pop-up Boilies|Boilies galleggianti al krill
+Krill Sinking Boilies|Boilies affondanti al krill
+Large Cutbait|Trancio di pesce grande
+Large Fish Strips|Filetti di pesce grandi
+Large Flying Fish|Pesce volante grande
+Large Liver|Fegato grande
+Large Minnow|Pesciolino grande
+Larva|Larva
+Leeches|Sanguisughe
+Lesser Sand Eel|Cicerello
+Maggots|Bigattini
+Marshmallow|Marshmallow
+Marshmallows|Marshmallow
+MayFlies|Effimere
+Mayflies|Effimere
+Meat Chunk|Pezzo di carne
+Medium Cutbait|Trancio di pesce medio
+Medium Fish Strips|Filetti di pesce medi
+Mole Cricket Larva|Larva di grillotalpa
+Mole Cricket and Selective Mole Cricket|Grillotalpa
+Moriche Palm Fruit|Frutto di palma moriche
+Mulberry Pop-up Pellets|Pellet galleggianti al gelso
+Mulberry Sinking Pellets|Pellet affondanti al gelso
+Mussel Meat|Polpa di cozza
+Natal Rock Oyster Meat|Polpa di ostrica di scoglio
+Natural Eggs|Uova naturali
+Newts|Tritoni
+Night Crawler|Lombricone
+Nymphes|Ninfe
+Oat-flakes|Fiocchi d'avena
+Pea dough|Pasta di piselli
+Pearl Barley|Orzo perlato
+Peas|Piselli
+Peeler Crab|Granchio in muta
+Pellets|Pellet
+Pet Food|Cibo per animali
+Pineapple Pop-up Pellets|Pellet galleggianti all'ananas
+Pineapple Sinking Pellets|Pellet affondanti all'ananas
+Pinkies|Bigattini piccoli
+Plum Pop-up Boilies|Boilies galleggianti alla prugna
+Plum Sinking Boilies|Boilies affondanti alla prugna
+Ragworms|Vermi coreani
+Razor Shell|Cannolicchio
+Red Maggots|Bigattini rossi
+Red Worms|Vermi rossi
+Rotten Minnows|Pesciolini frollati
+Rubber Tree Seeds|Semi di albero della gomma
+Salmon Pop-up Pellets|Pellet galleggianti al salmone
+Salmon Sinking Pellets|Pellet affondanti al salmone
+Salo and Salo Generalske|Lardo salato
+Sand Fleas|Pulci di mare
+Scaled Sardines|Sardine squamate
+Sea Worms|Vermi di mare
+Seal Blubber|Grasso di foca
+Semolina Balls|Palline di semolino
+Shellfish Pop-up Boilies|Boilies galleggianti ai crostacei
+Shellfish Sinking Boilies|Boilies affondanti ai crostacei
+Shiners|Pesciolini argentati
+Shrimp|Gambero
+Shrimps|Gamberetti
+Shrimp Pop-up Pellets|Pellet galleggianti al gambero
+Shrimp Sinking Pellets|Pellet affondanti al gambero
+Sideswimmers|Gammaridi
+Small Cutbait|Trancio di pesce piccolo
+Small Flying Fish|Pesce volante piccolo
+Small Minnows|Pesciolini piccoli
+Small Tilapia|Tilapia piccola
+Spawn Sack|Sacchetto di uova
+Spawn Sacks|Sacchetti di uova
+Spices Pop-up Boilies|Boilies galleggianti alle spezie
+Spices Sinking Boilies|Boilies affondanti alle spezie
+Split Tail Mullet|Cefalo
+Strawberry Pop-up Boilies|Boilies galleggianti alla fragola
+Strawberry Sinking Boilies|Boilies affondanti alla fragola
+Sunflower oil cake Pop-up Pellets|Pellet galleggianti al panello di girasole
+Sunflower oil cake Sinking Pellets|Pellet affondanti al panello di girasole
+Sweet Corn|Mais dolce
+Sweet corn|Mais dolce
+Sweet Peas|Piselli dolci
+Technoplankton|Tecnoplancton
+Tiger Nut Pop-up Boilies|Boilies galleggianti al tigernut
+Tiger Nut Sinking Boilies|Boilies affondanti al tigernut
+Tuna Fish Heads|Teste di tonno
+Tuna Pop-up Pellets|Pellet galleggianti al tonno
+Tuna Sinking Pellets|Pellet affondanti al tonno
+Vegetables|Verdure
+Wax Worms|Camole del miele
+Worm|Verme
+Worms|Vermi
+Worm Pop-up Boilies|Boilies galleggianti al verme
+Worm Sinking Boilies|Boilies affondanti al verme
+Yellow Maggots|Bigattini gialli
+
+# --- artificiali ---
+Barbless Nano Spoon|Cucchiaino nano senza ardiglione
+Bionic Slug|Lumaca bionica
+Bucktail|Bucktail
+Bucktails|Bucktail
+Bullet Spinner|Rotante a proiettile
+Bullet Spinners|Rotanti a proiettile
+Bullet spinners|Rotanti a proiettile
+Buzzbait|Buzzbait
+Buzzbaits|Buzzbait
+Casting Spoon|Cucchiaino ondulante
+Casting Spoons|Cucchiaini ondulanti
+Crankbait|Crankbait
+Crankbaits|Crankbait
+Craw|Gambero siliconico
+Craws|Gamberi siliconici
+Deep Runner|Minnow profondo
+Double Hook Pilker|Pilker a due ami
+Duo Swimbait|Swimbait doppio
+Fish Pilkers|Pilker a pesce
+Flat Spoon|Cucchiaino piatto
+Freaky Walker|Walker Freaky
+Freaky Walkers|Walker Freaky
+Grub|Larva siliconica
+Grubs|Larve siliconiche
+Hunched Runner|Minnow gobbo
+Jerkbait|Jerkbait
+Jerkbaits|Jerkbait
+Jigging Spoon|Cucchiaino da jigging
+Major Popper|Popper Major
+Medium Spoon|Cucchiaino medio
+Medium Spoons|Cucchiaini medi
+Mini Crank|Crankbait mini
+Mini Cranks|Crankbait mini
+Mini Pilker|Pilker mini
+Mini Pilkers|Pilker mini
+Minnow|Minnow
+Minnow Grub|Larva pesciolino
+Mouse Lure|Topolino artificiale
+Nano Spinner|Rotante nano
+Nano Spinners|Rotanti nano
+Nano Spoon|Cucchiaino nano
+Nano Spoons|Cucchiaini nano
+Narrow Spoon|Cucchiaino stretto
+Narrow Spoons|Cucchiaini stretti
+Nordic Pilkers|Pilker nordici
+Pilkers|Pilker
+Plug|Plug
+Plugs|Plug
+Popper|Popper
+Poppers|Popper
+Ribbed Shad|Shad rigato
+Saltwater Poppers|Popper da mare
+Saltwater Slugs|Lumache da mare
+Saltwater Spoons|Cucchiaini da mare
+Saltwater Twisters|Twister da mare
+Shad|Shad
+Shads|Shad
+Single Hook Pilker|Pilker a un amo
+Single Spoon|Cucchiaino singolo
+Single Spoons|Cucchiaini singoli
+Slop Spoon|Cucchiaino antialga
+Slop Spoons|Cucchiaini antialga
+Slug|Lumaca
+Slugs|Lumache
+Softbaits|Siliconici
+Spinner|Cucchiaino rotante
+Spinners|Cucchiaini rotanti
+Spinner Tail|Rotante con coda
+Spinners with tails|Rotanti con coda
+Spinnerbait|Spinnerbait
+Spinnerbaits|Spinnerbait
+Squid Chain|Catena di calamari
+Squid Jig|Totanara
+Squid Jigs|Totanare
+Swimbait|Swimbait
+Swimbaits|Swimbait
+Topper|Topper
+Torch Flashlight|Lampeggiante
+Triple Runner|Minnow a tre snodi
+Trolling Octopus|Polpo da traina
+Trolling Octopuses|Polpi da traina
+Trolling Skirts|Gonnellini da traina
+Tube|Tubo siliconico
+Twerky Runner|Minnow Twerky
+Twin Tail Spider Grub|Larva ragno a doppia coda
+Walker|Walker
+Walkers|Walker

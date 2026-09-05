@@ -1,0 +1,246 @@
+# nome|amo|esche naturali|artificiali
+# COSA MANGIA OGNI PESCE - preso dalla PAGINA DEL PESCE sul wiki di Fishing
+# Planet, sezioni "Preferred baits" e "Preferred lures", piu' l'amo consigliato.
+# Le pagine stanno in _riferimenti/wiki_dump/pagine_pesci.
+# Se la sezione degli artificiali e' vuota, quel pesce sul wiki non ne ha:
+# e' un pesce che si prende solo con l'esca naturale.
+
+African Big Eye Catfish|#1/0 - #5/0|Red Worms, Maggots, Bloodworms, Wax Worms, Leeches, Centipedes, Giant Silk Moth Larva, Freshwater Prawns, Night Crawler, Caddis Larva, Small Minnows, Crawfish Cuts|
+African Pike|#1/0 - #3/0|Shiners, Small Minnows|122 modelli: cucchiaino, minnow, rotante, siliconico
+African Sharptooth Catfish|#4/0 - #8/0|Large Minnow, Large Cutbait, Huge Cutbait, Large Liver, Buffalo Kidneys, African Giant Water Bug, Chicken Liver, Dead Lambari Fish, Canned Meat, Small Tilapia|51 modelli: siliconico
+African Tigerfish|#4/0 - #7/0|Shiners, Large Minnow, Small Tilapia|164 modelli: cucchiaino, minnow, rotante
+Alaska Blackfish|#6|Flies, Crickets, MayFlies|
+Albacore|#4/0 - #7/0|Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|217 modelli: cucchiaino, mare, minnow
+Alligator Gar|#2/0 - #11/0|Shiners, Crawfish, Large Cutbait, Medium Cutbait|56 modelli: minnow, siliconico
+American Gizzard Shad|#8 - #4|Flies, Pinkies, Bloodworms|
+American Shad|#2 - #1/0|Natural Eggs, Spawn Sacks, Shrimps, Small Minnows|115 modelli: rotante, siliconico
+Amur Bitterling|#16|Pearl Barley, Dough Ball, Semolina Balls, Oat-flakes, Red Worms, Pinkies, Maggots, Bloodworms, Caddis Larva|
+Apapa|#1/0 - #3/0|Dragonfly, Shiners, Aracu Minnow, Dobsonfly, Small Minnows|122 modelli: cucchiaino, minnow, rotante, siliconico
+Arapaima|#6/0 - #10/0|Shiners, Large Minnow, Aracu Minnow, Small Minnows|146 modelli: minnow
+Arctic Char|#3/0 - #6/0|Spawn Sacks, Shrimps, Gulf Shrimp, Giant Tiger Prawn, Finger Mullets|332 modelli: cucchiaino, mare, minnow, rotante
+Arctic Grayling|#1/0 - #3/0|Grasshoppers, Crickets, MayFlies, Dragonfly, Bark Beetle Larva, Artificial Salmon Eggs, Natural Eggs, Spawn Sacks, Caddis Larva, Small Minnows, Common Minnow, Boiled Red Roe|210 modelli: cucchiaino, minnow, rotante
+Asp|#2/0 - #4/0|Grasshoppers, Crickets, Dragonfly, Cockchafer, Shiners, Small Minnows|71 modelli: cucchiaino, minnow
+Atlantic Cod|#4/0 - #6/0|Crab, Gulf Shrimp, Giant Tiger Prawn, Finger Mullets, Scaled Sardines|305 modelli: cucchiaino, mare, siliconico
+Atlantic Halibut|#7/0 - #15/0|Crab, Gulf Shrimp, Large Fish Strips, Giant Tiger Prawn|219 modelli: mare, siliconico
+Atlantic Herring|#1 - #6|Natural Eggs, Spawn Sacks, Sea Worms, Clam Meat|188 modelli: cucchiaino, rotante, siliconico
+Atlantic Horse Mackerel|#6 - #1/0|Spawn Sacks, Sea Worms, Clam Meat, Finger Mullets|196 modelli: cucchiaino, minnow, rotante, siliconico
+Atlantic Mackerel|#6 - #1/0|Spawn Sacks, Shrimps, Sea Worms, Clam Meat, Finger Mullets|196 modelli: cucchiaino, minnow, rotante, siliconico
+Atlantic Salmon|#2/0 - #5/0|Large Minnow, Spawn Sacks, Shrimps, Small Minnows|80 modelli: cucchiaino, minnow, rotante, siliconico
+Atlantic Saury|#6|Natural Eggs, Spawn Sacks, Sea Worms|160 modelli: siliconico
+Atlantic Wolffish|#4/0 - #7/0|Shrimps, Mussel Meat, Crab, Gulf Shrimp, Indo-Pacific Swimming Crab, Giant Tiger Prawn, Clam Meat, Natal Rock Oyster Meat|219 modelli: mare, siliconico
+Azov Shad|#6 - #4|Grasshoppers, Dragonfly, Common Minnow|38 modelli: cucchiaino, minnow
+Baikal Omul|#2 - #2/0|Red Worms, Bloodworms, Sideswimmers, Night Crawler, Caddis Larva, Small Minnows, Common Minnow|75 modelli: cucchiaino, rotante, siliconico
+Banded Aracu|#8 - #1|Red Worms, Grasshoppers, Crickets, Bloodworms|
+Banded Tilapia|#8 - #1|Bread, Dough Ball, Semolina Balls, Corn, Peas, Sweet Peas, Sweet corn, Pea dough, Banana bread, Red Worms, Pinkies, Maggots, Bloodworms, Caddis Larva|
+Beluga|#5/0|Shiners, Crawfish, Large Minnow, Large Cutbait, Medium Cutbait, Duck Mussel Meat|
+Biara|#1/0 - #3/0|Shiners, Aracu Minnow, Small Minnows|132 modelli: cucchiaino, minnow, siliconico
+Bicuda|#3/0 - #6/0|Dragonfly, Shiners, Aracu Minnow, Dobsonfly, Small Minnows|215 modelli: cucchiaino, minnow, siliconico
+Bigeye Tuna|#5/0 - #8/0|Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|217 modelli: cucchiaino, mare, minnow
+Bigfin Reef Squid|#2/0 - #3/0|Shrimps, Gulf Shrimp, Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese Anchovy|59 modelli: mare
+Bighead Carp|#2/0 - #6/0|Bread, Corn, Peas, Vegetables, Technoplankton|
+Bigmouth Buffalo|#2 - #2/0|Semolina Balls, Marshmallow, Maggots, Bloodworms, Wax Worms, Technoplankton, Night Crawler|
+Black Bullhead Catfish|#4 - #1/0|Pet Food, Marshmallow, Leeches, Small Cutbait|
+Black Crappie|#8 - #1/0|Marshmallow, Maggots, Bloodworms, Wax Worms, Small Minnows|41 modelli: cucchiaino, rotante, siliconico
+Black Drum|#3/0 - #7/0|Large Minnow, Large Cutbait, Crab, Gulf Shrimp, Medium Cutbait, Sand Fleas, Scaled Sardines|100 modelli: cucchiaino, siliconico
+Black Marlin|#7/0 - #13/0|Japanese Jack Mackerel, Indian Ocean Squid, Large Flying Fish, Finger Mullets, Scaled Sardines, Japanese Anchovy, Split Tail Mullet|205 modelli: mare, minnow
+Black Sea Roach|#3/0 - #4/0|Grasshoppers, Pinkies, Maggots, Bloodworms, Wax Worms, Yellow Maggots|9 modelli: cucchiaino
+Blacktail Shiner|#8|Dough Ball, Semolina Balls|
+Blacktip Reef Shark|#4/0 - #7/0|Large Fish Strips, Japanese Jack Mackerel, Indo-Pacific Swimming Crab, Scaled Sardines|240 modelli: cucchiaino, minnow, rotante
+Blue Bream|#14 - #12|Semolina Balls, Red Worms, Maggots, Bloodworms, Wax Worms, Night Crawler|
+Blue Catfish|#3/0 - #8/0|Leeches, Shiners, Crawfish, Large Minnow, Medium Cutbait|75 modelli: minnow, siliconico
+Bluegill|#8 - #2/0|Dough Ball, Red Worms, Crickets, Maggots|41 modelli: cucchiaino, rotante, siliconico
+Bluntnose Minnow|#10|Red Worms, Bloodworms|
+Bonefish|#1/0 - #5/0|Dragonfly, Shrimps, Gulf Shrimp, Sea Worms, Crawfish Cuts, Clam Meat, Finger Mullets|107 modelli: cucchiaino, siliconico
+Bowfin|#1/0 - #6/0|Shiners, Small Cutbait, Large Minnow|56 modelli: minnow, siliconico
+Brill|#2/0 - #4/0|Shrimps, Mussel Meat, Gulf Shrimp, Sea Worms, Giant Tiger Prawn, Clam Meat, Natal Rock Oyster Meat|219 modelli: mare, siliconico
+Brook Trout|#1 - #3/0|Flies, MayFlies, Artificial Salmon Eggs, Natural Eggs, Shrimps|126 modelli: cucchiaino, minnow, rotante, siliconico
+Brown Bullhead Catfish|#4 - #1|Marshmallow, Leeches, Small Cutbait, Blood, Shrimps|
+Brown Trout|#1 - #3/0|Dragonfly, Spawn Sacks, Small Minnows|126 modelli: cucchiaino, minnow, rotante, siliconico
+Brycon|#1/0 - #3/0|Camu-Camu, Dobsonfly Larva|42 modelli: siliconico
+Bull Shark|#7/0 - #10/0|Large Minnow, Large Cutbait, Huge Cutbait, Aracu Minnow, Medium Cutbait, Amazonian Sardine|146 modelli: minnow
+Bull Trout|#1/0 - #4/0|Dragonfly, Shiners, Spawn Sacks, Small Minnows|68 modelli: cucchiaino, minnow, rotante, siliconico
+Bulldog Fish|#8 - #1|Red Worms, Pinkies, Maggots, Bloodworms, Caster Maggots, Wax Worms, Centipedes, Caddis Larva|
+Burbot|#2/0 - #5/0|Shiners, Small Cutbait, Crawfish Cuts, Medium Cutbait|75 modelli: minnow, siliconico
+Butterfly Peacock Bass|#3/0 - #7/0|Leeches, Shiners, Small Minnows|211 modelli: cucchiaino, minnow, siliconico
+California Roach|#10|Semolina Balls, Red Worms, Bloodworms|
+Chain Pickerel|#2/0 - #5/0|Shiners, Large Minnow, Small Minnows|192 modelli: cucchiaino, minnow, siliconico
+Channel Catfish|#2 - #7/0|Pet Food, Leeches, Small Cutbait, Blood, Large Cutbait|19 modelli: siliconico
+Chinese Sleeper|#6 - #4|Red Worms, Bloodworms, Leeches, Natural Eggs, Night Crawler, Small Minnows|85 modelli: siliconico
+Chinook Salmon|#2/0 - #7/0|Shiners, Spawn Sacks, Shrimps|80 modelli: cucchiaino, minnow, rotante, siliconico
+Chub|#4 - #2/0|Grasshoppers, Flies, Crickets, MayFlies, Dragonfly, Cockchafer, Small Minnows|96 modelli: cucchiaino, minnow, rotante
+Chum Salmon|#2/0 - #6/0|Shiners, Spawn Sacks, Shrimps, Small Minnows|80 modelli: cucchiaino, minnow, rotante, siliconico
+Clear Muskie|#3/0 - #9/0|Shiners, Large Minnow|233 modelli: cucchiaino, minnow, rotante, siliconico
+Coalfish|#3/0 - #6/0|Crab, Gulf Shrimp, Giant Tiger Prawn, Finger Mullets, Scaled Sardines|305 modelli: cucchiaino, mare, siliconico
+Coho Salmon|#2/0 - #5/0|Shiners, Spawn Sacks, Shrimps, Small Minnows|80 modelli: cucchiaino, minnow, rotante, siliconico
+Colorado Golden Trout|#6 - #1/0|Grasshoppers, Flies, Crickets, MayFlies, Dragonfly, Spawn Sacks|130 modelli: cucchiaino, rotante, siliconico
+Common Barbel|#6 - #1/0|Cheese, Semolina Balls, Corn, Red Worms, Spawn Sacks, Blood, Night Crawler|
+Common Bleak|#14|Pearl Barley, Dough Ball, Semolina Balls, Flies, Pinkies, Maggots, Bloodworms|
+Common Bream|#6 - #2|Semolina Balls, Peas, Red Worms, Maggots, Bloodworms, Caster Maggots, Night Crawler|
+Common Carp|#3/0 - #6/0|Bread with Honey, Semolina Balls, Marshmallow, Corn, Peas, Sweet Peas, Sweet corn, Pea dough|
+Common Dace|#2 - #1/0|Semolina Balls, Oat-flakes, Grasshoppers, Flies, Crickets, MayFlies, Dragonfly, Bark Beetle Larva, Night Crawler, Small Minnows, Common Minnow|225 modelli: cucchiaino, minnow, rotante, siliconico
+Common Ling|#4/0 - #7/0|Crab, Gulf Shrimp, Giant Tiger Prawn, Finger Mullets, Scaled Sardines|305 modelli: cucchiaino, mare, siliconico
+Common Minnow|#16|Red Worms, Pinkies, Maggots, Bloodworms, Natural Eggs, Caddis Larva|
+Common Nase|#8 - #6|Pearl Barley, Semolina Balls, Red Worms, Grasshoppers, Pinkies, Maggots, Bloodworms, Centipedes|
+Common Roach|#12 - #9|Pearl Barley, Dough Ball, Semolina Balls, Grasshoppers, Pinkies, Maggots, Bloodworms, Centipedes|
+Common Rudd|#12 - #10|Pearl Barley, Dough Ball, Semolina Balls, Grasshoppers, Maggots, Bloodworms|
+Common Shiner|#8|Dough Ball, Semolina Balls|
+Common Snook|#2/0 - #6/0|Shiners, Large Minnow, Shrimps, Crawfish Cuts, Finger Mullets, Scaled Sardines|161 modelli: cucchiaino, minnow, rotante, siliconico
+Congo Yellowfish|#4 - #1/0|Dough Ball, Semolina Balls, Corn, Peas, Sweet Peas, Sweet corn, Pea dough, Red Worms, Grasshoppers, Crickets, Maggots, Bloodworms, Caster Maggots, Dragonfly, Night Crawler, Caddis Larva|106 modelli: cucchiaino, rotante, siliconico
+Cornish Jack|#3/0 - #6/0|Shiners, Small Cutbait, Freshwater Prawns, Night Crawler, Small Minnows, Medium Cutbait, Small Tilapia|156 modelli: cucchiaino, rotante, siliconico
+Creek Brown Trout|#6 - #1/0|Grasshoppers, Flies, Crickets, MayFlies, Artificial Salmon Eggs, Natural Eggs|111 modelli: cucchiaino, rotante, siliconico
+Crucian Carp|#8 - #2|Dough Ball, Bread with Honey, Semolina Balls, Pea dough, Red Worms, Bloodworms|
+Cusk|#3/0 - #6/0|Shrimps, Mussel Meat, Crab, Gulf Shrimp, Sea Worms, Giant Tiger Prawn, Clam Meat|305 modelli: cucchiaino, mare, siliconico
+Cutthroat Trout|#1 - #2/0|Grasshoppers, Flies, MayFlies, Artificial Salmon Eggs, Natural Eggs|102 modelli: cucchiaino, rotante, siliconico
+Dogtooth Tuna|#5/0 - #8/0|Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|217 modelli: cucchiaino, mare, minnow
+Dolly Varden|#1/0 - #4/0|Dragonfly, Shiners, Spawn Sacks, Small Minnows|68 modelli: cucchiaino, minnow, rotante, siliconico
+Electric Eel|#3/0 - #6/0|Shiners, Aracu Minnow, Small Minnows, Amazonian Sardine|
+Elephant Fish|#8 - #1|Red Worms, Pinkies, Maggots, Bloodworms, Caster Maggots, Wax Worms, Centipedes, Caddis Larva|
+Eurasian Ruffe|#1|Red Worms, Maggots, Bloodworms, Night Crawler|
+European Angler|#5/0 - #9/0|Crab, Large Fish Strips, Scaled Sardines|219 modelli: mare, siliconico
+European Bitterling|#14|Dough Ball, Semolina Balls, Red Worms, Maggots, Bloodworms|
+European Brown Trout|#1 - #3/0|MayFlies, Dragonfly, Natural Eggs, Spawn Sacks, Shrimps, Small Minnows|135 modelli: cucchiaino, minnow, rotante, siliconico
+European Eel|#4 - #3/0|Cheese, Shiners, Small Cutbait, Shrimps, Night Crawler, Small Minnows, Crawfish Cuts, Medium Cutbait|
+European Flounder|#6 - #2|Red Worms, Small Cutbait, Crawfish, Shrimps, Night Crawler, Small Minnows, Crawfish Cuts|93 modelli: siliconico
+European Grayling|#2 - #1/0|Grasshoppers, Crickets, MayFlies, Artificial Salmon Eggs, Natural Eggs, Spawn Sacks|111 modelli: cucchiaino, rotante, siliconico
+European Hake|#3/0 - #6/0|Shrimps, Gulf Shrimp, Giant Tiger Prawn, Finger Mullets, Scaled Sardines|219 modelli: mare, siliconico
+European Perch|#1 - #6/0|Red Worms, Bloodworms, Small Minnows|102 modelli: cucchiaino, rotante, siliconico
+European Sea Sturgeon|#7/0 - #15/0|Mussel Meat, Crab, Gulf Shrimp, Large Fish Strips, Giant Tiger Prawn|
+European Weatherfish|#8 - #6|Red Worms, Maggots, Bloodworms, Night Crawler|
+Flag-Tailed Prochilodus|#8 - #4|Corn, Peas, Camu-Camu|
+Flathead Catfish|#3/0 - #8/0|Leeches, Shiners, Crawfish, Large Minnow, Large Cutbait|75 modelli: minnow, siliconico
+Flatwhiskered Catfish|#2/0 - #5/0|Leeches, Crawfish, Freshwater Prawns, Medium Cutbait, Dead Lambari Fish|
+Florida Gar|#1/0 - #4/0|Shiners, Large Minnow, Large Cutbait, Small Minnows, Medium Cutbait|56 modelli: minnow, siliconico
+Freshwater Drum|#1/0 - #5/0|Peas, Night Crawler, Small Minnows|115 modelli: rotante, siliconico
+Gafftopsail Catfish|#1 - #2/0|Small Cutbait, Crawfish, Shrimps, Crawfish Cuts|27 modelli: siliconico
+Ghost Carp|#2 - #6/0|Bread with Honey, Semolina Balls, Marshmallow, Corn, Peas, Sweet Peas, Sweet corn, Pea dough|
+Giant Grouper|#8/0 - #16/0|Crab, Large Fish Strips, Japanese Spiny Lobster, Gutted Fish, Japanese Jack Mackerel, Scaled Sardines|
+Giant Sweetlips|#3/0 - #6/0|Shrimps, Gulf Shrimp, Indo-Pacific Swimming Crab, Giant Tiger Prawn, Finger Mullets, Japanese Anchovy, Natal Rock Oyster Meat|59 modelli: mare
+Giant Trevally|#5/0 - #8/0|Crab, Gulf Shrimp, Medium Fish Strips, Large Fish Strips, Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|268 modelli: cucchiaino, mare, minnow, siliconico
+Gilded Catfish|#4/0 - #8/0|Shiners, Large Minnow, Aracu Minnow, Dead Lambari Fish|51 modelli: siliconico
+Giraffe Catfish|#1/0 - #5/0|Corn, Peas, Jauari Palm Fruit, Moriche Palm Fruit, Red Worms, Maggots, Bloodworms, Wax Worms, Leeches, Freshwater Prawns, Night Crawler, Caddis Larva, Crawfish Cuts|
+Golden Shiner|#8|Dough Ball, Semolina Balls|
+Golden Tench|#8 - #1|Red Worms, Bloodworms, Leeches, Night Crawler, Crawfish Cuts|
+Goliath Tigerfish|#5/0 - #8/0|Shiners, Large Minnow, Small Tilapia|164 modelli: cucchiaino, minnow, rotante
+Gorgeous Swallowtail|#2/0 - #4/0|Shrimps, Gulf Shrimp, Indo-Pacific Swimming Crab, Finger Mullets, Japanese Anchovy, Natal Rock Oyster Meat|59 modelli: mare
+Grass Carp|#1/0 - #6/0|Bread with Honey, Semolina Balls, Marshmallow, Corn, Peas, Sweet Peas, Sweet corn, Pea dough|
+Grass Pickerel|#1 - #2/0|Large Minnow, Small Minnows|68 modelli: cucchiaino, minnow, siliconico
+Great Barracuda|#4/0 - #7/0|Flying Fish, Scaled Sardines, Split Tail Mullet|299 modelli: cucchiaino, mare, minnow, rotante
+Greater Amberjack|#5/0 - #8/0|Crab, Gulf Shrimp, Medium Fish Strips, Large Fish Strips, Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|217 modelli: cucchiaino, mare, minnow
+Green Jobfish|#4/0 - #7/0|Shrimps, Crab, Gulf Shrimp, Sea Worms, Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese Anchovy|59 modelli: mare
+Green Sunfish|#10|Semolina Balls, Marshmallow, Bloodworms, Wax Worms|
+Greenland Halibut|#7/0 - #11/0|Crab, Gulf Shrimp, Large Fish Strips, Giant Tiger Prawn|219 modelli: mare, siliconico
+Greenland Shark|#10/0 - #16/0|Large Fish Strips, Gutted Fish, Fish Head|
+Gudgeon|#16|Red Worms, Bloodworms, Night Crawler|
+Haddock|#3/0 - #5/0|Spawn Sacks, Shrimps, Mussel Meat, Gulf Shrimp, Sea Worms, Giant Tiger Prawn, Clam Meat, Finger Mullets|219 modelli: mare, siliconico
+Humpback Whitefish|#1 - #2/0|Red Worms, Bloodworms, Natural Eggs, Spawn Sacks, Sideswimmers, Night Crawler, Caddis Larva, Small Minnows, Common Minnow, Boiled Red Roe|94 modelli: cucchiaino, rotante, siliconico
+Hybrid F1 Carp|#8 - #4|Dough Ball, Bread with Honey, Semolina Balls, Pea dough, Red Worms, Bloodworms|
+Ide|#4 - #4/0|Grasshoppers, Flies, Crickets, MayFlies, Dragonfly, Cockchafer, Small Minnows|96 modelli: cucchiaino, minnow, rotante
+Indo-Pacific King Mackerel|#2/0 - #5/0|Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese Anchovy, Split Tail Mullet|264 modelli: cucchiaino, mare, minnow, siliconico
+Jacunda|#1/0 - #3/0|Dobsonfly Larva, Aracu Minnow, Freshwater Prawns|146 modelli: minnow
+Japanese Amberjack|#3/0 - #7/0|Shrimps, Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese Anchovy|286 modelli: cucchiaino, mare, minnow, rotante, siliconico
+Japanese Anchovy|#6|Natural Eggs, Spawn Sacks, Sea Worms|29 modelli: siliconico
+Japanese Jack Mackerel|#6 - #1|Shrimps, Sea Worms, Finger Mullets, Japanese Anchovy|63 modelli: siliconico
+Kamba Catfish|#6/0 - #10/0|Large Minnow, Large Cutbait, Huge Cutbait, Large Liver, Buffalo Kidneys, African Giant Water Bug, Chicken Liver, Dead Lambari Fish, Canned Meat, Small Tilapia|51 modelli: siliconico
+Lake Chub|#8|Semolina Balls, Red Worms, Bloodworms|
+Lake Sturgeon|#3/0 - #7/0|Small Cutbait, Crawfish, Shrimps, Night Crawler, Crawfish Cuts, Medium Cutbait, Duck Mussel Meat|
+Lake Trout|#1/0 - #5/0|Shiners, Spawn Sacks|87 modelli: cucchiaino, minnow, siliconico
+Lake Whitefish|#1 - #2/0|Grasshoppers, Flies, MayFlies, Artificial Salmon Eggs, Natural Eggs|102 modelli: cucchiaino, rotante, siliconico
+Largemouth Bass|#4 - #4/0|Shiners, Small Minnows|224 modelli: cucchiaino, jig, minnow, rotante, siliconico
+Leather Carp|#2 - #5/0|Bread with Honey, Semolina Balls, Marshmallow, Corn, Peas, Sweet Peas, Sweet corn, Pea dough|
+Lenok|#2/0 - #4/0|Grasshoppers, Dragonfly, Bark Beetle Larva, Shiners, Natural Eggs, Spawn Sacks, Night Crawler, Small Minnows, Common Minnow, Boiled Red Roe|219 modelli: cucchiaino, minnow, rotante, siliconico
+Longnose Gar|#1/0 - #6/0|Shiners, Large Minnow, Large Cutbait, Small Minnows, Medium Cutbait|56 modelli: minnow, siliconico
+Longnose Sucker|#2 - #1/0|Semolina Balls, Marshmallow, Bloodworms, Wax Worms, Small Minnows|
+Mahi-Mahi|#4/0 - #7/0|Gulf Shrimp, Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|244 modelli: cucchiaino, mare, minnow, rotante, siliconico
+Marble Trout|#1/0 - #3/0|MayFlies, Dragonfly, Natural Eggs, Spawn Sacks, Shrimps, Small Minnows|135 modelli: cucchiaino, minnow, rotante, siliconico
+Meagre|#5/0 - #9/0|Crab, Gulf Shrimp, Giant Tiger Prawn, Finger Mullets, Scaled Sardines, Split Tail Mullet|305 modelli: cucchiaino, mare, siliconico
+Mirror Carp|#2 - #5/0|Bread with Honey, Semolina Balls, Marshmallow, Corn, Peas, Sweet Peas, Sweet corn, Pea dough|
+Monkey Goby|#14|Red Worms, Maggots, Bloodworms, Shrimps, Night Crawler|38 modelli: siliconico
+Muskellunge|#3/0 - #9/0|Shiners, Large Minnow|233 modelli: cucchiaino, minnow, rotante, siliconico
+Narrow-Barred Mackerel|#4/0 - #7/0|Gulf Shrimp, Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|268 modelli: cucchiaino, mare, minnow, siliconico
+Nile Perch|#5/0 - #11/0|Shiners, Crawfish, Large Minnow, Freshwater Crab, Small Tilapia|188 modelli: cucchiaino, minnow, siliconico
+Nile Tilapia|#6 - #1/0|Bread, Dough Ball, Semolina Balls, Corn, Peas, Sweet Peas, Sweet corn, Pea dough, Banana bread, Red Worms, Pinkies, Maggots, Bloodworms, Caddis Larva|56 modelli: siliconico
+Northern Pike|#1/0 - #8/0|Shiners, Small Minnows|198 modelli: cucchiaino, minnow, rotante, siliconico
+Norway Atlantic Salmon|#4/0 - #8/0|Crab, Gulf Shrimp, Giant Tiger Prawn, Finger Mullets, Scaled Sardines, Split Tail Mullet|299 modelli: cucchiaino, mare, minnow, rotante
+Norway Seaperch|#3/0 - #6/0|Shrimps, Giant Tiger Prawn, Scaled Sardines|219 modelli: mare, siliconico
+Oregon Redband Trout|#4 - #1/0|Grasshoppers, Flies, Crickets, MayFlies, Dragonfly, Spawn Sacks|130 modelli: cucchiaino, rotante, siliconico
+Orinoco Peacock Bass|#4/0 - #6/0|Shiners, Large Minnow, Aracu Minnow, Small Minnows|198 modelli: cucchiaino, minnow, rotante, siliconico
+Oscar|#6 - #1|Semolina Balls, Marshmallow, Red Worms, Bloodworms|
+Pacific Bluefin Tuna|#5/0 - #9/0|Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|217 modelli: cucchiaino, mare, minnow
+Payara|#4/0 - #7/0|Shiners, Aracu Minnow, Small Minnows|118 modelli: minnow, siliconico
+Permit|#2/0 - #7/0|Shrimps, Mussel Meat, Crab, Gulf Shrimp, Crawfish Cuts, Clam Meat, Sand Fleas, Finger Mullets, Scaled Sardines|90 modelli: cucchiaino, siliconico
+Pink Salmon|#1/0 - #3/0|Dragonfly, Shiners, Spawn Sacks, Small Minnows|68 modelli: cucchiaino, minnow, rotante, siliconico
+Piraiba|#6/0 - #10/0|Shiners, Large Minnow, Aracu Minnow, Dead Lambari Fish|51 modelli: siliconico
+Porbeagle Shark|#9/0 - #14/0|Large Fish Strips, Gutted Fish, Fish Head|59 modelli: mare
+Prussian Carp|#8 - #4|Dough Ball, Bread with Honey, Semolina Balls, Pea dough, Red Worms, Bloodworms|
+Pumpkinseed|#10 - #6|Dough Ball, Semolina Balls, Red Worms, Maggots|41 modelli: cucchiaino, rotante, siliconico
+Purple Labeo|#6 - #1/0|Dough Ball, Semolina Balls, Corn, Peas, Sweet corn, Pea dough, Red Worms, Pinkies, Maggots, Bloodworms, Caster Maggots, Wax Worms, Caddis Larva|56 modelli: siliconico
+Rainbow Trout|#2 - #3/0|Grasshoppers, Flies, MayFlies, Artificial Salmon Eggs, Natural Eggs|102 modelli: cucchiaino, rotante, siliconico
+Red Drum|#2/0 - #8/0|Shiners, Crawfish, Large Minnow, Large Cutbait, Shrimps, Crab, Medium Cutbait, Sand Fleas, Finger Mullets, Scaled Sardines|100 modelli: cucchiaino, siliconico
+Red Peacock Bass|#3/0 - #7/0|Shiners, Large Minnow, Aracu Minnow, Small Minnows|198 modelli: cucchiaino, minnow, rotante, siliconico
+Red Tail Barracuda|#1/0|Centipedes, Dobsonfly Larva, Freshwater Prawns|107 modelli: rotante, siliconico
+Red-Bellied Piranha|#1/0 - #3/0|Blood, Meat Chunk, Aracu Minnow, Chicken Liver|87 modelli: cucchiaino, minnow, rotante
+Redbreast Sunfish|#10|Red Worms, Grasshoppers, Crickets, Bloodworms|
+Redear Sunfish|#8 - #1/0|Crickets, Maggots, Bloodworms, Wax Worms, Blood|
+Redeye Piranha|#2/0 - #3/0|Camu-Camu, Blood, Meat Chunk, Chicken Liver|87 modelli: cucchiaino, minnow, rotante
+Redfin Pickerel|#1 - #2/0|Small Minnows|68 modelli: cucchiaino, minnow, siliconico
+Rednose Labeo|#6 - #1/0|Dough Ball, Semolina Balls, Corn, Peas, Sweet corn, Pea dough, Red Worms, Pinkies, Maggots, Bloodworms, Caster Maggots, Wax Worms, Caddis Larva|56 modelli: siliconico
+Redtail Catfish|#4/0 - #8/0|Large Minnow, Large Cutbait, Huge Cutbait, Aracu Minnow, Freshwater Prawns, Large Liver, Freshwater Crab, Chicken Liver, Dead Lambari Fish|51 modelli: siliconico
+Ripsaw Catfish|#1/0 - #5/0|Moriche Palm Fruit, Leeches, Crawfish, Freshwater Prawns, Crawfish Cuts, Dead Lambari Fish|
+Rock Bass|#6|Leeches, Night Crawler|
+Round Goby|#14 - #8|Red Worms, Maggots, Bloodworms, Shrimps, Night Crawler|38 modelli: siliconico
+Ruby Snapper|#6/0 - #10/0|Crab, Medium Fish Strips, Large Fish Strips, Japanese Jack Mackerel, Scaled Sardines, Japanese flying squid|59 modelli: mare
+Sailfish|#5/0 - #8/0|Japanese Jack Mackerel, Indian Ocean Squid, Finger Mullets, Scaled Sardines, Japanese Anchovy, Split Tail Mullet|205 modelli: mare, minnow
+Sauger|#1/0 - #5/0|Leeches, Small Minnows|48 modelli: cucchiaino, siliconico
+Sea Trout|#3/0 - #6/0|Crab, Gulf Shrimp, Giant Tiger Prawn, Finger Mullets, Scaled Sardines, Split Tail Mullet|299 modelli: cucchiaino, mare, minnow, rotante
+Shoal Bass|#3/0 - #4/0|Shiners, Small Minnows|224 modelli: cucchiaino, jig, minnow, rotante, siliconico
+Siberian Taimen|#4/0 - #7/0|Shiners, Large Minnow, Common Minnow|202 modelli: cucchiaino, minnow, rotante, siliconico
+Sickle Pomfret|#4/0 - #7/0|Medium Fish Strips, Indo-Pacific Swimming Crab, Giant Tiger Prawn, Finger Mullets, Japanese flying squid, Japanese Anchovy, Natal Rock Oyster Meat|154 modelli: mare, siliconico
+Silver Arowana|#3/0 - #5/0|Dobsonfly Larva, Aracu Minnow, Freshwater Prawns|146 modelli: minnow
+Silver Bream|#10 - #8|Semolina Balls, Red Worms, Maggots, Bloodworms, Wax Worms, Night Crawler|
+Silver Carp|#2/0 - #6/0|Bread, Corn, Peas, Vegetables, Technoplankton|
+Silver Croaker|#3/0 - #4/0|Dobsonfly Larva, Freshwater Prawns, Mussel Meat, Clam Meat|100 modelli: cucchiaino, siliconico
+Skipjack Tuna|#3/0 - #6/0|Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|217 modelli: cucchiaino, mare, minnow
+Sleek Unicornfish|#1 - #6|Shrimps|
+Smallmouth Bass|#4 - #4/0|Shiners, Small Minnows|224 modelli: cucchiaino, jig, minnow, rotante, siliconico
+Smallmouth Buffalo|#6 - #1/0|Semolina Balls, Corn, Bloodworms, MayFlies|
+Sockeye Salmon|#2/0 - #5/0|Dragonfly, Shiners, Spawn Sacks, Small Minnows|68 modelli: cucchiaino, minnow, rotante, siliconico
+Sorubim Catfish|#4/0 - #5/0|Large Minnow, Large Cutbait, Aracu Minnow, Medium Cutbait, Dead Lambari Fish|51 modelli: siliconico
+Southern Flounder|#1/0 - #5/0|Small Cutbait, Shrimps, Mussel Meat, Gulf Shrimp, Medium Cutbait, Finger Mullets, Scaled Sardines|95 modelli: siliconico
+Speckled Peacock Bass|#5/0 - #10/0|Shiners, Large Minnow, Small Minnows|198 modelli: cucchiaino, minnow, rotante, siliconico
+Spiny Dogfish|#2/0 - #4/0|Crab, Gulf Shrimp, Medium Fish Strips, Large Fish Strips, Japanese Jack Mackerel, Giant Tiger Prawn, Scaled Sardines|219 modelli: mare, siliconico
+Splake|#1/0 - #3/0|Dragonfly, Artificial Salmon Eggs, Natural Eggs, Spawn Sacks, Shrimps, Small Minnows|126 modelli: cucchiaino, minnow, rotante, siliconico
+Spotfin Flyingfish|#2 - #6|Spawn Sacks, Shrimps, Finger Mullets, Japanese Anchovy|8 modelli: minnow
+Spotted Aracu|#8 - #2|Red Worms, Grasshoppers, Crickets, Bloodworms|
+Spotted Bass|#1 - #4/0|Shiners, Natural Eggs, Small Minnows|220 modelli: cucchiaino, jig, minnow, rotante, siliconico
+Spotted Gar|#1 - #2/0|Shiners, Large Minnow, Large Cutbait, Small Minnows, Medium Cutbait|56 modelli: minnow, siliconico
+Steelhead|#1/0 - #4/0|Grasshoppers, Spawn Sacks, Small Minnows|80 modelli: cucchiaino, minnow, rotante, siliconico
+Sterlet|#4 - #2/0|Small Cutbait, Crawfish, Shrimps, Night Crawler, Crawfish Cuts, Medium Cutbait, Duck Mussel Meat|
+Striped Bass|#3/0 - #8/0|Shiners, Large Cutbait, Crab, Sea Worms, Sand Fleas, Finger Mullets, Scaled Sardines|87 modelli: cucchiaino, minnow, siliconico
+Striped Bonito|#2/0 - #6/0|Shrimps, Gulf Shrimp, Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese Anchovy|286 modelli: cucchiaino, mare, minnow, rotante, siliconico
+Striped Marlin|#7/0 - #10/0|Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|205 modelli: mare, minnow
+Swordfish|#2/0 - #16/0|Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|205 modelli: mare, minnow
+Tambaqui|#3/0 - #4/0|Corn, Peas, Camu-Camu, Jauari Palm Fruit, Moriche Palm Fruit, Rubber Tree Seeds|
+Tarpon|#4/0 - #9/0|Dragonfly, Shiners, Large Minnow, Shrimps, Crab, Crawfish Cuts, Scaled Sardines|128 modelli: cucchiaino, minnow, rotante, siliconico
+Tench|#8 - #1|Red Worms, Bloodworms, Leeches, Night Crawler, Crawfish Cuts|
+Thicklip Grey Mullet|#6 - #2|Bread, Cheese, Dough Ball, Red Worms, Small Cutbait, Shrimps, Night Crawler|136 modelli: cucchiaino, rotante, siliconico
+Tiger Muskie|#2/0 - #8/0|Shiners, Large Minnow|233 modelli: cucchiaino, minnow, rotante, siliconico
+Tiger Trout|#1 - #3/0|Dragonfly, Spawn Sacks, Shrimps, Small Minnows|126 modelli: cucchiaino, minnow, rotante, siliconico
+Trahira|#5/0 - #7/0|Shiners, Large Minnow, Aracu Minnow, Small Minnows|63 modelli: minnow, rotante
+Two-Spot Red Snapper|#4/0 - #7/0|Medium Fish Strips, Japanese Jack Mackerel, Indo-Pacific Swimming Crab, Giant Tiger Prawn, Finger Mullets, Scaled Sardines, Japanese Anchovy|59 modelli: mare
+Vundu Catfish|#4/0 - #8/0|Large Minnow, Large Cutbait, Huge Cutbait, Large Liver, Buffalo Kidneys, African Giant Water Bug, Chicken Liver, Dead Lambari Fish, Canned Meat, Small Tilapia|51 modelli: siliconico
+Wahoo|#5/0 - #8/0|Japanese Jack Mackerel, Indian Ocean Squid, Scaled Sardines, Japanese Anchovy, Split Tail Mullet|291 modelli: cucchiaino, mare, minnow
+Walleye|#2/0 - #6/0|Leeches, Small Minnows|48 modelli: cucchiaino, siliconico
+Warmouth|#10 - #2|Red Worms, Grasshoppers, Crickets, Bloodworms|
+Wels Catfish|#5/0 - #9/0|Mole Cricket Larva, Leeches, Shiners, Crawfish, Large Minnow, Frogs, Large Cutbait, Medium Cutbait, Duck Mussel Meat|
+White Bass|#2 - #2/0|Night Crawler, Small Minnows|74 modelli: cucchiaino, siliconico
+White Catfish|#2|Cheese, Leeches, Small Cutbait, Blood, Night Crawler|
+White Crappie|#8 - #1/0|Marshmallow, Maggots, Bloodworms, Wax Worms, Small Minnows|41 modelli: cucchiaino, rotante, siliconico
+White Sturgeon|#3/0 - #8/0|Crawfish, Large Cutbait|
+White Sucker|#2 - #1/0|Semolina Balls, Marshmallow|
+White-Eye Bream|#14 - #10|Semolina Balls, Red Worms, Maggots, Bloodworms, Wax Worms, Night Crawler|
+Whiting|#1/0 - #3/0|Spawn Sacks, Shrimps, Mussel Meat, Gulf Shrimp, Sea Worms, Giant Tiger Prawn, Clam Meat, Finger Mullets|219 modelli: mare, siliconico
+Yellow Perch|#8 - #3/0|Red Worms, Bloodworms|95 modelli: cucchiaino, minnow, rotante, siliconico
+Yellowfin Tuna|#5/0 - #8/0|Japanese Jack Mackerel, Finger Mullets, Scaled Sardines, Japanese flying squid, Japanese Anchovy|217 modelli: cucchiaino, mare, minnow
+Yellowstripe Scad|#1 - #6|Spawn Sacks, Shrimps, Finger Mullets, Japanese Anchovy|8 modelli: minnow
+Zander|#1/0 - #6/0|Leeches, Shiners, Small Minnows|107 modelli: cucchiaino, siliconico
+Ziege|#12 - #8|Red Worms, Grasshoppers, Flies, Maggots, Bloodworms, Wax Worms, Centipedes|

@@ -1,0 +1,23 @@
+# id|nome|materiale|attrezzi|lenze|mulinelli|prezzo|liv_wiki|img|gilet_incluso
+# cassette e borse - dati veri dal wiki di Fishing Planet.
+# NOTA: alla capienza abbiamo SOMMATO quella del gilet migliore
+# disponibile a quel livello, per non dover gestire due oggetti.
+# L'ultima colonna dice quale gilet e' stato sommato.
+1|Easy Go Belt Pocket|D900 Nylon|10|2|0|250|5|Easy_Go_Belt_Pocket.png|Camo Vest
+2|ChumChest Mini|D900 Nylon|8|2|0|710|7|ChumChest_Mini.png|Camo Vest
+3|Handy Tackle Box|Hard Plastic|17|3|0|1200|16|Handy_Tackle_Box.png|Comfort Camper
+4|ChumChest Original|D900 Nylon|14|3|0|1420|17|ChumChest_Original.png|Comfort Camper
+5|Handy II|Hard Plastic|40|3|0|2340|21|Handy_II.png|Wild Element Vest
+6|ChumChest XL|D900 Nylon|32|3|0|2565|23|ChumChest_XL.png|Wild Element Vest
+7|Big Brother Bag|Polyester D600|50|5|0|4650|34|Big_Brother_Bag.png|Grizzly Vest
+8|BigBox XL|Hard Plastic|135|11|0|15000|40|BigBox_XL.png|Wild Element Deluxe Angler Vest
+9|HURU H2|Cordura Fabric|135|9|1|17000|42|HURU_H2.png|Wild Element Deluxe Angler Vest
+10|ChumChest XXL|D900 Nylon|105|9|0|16770|43|ChumChest_XXL.png|Wild Element Deluxe Angler Vest
+11|ChumChest Giant|D900 Nylon|145|10|0|19000|50|ChumChest_Giant.png|Mr. Big Pocket Vest
+12|Whoa Standard|D900 Nylon|165|12|0|22030|63|Whoa_Standard.png|Vestern Pro Vest
+13|Whoa Classy|D900 Nylon|180|14|0|24620|68|Whoa_Classy.png|Vestern Pro Vest
+14|Whoa Wow|D900 Nylon|200|17|0|26800|70|Whoa_Wow.png|Vestern Pro Vest
+15|Sturdy|D900 Nylon|230|15|0|31540|77|Sturdy_tackle_box.png|Safari Pro Vest
+16|StrongBox|D900 Nylon|250|15|0|37820|79|StrongBox_tackle_box.png|Safari Pro Vest
+17|Tackle Wagon Dual|D900 Nylon|310|20|0|55320|87|Tackle_Wagon_Dual.png|Safari Pro Vest
+18|Tackle Wagon Quadro|D900 Nylon|380|25|0|67320|90|Tackle_Wagon_Quadro.png|Safari Pro Vest

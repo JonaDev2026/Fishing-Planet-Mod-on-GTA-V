@@ -1,0 +1,134 @@
+# I COLORI DELLE ARTIFICIALI IN ITALIANO.  inglese|italiano
+# ATTENZIONE: queste traduzioni le abbiamo fatte noi. Sul wiki di Fishing
+# Planet i colori stanno solo in inglese, quindi qui non c'e' un dato
+# preso da loro: c'e' il nome inglese vero e accanto come si dice in
+# italiano. Un colore che qui non c'e' resta scritto in inglese.
+Acid Green|Verde acido
+Acid Green And Yellow|Verde acido e giallo
+Acid Yellow|Giallo acido
+Acid Yellow Brown|Giallo acido e marrone
+Amber|Ambra
+Ammolite|Ammolite
+Beetle|Scarabeo
+Black|Nero
+Black & Pink|Nero e rosa
+Black And Yellow|Nero e giallo
+Black Beetle|Scarabeo nero
+Black Gloss|Nero lucido
+Black and Blue|Nero e blu
+Black and Green|Nero e verde
+Black and Pink|Nero e rosa
+Black&Blue|Nero e blu
+Black&Silver|Nero e argento
+Black/Red|Nero/rosso
+Black/Silver|Nero/argento
+Blue|Blu
+Blue Holographic|Blu olografico
+Blue and Acid Green|Blu e verde acido
+Blue&Silver|Blu e argento
+Blue/Pink|Blu/rosa
+Blue/Silver|Blu/argento
+Brown|Marrone
+Brown Orange|Marrone arancio
+Brown and Yellow|Marrone e giallo
+Carolina Pumpkin|Zucca Carolina
+Chocolate|Cioccolato
+Clown|Clown
+Copper|Rame
+Crawfish|Gambero
+Dark Blue|Blu scuro
+Dark Blue Skirt And Gold&Silver Blades|Gonnellino blu scuro e palette oro e argento
+Dark Green|Verde scuro
+Dark Green/Green|Verde scuro/verde
+Dark Space Blue|Blu spazio scuro
+Dark Wood|Legno scuro
+Dim Green/Glow Green|Verde spento/verde fluo
+Gold|Oro
+Gold and Black Trout|Trota oro e nera
+Grass Green|Verde erba
+Green|Verde
+Green & Black|Verde e nero
+Green And Acid Green|Verde e verde acido
+Green And Orange|Verde e arancio
+Green Holographic|Verde olografico
+Green Pumpkin|Verde zucca
+Green Salad White|Verde insalata e bianco
+Green Tiger|Tigrato verde
+Green With Black Dot|Verde con punto nero
+Green and Black|Verde e nero
+Green and Yellow|Verde e giallo
+Green&Silver|Verde e argento
+Green/White|Verde/bianco
+Green/Yellow|Verde/giallo
+Green/Yellow/Silver|Verde/giallo/argento
+Lemon|Limone
+Lemon Skirt And Blades|Gonnellino e palette limone
+Lemon Tiger|Tigrato limone
+Lemon With Black Stripes|Limone a righe nere
+Light Blue/Green|Azzurro/verde
+Light Green|Verde chiaro
+Light Green/Yellow|Verde chiaro/giallo
+Light Wood|Legno chiaro
+Natural|Naturale
+Natural Green|Verde naturale
+Natural Red|Rosso naturale
+Night Hunter|Cacciatore notturno
+Orange|Arancio
+Orange Fish|Pesce arancio
+Pearl|Perla
+Perch|Persico
+Pink/Golden|Rosa/oro
+Pink/White|Rosa/bianco
+Pumpkin Melon|Zucca melone
+Pumpkin Seed|Seme di zucca
+Purple|Viola
+Purple Dust|Polvere viola
+Rainbow|Arcobaleno
+Rainbow Holographic|Arcobaleno olografico
+Red|Rosso
+Red & White|Rosso e bianco
+Red Holographic|Rosso olografico
+Red Tiger|Tigrato rosso
+Red and Yellow|Rosso e giallo
+Red/Black Flake|Rosso/scaglia nera
+Roach|Triotto
+Rose and Blue Trout|Trota rosa e blu
+Rose and Blue Trout Holographic|Trota rosa e blu olografica
+Rose with Dots|Rosa a pois
+Ruby|Rubino
+Salt & Pepper|Sale e pepe
+Silver|Argento
+Silver & Green Perch|Argento e persico verde
+Silver and Blue|Argento e blu
+Silver and Red|Argento e rosso
+Silver&Green With Red Head|Argento e verde con testa rossa
+Silver&Pink|Argento e rosa
+Silver/Gray|Argento/grigio
+Slice Fish|Fetta di pesce
+Smoke|Fumo
+Strawberry|Fragola
+Striped Green|Verde rigato
+Striped Grey|Grigio rigato
+Swamp Green|Verde palude
+Tiger|Tigrato
+Transparent Weed|Alga trasparente
+Watermelon|Anguria
+Watermelon Seed|Seme d'anguria
+Watermelon/Red Flake|Anguria/scaglia rossa
+White|Bianco
+White & Blue|Bianco e blu
+White & Red Head|Bianco con testa rossa
+White & Red Head/Glow White & Red Head|Bianco con testa rossa/fluo con testa rossa
+White With Black Back|Bianco con dorso nero
+White With Blue Head|Bianco con testa blu
+White/Silver|Bianco/argento
+Wine & Silver|Vino e argento
+Yellow|Giallo
+Yellow & Red|Giallo e rosso
+Yellow & Red Tail|Giallo con coda rossa
+Yellow Beetle|Scarabeo giallo
+Yellow Perch|Persico giallo
+Yellow Tiger Bug|Insetto tigrato giallo
+Yellow and White|Giallo e bianco
+Yellow with Red Back|Giallo con dorso rosso
+Yellow/Silver|Giallo/argento

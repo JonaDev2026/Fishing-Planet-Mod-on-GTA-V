@@ -1,0 +1,10 @@
+# DOVE SI ARRIVA in ogni area, segnato andandoci.
+# area|x|y
+# Il segnaposto e il blip puntano qui invece che al centro
+# geometrico, che puo' cadere su uno scoglio o in mezzo all'acqua.
+Riva est di Alamo|2379.4|4184.4
+Mount Chiliad|1523.5|4391.6
+Torrente di Tongva basso|-1463.9|2061.7
+Faro di El Gordo|3329.3|5154.9
+Molo di Paleto Cove|-1575.6|5177.3
+Paleto Bay ovest|-909.7|6197.4

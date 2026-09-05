@@ -1,0 +1,142 @@
+# id|tipo|marca|modello|lunghezza_m|esca_g|lenza_kg|potenza|liv_wiki|prezzo|img
+# dati veri dal wiki di Fishing Planet
+# esca_g = peso di lancio (Casting Weight / Lure weight, in grammi) preso dalle
+# pagine del wiki. Le canne match e telescopiche sul wiki NON hanno un peso di
+# lancio: sono canne da galleggiante, li' conta la lunghezza.
+1|spinning|MagFin|FeatherLight|1.90|0.5 - 7|1.50 - 4.00|Ultra-Light|9|3000|FeatherLight.png
+2|spinning|MagFin|FeatherLight|2.00|1 - 9|1.50 - 4.00|Ultra-Light|10|3200|FeatherLight.png
+3|spinning|MagFin|JigWinner|2.00|4 - 18|1.50 - 5.00|Light|16|5000|JigWinner.png
+4|spinning|MagFin|JigWinner|2.40|4 - 18|1.50 - 5.50|Light|18|5700|JigWinner.png
+5|spinning|MagFin|JigWinner|2.70|4 - 18|1.50 - 6.00|Light|20|7500|JigWinner.png
+6|spinning|MagFin|Elemental|2.00|2 - 9|1.50 - 3.20|Ultra-Light|4|1700|Elemental.png
+7|spinning|MagFin|Elemental|2.40|5 - 12|1.50 - 3.40|Ultra-Light|6|1850|Elemental.png
+8|spinning|MagFin|Elemental|2.60|6 - 14|1.50 - 3.50|Ultra-Light|8|2100|Elemental.png
+9|spinning|MagFin|Aguarayo|1.90|40 - 70|16.00 - 31.00|X-Heavy|55|45000|Aguarayo.png
+10|spinning|MagFin|Aguarayo|2.00|50 - 80|17.00 - 32.25|X-Heavy|57|47200|Aguarayo.png
+11|spinning|MagFin|RiverSpear|2.10|3 - 14|12.00 - 26.00|Light|51|41840|RiverSpear.png
+12|spinning|MagFin|RiverSpear|2.30|3 - 14|11.00 - 24.50|Light|49|38600|RiverSpear.png
+13|spinning|Garry Scott|Aurora|1.90|7 - 14|1.50 - 4.50|Light|12|4150|Aurora.png
+14|spinning|Garry Scott|Aurora|2.30|10 - 21|1.50 - 4.50|Light|13|4300|Aurora.png
+15|spinning|Garry Scott|Aurora|2.50|10 - 21|1.50 - 4.50|Light|14|4450|Aurora.png
+16|spinning|RIVERTEX|Thora|2.10|20 - 50|3.00 - 7.50|Heavy|22|9000|Thora.png
+17|spinning|RIVERTEX|Thora|2.40|20 - 50|3.00 - 8.50|Heavy|25|9300|Thora.png
+18|spinning|RIVERTEX|Thora|2.90|20 - 50|2.50 - 9.50|Heavy|27|9500|Thora.png
+19|spinning|RIVERTEX|Loki|2.00|20 - 65|3.50 - 10.50|Heavy|30|12000|Loki.png
+20|spinning|RIVERTEX|Loki|2.30|20 - 65|3.50 - 11.00|Heavy|31|12400|Loki.png
+21|spinning|RIVERTEX|Zeus|2.25|18 - 56|6.75 - 19.50|X-Heavy|38|26000|Rivertex_Zeus.png
+22|spinning|RIVERTEX|Zeus|2.50|18 - 56|6.75 - 19.50|X-Heavy|39|26500|Rivertex_Zeus.png
+23|spinning|RIVERTEX|Thetis|2.00|21 - 63|13.00 - 30.50|X-Heavy|52|47900|Thetis.png
+24|spinning|RIVERTEX|Thetis|2.30|18 - 56|11.00 - 27.50|X-Heavy|48|39700|Thetis.png
+25|spinning|Flaggmann|ValueSpin|1.90|5 - 18|1.50 - 3.00|Light|3|1250|ValueSpin.png
+26|spinning|Flaggmann|ValueSpin|2.30|7 - 20|1.50 - 3.40|Light|5|1800|ValueSpin.png
+27|spinning|Flaggmann|ValueSpin|2.60|7 - 21|1.50 - 3.50|Light|7|1950|ValueSpin.png
+28|spinning|RIVERTEX|NileChasseur|1.80|21 - 70|18.00 - 42.00|X-Heavy|76|67460|NileChasseur.png
+29|spinning|RIVERTEX|NileChasseur|1.90|28 - 74|21.00 - 44.00|X-Heavy|78|69110|NileChasseur.png
+30|spinning|RIVERTEX|NileChasseur|2.00|28 - 80|22.00 - 46.00|X-Heavy|80|73140|NileChasseur.png
+31|casting|MagFin|BassCaster|2.00|10 - 40|3.00 - 10.00|Heavy|26|12000|BassCaster.png
+32|casting|MagFin|BassCaster|2.20|14 - 42|3.50 - 10.50|Heavy|28|12300|BassCaster.png
+33|casting|MagFin|FarCaster|1.90|14 - 42|3.00 - 7.00|Medium|22|8300|FarCaster.png
+34|casting|MagFin|FarCaster|2.30|14 - 42|3.00 - 7.50|Medium|23|8500|FarCaster.png
+35|casting|MagFin|FarCaster|2.60|14 - 42|3.00 - 8.00|Medium|25|8800|FarCaster.png
+36|casting|MagFin|Jester|1.70|7 - 21|1.80 - 5.20|Light|11|4300|Jester.png
+37|casting|MagFin|Jester|1.90|7 - 25|2.00 - 5.20|Med Light|14|4550|Jester.png
+38|casting|MagFin|Jester|2.15|11 - 32|2.25 - 5.20|Medium|16|4650|Jester.png
+39|casting|Garry Scott|Argo|1.60|10 - 28|2.50 - 6.00|Med Light|18|6500|Argo.png
+40|casting|Garry Scott|Argo|1.90|10 - 28|2.50 - 6.00|Med Light|19|6750|Argo.png
+41|casting|RIVERTEX|GalaxyCast|1.40|25 - 70|4.00 - 14.00|X Heavy|34|22550|GalaxyCast.png
+42|casting|RIVERTEX|GalaxyCast|1.60|25 - 70|5.00 - 15.00|X Heavy|35|24800|GalaxyCast.png
+43|casting|RIVERTEX|GalaxyCast|1.80|25 - 70|6.00 - 16.00|X Heavy|36|20400|GalaxyCast.png
+44|casting|RIVERTEX|CosmoCast|1.60|28 - 85|6.00 - 22.00|X Heavy|39|33000|CosmoCast.png
+45|casting|RIVERTEX|CosmoCast|1.90|28 - 85|7.00 - 23.00|X Heavy|39|34500|CosmoCast.png
+46|casting|RIVERTEX|CosmoCast|2.20|28 - 85|7.00 - 25.00|X Heavy|40|36000|CosmoCast.png
+47|casting|RIVERTEX|ExCast|2.80|15 - 50|12.00 - 27.00|X Heavy|46|40000|3455.png
+48|casting|RIVERTEX|ExCast|2.90|30 - 75|14.00 - 28.50|X Heavy|49|427100|3455.png
+49|casting|RIVERTEX|ExCast|2.90|30 - 75|14.00 - 28.50|X Heavy|42|48500|3455.png
+50|casting|RIVERTEX|SharpCaster|2.10|21  63|14.00  33.00|X Heavy|54|55330|SharpCaster.png
+51|casting|RIVERTEX|SharpCaster|2.10|24  70|14.00  33.00|X Heavy|50|57800|SharpCaster.png
+52|casting|RIVERTEX|SharpCaster|2.00|24  70|15.00 36.00|X Heavy|55|52720|SharpCaster.png
+53|casting|Flaggmann|ValueCast|1.60|7 - 25|1.80 - 4.00|Med Light|6|2000|ValueCast.png
+54|casting|Flaggmann|ValueCast|2.00|7 - 25|1.80 - 4.00|Med Light|8|2450|ValueCast.png
+55|casting|MagFin|TropiCana|2.20|24 - 100|17.00 - 42.00|X Heavy|70|69770|TropiCana.png
+56|casting|MagFin|TropiCana|2.30|24 - 90|16.00 - 40.00|X Heavy|66|65200|TropiCana.png
+57|fondo|UL-CHUBER|Heavy Chaser|2.90|160 - 230|9.00 - 24.00|X Heavy|46|39050|Heavy_Chaser.png
+58|fondo|UL-CHUBER|Heavy Chaser|3.00|170 - 250|10.00 - 25.50|X Heavy|48|35100|Heavy_Chaser.png
+59|fondo|UL-CHUBER|Cat Boxer|2.40|160 - 220|6.00 - 19.00|X Heavy|41|28600|Cat_Boxer.png
+60|fondo|UL-CHUBER|Cat Boxer|2.60|150 - 200|7.00 - 21.50|X Heavy|42|27300|Cat_Boxer.png
+61|fondo|UL-CHUBER|Bottom Sniper|3.00|90 - 190|4.50  14.00|X Heavy|34|18750|Bottom_Sniper.png
+62|fondo|UL-CHUBER|Bottom Sniper|3.30|100 - 210|5.00  15.00|X Heavy|36|18750|Bottom_Sniper.png
+63|fondo|UL-CHUBER|La Cazadora|2.80|160 - 250|15.00  29.00|X Heavy|61|43870|La_Cazadora.png
+64|fondo|UL-CHUBER|La Cazadora|3.10|170 - 270|16.00  31.00|X Heavy|63|49390|La_Cazadora.png
+65|fondo|UL-CHUBER|Mokonzi|3.60|180 - 290|19.00 - 39.00|X Heavy|76|65725|Mokonzi.png
+66|fondo|UL-CHUBER|Mokonzi|3.90|170 - 280|18.00 - 37.00|X Heavy|74|63075|Mokonzi.png
+67|feeder|UL-CHUBER|Big Alli|3.90|70 - 140|3.00 - 8.00|X Heavy|23|9000|Big_Alli.png
+68|feeder|UL-CHUBER|Big Alli|4.20|85 - 175|3.00 - 8.50|X Heavy|25|9400|Big_Alli.png
+69|feeder|UL-CHUBER|Laker Pro|3.40|15 - 60|2.00 - 6.00|Medium|19|6430|Laker_Pro.png
+70|feeder|UL-CHUBER|Laker Pro|3.70|20 - 70|2.00 - 6.00|Medium|20|6650|Laker_Pro.png
+71|feeder|Flaggmann|AllRound|3.30|20 - 70|1.50 - 4.00|Medium|12|3360|AllRound.png
+72|feeder|Flaggmann|AllRound|3.60|30 - 90|1.50 - 4.50|Medium|14|3410|AllRound.png
+73|feeder|Flaggmann|CreekPro|2.40|5 - 35|1.00 - 3.00|Light|19|1940|CreekPro.png
+74|feeder|Flaggmann|CreekPro|2.70|10 - 40|1.00 - 3.25|Light|20|2020|CreekPro.png
+75|feeder|Flaggmann|CreekPro|3.00|15 - 50|1.00 - 3.50|Light|12|2150|CreekPro.png
+76|match|Garry Scott|Ardix|3.40||5.00  13.50||33|13700|Ardix.png
+77|match|Garry Scott|Ardix|3.70||4.50  12.50||31|12500|Ardix.png
+78|match|Garry Scott|Ardix|4.00||4.00  11.50||29|10000|Ardix.png
+79|match|Garry Scott|Brutus|3.00||5.00 - 16.00||37|17000|Brutus.png
+80|match|Garry Scott|Brutus|3.30||5.00 - 15.50||36|16000|Brutus.png
+81|match|Garry Scott|Nero|3.30||2.30 - 5.00||11|3500|Nero.png
+82|match|Garry Scott|Nero|3.90||2.30 - 5.50||15|3870|Nero.png
+83|match|Garry Scott|Nero|4.50||2.30 - 6.00||19|4200|Nero.png
+84|match|Garry Scott|EquatorMatch|2.40||12.00  36.00||73|60180|EquatorMatch.png
+85|match|Garry Scott|EquatorMatch|2.60||13.00  38.00||75|64300|EquatorMatch.png
+86|match|RIVERTEX|Fenix|3.50||3.00 - 8.00||23|7500|Fenix.png
+87|match|RIVERTEX|Fenix|3.90||2.50 - 9.00||24|8200|Fenix.png
+88|match|RIVERTEX|Fenix|4.50||2.50 - 10.00||26|9000|Fenix.png
+89|match|RIVERTEX|Majesty|3.50||14.00 - 26.00||53|33550|Majesty.png
+90|match|RIVERTEX|Majesty|3.90||12.00 - 23.00||49|23200|Majesty.png
+91|match|RIVERTEX|SpellLauncher|2.90||14.00 - 29.00||60|38440|SpellLauncher.png
+92|match|RIVERTEX|SpellLauncher|3.20||15.00 - 30.30||62|42420|SpellLauncher.png
+93|match|Flaggmann|OmniFloat|3.50||1.50 - 3.00||5|1900|OmniFloat.png
+94|match|Flaggmann|OmniFloat|4.50||1.50 - 3.50||9|2100|OmniFloat.png
+95|carpa|UL-CHUBER|Deep Horizon|3.80|90 - 190|7.00 - 22.50|X Heavy|47|69670|DeepHorizon.png
+96|carpa|UL-CHUBER|Deep Horizon|4.00|100 - 200|7.00 - 24.50|X Heavy|49|72140|DeepHorizon.png
+97|carpa|UL-CHUBER|Carp Ranger|3.30|75 - 170|6.00 - 18.50|X Heavy|42|55050|CarpRanger.png
+98|carpa|UL-CHUBER|Carp Ranger|3.60|80 - 185|6.00 - 20.00|X Heavy|44|57930|CarpRanger.png
+99|carpa|UL-CHUBER|Mega Chuber|3.50|65 - 140|5.00 - 15.00|X Heavy|35|35000|MegaChuber.png
+100|carpa|UL-CHUBER|Mega Chuber|3.75|70 - 155|5.00 - 16.00|X Heavy|37|37500|MegaChuber.png
+101|telescopica|Garry Scott|Troy|5.00||1.00 - 5.00||17|3900|Troy.png
+102|telescopica|Garry Scott|Troy|6.00||1.00 - 5.00||18|4100|Troy.png
+103|telescopica|Garry Scott|Caesar|5.00||1.50 - 4.00||10|2250|Caesar.png
+104|telescopica|Garry Scott|Caesar|7.00||1.50 - 4.50||12|2800|Caesar.png
+105|telescopica|Flaggmann|TeleFloat|4.50||1.00 - 2.00||1|1300|TeleFloat.png
+106|telescopica|Flaggmann|TeleFloat|6.50||1.00 - 3.00||4|1650|TeleFloat.png
+107|mare|Tsurihito|Kodo Kyatcha|2.10|14 - 112|25.00 - 69.00|X Heavy|86|151710|Kodo_Kyatcha.png
+108|mare|Tsurihito|Kodo Kyatcha|2.20|14 - 112|25.00 - 67.00|X Heavy|85|147360|Kodo_Kyatcha.png
+109|mare|Fletch and Bradford|BreakwaterX|2.60|24  168|35.00  80.00|X Heavy|93|182290|BreakwaterX.png
+110|mare|Fletch and Bradford|BreakwaterX|2.70|18  154|30.00  75.00|X Heavy|92|171060|BreakwaterX.png
+111|mare|Tsurihito|MizuJigu|1.65|50  350|40.00  95.00|X Heavy|96|212430|MizuJigu.png
+112|mare|Tsurihito|MizuJigu|1.70|50  350|40.00  90.00|X Heavy|95|220340|MizuJigu.png
+113|mare|Tsurihito|Kodo Tatsu Umi Pro|1.90|14 - 144|18.00 - 55.00|X Heavy|85|107750|Kodo_Tatsu_Umi_Pro.png
+114|mare|Tsurihito|Kodo Tatsu Umi Pro|2.00|14 - 144|18.00 - 52.50|X Heavy|84|105240|Kodo_Tatsu_Umi_Pro.png
+115|mare|Tsurihito|Torii Dai-Kichi|1.80|10 - 100|18.00 - 55.00|X Heavy|83|96200|Torii_Dai-Kichi.png
+116|mare|Tsurihito|Torii Dai-Kichi|1.90|10 - 90|18.00 - 52.50|X Heavy|82|93960|Torii_Dai-Kichi.png
+117|mare|Tsurihito|Kodo Kage|1.65|80  450|55  105|X Heavy|98|336860|KodoKage.png
+118|mare|Tsurihito|Kodo Kage|1.60|80  475|55  110|X Heavy|99|351720|KodoKage.png
+119|mare|Tsurihito|Kodo Kage|1.55|80  475|55  110|X Heavy|100|378350|KodoKage.png
+120|mare|Fletch and Bradford|Tri-Flex Graphite|1.70|48 - 166|21.50 - 60.00|X Heavy|86|115980|Tri-Flex_Graphite.png
+121|mare|Fletch and Bradford|Tri-Flex Graphite|1.80|48 - 166|21.50 - 58.00|X Heavy|85|114550|Tri-Flex_Graphite.png
+122|mare|Fletch and Bradford|MaxFlow X-treme|1.50|72 - 168|16.00 - 73.00|X Heavy|86|151880|MaxFlow_X-treme.png
+123|mare|Fletch and Bradford|MaxFlow X-treme|1.65|72 - 168|16.00 - 70.00|X Heavy|87|148400|MaxFlow_X-treme.png
+124|mare|Fletch and Bradford|Ocean Fury|1.65|24 - 168|30.00 - 88.00|X Heavy|90|180440|Ocean_Fury.png
+125|mare|Fletch and Bradford|Ocean Fury|1.70|24 - 168|30.00 - 84.00|X Heavy|89|171700|Ocean_Fury.png
+126|mare|Fletch and Bradford|ReefRider Max|1.55|36 - 200|27.50 - 74.00|X Heavy|87|154790|ReefRider_Max.png
+127|mare|Fletch and Bradford|ReefRider Max|1.65|36 - 200|27.50 - 72.50|X Heavy|87|155820|ReefRider_Max.png
+128|mare|Tsurihito|Ryoshi Kaito HJ|1.55|200 - 850|37.50 - 92.00|X Heavy|90|188770|Ryoshi_Kaito_HJ.png
+129|mare|Tsurihito|Ryoshi Kaito HJ|1.60|150 - 750|37.50 - 88.00|X Heavy|89|186930|Ryoshi_Kaito_HJ.png
+130|mare|Fletch and Bradford|AquaStrike FJ|1.60|100 - 500|32.00 - 74.00|X Heavy|87|155820|AquaStrike_FJ.png
+131|mare|Fletch and Bradford|AquaStrike FJ|1.70|100 - 500|32.00 - 72.50|X Heavy|86|153670|AquaStrike_FJ.png
+132|mare|Tsurihito|KarasuToha|1.8|200 - 1100|70.00  105.00|X Heavy|100|325380|KarasuToha.png
+133|mare|Tsurihito|KarasuToha|1.9|200 - 1050|70.00 - 100.00|X Heavy|98|317440|KarasuToha.png
+134|mare|Fletch and Bradford|Commander|2.6|50 - 500|55.00  95.00|X Heavy|96|260110|Commander.png
+135|mare|Fletch and Bradford|Commander|2.7|50 - 450|55.00  90.00|X Heavy|95|248740|Commander.png
+136|spod|UL-CHUBER|Power Launcher Spod|3.65|85 - 190|8.00 - 20.00|X Heavy|47|38720|5902.png
+137|spod|UL-CHUBER|Power Launcher Spod|3.75|110 - 240|8.00 - 21.00|X Heavy|48|40500|5902.png

@@ -1,0 +1,263 @@
+# CHE PESCE SI VEDE.   nome_inglese|modello|forma
+#
+# GTA di animali d'acqua ne ha sette in tutto, e sono questi:
+#   a_c_fish        il pesce normale, ha TRE forme dentro
+#   a_c_sharktiger  squalo tigre
+#   a_c_sharkhammer squalo martello
+#   a_c_stingray    razza
+#   a_c_dolphin     delfino
+#   a_c_killerwhale orca
+#   a_c_humpback    megattera
+# Gli ultimi tre sono enormi: appesi a una canna farebbero ridere,
+# quindi non li usa nessuno. Se un giorno vuoi provarli, scrivi il
+# nome qui accanto al pesce.
+#
+# La FORMA vale solo per a_c_fish, che dentro ne ha tre:
+#   0 = affusolato, tipo trota   (trote, salmoni, lucci, siluri,
+#                                 storioni, lepisostei, pesciolini)
+#   1 = fusiforme, tipo tonnetto (tonni, sgombri, marlin, mare)
+#   2 = alto e schiacciato, tipo persico (persici, boccaloni,
+#                                 carpe, breme, panfish, ombrine)
+# La forma viene dalla FAMIGLIA vera del wiki di Fishing Planet.
+# I quarantaquattro pesci che sul wiki la famiglia non ce l'hanno -
+# quasi tutti tropicali - li ho indovinati dal nome: quelli sono
+# una scelta mia. Se ne vedi uno sbagliato, cambia il numero.
+African Big Eye Catfish|a_c_fish|0
+African Pike|a_c_fish|0
+African Sharptooth Catfish|a_c_fish|0
+African Tigerfish|a_c_fish|0
+Alaska Blackfish|a_c_fish|0
+Albacore|a_c_fish|1
+Alligator Gar|a_c_fish|0
+American Gizzard Shad|a_c_fish|2
+American Shad|a_c_fish|2
+Amur Bitterling|a_c_fish|2
+Apapa|a_c_fish|0
+Arapaima|a_c_fish|0
+Arctic Char|a_c_fish|1
+Arctic Grayling|a_c_fish|0
+Asp|a_c_fish|2
+Atlantic Cod|a_c_fish|1
+Atlantic Halibut|a_c_fish|1
+Atlantic Herring|a_c_fish|1
+Atlantic Horse Mackerel|a_c_fish|1
+Atlantic Mackerel|a_c_fish|1
+Atlantic Salmon|a_c_fish|0
+Atlantic Saury|a_c_fish|1
+Atlantic Wolffish|a_c_fish|1
+Azov Shad|a_c_fish|2
+Baikal Omul|a_c_fish|0
+Banded Aracu|a_c_fish|2
+Banded Tilapia|a_c_fish|2
+Beluga|a_c_fish|0
+Biara|a_c_fish|0
+Bicuda|a_c_fish|1
+Bigeye Tuna|a_c_fish|1
+Bigfin Reef Squid|a_c_fish|1
+Bighead Carp|a_c_fish|2
+Bigmouth Buffalo|a_c_fish|2
+Black Bullhead Catfish|a_c_fish|0
+Black Crappie|a_c_fish|2
+Black Drum|a_c_fish|2
+Black Marlin|a_c_fish|1
+Black Sea Roach|a_c_fish|2
+Blacktail Shiner|a_c_fish|0
+Blacktip Reef Shark|a_c_sharktiger|1
+Blue Bream|a_c_fish|2
+Blue Catfish|a_c_fish|0
+Bluegill|a_c_fish|2
+Bluntnose Minnow|a_c_fish|0
+Bonefish|a_c_fish|0
+Bowfin|a_c_fish|0
+Brill|a_c_fish|1
+Brook Trout|a_c_fish|0
+Brown Bullhead Catfish|a_c_fish|0
+Brown Trout|a_c_fish|0
+Brycon|a_c_fish|0
+Bull Shark|a_c_sharktiger|0
+Bull Trout|a_c_fish|0
+Bulldog Fish|a_c_fish|0
+Burbot|a_c_fish|0
+Butterfly Peacock Bass|a_c_fish|2
+California Roach|a_c_fish|2
+Chain Pickerel|a_c_fish|0
+Channel Catfish|a_c_fish|0
+Chinese Sleeper|a_c_fish|0
+Chinook Salmon|a_c_fish|0
+Chub|a_c_fish|2
+Chum Salmon|a_c_fish|0
+Clear Muskie|a_c_fish|0
+Coalfish|a_c_fish|1
+Coho Salmon|a_c_fish|0
+Colorado Golden Trout|a_c_fish|0
+Common Barbel|a_c_fish|2
+Common Bleak|a_c_fish|2
+Common Bream|a_c_fish|2
+Common Carp|a_c_fish|2
+Common Dace|a_c_fish|2
+Common Ling|a_c_fish|1
+Common Minnow|a_c_fish|0
+Common Nase|a_c_fish|2
+Common Roach|a_c_fish|2
+Common Rudd|a_c_fish|2
+Common Shiner|a_c_fish|0
+Common Snook|a_c_fish|0
+Congo Yellowfish|a_c_fish|0
+Cornish Jack|a_c_fish|1
+Creek Brown Trout|a_c_fish|0
+Crucian Carp|a_c_fish|2
+Cusk|a_c_fish|1
+Cutthroat Trout|a_c_fish|0
+Dogtooth Tuna|a_c_fish|1
+Dolly Varden|a_c_fish|0
+Electric Eel|a_c_fish|0
+Elephant Fish|a_c_fish|0
+Eurasian Ruffe|a_c_fish|2
+European Angler|a_c_fish|1
+European Bitterling|a_c_fish|2
+European Brown Trout|a_c_fish|0
+European Eel|a_c_fish|0
+European Flounder|a_c_fish|0
+European Grayling|a_c_fish|0
+European Hake|a_c_fish|1
+European Perch|a_c_fish|2
+European Sea Sturgeon|a_c_fish|1
+European Weatherfish|a_c_fish|0
+Flag-Tailed Prochilodus|a_c_fish|0
+Flathead Catfish|a_c_fish|0
+Flatwhiskered Catfish|a_c_fish|0
+Florida Gar|a_c_fish|0
+Freshwater Drum|a_c_fish|2
+Gafftopsail Catfish|a_c_fish|0
+Ghost Carp|a_c_fish|2
+Giant Grouper|a_c_fish|1
+Giant Sweetlips|a_c_fish|1
+Giant Trevally|a_c_fish|1
+Gilded Catfish|a_c_fish|0
+Giraffe Catfish|a_c_fish|0
+Golden Shiner|a_c_fish|0
+Golden Tench|a_c_fish|2
+Goliath Tigerfish|a_c_fish|0
+Gorgeous Swallowtail|a_c_fish|1
+Grass Carp|a_c_fish|2
+Grass Pickerel|a_c_fish|0
+Great Barracuda|a_c_fish|1
+Greater Amberjack|a_c_fish|1
+Green Jobfish|a_c_fish|1
+Green Sunfish|a_c_fish|2
+Greenland Halibut|a_c_fish|1
+Greenland Shark|a_c_sharktiger|1
+Gudgeon|a_c_fish|0
+Haddock|a_c_fish|1
+Humpback Whitefish|a_c_fish|0
+Hybrid F1 Carp|a_c_fish|2
+Ide|a_c_fish|2
+Indo-Pacific King Mackerel|a_c_fish|1
+Jacunda|a_c_fish|0
+Japanese Amberjack|a_c_fish|1
+Japanese Anchovy|a_c_fish|1
+Japanese Jack Mackerel|a_c_fish|1
+Kamba Catfish|a_c_fish|0
+Lake Chub|a_c_fish|0
+Lake Sturgeon|a_c_fish|0
+Lake Trout|a_c_fish|0
+Lake Whitefish|a_c_fish|0
+Largemouth Bass|a_c_fish|2
+Leather Carp|a_c_fish|2
+Lenok|a_c_fish|0
+Longnose Gar|a_c_fish|0
+Longnose Sucker|a_c_fish|2
+Mahi-Mahi|a_c_fish|1
+Marble Trout|a_c_fish|0
+Meagre|a_c_fish|1
+Mirror Carp|a_c_fish|2
+Monkey Goby|a_c_fish|0
+Muskellunge|a_c_fish|0
+Narrow-Barred Mackerel|a_c_fish|1
+Nile Perch|a_c_fish|2
+Nile Tilapia|a_c_fish|2
+Northern Pike|a_c_fish|0
+Norway Atlantic Salmon|a_c_fish|1
+Norway Seaperch|a_c_fish|1
+Oregon Redband Trout|a_c_fish|0
+Orinoco Peacock Bass|a_c_fish|2
+Oscar|a_c_fish|0
+Pacific Bluefin Tuna|a_c_fish|1
+Payara|a_c_fish|0
+Permit|a_c_fish|2
+Pink Salmon|a_c_fish|0
+Piraiba|a_c_fish|0
+Porbeagle Shark|a_c_sharktiger|1
+Prussian Carp|a_c_fish|2
+Pumpkinseed|a_c_fish|2
+Purple Labeo|a_c_fish|0
+Rainbow Trout|a_c_fish|0
+Red Drum|a_c_fish|2
+Red Peacock Bass|a_c_fish|2
+Red Tail Barracuda|a_c_fish|1
+Red-Bellied Piranha|a_c_fish|2
+Redbreast Sunfish|a_c_fish|2
+Redear Sunfish|a_c_fish|2
+Redeye Piranha|a_c_fish|2
+Redfin Pickerel|a_c_fish|0
+Rednose Labeo|a_c_fish|0
+Redtail Catfish|a_c_fish|0
+Ripsaw Catfish|a_c_fish|0
+Rock Bass|a_c_fish|2
+Round Goby|a_c_fish|0
+Ruby Snapper|a_c_fish|1
+Sailfish|a_c_fish|1
+Sauger|a_c_fish|2
+Sea Trout|a_c_fish|1
+Shoal Bass|a_c_fish|2
+Siberian Taimen|a_c_fish|0
+Sickle Pomfret|a_c_fish|1
+Silver Arowana|a_c_fish|0
+Silver Bream|a_c_fish|2
+Silver Carp|a_c_fish|2
+Silver Croaker|a_c_fish|2
+Skipjack Tuna|a_c_fish|1
+Sleek Unicornfish|a_c_fish|1
+Smallmouth Bass|a_c_fish|2
+Smallmouth Buffalo|a_c_fish|2
+Sockeye Salmon|a_c_fish|0
+Sorubim Catfish|a_c_fish|0
+Southern Flounder|a_c_fish|0
+Speckled Peacock Bass|a_c_fish|2
+Spiny Dogfish|a_c_fish|1
+Splake|a_c_fish|0
+Spotfin Flyingfish|a_c_fish|1
+Spotted Aracu|a_c_fish|2
+Spotted Bass|a_c_fish|2
+Spotted Gar|a_c_fish|0
+Steelhead|a_c_fish|0
+Sterlet|a_c_fish|0
+Striped Bass|a_c_fish|2
+Striped Bonito|a_c_fish|1
+Striped Marlin|a_c_fish|1
+Swordfish|a_c_fish|1
+Tambaqui|a_c_fish|2
+Tarpon|a_c_fish|0
+Tench|a_c_fish|2
+Thicklip Grey Mullet|a_c_fish|0
+Tiger Muskie|a_c_fish|0
+Tiger Trout|a_c_fish|0
+Trahira|a_c_fish|0
+Two-Spot Red Snapper|a_c_fish|1
+Vundu Catfish|a_c_fish|0
+Wahoo|a_c_fish|1
+Walleye|a_c_fish|2
+Warmouth|a_c_fish|2
+Wels Catfish|a_c_fish|0
+White Bass|a_c_fish|2
+White Catfish|a_c_fish|0
+White Crappie|a_c_fish|2
+White Sturgeon|a_c_fish|0
+White Sucker|a_c_fish|2
+White-Eye Bream|a_c_fish|2
+Whiting|a_c_fish|1
+Yellow Perch|a_c_fish|2
+Yellowfin Tuna|a_c_fish|1
+Yellowstripe Scad|a_c_fish|1
+Zander|a_c_fish|2
+Ziege|a_c_fish|2

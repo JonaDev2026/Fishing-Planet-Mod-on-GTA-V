@@ -1,0 +1,249 @@
+# nome|rarita|acque|taglie|elenco delle acque vere
+# QUANTO E' RARO OGNI PESCE - dato vero, dalle 28 pagine delle acque del wiki.
+# Sotto ogni pesce il wiki scrive che taglie da' quell'acqua: Young, Common,
+# Trophy, Unique. Incrociando le 28 acque si vede in quante vive ogni specie.
+# rarita: 5 = una sola acqua e da' l'Unique (rarissimo)
+#         4 = una sola acqua, oppure due con l'Unique
+#         3 = due o tre acque
+#         2 = quattro o cinque acque
+#         1 = sei acque o piu' (il pesce che prendi sempre)
+
+African Big Eye Catfish|5|1|Common/Trophy/Unique|Congo River - Congo
+African Pike|5|1|Common/Trophy/Unique|Congo River - Congo
+African Sharptooth Catfish|5|1|Common/Trophy/Unique|Congo River - Congo
+African Tigerfish|5|1|Common/Trophy/Unique|Congo River - Congo
+Alaska Blackfish|4|1|Common/Trophy|Kaniq Creek - Alaska
+Albacore|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Alligator Gar|4|1|Common/Trophy|Quanchkin Lake - Louisiana
+American Gizzard Shad|5|1|Common/Trophy/Unique|Blue Crab Island - Mississippi
+American Shad|3|2|Common/Trophy|Neherrin River - North Carolina; Saint-Croix Lake - Michigan
+Amur Bitterling|4|1|Common|Selenge River - Mongolia
+Apapa|4|2|Young/Common/Trophy/Unique|Amazonian Maze - Brazil; Marron River - Bolivia
+Arapaima|4|2|Young/Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru
+Arctic Char|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Arctic Grayling|5|1|Common/Trophy/Unique|Selenge River - Mongolia
+Asp|4|2|Common/Trophy/Unique|Dnipro River - Ukraine; Tiber River - Italy
+Atlantic Cod|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Atlantic Halibut|5|1|Young/Common/Trophy/Unique|Skårland Fjord-Norway
+Atlantic Herring|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Atlantic Horse Mackerel|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Atlantic Mackerel|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Atlantic Salmon|3|2|Common/Trophy|Saint-Croix Lake - Michigan; White Moose Lake - Alberta
+Atlantic Saury|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Atlantic Wolffish|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Azov Shad|4|1|Common/Trophy|Dnipro River - Ukraine
+Baikal Omul|5|1|Common/Trophy/Unique|Selenge River - Mongolia
+Banded Aracu|5|1|Common/Trophy/Unique|Amazonian Maze - Brazil
+Banded Tilapia|5|1|Common/Trophy/Unique|Congo River - Congo
+Beluga|4|1|Common|Dnipro River - Ukraine
+Biara|3|3|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Bicuda|5|1|Common/Trophy/Unique|Amazonian Maze - Brazil
+Bigeye Tuna|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Bigfin Reef Squid|5|1|Young/Common/Trophy/Unique|Kaiji No Ri - Japan
+Bighead Carp|5|1|Common/Trophy/Unique|Sander Baggersee Lake - Germany
+Bigmouth Buffalo|5|1|Common/Trophy/Unique|Blue Crab Island - Mississippi
+Black Bullhead Catfish|4|1|Common/Trophy|Mudwater River - Missouri
+Black Crappie|2|4|Common/Trophy/Unique|Emerald Lake - New York; Neherrin River - North Carolina; Quanchkin Lake - Louisiana; Rocky Lake - Colorado
+Black Drum|5|1|Common/Trophy/Unique|Blue Crab Island - Mississippi
+Black Marlin|5|1|Young/Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Black Sea Roach|5|1|Common/Trophy/Unique|Dnipro River - Ukraine
+Blacktail Shiner|3|2|Common|Lone Star Lake - Texas; Mudwater River - Missouri
+Blacktip Reef Shark|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Blue Bream|5|1|Common/Trophy/Unique|Dnipro River - Ukraine
+Blue Catfish|4|2|Common/Trophy/Unique|Quanchkin Lake - Louisiana; Saint-Croix Lake - Michigan
+Bluegill|1|8|Common/Trophy/Unique|Blue Crab Island - Mississippi; Everglades - Florida; Lone Star Lake - Texas; Mudwater River - Missouri; Neherrin River - North Carolina; Quanchkin Lake - Louisiana; Rocky Lake - Colorado; San Joaquin Delta - California
+Bluntnose Minnow|3|3|Common|Emerald Lake - New York; Mudwater River - Missouri; Saint-Croix Lake - Michigan
+Bonefish|5|1|Common/Trophy/Unique|Blue Crab Island - Mississippi
+Bowfin|2|4|Common/Trophy/Unique|Blue Crab Island - Mississippi; Everglades - Florida; Mudwater River - Missouri; Quanchkin Lake - Louisiana
+Brill|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Brook Trout|4|2|Common/Trophy/Unique|Saint-Croix Lake - Michigan; White Moose Lake - Alberta
+Brown Bullhead Catfish|3|3|Common/Trophy|Blue Crab Island - Mississippi; Everglades - Florida; Saint-Croix Lake - Michigan
+Brown Trout|4|2|Common/Trophy/Unique|Falcon Lake - Oregon; Saint-Croix Lake - Michigan
+Brycon|4|2|Common/Trophy/Unique|Maku-Maku Lake - Peru; Marron River - Bolivia
+Bull Shark|4|1|Young/Common/Trophy|Amazonian Maze - Brazil
+Bull Trout|5|1|Common/Trophy/Unique|Kaniq Creek - Alaska
+Bulldog Fish|5|1|Common/Trophy/Unique|Congo River - Congo
+Burbot|4|2|Common/Trophy/Unique|Selenge River - Mongolia; White Moose Lake - Alberta
+Butterfly Peacock Bass|2|5|Common/Trophy/Unique|Amazonian Maze - Brazil; Blue Crab Island - Mississippi; Everglades - Florida; Maku-Maku Lake - Peru; Marron River - Bolivia
+California Roach|4|1|Common|San Joaquin Delta - California
+Chain Pickerel|3|3|Common/Trophy/Unique|Emerald Lake - New York; Mudwater River - Missouri; Quanchkin Lake - Louisiana
+Channel Catfish|2|5|Young/Common/Trophy/Unique|Blue Crab Island - Mississippi; Everglades - Florida; Lone Star Lake - Texas; Mudwater River - Missouri; Quanchkin Lake - Louisiana
+Chinese Sleeper|4|1|Common/Trophy|Dnipro River - Ukraine
+Chinook Salmon|4|2|Common/Trophy/Unique|Kaniq Creek - Alaska; San Joaquin Delta - California
+Chub|3|3|Common/Trophy/Unique|Dnipro River - Ukraine; Tiber River - Italy; Weeping Willow Fishery - United Kingdom
+Chum Salmon|5|1|Common/Trophy/Unique|Kaniq Creek - Alaska
+Clear Muskie|5|1|Common/Trophy/Unique|Saint-Croix Lake - Michigan
+Coalfish|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Coho Salmon|5|1|Common/Trophy/Unique|Kaniq Creek - Alaska
+Colorado Golden Trout|5|1|Common/Trophy/Unique|Rocky Lake - Colorado
+Common Barbel|4|2|Common/Trophy/Unique|Creuse River - France; Tiber River - Italy
+Common Bleak|4|1|Common|Dnipro River - Ukraine
+Common Bream|2|5|Young/Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine; Ghent-Terneuzen Canal - Netherlands; Sander Baggersee Lake - Germany; Weeping Willow Fishery - United Kingdom
+Common Carp|1|8|Young/Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine; Lesni Vila Fishery - Czech Republic; Neherrin River - North Carolina; San Joaquin Delta - California; Sander Baggersee Lake - Germany; Tiber River - Italy; Weeping Willow Fishery - United Kingdom
+Common Dace|5|1|Common/Trophy/Unique|Selenge River - Mongolia
+Common Ling|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Common Minnow|4|1|Common|Selenge River - Mongolia
+Common Nase|4|2|Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine
+Common Roach|1|6|Common/Trophy/Unique|Creuse River - France; Ghent-Terneuzen Canal - Netherlands; Lesni Vila Fishery - Czech Republic; Sander Baggersee Lake - Germany; Selenge River - Mongolia; Tiber River - Italy
+Common Rudd|4|2|Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine
+Common Shiner|3|2|Common|Emerald Lake - New York; Mudwater River - Missouri
+Common Snook|4|2|Common/Trophy/Unique|Blue Crab Island - Mississippi; Everglades - Florida
+Congo Yellowfish|5|1|Common/Trophy/Unique|Congo River - Congo
+Cornish Jack|5|1|Common/Trophy/Unique|Congo River - Congo
+Creek Brown Trout|5|1|Common/Trophy/Unique|Tiber River - Italy
+Crucian Carp|2|4|Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine; Tiber River - Italy; Weeping Willow Fishery - United Kingdom
+Cusk|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Cutthroat Trout|4|2|Young/Common/Trophy/Unique|Falcon Lake - Oregon; Rocky Lake - Colorado
+Dogtooth Tuna|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Dolly Varden|5|1|Common/Trophy/Unique|Kaniq Creek - Alaska
+Electric Eel|5|1|Common/Trophy/Unique|Amazonian Maze - Brazil
+Elephant Fish|5|1|Common/Trophy/Unique|Congo River - Congo
+Eurasian Ruffe|3|2|Common|Dnipro River - Ukraine; Sander Baggersee Lake - Germany
+European Angler|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+European Bitterling|4|1|Common|Tiber River - Italy
+European Brown Trout|5|1|Common/Trophy/Unique|Tiber River - Italy
+European Eel|3|3|Common/Trophy/Unique|Ghent-Terneuzen Canal - Netherlands; Sander Baggersee Lake - Germany; Tiber River - Italy
+European Flounder|5|1|Common/Trophy/Unique|Ghent-Terneuzen Canal - Netherlands
+European Grayling|4|1|Common/Trophy|Tiber River - Italy
+European Hake|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+European Perch|1|8|Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine; Ghent-Terneuzen Canal - Netherlands; Lesni Vila Fishery - Czech Republic; Sander Baggersee Lake - Germany; Selenge River - Mongolia; Tiber River - Italy; Weeping Willow Fishery - United Kingdom
+European Sea Sturgeon|5|1|Young/Common/Trophy/Unique|Skårland Fjord-Norway
+European Weatherfish|3|2|Common/Trophy|Dnipro River - Ukraine; Lesni Vila Fishery - Czech Republic
+Flag-Tailed Prochilodus|4|2|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru
+Flathead Catfish|4|2|Common/Trophy/Unique|Neherrin River - North Carolina; Quanchkin Lake - Louisiana
+Flatwhiskered Catfish|3|3|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Florida Gar|5|1|Common/Trophy/Unique|Everglades - Florida
+Freshwater Drum|3|3|Common/Trophy/Unique|Mudwater River - Missouri; Quanchkin Lake - Louisiana; Saint-Croix Lake - Michigan
+Gafftopsail Catfish|4|2|Common/Trophy/Unique|Blue Crab Island - Mississippi; Everglades - Florida
+Ghost Carp|5|1|Common/Trophy/Unique|Weeping Willow Fishery - United Kingdom
+Giant Grouper|4|2|Young/Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Giant Sweetlips|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Giant Trevally|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Gilded Catfish|4|2|Common/Trophy/Unique|Maku-Maku Lake - Peru; Marron River - Bolivia
+Giraffe Catfish|5|1|Common/Trophy/Unique|Congo River - Congo
+Golden Shiner|1|8|Common|Blue Crab Island - Mississippi; Emerald Lake - New York; Everglades - Florida; Lone Star Lake - Texas; Neherrin River - North Carolina; Quanchkin Lake - Louisiana; Rocky Lake - Colorado; Saint-Croix Lake - Michigan
+Golden Tench|5|1|Common/Trophy/Unique|Weeping Willow Fishery - United Kingdom
+Goliath Tigerfish|5|1|Common/Trophy/Unique|Congo River - Congo
+Gorgeous Swallowtail|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Grass Carp|3|3|Common/Trophy/Unique|Dnipro River - Ukraine; Sander Baggersee Lake - Germany; Weeping Willow Fishery - United Kingdom
+Grass Pickerel|3|3|Common/Trophy|Emerald Lake - New York; Lone Star Lake - Texas; Mudwater River - Missouri
+Great Barracuda|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Greater Amberjack|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Green Jobfish|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Green Sunfish|3|3|Common|Lone Star Lake - Texas; Mudwater River - Missouri; Saint-Croix Lake - Michigan
+Greenland Halibut|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Greenland Shark|5|1|Young/Common/Trophy/Unique|Skårland Fjord-Norway
+Gudgeon|4|1|Common|Dnipro River - Ukraine
+Haddock|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Humpback Whitefish|5|1|Common/Trophy/Unique|Selenge River - Mongolia
+Hybrid F1 Carp|5|1|Common/Trophy/Unique|Weeping Willow Fishery - United Kingdom
+Ide|3|3|Common/Trophy/Unique|Dnipro River - Ukraine; Ghent-Terneuzen Canal - Netherlands; Selenge River - Mongolia
+Indo-Pacific King Mackerel|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Jacunda|3|3|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Japanese Amberjack|5|1|Common/Trophy/Unique|Kaiji No Ri - Japan
+Japanese Anchovy|4|1|Common|Kaiji No Ri - Japan
+Japanese Jack Mackerel|4|1|Common/Trophy|Kaiji No Ri - Japan
+Kamba Catfish|5|1|Common/Trophy/Unique|Congo River - Congo
+Lake Chub|4|1|Common|White Moose Lake - Alberta
+Lake Sturgeon|4|1|Common|Saint-Croix Lake - Michigan
+Lake Trout|5|1|Common/Trophy/Unique|White Moose Lake - Alberta
+Lake Whitefish|5|1|Common/Trophy/Unique|White Moose Lake - Alberta
+Largemouth Bass|1|6|Young/Common/Trophy/Unique|Blue Crab Island - Mississippi; Everglades - Florida; Mudwater River - Missouri; Neherrin River - North Carolina; Quanchkin Lake - Louisiana; San Joaquin Delta - California
+Leather Carp|4|2|Common/Trophy/Unique|Sander Baggersee Lake - Germany; Weeping Willow Fishery - United Kingdom
+Lenok|5|1|Common/Trophy/Unique|Selenge River - Mongolia
+Longnose Gar|4|2|Common/Trophy/Unique|Blue Crab Island - Mississippi; Neherrin River - North Carolina
+Longnose Sucker|4|1|Common/Trophy|Kaniq Creek - Alaska
+Mahi-Mahi|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Marble Trout|5|1|Common/Trophy/Unique|Tiber River - Italy
+Meagre|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Mirror Carp|3|3|Young/Common/Trophy/Unique|Lesni Vila Fishery - Czech Republic; Sander Baggersee Lake - Germany; Weeping Willow Fishery - United Kingdom
+Monkey Goby|4|1|Common|Dnipro River - Ukraine
+Muskellunge|5|1|Common/Trophy/Unique|Saint-Croix Lake - Michigan
+Narrow-Barred Mackerel|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Nile Perch|5|1|Young/Common/Trophy/Unique|Congo River - Congo
+Nile Tilapia|5|1|Common/Trophy/Unique|Congo River - Congo
+Northern Pike|1|11|Young/Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine; Emerald Lake - New York; Ghent-Terneuzen Canal - Netherlands; Kaniq Creek - Alaska; Lesni Vila Fishery - Czech Republic; Saint-Croix Lake - Michigan; Sander Baggersee Lake - Germany; Selenge River - Mongolia; Weeping Willow Fishery - United Kingdom; White Moose Lake - Alberta
+Norway Atlantic Salmon|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Norway Seaperch|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Oregon Redband Trout|5|1|Common/Trophy/Unique|Falcon Lake - Oregon
+Orinoco Peacock Bass|5|1|Common/Trophy/Unique|Amazonian Maze - Brazil
+Oscar|2|5|Common/Trophy/Unique|Amazonian Maze - Brazil; Blue Crab Island - Mississippi; Everglades - Florida; Maku-Maku Lake - Peru; Marron River - Bolivia
+Pacific Bluefin Tuna|4|1|Young/Common/Trophy|Kaiji No Ri - Japan
+Payara|4|2|Common/Trophy/Unique|Maku-Maku Lake - Peru; Marron River - Bolivia
+Permit|5|1|Common/Trophy/Unique|Blue Crab Island - Mississippi
+Pink Salmon|5|1|Common/Trophy/Unique|Kaniq Creek - Alaska
+Piraiba|5|1|Common/Trophy/Unique|Amazonian Maze - Brazil
+Porbeagle Shark|5|1|Young/Common/Trophy/Unique|Skårland Fjord-Norway
+Prussian Carp|2|4|Common/Trophy/Unique|Dnipro River - Ukraine; Lesni Vila Fishery - Czech Republic; Sander Baggersee Lake - Germany; Weeping Willow Fishery - United Kingdom
+Pumpkinseed|1|6|Common/Trophy|Emerald Lake - New York; Falcon Lake - Oregon; Mudwater River - Missouri; Neherrin River - North Carolina; Saint-Croix Lake - Michigan; White Moose Lake - Alberta
+Purple Labeo|5|1|Common/Trophy/Unique|Congo River - Congo
+Rainbow Trout|4|2|Young/Common/Trophy/Unique|Falcon Lake - Oregon; Rocky Lake - Colorado
+Red Drum|4|2|Common/Trophy/Unique|Blue Crab Island - Mississippi; Everglades - Florida
+Red Peacock Bass|5|1|Common/Trophy/Unique|Marron River - Bolivia
+Red Tail Barracuda|3|3|Common|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Red-Bellied Piranha|3|3|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Redbreast Sunfish|4|1|Common|Falcon Lake - Oregon
+Redear Sunfish|1|6|Common/Trophy/Unique|Blue Crab Island - Mississippi; Everglades - Florida; Lone Star Lake - Texas; Neherrin River - North Carolina; Quanchkin Lake - Louisiana; San Joaquin Delta - California
+Redeye Piranha|3|3|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Redfin Pickerel|3|2|Common/Trophy|Emerald Lake - New York; Neherrin River - North Carolina
+Rednose Labeo|5|1|Common/Trophy/Unique|Congo River - Congo
+Redtail Catfish|5|1|Common/Trophy/Unique|Marron River - Bolivia
+Ripsaw Catfish|3|3|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Rock Bass|3|2|Common|Falcon Lake - Oregon; Saint-Croix Lake - Michigan
+Round Goby|3|3|Common/Trophy|Dnipro River - Ukraine; Ghent-Terneuzen Canal - Netherlands; Sander Baggersee Lake - Germany
+Ruby Snapper|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Sailfish|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Sauger|5|1|Common/Trophy/Unique|Emerald Lake - New York
+Sea Trout|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Shoal Bass|5|1|Common/Trophy/Unique|Blue Crab Island - Mississippi
+Siberian Taimen|5|1|Common/Trophy/Unique|Selenge River - Mongolia
+Sickle Pomfret|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Silver Arowana|4|2|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru
+Silver Bream|4|2|Common/Trophy/Unique|Dnipro River - Ukraine; Lesni Vila Fishery - Czech Republic
+Silver Carp|4|2|Common/Trophy/Unique|Dnipro River - Ukraine; Sander Baggersee Lake - Germany
+Silver Croaker|3|3|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Skipjack Tuna|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Sleek Unicornfish|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Smallmouth Bass|2|4|Young/Common/Trophy/Unique|Falcon Lake - Oregon; Neherrin River - North Carolina; Saint-Croix Lake - Michigan; San Joaquin Delta - California
+Smallmouth Buffalo|4|2|Common/Trophy/Unique|Lone Star Lake - Texas; Quanchkin Lake - Louisiana
+Sockeye Salmon|5|1|Common/Trophy/Unique|Kaniq Creek - Alaska
+Sorubim Catfish|3|3|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Southern Flounder|5|1|Common/Trophy/Unique|Blue Crab Island - Mississippi
+Speckled Peacock Bass|4|2|Common/Trophy/Unique|Amazonian Maze - Brazil; Blue Crab Island - Mississippi
+Spiny Dogfish|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Splake|5|1|Common/Trophy/Unique|White Moose Lake - Alberta
+Spotfin Flyingfish|4|1|Common/Trophy|Noomaa Kuda Atholhu - Maldives
+Spotted Aracu|3|3|Common/Trophy/Unique|Amazonian Maze - Brazil; Maku-Maku Lake - Peru; Marron River - Bolivia
+Spotted Bass|4|2|Common/Trophy/Unique|Lone Star Lake - Texas; Quanchkin Lake - Louisiana
+Spotted Gar|5|1|Common/Trophy/Unique|Mudwater River - Missouri
+Steelhead|5|1|Common/Trophy/Unique|San Joaquin Delta - California
+Sterlet|5|1|Common/Trophy/Unique|Dnipro River - Ukraine
+Striped Bass|4|2|Common/Trophy/Unique|Blue Crab Island - Mississippi; San Joaquin Delta - California
+Striped Bonito|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Striped Marlin|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Swordfish|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Tambaqui|5|1|Common/Trophy/Unique|Marron River - Bolivia
+Tarpon|4|2|Common/Trophy/Unique|Blue Crab Island - Mississippi; Everglades - Florida
+Tench|2|5|Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine; Lesni Vila Fishery - Czech Republic; Sander Baggersee Lake - Germany; Weeping Willow Fishery - United Kingdom
+Thicklip Grey Mullet|5|1|Common/Trophy/Unique|Ghent-Terneuzen Canal - Netherlands
+Tiger Muskie|5|1|Common/Trophy/Unique|Saint-Croix Lake - Michigan
+Tiger Trout|5|1|Common/Trophy/Unique|Saint-Croix Lake - Michigan
+Trahira|4|2|Common/Trophy/Unique|Amazonian Maze - Brazil; Marron River - Bolivia
+Two-Spot Red Snapper|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Vundu Catfish|5|1|Common/Trophy/Unique|Congo River - Congo
+Wahoo|5|1|Common/Trophy/Unique|Noomaa Kuda Atholhu - Maldives
+Walleye|4|2|Common/Trophy/Unique|Emerald Lake - New York; Saint-Croix Lake - Michigan
+Warmouth|3|3|Common/Trophy|Blue Crab Island - Mississippi; Everglades - Florida; Quanchkin Lake - Louisiana
+Wels Catfish|2|5|Young/Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine; Sander Baggersee Lake - Germany; Tiber River - Italy; Weeping Willow Fishery - United Kingdom
+White Bass|3|3|Common/Trophy/Unique|Quanchkin Lake - Louisiana; Rocky Lake - Colorado; Saint-Croix Lake - Michigan
+White Catfish|4|1|Common|San Joaquin Delta - California
+White Crappie|2|5|Common/Trophy/Unique|Lone Star Lake - Texas; Mudwater River - Missouri; Neherrin River - North Carolina; Quanchkin Lake - Louisiana; San Joaquin Delta - California
+White Sturgeon|4|1|Common|San Joaquin Delta - California
+White Sucker|3|2|Common|Rocky Lake - Colorado; White Moose Lake - Alberta
+White-Eye Bream|5|1|Common/Trophy/Unique|Dnipro River - Ukraine
+Whiting|5|1|Common/Trophy/Unique|Skårland Fjord-Norway
+Yellow Perch|3|3|Common/Trophy/Unique|Emerald Lake - New York; Saint-Croix Lake - Michigan; White Moose Lake - Alberta
+Yellowfin Tuna|4|2|Common/Trophy/Unique|Kaiji No Ri - Japan; Noomaa Kuda Atholhu - Maldives
+Yellowstripe Scad|4|1|Common/Trophy|Noomaa Kuda Atholhu - Maldives
+Zander|2|4|Common/Trophy/Unique|Creuse River - France; Dnipro River - Ukraine; Ghent-Terneuzen Canal - Netherlands; Sander Baggersee Lake - Germany
+Ziege|5|1|Common/Trophy/Unique|Dnipro River - Ukraine

@@ -1,0 +1,127 @@
+# ============================================================
+#  LE REGOLE DELLA MOD - decise il 2 settembre 2026
+#  Questo file non lo legge il codice: e' il promemoria di cosa
+#  abbiamo deciso e perche'. Serve a noi.
+# ============================================================
+
+## COSA E' DATO VERO E COSA E' NOSTRO
+Tutto il catalogo viene dal wiki di Fishing Planet: pesci, canne,
+mulinelli, lenze, ami, terminali, esche, borse, portacanne, nasse,
+con i loro livelli, prezzi e caratteristiche.
+Sono NOSTRE: la curva dell'esperienza (livelli.txt), la formula dei
+punti per pesce, i prezzi delle licenze, e il cambio crediti->dollari.
+Ogni file che contiene roba nostra lo dice in cima.
+
+## I SOLDI
+I prezzi del wiki sono in crediti, gonfiati perche' quel gioco ci
+vende sopra la moneta a pagamento. In GTA i soldi non sono un freno,
+quindi li dividiamo per 10 (const CAMBIO in Pesca.cs).
+Il freno vero non e' il prezzo dell'attrezzatura: e' la LICENZA.
+
+## I LIVELLI
+Il livello sblocca l'attrezzatura, e i livelli degli oggetti sono
+quelli veri del wiki. Quanto ci metti a salire lo decidiamo noi:
+circa 3 uscite per livello, dall'inizio alla fine, senza muri.
+La curva vera di Fishing Planet (110 livelli, 109 milioni di XP per
+l'ultimo) resta in _riferimenti/wiki_dump/livelli_fp.txt: la' per
+arrivare al livello 80 servono piu' di duemila uscite.
+
+## L'ESPERIENZA
+base:  20 + peso_kg x 15
+come l'hai preso:  esca preferita x1.5, amo giusto x1.3, tutti e due x2
+quante volte:      prima volta x8, dalla 2a alla 5a x3,
+                   dalla 6a alla 20a x1.5, oltre x1.3
+taglia:            trofeo x2, esemplare unico x3
+Nessun fattore domina. Un pesce nuovo preso male vale come uno noto
+preso benissimo. Si sale pescando, non ripetendo.
+
+## L'ATTREZZATURA DECIDE IL PESCE
+Quello che riesci a tirare su e' il piu' debole dei tre pezzi montati:
+la canna regge fino a tot, il mulinello frena fino a tot, la lenza si
+spezza a tot. Vince il numero piu' basso.
+La nassa ha due limiti suoi: il pesce singolo piu' grosso che ci sta,
+e quanti chili in tutto prima di essere piena.
+Non serve bilanciare l'esperienza a mano: a livello 1 la lenza regge
+0.9 kg, quindi pesci piccoli e punti pochi. Sale l'attrezzatura,
+salgono i pesci, salgono i punti.
+
+## L'INVENTARIO DI CASA
+A casa c'e' tutto quello che hai comprato. Prima di uscire carichi:
+le canne nel portacanne, il resto nella cassetta. Quanto ci sta lo
+dicono i due contenitori (nella cassetta e' gia' sommato il gilet).
+
+## L'ORDINE DELLE COSE
+Finche' non hai comprato la licenza sei "a casa", anche se sei in
+riva al lago: il menu ti lascia aperto il NEGOZIO (quello vero,
+completo, prezzi normali) e l'INVENTARIO. Compri con calma e ti
+prepari la borsa.
+Poi "Inizia a pescare": la mod guarda dove sei, capisce la zona e
+apre a destra un riquadro con le licenze di QUEL posto - Basic e
+Advanced, le restrizioni di ognuna e i prezzi dei quattro tagli.
+Scegli, paghi, e da li' in poi vale tutto quello che sta sotto:
+inventario chiuso, negozio ridotto e caro, orologio rallentato.
+Senza il minimo indispensabile non parte: ci vogliono almeno una
+canna, un mulinello montato con la sua lenza e la nassa (o il filo).
+Il resto e' roba tua: quante esche portarti lo decidi te. Se non ne
+porti abbastanza le ricompri sul posto al doppio - o torni a casa e
+ripaghi la licenza. Sono soldi tuoi, spendili come ti pare.
+
+## LA LICENZA
+La mod riconosce da sola la zona dove sei e ti offre la licenza di
+quel posto. Due tipi:
+  BASIC     - niente pesca di notte, niente pesca dalla barca,
+              i trofei vanno rilasciati
+  ADVANCED  - nessuna restrizione
+Quattro tagli: 1 giorno, 3 giorni, settimana, mese. I rapporti fra i
+tagli (2.8x, 6.3x, 24x) e il raddoppio Basic->Advanced sono quelli
+veri del wiki; i prezzi di partenza per le nostre dieci acque no.
+Nell'oceano aperto si pesca solo dalla barca, e la Basic la barca la
+vieta: li' o prendi l'Advanced o non ci vai.
+
+I tagli lunghi sono uno SCONTO per chi si impegna prima:
+tre giorni costano 2.8 volte un giorno invece di 3 (-7%), la settimana
+6.3 invece di 7 (-10%), il mese 24 invece di 30 (-20%).
+Chi sa gia' che vuole restare a girare quell'acqua con calma paga meno.
+
+PROLUNGAMENTO: scaduta la giornata, se sei li' e vuoi continuare paghi
+un altro giorno intero, a prezzo pieno e senza sconto, e resti.
+Chi decide prima risparmia, chi improvvisa paga di piu'.
+
+Comprata la licenza, l'inventario di casa si CHIUDE per tutta la
+giornata, anche se smetti dopo dieci minuti. Se vuoi ripescare,
+ripaghi. Quello che hai dimenticato a casa te lo sei dimenticato.
+
+## IL NEGOZIO SUL POSTO (regola nostra)
+Sull'acqua c'e' un banchetto, non il negozio di prima. Serve a non
+farti finire la giornata a mani vuote, non a rimediare a una borsa
+preparata male.
+Vende materiale di consumo: esche, lenze, qualche amo e terminale.
+Niente canne, mulinelli, nasse, cassette: quelle o le hai portate o
+niente.
+Solo roba fino al tuo livello, e poche voci per categoria: non e' il
+catalogo di casa, e' quel poco che il banchetto si porta dietro.
+E si paga il doppio del prezzo di casa (x2), senza sconti.
+Basta per non restare fermo e continuare a pescare, non basta per
+rifarti l'attrezzatura sul posto.
+Chi si organizza prima risparmia, chi si dimentica le esche paga.
+
+## LA GIORNATA DI PESCA
+Comprando la licenza la mod porta l'orologio di GTA alle 05:00 e
+rallenta il tempo: un minuto di gioco ogni 5 secondi veri, cosi' un
+giorno dura circa 2 ore vere invece di 48 minuti.
+L'orologio torna normale appena la licenza finisce: non vogliamo
+allungare il resto del gioco.
+Quando la giornata scade non peschi piu', ma resti dove sei e fai
+quello che vuoi: e' sempre GTA, non ti riporta a casa nessuno.
+
+## ORA E METEO
+Il pesce non abbocca sempre uguale: contano l'esca, ma anche l'ora e
+il tempo che fa. Alba e tramonto meglio, sole a picco peggio.
+Queste sono regole di gioco nostre, non dati del wiki.
+
+## IL SENSO
+Il livello non e' una corsa. In Fishing Planet la barra ti sta sempre
+davanti agli occhi e finisci che peschi per i numeri. Qui la
+soddisfazione sta nel quaderno: 239 specie da riempire, sapere che il
+Gudgeon lo prendi a Zancudo all'alba coi vermi rossi e che nel canyon
+c'e' una trota che nell'Alamo non trovi.

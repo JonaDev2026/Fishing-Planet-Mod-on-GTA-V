@@ -1,0 +1,138 @@
+# id|tipo|marca|serie|misura|rapporto|recupero_cm|capacita|frizione_kg|liv_wiki|prezzo|img
+# dati veri dal wiki di Fishing Planet
+# niente versioni SE/NE: sono a baitcoin, la moneta a pagamento,
+# e avevano livello 1 con frizioni da 15 kg. Fuori dal catalogo.
+1|spinning|MagFin|Espira Slim|1000|5.4:1|80|mono 0.12/100;  braid 0.12/100|2.30|6|2500|EspiraSlim.png
+2|spinning|MagFin|Espira Slim|2500|5.4:1|80|mono 0.25/100;  braid 0.20/125|2.90|10|3500|EspiraSlim.png
+3|spinning|MagFin|Callisto MG|2500|4.7:1|70|mono 0.25/100;  braid 0.20/125|3.50|11|4700|Callisto_MG.png
+4|spinning|MagFin|Callisto MG|3000|4.7:1|70|mono 0.30/100;  braid 0.23/135|4.00|13|5000|Callisto_MG.png
+5|spinning|MagFin|Callisto XS|1000|5.3:1|60|mono 0.12/100;  braid 0.12/100|2.20|6|2000|CallistoXS.png
+6|spinning|MagFin|Callisto XS|1400|5.3:1|60|mono 0.12/120;  braid 0.12/120|2.60|7|2300|CallistoXS.png
+7|spinning|MagFin|Callisto XSR|1000|5.8:1|70|mono 0.12/100;  braid 0.12/100|1.45|2|750|CallistoXSR.png
+8|spinning|MagFin|Callisto XSR|1400|5.8:1|70|mono 0.18/75;  braid 0.15/95|2.00|5|1150|CallistoXSR.png
+9|spinning|MagFin|Espira ML|2000|4.7:1|70|mono 0.20/100;  braid 0.20/100|5.50|20|8300|EspiraML.png
+10|spinning|MagFin|Espira ML|2500|4.7:1|70|mono 0.25/100;  braid 0.20/125|5.50|20|8400|EspiraML.png
+11|spinning|MagFin|Espira ML|3000|4.7:1|70|mono 0.3/100;  braid 0.23/135|5.50|21|8500|EspiraML.png
+12|spinning|MagFin|Espira MLR|2000|4.7:1|70|mono 0.20/100;  braid 0.20/100|5.00|18|7200|EspiraMLR.png
+13|spinning|MagFin|Espira MLR|2500|4.7:1|70|mono 0.25/100;  braid 0.20/125|5.00|19|7400|EspiraMLR.png
+14|spinning|MagFin|Espira MLR|3000|4.7:1|70|mono 0.30/100;  braid 0.23/135|5.00|19|7800|EspiraMLR.png
+15|spinning|MagFin|Espira MLR|3500|4.7:1|70|mono 0.35/100;  braid 0.23/160|6.00|23|9200|EspiraMLR.png
+16|spinning|MagFin|Espira DoublePunch|4500|4.5:1|70|mono 0.40/110;  braid 0.28/145|11.00|32|22000|EspiraDoublePunch.png
+17|spinning|MagFin|Espira DoublePunch|5500|4.5:1|70|mono 0.50/110;  braid 0.28/180|12.00|35|23500|EspiraDoublePunch.png
+18|spinning|MagFin|Prima|2000|5.2:1|80|mono 0.20/100;  braid 0.20/100|4.00|14|5400|Prima.png
+19|spinning|MagFin|Prima|2500|5.2:1|80|mono 0.25/100;  braid 0.20/125|4.00|15|5500|Prima.png
+20|spinning|MagFin|Prima|3000|5.2:1|80|mono 0.30/100;  braid 0.23/135|4.00|16|5700|Prima.png
+21|spinning|MagFin|Prima|3500|5.2:1|80|mono 0.30/120;  braid 0.23/160|4.50|17|5900|Prima.png
+22|spinning|MagFin|Selva Star|6000|5.5:1|88|mono 0.50/120;  braid 0.28/205|30.00|56|51380|Selva_Star.png
+23|spinning|MagFin|Selva Star|7000|5.5:1|88|mono 0.60/120;  braid 0.30/215|31.65|58|53380|Selva_Star.png
+24|spinning|MagFin|Ultimate Roller|2500S|6.0:1|100|mono 0.25/100;  braid 0.20/125|22.50|48|43700|Ultimate_Roller.png
+25|spinning|MagFin|Ultimate Roller|3000S|6.0:1|100|mono 0.30/100;  braid 0.23/135|24.00|51|48900|Ultimate_Roller.png
+26|spinning|RIVERTEX|ThunderSpin|4500|5.4:1|80|mono 0.4/110;  braid 0.28/145|16.00|38|30300|ThunderSpin.png
+27|spinning|RIVERTEX|ThunderSpin|5000|5.4:1|80|mono 0.5/100;  braid 0.28/170|17.00|39|32000|ThunderSpin.png
+28|spinning|RIVERTEX|ThunderSpin|5500|5.4:1|80|mono 0.5/110;  braid 0.28/180|19.00|40|34500|ThunderSpin.png
+29|spinning|RIVERTEX|Exterminator|4500|4.6:1|80|Mono 0.4/110;  Braid 0.28/145|7.50|25|12000|Exterminator.png
+30|spinning|RIVERTEX|Exterminator|5500|4.6:1|80|Mono 0.5/110;  Braid 0.28/180|8.50|27|14400|Exterminator.png
+31|spinning|RIVERTEX|HornetSwarm|4000|5.0:1|90|mono 0.40/100;  braid 0.28/135|9.00|29|16400|Hornet_Swarm.png
+32|spinning|RIVERTEX|HornetSwarm|5000|5.0:1|90|mono 0.50/100;  braid 0.28/170|9.50|31|16700|Hornet_Swarm.png
+33|spinning|RIVERTEX|FatBoySpin|4000|4.6:1|75|mono 0.40/100;  braid 0.28/135|7.00|24|10600|FatBoySpin.png
+34|spinning|RIVERTEX|FatBoySpin|5000|4.6:1|75|mono 0.50/100;  braid 0.28/170|8.00|26|11200|FatBoySpin.png
+35|spinning|RIVERTEX|FatBoySpin|6000|4.6:1|75|mono 0.50/120;  braid 0.28/205|9.00|28|11800|FatBoySpin.png
+36|spinning|RIVERTEX|LineGlider|4000|4.6:1|75|mono 0.40/100;  braid 0.28/135|10.00|30|14150|LineGlider.png
+37|spinning|RIVERTEX|LineGlider|5000|4.6:1|75|mono 0.50/100;  braid 0.28/170|11.00|33|15400|LineGlider.png
+38|spinning|RIVERTEX|LineGlider|6000|4.6:1|75|mono 0.50/120;  braid 0.28/205|12.00|36|17000|LineGlider.png
+39|spinning|RIVERTEX|ExcelSpinner|4000|5.5:1|90|mono 0.40/100;  braid 0.28/135|24.50|54|50000|ExcelSpinner.png
+40|spinning|RIVERTEX|ExcelSpinner|5000|5.5:1|95|mono 0.50/100;  braid 0.28/170|26.50|55|53500|ExcelSpinner.png
+41|spinning|RIVERTEX|Empress|5000|5.1:1|110|mono 0.50/100;  braid 0.28/170|20.00|49|37100|Empress.png
+42|spinning|RIVERTEX|Empress|6000|5.1:1|115|mono 0.50/120;  braid 0.28/205|22.10|53|43700|Empress.png
+43|spinning|RIVERTEX|Empress|7000|5.1:1|120|mono 0.60/120;  braid 0.30/215|25.20|54|49900|Empress.png
+44|spinning|RIVERTEX|MatchCatch|7000|5.1:1|110|mono 0.60/120;  braid 0.30/215|28.00|61|52300|MatchCatch.png
+45|spinning|RIVERTEX|MatchCatch|8000|5.1:1|115|mono 0.70/115;  braid 0.30/266|29.30|63|54790|MatchCatch.png
+46|spinning|RIVERTEX|GiantSpin|8000|5.5:1|115|mono 0.70/115;  braid 0.30/266|41.00|77|71250|GiantSpin.png
+47|spinning|RIVERTEX|GiantSpin|9000|5.5:1|115|mono 0.50/120;  braid 0.30/300|43.00|79|73500|GiantSpin.png
+48|spinning|Flaggmann|FeederForcer|4000|4.8:1|75|mono 0.40/100;  braid 0.28/135|3.85|13|5350|FeederForcer.png
+49|spinning|Flaggmann|FeederForcer|5000|4.8:1|78|mono 0.50/100;  braid 0.28/170|4.30|15|5870|FeederForcer.png
+50|spinning|Flaggmann|CrucianHunter|3000|4.9:1|64|mono 0.30/100;  braid 0.23/135|3.00|8|3710|CrucianHunter.png
+51|spinning|Flaggmann|CrucianHunter|3500|4.9:1|70|mono 0.30/120;  braid 0.23/160|3.25|10|4200|CrucianHunter.png
+52|spinning|Flaggmann|InspireCast|2000|5.1:1|70|mono 0.20/100;  braid 0.20/100|1.60|4|850|InspireCast.png
+53|spinning|Flaggmann|InspireCast|3000|5.1:1|70|mono 0.30/100;  braid 0.23/135|2.90|7|2800|InspireCast.png
+54|spinning|Flaggmann|WinCast|1500|4.6:1|60|Mono 0.18/80;  Braid 0.15/100|2.25|5|1150|WinCast.png
+55|spinning|Flaggmann|WinCast|2500|4.6:1|60|mono 0.25/100;  braid 0.20/125|2.90|8|2400|WinCast.png
+56|spinning|Flaggmann|MiniSpin|800|5.5:1|50|mono 0.12/65;  braid 0.12/80|1.25|1|500|MiniSpin.png
+57|spinning|Flaggmann|MiniSpin|1200|5.5:1|60|mono 0.12/120;  braid 0.12/120|1.55|3|650|MiniSpin.png
+58|spinning|UL-CHUBER|Griffon Spod|8000|6.2:1|145|Mono 0.7/115;  Braid 0.32/250|19.50|48|37800|Griffon_Spod.png
+59|spinning|UL-CHUBER|Griffon Spod|9000|6.2:1|150|Mono 0.5/180;  Braid 0.28/320|20.50|49|39100|Griffon_Spod.png
+60|spinning|UL-CHUBER|Leviathan|8000|4.3:1|102|Mono 0.7/115;  Braid 0.32/250|22.20|48|46200|Leviathan.png
+61|spinning|UL-CHUBER|Leviathan|9000|4.3:1|106|Mono 0.5/180;  Braid 0.28/320|24.20|49|48500|Leviathan.png
+62|spinning|UL-CHUBER|Kraken|7000|4.7:1|100|Mono 0.6/120;  Braid 0.3/215|18.15|43|35150|Kraken.png
+63|spinning|UL-CHUBER|Kraken|8000|4.7:1|107|Mono 0.7/115;  Braid 0.32/250|19.65|45|36300|Kraken.png
+64|spinning|UL-CHUBER|Ambusher|8500|5.0:1|90|Mono 0.5/170;  Braid 0.28/300|21.00|43|38200|Ambusher.png
+65|spinning|UL-CHUBER|Ambusher|9000|5.0:1|90|Mono 0.5/180;  Braid 0.28/320|22.50|45|40000|Ambusher.png
+66|spinning|UL-CHUBER|Mega Tank|6000|5.1:1|100|Mono 0.5/120;  Braid 0.28/205|14.50|36|27400|Mega_Tank.png
+67|spinning|UL-CHUBER|Mega Tank|7000|5.1:1|108|Mono 0.6/120;  Braid 0.3/215|15.40|38|29500|Mega_Tank.png
+68|spinning|UL-CHUBER|Breamer|4000|5.5:1|88|Mono 0.4/100;  Braid 0.28/135|5.70|20|8700|Breamer.png
+69|spinning|UL-CHUBER|Breamer|4500|5.5:1|93|Mono 0.4/110;  Braid 0.28/145|5.90|22|9100|Breamer.png
+70|spinning|UL-CHUBER|Big River|5000|6.0:1|110|mono 0.50/100;  braid 0.28/170|7.70|26|11850|Big_River.png
+71|spinning|UL-CHUBER|Big River|6000|6.0:1|120|mono 0.50/120;  braid 0.28/205|8.15|27|13500|Big_River.png
+72|spinning|UL-CHUBER|Torbellino|9000|4.3:1|105|Mono 0.50/120;  Braid 0.30/300|28.50|62|55500|Torbellino.png
+73|spinning|UL-CHUBER|Torbellino|10000|4.3:1|110|Mono 0.55/180;  Braid 0.32/310|30.30|64|56850|Torbellino.png
+74|spinning|UL-CHUBER|Fileur|10000|5.2:1|110|Mono 0.55/180;  Braid 0.32/310|38.00|75|66075|Fileur.png
+75|spinning|UL-CHUBER|Fileur|11000|5.2:1|110|Mono 0.80/123;  Braid 0.32/343|36.00|74|64050|Fileur.png
+76|spinning|Garry Scott|L'impulsion|11000|5.6:1|120|mono 0.80/123;  braid 0.33/343|35.00|72|63420|L_impulsion.png
+77|spinning|Garry Scott|L'impulsion|12000|5.6:1|120|mono 0.80/123;  braid 0.33/343|37.00|75|67765|L_impulsion.png
+78|casting|MagFin|Attorney|2000P|6.4:1|70|mono 0.20/100; braid 0.20/100|4.00|10|4900|Attorney.png
+79|casting|MagFin|Attorney|2000S|7.3:1|80|mono 0.20/100; braid 0.20/100|3.50|15|5800|Attorney.png
+80|casting|MagFin|Attorney|3000P|6.4:1|70|mono 0.30/100; braid 0.23/135|5.00|17|6300|Attorney.png
+81|casting|MagFin|Attorney|3000S|7.3:1|80|mono 0.30/100; braid 0.23/135|4.00|20|6800|Attorney.png
+82|casting|MagFin|Fellix|500|7.6:1|50|mono 0.12/50; braid 0.12/50|2.80|6|950|Fellix.png
+83|casting|MagFin|LowDex|1000S|7.4:1|60|mono 0.12/100; braid 0.12/100|3.00|7|2850|LowDex.png
+84|casting|MagFin|LowDex|1500P|6.6:1|50|mono 0.18/80; braid 0.15/100|3.50|9|3500|LowDex.png
+85|casting|MagFin|LowDex MG|1000P|6.5:1|55|mono 0.12/100; braid 0.12/100|4.80|18|7500|LowDexMG.png
+86|casting|MagFin|LowDex MG|1000S|7.4:1|65|mono 0.12/100; braid 0.12/100|4.00|12|5000|LowDexMG.png
+87|casting|MagFin|LowDex MG|1500P|6.5:1|55|mono 0.18//80; braid 0.15/100|5.50|21|8600|LowDexMG.png
+88|casting|MagFin|LowDex MG|1500S|7.5:1|65|mono 0.18/80; braid 0.15/100|4.70|19|7700|LowDexMG.png
+89|casting|MagFin|Counsellor|3000P|6.2:1|70|Mono 0.3/100; Braid 0.23/135|10.00|29|18500|Counsellor.png
+90|casting|MagFin|Counsellor|3000S|7.2:1|80|Mono 0.3/100; Braid 0.23/135|9.50|28|18000|Counsellor.png
+91|casting|MagFin|Counsellor|3500P|6.2:1|75|Mono 0.3/120; Braid 0.23/160|10.50|31|19000|Counsellor.png
+92|casting|RIVERTEX|Helios|2000P|4.2:1|50|Mono 0.2/100; Braid 0.2/100|7.50|24|11000|Helios.png
+93|casting|RIVERTEX|Helios|2000S|5.8:1|55|Mono 0.2/100; Braid 0.2/100|7.00|22|14500|Helios.png
+94|casting|RIVERTEX|Helios|3000P|4.2:1|50|mono 0.30/100; braid 0.23/135|9.00|27|13500|Helios.png
+95|casting|RIVERTEX|VorteX|4000|6.3:1|80|mono 0.40/100; braid 0.28/135|11.00|33|22000|VorteX.png
+96|casting|RIVERTEX|VorteX|5000|6.3:1|80|mono 0.50/100; braid 0.28/170|12.00|34|24200|VorteX.png
+97|casting|RIVERTEX|VorteX|6000|6.3:1|80|mono 0.50/120; braid 0.28/205|14.00|36|28500|VorteX.png
+98|casting|RIVERTEX|VorteX|7000|6.3:1|80|mono 0.50/140; braid 0.28/240|15.00|37|30000|VorteX.png
+99|casting|RIVERTEX|Cyclone|4500|6.5:1|80|mono 0.40/110; braid 0.28/145|16.00|38|31000|Cyclone.png
+100|casting|RIVERTEX|Cyclone|5500|6.5:1|80|mono 0.50/110; braid 0.28/180|20.00|39|36000|Cyclone.png
+101|casting|RIVERTEX|Cyclone|6500|6.5:1|80|mono 0.50/130; braid 0.28/225|22.00|40|38000|Cyclone.png
+102|casting|RIVERTEX|Tornado|6500|6.5:1|80|Mono 0.5/130; Braid 0.28/225|26.50|46|40000|Tornado.png
+103|casting|RIVERTEX|Tornado|7000|6.5:1|80|Mono 0.5/140; Braid 0.28/250|28.00|48|42000|Tornado.png
+104|casting|RIVERTEX|PowerGrab|6500|6.5:1|95|Mono 0.5/130; Braid 0.28/225|29.00|52|47300|PowerGrab.png
+105|casting|RIVERTEX|PowerGrab|7000|6.5:1|95|Mono 0.5/140; Braid 0.28/250|32.00|54|49400|PowerGrab.png
+106|casting|MagFin|Bailarina|7000|6.7:1|110|Mono 0.5/140; Braid 0.28/250|36.00|63|54600|Bailarina.png
+107|casting|MagFin|Bailarina|7500|6.7:1|110|Mono 0.5/150; Braid 0.28/265|38.00|68|57450|Bailarina.png
+108|mare|Tsurihito|Tsunami Koiru|14000|7.7:1|125|mono 0.90/355; braid 0.40/790|64.00|84|133130|12711.png
+109|mare|Tsurihito|Tsunami Koiru|15000|7.7:1|125|mono 0.95/345; braid 0.41/800|66.00|85|135360|12711.png
+110|mare|Tsurihito|Tengu Kai|16000|7.5|120|mono 1.0/330; braid 0.42/800|92.50|97|250910|TenguKai1.png
+111|mare|Tsurihito|Tengu Kai|18000|7.5|120|mono 1.00/370; braid 0.42/900|97.50|98|290560|TenguKai1.png
+112|mare|Fletch and Bradford|BossCast|18000|7|100|mono 1.00/370; braid 0.42/900|84.0|94|216080|BossCast1.png
+113|mare|Fletch and Bradford|BossCast|20000|7|100|mono 1.2/360; braid 0.46/950|89.0|95|223060|BossCast1.png
+114|mare|Fletch and Bradford|XCurrent|8000|7.5|125|mono 0.55/320; braid 0.32/560|69.0|91|149870|BossCast1.png
+115|mare|Fletch and Bradford|XCurrent|10000|7.5|125|mono 0.85/315; braid 0.35/770|73.0|92|159430|BossCast1.png
+116|mare|Tsurihito|JigokuTen|14000|7.9|130|mono 0.90/355; braid 0.40/790|84.00|94|197380|JigokuTen1.png
+117|mare|Tsurihito|JigokuTen|16000|7.9|130|mono 1.00/330; braid 0.42/800|89.00|95|181300|JigokuTen1.png
+118|mare|Fletch and Bradford|TitanGolda LWR|14000|7.4:1|115|Mono 0.9/350; Braid 0.4/795|55.00|84|102760|12713.png
+119|mare|Fletch and Bradford|TitanGolda LWR|16000|7.4:1|115|Mono 1.0/330; Braid 0.42/800|57.00|85|103470|12713.png
+120|mare|Fletch and Bradford|FlowCatch|15000|7.7:1|115|Mono 0.95/340; Braid 0.41/800|61.00|87|113350|12816.png
+121|mare|Fletch and Bradford|FlowCatch|17000|7.2:1|110|Mono 1.05/340; Braid 0.42/855|64.00|87|120290|12816.png
+122|mare|Fletch and Bradford|AtlantisElite|13000|7.7:1|120|Mono 0.85/350; Braid 0.35/800|72.00|88|137760|12757.png
+123|mare|Fletch and Bradford|AtlantisElite|15000|7.7:1|120|Mono 0.95/340; Braid 0.41/800|75.00|89|139000|12757.png
+124|mare|Fletch and Bradford|AquaTrekker|13000|7.6:1|122|Mono 0.85/350; Braid 0.35/857|48.00|83|97330|12765.png
+125|mare|Fletch and Bradford|AquaTrekker|14000|7.6:1|122|Mono 0.9/350; Braid 0.4/795|50.00|84|98540|12765.png
+126|mare|Tsurihito|TsuruOcean LP|10000|7.7:1|125|Mono 0.55/320; Braid 0.32/560|43.00|81|90130|12755.png
+127|mare|Tsurihito|TsuruOcean LP|11000|7.7:1|125|Mono 0.8/310; Braid 0.32/780|44.00|82|92520|12755.png
+128|mare|Tsurihito|RaidenWheel HeavyDuty|18000|7.0:1|105|Mono 1.0/370; Braid 0.42/900|83.00|89|159410|12847.png
+129|mare|Tsurihito|RaidenWheel HeavyDuty|20000|7.0:1|100|Mono 1.2/360; Braid 0.46/950|87.00|90|168870|12847.png
+130|mare|Tsurihito|MaguroMaster Silver|14000|7.3:1|115|Mono 0.9/350; Braid 0.4/795|60.00|86|112810|12761.png
+131|mare|Tsurihito|MaguroMaster Silver|16000|7.3:1|120|Mono 1.0/330; Braid 0.42/800|63.00|87|115810|12761.png
+132|mare|Tsurihito|MaguroMaster Silver|18000|7.4:1|120|Mono 1.0/370; Braid 0.42/900|66.00|87|123760|12761.png
+133|mare|Tsurihito|Jonin|18000|7|115|Mono 1.0/370; Braid 0.42/900|103.00|97|313320|Jonin1.png
+134|mare|Tsurihito|Jonin|20000|7|115|Mono 1.2/360; Braid 0.46/950|108.00|99|322540|Jonin1.png
