@@ -9154,6 +9154,19 @@ public class Pesca : Script
         // Le scritte stanno a sinistra dell'icona, tutte incolonnate.
         float tx = mx + 9f + LeggiF("colonna_testo_dx", 8f);
 
+        // I CINQUE QUADRATI DELLA COLONNA: uno per posto (lenza, piombo,
+        // leader, galleggiante, amo), 44x44, centrati sulla casella
+        // dell'icona, dello stesso colore e trasparenza delle tacche
+        // spente della barra. "colonna_quadrati=0" li toglie.
+        if (LeggiF("colonna_quadrati", 1f) > 0.5f)
+        {
+            float ql = LeggiF("colonna_quadrato", 44f);
+            int qk;
+            for (qk = 0; qk < 5; qk++)
+                DisegnaRett(mx + (112f - ql) * 0.5f, my - qk * 54f + (44f - ql) * 0.5f, ql, ql,
+                            210, 215, 220, (int)LeggiF("barra_alfa_spenta", 55f));
+        }
+
         // IL MULINELLO STA NEL CERCHIO DELLA FRIZIONE, a sinistra della
         // colonna: qui la colonna parte dalla lenza, in basso.
         if (Montato("lenza", out id, out img, out nome))
