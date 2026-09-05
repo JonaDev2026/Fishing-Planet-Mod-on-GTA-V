@@ -10188,6 +10188,20 @@ public class Pesca : Script
             {
                 ruotaAperta = false;
                 MontaDallaRuota();
+                // CHIUSA LA RUOTA: con una canna armata la prendi in mano
+                // (stessi controlli di "Inizia a pescare": se manca
+                // qualcosa te lo dice), senza canna la riponi.
+                int idc; string imgc, nomec;
+                bool cannaSu = Montato("canna", out idc, out imgc, out nomec);
+                if (cannaSu && fase == FASE_FERMO) Esegui("pesca_via");
+                else if (!cannaSu && fase == FASE_PRONTO)
+                {
+                    ViaPesceScena();
+                    ViaRoba();
+                    robaOra = -1;
+                    ScenaGiu(p);
+                    fase = FASE_FERMO;
+                }
             }
             return;
         }
