@@ -8283,7 +8283,7 @@ public class Pesca : Script
         {
             Voce(ic, tx, "rt", L("CLICK", "CLIC"), L("Reel in", "Recupera la lenza"));
             Voce(ic, tx, "croce_sxdx", "< >", L("Drag", "Frizione"));
-            Voce(ic, tx, "lb", "TAB", L("Retrieve line", "Ritira la lenza"));
+            Voce(ic, tx, "lb", "TAB", L("Manage tackle", "Gestisci l'armatura"));
         }
         else if (fase == FASE_CARD)
         {
