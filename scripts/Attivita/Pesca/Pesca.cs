@@ -9,6 +9,7 @@ using System.IO;
 using System.Drawing;
 using System.Media;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using GTA;
 using GTA.Math;
 using GTA.Native;
@@ -31,6 +32,7 @@ public class Pesca : Script
         try
         {
             string fm = Path.Combine(MY_DIR, "config.ini");
+            bool trovata = false;
             if (File.Exists(fm))
             {
                 string[] rm = File.ReadAllLines(fm);
@@ -38,10 +40,17 @@ public class Pesca : Script
                 for (im = 0; im < rm.Length; im++)
                 {
                     string l = rm[im].Trim();
+                    if (l.StartsWith("unita="))
+                    {
+                        int vu;
+                        if (int.TryParse(l.Substring(6).Trim(), out vu)) unita = vu;
+                        continue;
+                    }
                     if (!l.StartsWith("lingua=")) continue;
                     int vm;
-                    if (int.TryParse(l.Substring(7).Trim(), out vm)) { lang = vm; return; }
+                    if (int.TryParse(l.Substring(7).Trim(), out vm)) { lang = vm; trovata = true; }
                 }
+                if (trovata) return;
             }
         }
         catch { }
@@ -60,6 +69,49 @@ public class Pesca : Script
             }
         }
         catch { }
+    }
+
+    // LE UNITA': 0 metriche, 1 imperiali. I dati restano in metrico:
+    // si converte solo quello che va sullo schermo (U), riga per riga.
+    int unita = 0;
+    static readonly Regex U_KG2 = new Regex(@"(\d+(?:[.,]\d+)?)/(\d+(?:[.,]\d+)?) kg");
+    static readonly Regex U_M2 = new Regex(@"(\d+(?:[.,]\d+)?) / (\d+(?:[.,]\d+)?) m\b");
+    static readonly Regex U_RANGE = new Regex(@"(\d+(?:[.,]\d+)?) ?- ?(\d+(?:[.,]\d+)?) (kg|g|m|cm)\b");
+    static readonly Regex U_ONE = new Regex(@"(\d+(?:[.,]\d+)?) (kg|g|m|cm)\b");
+    static readonly Regex U_C2 = new Regex(@"(-?\d+)-(-?\d+)\u00B0C");
+    static readonly Regex U_C1 = new Regex(@"(-?\d+(?:[.,]\d+)?)\u00B0C");
+
+    static float Num(string t)
+    {
+        float v;
+        float.TryParse(t.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture, out v);
+        return v;
+    }
+
+    static string Conv(float v, string u, out string nu)
+    {
+        float r; string f;
+        if (u == "kg") { r = v * 2.20462f; nu = "lb"; f = (r < 10f) ? "0.##" : "0.#"; }
+        else if (u == "g") { r = v * 0.035274f; nu = "oz"; f = (r < 10f) ? "0.##" : "0.#"; }
+        else if (u == "cm") { r = v * 0.393701f; nu = "in"; f = "0.#"; }
+        else { r = v * 3.28084f; nu = "ft"; f = (r < 10f) ? "0.#" : "0"; }
+        return r.ToString(f, CultureInfo.InvariantCulture);
+    }
+
+    string U(string t)
+    {
+        if (unita != 1 || t == null || t.Length == 0) return t;
+        try
+        {
+            t = U_KG2.Replace(t, delegate(Match m) { string nu; return Conv(Num(m.Groups[1].Value), "kg", out nu) + "/" + Conv(Num(m.Groups[2].Value), "kg", out nu) + " " + nu; });
+            t = U_M2.Replace(t, delegate(Match m) { string nu; return Conv(Num(m.Groups[1].Value), "m", out nu) + " / " + Conv(Num(m.Groups[2].Value), "m", out nu) + " " + nu; });
+            t = U_RANGE.Replace(t, delegate(Match m) { string nu; return Conv(Num(m.Groups[1].Value), m.Groups[3].Value, out nu) + " - " + Conv(Num(m.Groups[2].Value), m.Groups[3].Value, out nu) + " " + nu; });
+            t = U_ONE.Replace(t, delegate(Match m) { string nu; return Conv(Num(m.Groups[1].Value), m.Groups[2].Value, out nu) + " " + nu; });
+            t = U_C2.Replace(t, delegate(Match m) { return ((int)Math.Round(Num(m.Groups[1].Value) * 1.8f + 32f)) + "-" + ((int)Math.Round(Num(m.Groups[2].Value) * 1.8f + 32f)) + "\u00B0F"; });
+            t = U_C1.Replace(t, delegate(Match m) { return ((int)Math.Round(Num(m.Groups[1].Value) * 1.8f + 32f)) + "\u00B0F"; });
+        }
+        catch { }
+        return t;
     }
 
     string L(string en, string it)
@@ -5914,6 +5966,7 @@ public class Pesca : Script
         {
             sbVoci.Add(L("Float size", "Grandezza galleggiante")); sbDestra.Add(GallZoomTxt()); sbArea.Add(0);
             sbVoci.Add(L("Language", "Lingua")); sbDestra.Add(lang == 1 ? "Italiano" : "English"); sbArea.Add(1);
+            sbVoci.Add(L("Units", "Unita'")); sbDestra.Add(unita == 1 ? L("Imperial", "Imperiali") : L("Metric", "Metriche")); sbArea.Add(5);
             sbVoci.Add(L("Clear the log", "Azzera il diario")); sbDestra.Add(""); sbArea.Add(2);
             sbVoci.Add(L("Start over", "Ricomincia da zero")); sbDestra.Add(""); sbArea.Add(3);
             sbVoci.Add(L("Guide", "Guida")); sbDestra.Add(""); sbArea.Add(4);
@@ -6014,6 +6067,12 @@ public class Pesca : Script
             RigaScelta(x, w, y, "Italiano", lang == 1, menuLato == 1 && impSel == 0); y += 26f;
             RigaScelta(x, w, y, "English", lang != 1, menuLato == 1 && impSel == 1); y += 26f;
         }
+        else if (v == 5)
+        {
+            y = SezioneColonna(L("UNITS", "UNITA'"), x, y, w, ts, ta);
+            RigaScelta(x, w, y, L("Metric (kg, m, \u00B0C)", "Metriche (kg, m, \u00B0C)"), unita != 1, menuLato == 1 && impSel == 0); y += 26f;
+            RigaScelta(x, w, y, L("Imperial (lb, ft, \u00B0F)", "Imperiali (lb, ft, \u00B0F)"), unita == 1, menuLato == 1 && impSel == 1); y += 26f;
+        }
         else if (v == 2)
         {
             y = SezioneColonna(L("CLEAR THE LOG", "AZZERA IL DIARIO"), x, y, w, ts, ta);
@@ -6111,7 +6170,7 @@ public class Pesca : Script
         int v = (sbSel < sbArea.Count) ? sbArea[sbSel] : 0;
         int n = 1;
         if (v == 0) n = GALL_ZOOM.Length;
-        else if (v == 1) n = 2;
+        else if (v == 1 || v == 5) n = 2;
         if (menuLato == 0 && (su || giu))
         {
             int q = sbVoci.Count;
@@ -6150,6 +6209,13 @@ public class Pesca : Script
                 lang = (impSel == 0) ? 1 : 0;
                 ScriviCfg("lingua", "" + lang);
                 RiscriviTutto();
+                SuonoMenu("menu_apri.wav");
+                RiempiSidebar();
+            }
+            else if (v == 5)
+            {
+                unita = (impSel == 1) ? 1 : 0;
+                ScriviCfg("unita", "" + unita);
                 SuonoMenu("menu_apri.wav");
                 RiempiSidebar();
             }
@@ -8225,7 +8291,7 @@ public class Pesca : Script
 
     void Avviso(string t)
     {
-        try { Notification.PostTicker(t, false); }
+        try { Notification.PostTicker(U(t), false); }
         catch { }
     }
 
@@ -8247,7 +8313,7 @@ public class Pesca : Script
         t = t.Replace("~y~", "").Replace("~r~", "").Replace("~g~", "")
              .Replace("~b~", "").Replace("~s~", "").Replace("~w~", "")
              .Replace("~p~", "").Replace("~o~", "");
-        msgTxt = t.Trim();
+        msgTxt = U(t.Trim());
         msgFino = Game.GameTime + (int)LeggiF("messaggio_ms", 3000f);
     }
 
@@ -9653,7 +9719,7 @@ public class Pesca : Script
     {
         try
         {
-            TextElement el = new TextElement(txt, new PointF(x, y), scala);
+            TextElement el = new TextElement(U(txt), new PointF(x, y), scala);
             el.Color = Color.FromArgb(255, r, g, b);
             el.Font = GTA.UI.Font.ChaletLondon;
             el.Alignment = Alignment.Center;
@@ -11415,7 +11481,7 @@ public class Pesca : Script
     {
         try
         {
-            TextElement el = new TextElement(txt, new PointF(x, y), scala);
+            TextElement el = new TextElement(U(txt), new PointF(x, y), scala);
             el.Color = Color.FromArgb(255, r, g, b);
             el.Font = GTA.UI.Font.ChaletLondon;
             el.Alignment = Alignment.Left;
@@ -12755,6 +12821,7 @@ public class Pesca : Script
     // quanto e' largo un testo, in pixel su 1280
     float LarghezzaTesto(string t, float scala, int font)
     {
+        t = U(t);
         try
         {
             Function.Call(Hash.BEGIN_TEXT_COMMAND_GET_SCREEN_WIDTH_OF_DISPLAY_TEXT, "STRING");
@@ -12772,7 +12839,7 @@ public class Pesca : Script
     {
         try
         {
-            TextElement el = new TextElement(txt, new PointF(x, y), scala);
+            TextElement el = new TextElement(U(txt), new PointF(x, y), scala);
             el.Color = Color.FromArgb(a, r, g, b);
             el.Font = (GTA.UI.Font)font;
             el.Alignment = (all == 1) ? Alignment.Center : (all == 2 ? Alignment.Right : Alignment.Left);
@@ -12786,7 +12853,7 @@ public class Pesca : Script
     {
         try
         {
-            TextElement el = new TextElement(txt, new PointF(x, y), scala);
+            TextElement el = new TextElement(U(txt), new PointF(x, y), scala);
             el.Color = Color.FromArgb(255, r, g, b);
             el.Font = GTA.UI.Font.ChaletLondon;
             el.Alignment = Alignment.Right;
