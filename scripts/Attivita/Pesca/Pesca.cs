@@ -5292,13 +5292,6 @@ public class Pesca : Script
         return true;
     }
 
-    string NomeGruppo(string zona)
-    {
-        int i;
-        for (i = 0; i < arCodice.Count; i++)
-            if (arCodice[i] == zona) return arGruppo[i];
-        return zona;
-    }
 
     // IL PREZZO DELLA LICENZA: paghi per quello che puoi pescare. Un'acqua
     // con piu' tratti ha una riga per ogni livello di tratto (sesta

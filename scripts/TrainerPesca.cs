@@ -8345,6 +8345,27 @@ public class TrainerPesca : Script
     bool vivoOk = false;
     string vivoTesto = "";
 
+    // IL MODULO NON E' PARTITO: se dopo l'avvio la pesca non da' segni di
+    // vita per un po', lo si dice in rosso come notifica, dove la mod
+    // scrive "Modulo pesca pronto" quando invece parte. Una volta sola.
+    int avvioTrainer = 0;
+    bool avvisatoMorta = false;
+
+    void ControllaModulo()
+    {
+        if (avvioTrainer == 0) avvioTrainer = Game.GameTime;
+        if (avvisatoMorta) return;
+        if (Game.GameTime - avvioTrainer < 8000) return;
+        if (PescaViva()) { avvisatoMorta = true; return; }
+        avvisatoMorta = true;
+        try
+        {
+            Notification.PostTicker("~r~" + L("Fishing module NOT started: check ScriptHookVDotNet.log",
+                                              "Modulo pesca NON partito: guarda ScriptHookVDotNet.log"), false);
+        }
+        catch { }
+    }
+
     bool PescaViva()
     {
         int ora = Game.GameTime;
@@ -8373,6 +8394,7 @@ public class TrainerPesca : Script
 
     void OnTick(object sender, EventArgs e)
     {
+        ControllaModulo();
         // QUESTO E' IL TRAINER DELLA PESCA E BASTA.
         // Nasce come copia di quello grande, ma benzinai, minimarket,
         // navigatore, blip, carburante, cruscotto e tachimetro non
