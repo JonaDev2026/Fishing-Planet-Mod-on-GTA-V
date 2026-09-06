@@ -38,24 +38,54 @@ codice; dove un numero è nostro e non del wiki, è detto.
 
 ## 1. Cosa serve e installazione
 
-- **Grand Theft Auto V Enhanced**
-- [ScriptHookV](http://www.dev-c.com/gtav/scripthookv/)
-- [ScriptHookVDotNet 3.9.0](https://github.com/scripthookvdotnet/scripthookvdotnet/releases)
+### Le dipendenze
+
+| | versione con cui la mod è stata sviluppata e provata |
+|---|---|
+| **Grand Theft Auto V Enhanced** | build 1.0.1158.13 (v3889) |
+| [ScriptHookV](http://www.dev-c.com/gtav/scripthookv/) | build del 15 luglio 2026, v3889.0/1158.13 |
+| [ScriptHookVDotNet](https://github.com/scripthookvdotnet/scripthookvdotnet/releases) | 3.9.0.6 Enhanced (API 3.9.0) |
+
+Sono tutti e tre obbligatori. ScriptHookV va aggiornato a ogni patch del
+gioco, altrimenti non parte niente; ScriptHookVDotNet compila `Pesca.cs`
+all'avvio, quindi non serve nessun compilatore né altro programma. La mod è
+scritta in C# vecchio stile (niente interpolazione di stringhe, niente
+lambda) apposta per il compilatore che ScriptHookVDotNet porta con sé.
+
+Sulla stessa installazione girano anche altri script (`Trainer.cs`, i lavori
+in `scripts\Lavori`): la mod non dipende da loro.
+
+### Installazione
 
 Copia la cartella `scripts` dentro la cartella del gioco:
 
 ```
-...\Grand Theft Auto V Enhanced\scripts\
+...\Grand Theft Auto V Enhanced\scripts\Attivita\Pesca\
 ```
 
 | | |
 |---|---|
-| `TrainerPesca.cs` | il menu: **F7**, oppure **RB + DESTRA** sul pad |
-| `Attivita\Pesca\` | la mod: dati, immagini, suoni e `config.ini` |
+| `Pesca.cs` | tutta la mod, un file solo |
+| `config.ini` | ogni impostazione, commentata riga per riga; si rilegge a gioco acceso |
+| `*.txt` | i dati: pesci, attrezzatura, zone, tornei, temperature, traduzioni, guida |
+| `img\` | le immagini: pesci, attrezzatura, banner, HUD, grafici dell'attività |
+| `suoni\` | i suoni della mod (wav) |
+| `gen_attivita.py` | lo script (Python 3 + Pillow) che rigenera i grafici dell'attività: serve solo se cambi i dati dei pesci o delle temperature |
 
-Al primo avvio la mod scrive da sola le pagine del menu e il salvataggio
-(`stato.txt`). La mod è in italiano; i nomi dei pesci e dell'attrezzatura sono
-quelli inglesi del catalogo.
+Al primo avvio la mod scrive da sola il salvataggio (`stato.txt`) nella sua
+cartella. Per ricaricare gli script senza riavviare il gioco: **INS**
+(ScriptHookVDotNet). Se qualcosa non compila, l'errore con la riga sta in
+`ScriptHookVDotNet.log` nella cartella del gioco.
+
+Attenzione: ScriptHookVDotNet compila **tutti** i `.cs` dentro `scripts`,
+sottocartelle comprese. Un file di backup con estensione `.cs` lasciato lì
+dentro viene caricato anche lui: i backup vanno tenuti fuori da `scripts` o
+rinominati `.cs.old`.
+
+La lingua si sceglie dal menu (IMPOSTAZIONI → Lingua) ed è salvata in
+`config.ini` (`lingua=1` italiano, `0` inglese). I nomi dell'attrezzatura
+sono quelli inglesi del catalogo; i pesci hanno la traduzione in
+`pesci_it.txt`.
 
 ---
 
@@ -70,7 +100,8 @@ tastiera.
 
 | Pad | Tastiera | |
 |---|---|---|
-| RB + DESTRA | F7 | apre e chiude il menu |
+| RB + SINISTRA | F7 (`menu_tasto` in config.ini) | apre e chiude il menu |
+| LB / RB | TAB / Q | cambia scheda (ZONE, EQUIPAGGIAMENTO, NEGOZIO, DIARIO, TORNEI, IMPOSTAZIONI) |
 | levetta / croce | frecce | ci si muove |
 | A | INVIO | seleziona |
 | B | ESC | indietro |
