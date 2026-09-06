@@ -5225,10 +5225,16 @@ public class Pesca : Script
         return true;
     }
 
+    // IL PREZZO DELLA LICENZA: paghi per quello che puoi pescare. Un'acqua
+    // con piu' tratti ha una riga per ogni livello di tratto (sesta
+    // colonna): vale la riga col livello piu' alto che non supera il tuo;
+    // sotto il primo tratto vale la piu' bassa. La regola dei prezzi sta
+    // in testa a licenze.txt.
     int PrezzoLicenza(string zona, int giorni)
     {
         string[] rows = LeggiRighe("licenze.txt");
         int i;
+        int prezzo = 0, livTrov = -1, prezzoMin = 0, livMin = 9999;
         for (i = 0; i < rows.Length; i++)
         {
             string r = rows[i].Trim();
@@ -5237,9 +5243,12 @@ public class Pesca : Script
             if (c.Length < 5) continue;
             if (c[0].Trim() != zona) continue;
             if (c[3].Trim() != (giorni + "g")) continue;
-            return Numero(c[4]);
+            int liv = (c.Length > 5) ? Numero(c[5]) : 0;
+            int pr = Numero(c[4]);
+            if (liv < livMin) { livMin = liv; prezzoMin = pr; }
+            if (liv <= livelloPescatore && liv > livTrov) { livTrov = liv; prezzo = pr; }
         }
-        return 0;
+        return (livTrov >= 0) ? prezzo : prezzoMin;
     }
 
     // Porta l'orologio alle cinque e rallenta il tempo. Si usa lo stesso

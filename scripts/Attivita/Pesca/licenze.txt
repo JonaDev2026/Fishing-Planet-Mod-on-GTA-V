@@ -1,38 +1,74 @@
-# zona|nome|tipo|giorni|prezzo
+# zona|nome|tipo|giorni|prezzo|livello_del_tratto
 # LICENZE. Una per ACQUA, non per singolo tratto: paghi 'Alamo Sea' e
-# peschi in tutti i suoi undici tratti di riva.
-# Prezzi NOSTRI: partono dal tipo d'acqua e salgono con quanti tratti
-# comprende la licenza. Il taglio da tre giorni costa 2.85 volte quello
-# da uno, il rapporto vero di Fishing Planet.
-alamosea|Alamo Sea|unica|1g|49
-alamosea|Alamo Sea|unica|3g|140
-cassidy|Cassidy|unica|1g|40
-cassidy|Cassidy|unica|3g|114
-chumash|Chumash|unica|1g|34
-chumash|Chumash|unica|3g|97
-elgordo|El Gordo|unica|1g|34
-elgordo|El Gordo|unica|3g|97
-golf|Golf|unica|1g|26
-golf|Golf|unica|3g|74
-landact|Land Act|unica|1g|31
-landact|Land Act|unica|3g|88
-mirrorpark|Mirror Park|unica|1g|26
-mirrorpark|Mirror Park|unica|3g|74
-pacificbluffs|Pacific Bluffs|unica|1g|34
-pacificbluffs|Pacific Bluffs|unica|3g|97
-paletobay|Paleto Bay|unica|1g|37
-paletobay|Paleto Bay|unica|3g|105
-paletocove|Paleto Cove|unica|1g|34
-paletocove|Paleto Cove|unica|3g|97
-palomino|Palomino|unica|1g|34
-palomino|Palomino|unica|3g|97
-sanchianski|San Chianski|unica|1g|34
-sanchianski|San Chianski|unica|3g|97
-tongva|Tongva|unica|1g|33
-tongva|Tongva|unica|3g|94
-vespucci|Vespucci|unica|1g|34
-vespucci|Vespucci|unica|3g|97
-vinewood|Vinewood|unica|1g|26
-vinewood|Vinewood|unica|3g|74
-zancudo|Zancudo|unica|1g|30
-zancudo|Zancudo|unica|3g|86
+# peschi in tutti i suoi tratti di riva.
+# PREZZI NOSTRI, con questa regola (decisa il 6 settembre 2026):
+#   un giorno = il 25% di quanto vale la nassa piena in quel tratto, cioe'
+#   la nassa migliore che si puo' comprare al livello del tratto, piena del
+#   pesce del tratto che paga di piu' al chilo (prezzi del wiki, al chilo).
+#   Tre giorni = 2.85 volte un giorno, il rapporto vero di Fishing Planet.
+# Un'acqua con piu' tratti ha una riga per ogni livello di tratto: la mod
+# prende la riga col livello piu' alto che NON supera il livello del
+# pescatore (paghi per quello che puoi pescare). Sotto il primo tratto
+# vale la riga piu' bassa.
+alamosea|Alamo Sea|unica|1g|85|1
+alamosea|Alamo Sea|unica|3g|242|1
+alamosea|Alamo Sea|unica|1g|570|8
+alamosea|Alamo Sea|unica|3g|1624|8
+alamosea|Alamo Sea|unica|1g|2500|14
+alamosea|Alamo Sea|unica|3g|7125|14
+alamosea|Alamo Sea|unica|1g|4275|30
+alamosea|Alamo Sea|unica|3g|12184|30
+alamosea|Alamo Sea|unica|1g|4800|34
+alamosea|Alamo Sea|unica|3g|13680|34
+alamosea|Alamo Sea|unica|1g|9000|42
+alamosea|Alamo Sea|unica|3g|25650|42
+alamosea|Alamo Sea|unica|1g|11250|46
+alamosea|Alamo Sea|unica|3g|32062|46
+alamosea|Alamo Sea|unica|1g|12750|50
+alamosea|Alamo Sea|unica|3g|36338|50
+cassidy|Cassidy|unica|1g|600|10
+cassidy|Cassidy|unica|3g|1710|10
+cassidy|Cassidy|unica|1g|675|12
+cassidy|Cassidy|unica|3g|1924|12
+cassidy|Cassidy|unica|1g|10625|48
+cassidy|Cassidy|unica|3g|30281|48
+chumash|Chumash|unica|1g|63875|83
+chumash|Chumash|unica|3g|182044|83
+elgordo|El Gordo|unica|1g|66500|100
+elgordo|El Gordo|unica|3g|189525|100
+golf|Golf|unica|1g|85|1
+golf|Golf|unica|3g|242|1
+landact|Land Act|unica|1g|350|5
+landact|Land Act|unica|3g|998|5
+landact|Land Act|unica|1g|2500|14
+landact|Land Act|unica|3g|7125|14
+landact|Land Act|unica|1g|2125|22
+landact|Land Act|unica|3g|6056|22
+mirrorpark|Mirror Park|unica|1g|130|3
+mirrorpark|Mirror Park|unica|3g|370|3
+pacificbluffs|Pacific Bluffs|unica|1g|63875|83
+pacificbluffs|Pacific Bluffs|unica|3g|182044|83
+paletobay|Paleto Bay|unica|1g|66500|100
+paletobay|Paleto Bay|unica|3g|189525|100
+paletocove|Paleto Cove|unica|1g|66500|100
+paletocove|Paleto Cove|unica|3g|189525|100
+palomino|Palomino|unica|1g|21500|54
+palomino|Palomino|unica|3g|61275|54
+sanchianski|San Chianski|unica|1g|48475|94
+sanchianski|San Chianski|unica|3g|138154|94
+tongva|Tongva|unica|1g|2138|20
+tongva|Tongva|unica|3g|6093|20
+tongva|Tongva|unica|1g|6750|38
+tongva|Tongva|unica|3g|19238|38
+vespucci|Vespucci|unica|1g|63875|83
+vespucci|Vespucci|unica|3g|182044|83
+vinewood|Vinewood|unica|1g|570|8
+vinewood|Vinewood|unica|3g|1624|8
+zancudo|Zancudo|unica|1g|266|4
+zancudo|Zancudo|unica|3g|758|4
+zancudo|Zancudo|unica|1g|2125|18
+zancudo|Zancudo|unica|3g|6056|18
+zancudo|Zancudo|unica|1g|2250|24
+zancudo|Zancudo|unica|3g|6412|24
+zancudo|Zancudo|unica|1g|2975|26
+zancudo|Zancudo|unica|3g|8479|26
