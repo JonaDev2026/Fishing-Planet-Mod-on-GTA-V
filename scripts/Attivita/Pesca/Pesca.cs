@@ -5732,7 +5732,9 @@ public class Pesca : Script
                       string titolo, float x, float y0, float w, float fondo)
     {
         float rh = LeggiF("menu_eq_riga", 26f);
-        float y = SezioneColonna(titolo + " (" + lista.Count + ")", x, y0, w);
+        float y = SezioneColonna(titolo, x, y0, w);
+        if (lista == eqBorsa)
+            TestoMenu(Contatori(), x + w - 8f, y0 + 3f, LeggiF("menu_eq_cont_testo", 0.22f), 0, 2, 200, 202, 210, 255);
         int righe = (int)((fondo - y) / rh);
         if (righe < 1) righe = 1;
         if (sel < top) top = sel;
