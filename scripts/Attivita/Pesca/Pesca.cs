@@ -5681,9 +5681,95 @@ public class Pesca : Script
                 sbArea.Add(ord[i]);
             }
         }
+        if (menuScheda == 1)
+        {
+            // le categorie dell'attrezzatura, nell'ordine degli scaffali
+            int q;
+            for (q = 0; q < CASA_ORD.Length; q++)
+            {
+                int ic = CASA_ORD[q];
+                sbVoci.Add(CAT_NOME[ic]);
+                sbDestra.Add("");
+                sbArea.Add(ic);
+            }
+        }
         if (sbSel >= sbVoci.Count) sbSel = 0;
         sbTop = 0;
         sbScheda = menuScheda;
+    }
+
+    // L'EQUIPAGGIAMENTO: a destra della lista due colonne, quello che hai
+    // a casa e quello che hai nella cassetta, per la categoria scelta.
+    List<string> eqCasa = new List<string>();
+    List<string> eqBorsa = new List<string>();
+    int eqCat = -1, eqQuando = 0;
+    int eqSelCasa = 0, eqTopCasa = 0, eqSelBorsa = 0, eqTopBorsa = 0;
+
+    void RiempiEquip(int ic)
+    {
+        eqCasa.Clear(); eqBorsa.Clear();
+        foreach (KeyValuePair<string, int> kv in magazzino)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length < 2 || c[0] != CAT_COD[ic] || kv.Value <= 0) continue;
+            eqCasa.Add(kv.Key);
+        }
+        foreach (KeyValuePair<string, int> kv in borsa)
+        {
+            string[] c = kv.Key.Split(':');
+            if (c.Length < 2 || c[0] != CAT_COD[ic] || kv.Value <= 0) continue;
+            eqBorsa.Add(kv.Key);
+        }
+        eqCasa.Sort(); eqBorsa.Sort();
+        if (eqCat != ic) { eqSelCasa = 0; eqTopCasa = 0; eqSelBorsa = 0; eqTopBorsa = 0; }
+        if (eqSelCasa >= eqCasa.Count) eqSelCasa = eqCasa.Count > 0 ? eqCasa.Count - 1 : 0;
+        if (eqSelBorsa >= eqBorsa.Count) eqSelBorsa = eqBorsa.Count > 0 ? eqBorsa.Count - 1 : 0;
+        eqCat = ic;
+        eqQuando = OraPc();
+    }
+
+    void ColonnaEquip(List<string> lista, ref int sel, ref int top, bool attiva,
+                      string titolo, float x, float y0, float w, float fondo)
+    {
+        float rh = LeggiF("menu_eq_riga", 26f);
+        float y = SezioneColonna(titolo + " (" + lista.Count + ")", x, y0, w);
+        int righe = (int)((fondo - y) / rh);
+        if (righe < 1) righe = 1;
+        if (sel < top) top = sel;
+        if (sel >= top + righe) top = sel - righe + 1;
+        int i;
+        for (i = 0; i < righe && top + i < lista.Count; i++)
+        {
+            string[] c = lista[top + i].Split(':');
+            int id = Numero(c[1]);
+            string nome, img; int prezzo, liv;
+            if (!Articolo(c[0], id, out nome, out img, out prezzo, out liv)) nome = lista[top + i];
+            int quante = 0;
+            Dictionary<string, int> da = (lista == eqBorsa) ? borsa : magazzino;
+            da.TryGetValue(lista[top + i], out quante);
+            float ry = y + i * rh;
+            bool s = attiva && top + i == sel;
+            if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, 255);
+            else DisegnaRett(x, ry, w, rh - 2f, 0, 0, 0, 120);
+            int r = s ? 20 : 245, g = s ? 22 : 245, b = s ? 28 : 250;
+            TestoMenu(nome, x + 10f, ry + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
+            TestoMenu(Quantita(c[0], id, quante, lista == eqBorsa), x + w - 10f, ry + rh * 0.5f - 9f,
+                      0.26f, 0, 2, s ? 60 : 245, s ? 62 : 205, s ? 70 : 80, 255);
+        }
+    }
+
+    void DisegnaColonneEquip(float px, float py, float pw, float ph)
+    {
+        if (sbSel < 0 || sbSel >= sbArea.Count) return;
+        int ic = sbArea[sbSel];
+        if (eqCat != ic || OraPc() - eqQuando > 500) RiempiEquip(ic);
+        float pad = LeggiF("menu_pn_bordo", 10f);
+        float w = (pw - pad * 3f) * 0.5f;
+        float fondo = py + ph - pad;
+        ColonnaEquip(eqCasa, ref eqSelCasa, ref eqTopCasa, menuLato == 1,
+                     L("AT HOME", "A CASA"), px + pad, py + pad, w, fondo);
+        ColonnaEquip(eqBorsa, ref eqSelBorsa, ref eqTopBorsa, menuLato == 2,
+                     L("TACKLE BOX", "CASSETTA"), px + pad * 2f + w, py + pad, w, fondo);
     }
 
     void DisegnaSidebar(float mx, float cy, float ch)
@@ -6090,8 +6176,42 @@ public class Pesca : Script
         TestoMenu(valore, x + 62f, y - 2f, 0.26f, 0, 0, r, g, b, 255);
     }
 
+    void TastiEquip(int now)
+    {
+        if (sbVoci.Count == 0) return;
+        bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
+               || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
+        bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 19)
+                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 173);
+        bool dx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 175);
+        bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174);
+        if (menuLato == 0 && (su || giu))
+        {
+            int n = sbVoci.Count;
+            sbSel = (sbSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 0 && dx) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && sx) { menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && dx) { menuLato = 2; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 2 && sx) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && (su || giu) && eqCasa.Count > 0)
+        {
+            int n = eqCasa.Count;
+            eqSelCasa = (eqSelCasa + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 2 && (su || giu) && eqBorsa.Count > 0)
+        {
+            int n = eqBorsa.Count;
+            eqSelBorsa = (eqSelBorsa + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+    }
+
     void TastiSidebar(int now)
     {
+        if (menuScheda == 1) { TastiEquip(now); return; }
         if (menuScheda != 0 || sbVoci.Count == 0) return;
         bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
@@ -6242,6 +6362,12 @@ public class Pesca : Script
             float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
             DisegnaPannelloZona(mx + sbw, cy, mw - sbw, ch);
         }
+        if (menuScheda == 1)
+        {
+            DisegnaSidebar(mx, cy, ch);
+            float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
+            DisegnaColonneEquip(mx + sbw, cy, mw - sbw, ch);
+        }
 
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
@@ -6262,6 +6388,11 @@ public class Pesca : Script
         {
             Voce(ic, tx, "croce_sugiu", "^ v", L("Fish", "Pesce"));
             Voce(ic, tx, "croce_sxdx", "<", L("Spot", "Posto"));
+        }
+        if (menuScheda == 1)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "croce_sxdx", "< >", L("Column", "Colonna"));
         }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
