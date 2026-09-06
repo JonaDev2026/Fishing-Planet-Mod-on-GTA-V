@@ -6,17 +6,21 @@
 # ECCEZIONE NOSTRA (6 settembre 2026): ai Laghetti del golf, il primo posto,
 # stanno solo sei dei dieci pesci di Lone Star Lake (i piccoli); pesce gatto,
 # bufalo, spotted bass e pickerel si trovano a Slab e alla Sponda sud (liv. 2).
-Riva ovest di Alamo|Black Crappie;Bluntnose Minnow;Chain Pickerel;Common Shiner;Golden Shiner;Grass Pickerel;Northern Pike;Pumpkinseed;Redfin Pickerel;Sauger;Walleye;Yellow Perch
+# E NEI POSTI CHE CONDIVIDONO L'ACQUA (Emerald, Falcon, Saint-Croix, Sander,
+# Kaiji No Ri, Skarland) i pesci comuni (rarita' 1-2) stanno ovunque, quelli
+# piu' rari sono spartiti: ogni posto ne ha alcuni che gli altri non hanno,
+# cosi' vale la pena girarli tutti. Spartizione nostra, non del wiki.
+Riva ovest di Alamo|Black Crappie;Bluntnose Minnow;Chain Pickerel;Common Shiner;Golden Shiner;Grass Pickerel;Northern Pike;Pumpkinseed;Redfin Pickerel;Walleye
 Slab|Blacktail Shiner;Bluegill;Channel Catfish;Golden Shiner;Grass Pickerel;Green Sunfish;Redear Sunfish;Smallmouth Buffalo;Spotted Bass;White Crappie
 Foce dello Zancudo|Bluegill;California Roach;Chinook Salmon;Common Carp;Largemouth Bass;Redear Sunfish;Smallmouth Bass;Steelhead;Striped Bass;White Catfish;White Crappie;White Sturgeon
 Sponda sud di Alamo|Blacktail Shiner;Bluegill;Channel Catfish;Golden Shiner;Grass Pickerel;Green Sunfish;Redear Sunfish;Smallmouth Buffalo;Spotted Bass;White Crappie
-Sandy Shores|Bighead Carp;Common Bream;Common Carp;Common Roach;Eurasian Ruffe;European Eel;European Perch;Grass Carp;Leather Carp;Mirror Carp;Northern Pike;Prussian Carp;Round Goby;Silver Carp;Tench;Wels Catfish;Zander
+Sandy Shores|Bighead Carp;Common Bream;Common Carp;Common Roach;European Eel;European Perch;Grass Carp;Mirror Carp;Northern Pike;Prussian Carp;Round Goby;Silver Carp;Tench;Wels Catfish;Zander
 Riva est di Alamo|Asp;Azov Shad;Beluga;Black Sea Roach;Blue Bream;Chinese Sleeper;Chub;Common Bleak;Common Bream;Common Carp;Common Nase;Common Roach;Common Rudd;Crucian Carp;Eurasian Ruffe;European Perch;European Weatherfish;Grass Carp;Gudgeon;Ide;Monkey Goby;Northern Pike;Prussian Carp;Round Goby;Silver Bream;Silver Carp;Sterlet;Tench;Wels Catfish;White-Eye Bream;Zander;Ziege
 Grapeseed|Chub;Common Bream;Common Carp;Crucian Carp;European Perch;Ghost Carp;Golden Tench;Grass Carp;Hybrid F1 Carp;Leather Carp;Mirror Carp;Northern Pike;Prussian Carp;Tench;Wels Catfish
-Riva nord-est di Alamo|Bighead Carp;Common Bream;Common Carp;Common Roach;Eurasian Ruffe;European Eel;European Perch;Grass Carp;Leather Carp;Mirror Carp;Northern Pike;Prussian Carp;Round Goby;Silver Carp;Tench;Wels Catfish;Zander
-Mount Chiliad|American Shad;Atlantic Salmon;Blue Catfish;Bluntnose Minnow;Brook Trout;Brown Bullhead Catfish;Brown Trout;Clear Muskie;Freshwater Drum;Golden Shiner;Green Sunfish;Lake Sturgeon;Muskellunge;Northern Pike;Pumpkinseed;Rock Bass;Smallmouth Bass;Tiger Muskie;Tiger Trout;Walleye;White Bass;Yellow Perch
-Riva nord di Alamo|American Shad;Atlantic Salmon;Blue Catfish;Bluntnose Minnow;Brook Trout;Brown Bullhead Catfish;Brown Trout;Clear Muskie;Freshwater Drum;Golden Shiner;Green Sunfish;Lake Sturgeon;Muskellunge;Northern Pike;Pumpkinseed;Rock Bass;Smallmouth Bass;Tiger Muskie;Tiger Trout;Walleye;White Bass;Yellow Perch
-Ponte Calafia|Brown Trout;Cutthroat Trout;Oregon Redband Trout;Pumpkinseed;Rainbow Trout;Redbreast Sunfish;Rock Bass;Smallmouth Bass
+Riva nord-est di Alamo|Bighead Carp;Common Bream;Common Carp;Common Roach;Eurasian Ruffe;European Eel;European Perch;Leather Carp;Mirror Carp;Northern Pike;Prussian Carp;Round Goby;Tench;Wels Catfish;Zander
+Mount Chiliad|American Shad;Bluntnose Minnow;Brown Bullhead Catfish;Brown Trout;Clear Muskie;Freshwater Drum;Golden Shiner;Green Sunfish;Lake Sturgeon;Muskellunge;Northern Pike;Pumpkinseed;Smallmouth Bass;Tiger Muskie;White Bass;Yellow Perch
+Riva nord di Alamo|Atlantic Salmon;Blue Catfish;Bluntnose Minnow;Brook Trout;Brown Trout;Freshwater Drum;Golden Shiner;Green Sunfish;Muskellunge;Northern Pike;Pumpkinseed;Rock Bass;Smallmouth Bass;Tiger Trout;Walleye;Yellow Perch
+Ponte Calafia|Brown Trout;Cutthroat Trout;Oregon Redband Trout;Pumpkinseed;Rock Bass;Smallmouth Bass
 Fiume Zancudo alto|Common Barbel;Common Bream;Common Carp;Common Nase;Common Roach;Common Rudd;Crucian Carp;European Perch;Northern Pike;Tench;Wels Catfish;Zander
 Fiume Zancudo basso|Black Bullhead Catfish;Blacktail Shiner;Bluegill;Bluntnose Minnow;Bowfin;Chain Pickerel;Channel Catfish;Common Shiner;Freshwater Drum;Grass Pickerel;Green Sunfish;Largemouth Bass;Pumpkinseed;Spotted Gar;White Crappie
 Palude di Zancudo ovest|Alligator Gar;Black Crappie;Blue Catfish;Bluegill;Bowfin;Chain Pickerel;Channel Catfish;Flathead Catfish;Freshwater Drum;Golden Shiner;Largemouth Bass;Redear Sunfish;Smallmouth Buffalo;Spotted Bass;Warmouth;White Crappie
@@ -26,18 +30,18 @@ Palude di Zancudo est|Bluegill;Bowfin;Brown Bullhead Catfish;Butterfly Peacock B
 Cassidy Creek alto|Amur Bitterling;Arctic Grayling;Baikal Omul;Burbot;Common Dace;Common Minnow;Common Roach;European Perch;Humpback Whitefish;Ide;Lenok;Northern Pike;Siberian Taimen
 Cassidy Creek basso|American Shad;Black Crappie;Bluegill;Common Carp;Flathead Catfish;Golden Shiner;Largemouth Bass;Longnose Gar;Pumpkinseed;Redear Sunfish;Redfin Pickerel;Smallmouth Bass;White Crappie
 Foce del Cassidy|Common Bream;Common Roach;European Eel;European Flounder;European Perch;Ide;Northern Pike;Round Goby;Thicklip Grey Mullet;Zander
-Lago di Vinewood|Black Crappie;Bluntnose Minnow;Chain Pickerel;Common Shiner;Golden Shiner;Grass Pickerel;Northern Pike;Pumpkinseed;Redfin Pickerel;Sauger;Walleye;Yellow Perch
+Lago di Vinewood|Black Crappie;Bluntnose Minnow;Chain Pickerel;Common Shiner;Golden Shiner;Grass Pickerel;Northern Pike;Pumpkinseed;Sauger;Yellow Perch
 Diga di Land Act|Black Crappie;Bluegill;Colorado Golden Trout;Cutthroat Trout;Golden Shiner;Rainbow Trout;White Bass;White Sucker
 Land Act nord|Atlantic Salmon;Brook Trout;Burbot;Lake Chub;Lake Trout;Lake Whitefish;Northern Pike;Pumpkinseed;Splake;White Sucker;Yellow Perch
-Land Act ovest|Brown Trout;Cutthroat Trout;Oregon Redband Trout;Pumpkinseed;Rainbow Trout;Redbreast Sunfish;Rock Bass;Smallmouth Bass
+Land Act ovest|Brown Trout;Pumpkinseed;Rainbow Trout;Redbreast Sunfish;Rock Bass;Smallmouth Bass
 Mirror Park|Common Carp;Common Roach;European Perch;European Weatherfish;Mirror Carp;Northern Pike;Prussian Carp;Silver Bream;Tench
 Laghetti del golf|Blacktail Shiner;Bluegill;Golden Shiner;Green Sunfish;Redear Sunfish;White Crappie
-Vespucci Beach e molo di Del Perro|Albacore;Bigeye Tuna;Bigfin Reef Squid;Dogtooth Tuna;Giant Grouper;Giant Trevally;Greater Amberjack;Green Jobfish;Japanese Amberjack;Japanese Anchovy;Japanese Jack Mackerel;Mahi-Mahi;Narrow-Barred Mackerel;Pacific Bluefin Tuna;Ruby Snapper;Skipjack Tuna;Striped Bonito;Striped Marlin;Yellowfin Tuna
+Vespucci Beach e molo di Del Perro|Albacore;Bigeye Tuna;Giant Grouper;Giant Trevally;Greater Amberjack;Green Jobfish;Japanese Amberjack;Japanese Anchovy;Narrow-Barred Mackerel;Pacific Bluefin Tuna;Striped Bonito
 Isolotto di San Chianski|Albacore;Bigeye Tuna;Indo-Pacific King Mackerel;Sailfish;Sickle Pomfret;Striped Marlin;Swordfish
-Faro di El Gordo|Arctic Char;Atlantic Cod;Atlantic Halibut;Atlantic Herring;Atlantic Horse Mackerel;Atlantic Mackerel;Atlantic Saury;Atlantic Wolffish;Brill;Coalfish;Common Ling;Cusk;European Angler;European Hake;European Sea Sturgeon;Greenland Halibut;Greenland Shark;Haddock;Meagre;Norway Atlantic Salmon;Norway Seaperch;Porbeagle Shark;Sea Trout;Spiny Dogfish;Whiting
-Molo di Paleto Cove|Arctic Char;Atlantic Cod;Atlantic Halibut;Atlantic Herring;Atlantic Horse Mackerel;Atlantic Mackerel;Atlantic Saury;Atlantic Wolffish;Brill;Coalfish;Common Ling;Cusk;European Angler;European Hake;European Sea Sturgeon;Greenland Halibut;Greenland Shark;Haddock;Meagre;Norway Atlantic Salmon;Norway Seaperch;Porbeagle Shark;Sea Trout;Spiny Dogfish;Whiting
-Paleto Bay ovest|Arctic Char;Atlantic Cod;Atlantic Halibut;Atlantic Herring;Atlantic Horse Mackerel;Atlantic Mackerel;Atlantic Saury;Atlantic Wolffish;Brill;Coalfish;Common Ling;Cusk;European Angler;European Hake;European Sea Sturgeon;Greenland Halibut;Greenland Shark;Haddock;Meagre;Norway Atlantic Salmon;Norway Seaperch;Porbeagle Shark;Sea Trout;Spiny Dogfish;Whiting
-Paleto Bay est|Arctic Char;Atlantic Cod;Atlantic Halibut;Atlantic Herring;Atlantic Horse Mackerel;Atlantic Mackerel;Atlantic Saury;Atlantic Wolffish;Brill;Coalfish;Common Ling;Cusk;European Angler;European Hake;European Sea Sturgeon;Greenland Halibut;Greenland Shark;Haddock;Meagre;Norway Atlantic Salmon;Norway Seaperch;Porbeagle Shark;Sea Trout;Spiny Dogfish;Whiting
-Spiaggia e molo di Chumash|Albacore;Bigeye Tuna;Bigfin Reef Squid;Dogtooth Tuna;Giant Grouper;Giant Trevally;Greater Amberjack;Green Jobfish;Japanese Amberjack;Japanese Anchovy;Japanese Jack Mackerel;Mahi-Mahi;Narrow-Barred Mackerel;Pacific Bluefin Tuna;Ruby Snapper;Skipjack Tuna;Striped Bonito;Striped Marlin;Yellowfin Tuna
-Spiaggia di Pacific Bluffs|Albacore;Bigeye Tuna;Bigfin Reef Squid;Dogtooth Tuna;Giant Grouper;Giant Trevally;Greater Amberjack;Green Jobfish;Japanese Amberjack;Japanese Anchovy;Japanese Jack Mackerel;Mahi-Mahi;Narrow-Barred Mackerel;Pacific Bluefin Tuna;Ruby Snapper;Skipjack Tuna;Striped Bonito;Striped Marlin;Yellowfin Tuna
+Faro di El Gordo|Arctic Char;Atlantic Halibut;Atlantic Herring;Atlantic Horse Mackerel;Atlantic Saury;Common Ling;Cusk;European Angler;Greenland Shark;Haddock;Norway Seaperch;Whiting
+Molo di Paleto Cove|Arctic Char;Atlantic Cod;Atlantic Halibut;Atlantic Mackerel;Atlantic Saury;Coalfish;Cusk;Meagre;Norway Atlantic Salmon;Norway Seaperch;Spiny Dogfish;Whiting
+Paleto Bay ovest|Atlantic Herring;Atlantic Wolffish;Brill;Common Ling;European Angler;European Hake;Greenland Halibut;Greenland Shark;Haddock;Porbeagle Shark;Sea Trout
+Paleto Bay est|Atlantic Cod;Atlantic Wolffish;Brill;Coalfish;European Hake;European Sea Sturgeon;Meagre;Norway Atlantic Salmon;Porbeagle Shark;Sea Trout;Spiny Dogfish
+Spiaggia e molo di Chumash|Bigfin Reef Squid;Dogtooth Tuna;Giant Trevally;Greater Amberjack;Japanese Anchovy;Japanese Jack Mackerel;Mahi-Mahi;Narrow-Barred Mackerel;Pacific Bluefin Tuna;Skipjack Tuna;Striped Marlin;Yellowfin Tuna
+Spiaggia di Pacific Bluffs|Albacore;Bigeye Tuna;Bigfin Reef Squid;Dogtooth Tuna;Giant Grouper;Green Jobfish;Japanese Amberjack;Mahi-Mahi;Ruby Snapper;Skipjack Tuna;Striped Marlin;Yellowfin Tuna
 Palomino Highlands|American Gizzard Shad;Bigmouth Buffalo;Black Drum;Bluegill;Bonefish;Bowfin;Brown Bullhead Catfish;Butterfly Peacock Bass;Channel Catfish;Common Snook;Gafftopsail Catfish;Golden Shiner;Largemouth Bass;Longnose Gar;Oscar;Permit;Red Drum;Redear Sunfish;Shoal Bass;Southern Flounder;Speckled Peacock Bass;Striped Bass;Tarpon;Warmouth

@@ -10,8 +10,8 @@
 # prende la riga col livello piu' alto che NON supera il livello del
 # pescatore (paghi per quello che puoi pescare). Sotto il primo tratto
 # vale la riga piu' bassa.
-alamosea|Alamo Sea|unica|1g|85|1
-alamosea|Alamo Sea|unica|3g|242|1
+alamosea|Alamo Sea|unica|1g|170|2
+alamosea|Alamo Sea|unica|3g|484|2
 alamosea|Alamo Sea|unica|1g|570|8
 alamosea|Alamo Sea|unica|3g|1624|8
 alamosea|Alamo Sea|unica|1g|2500|14
@@ -32,24 +32,24 @@ cassidy|Cassidy|unica|1g|675|12
 cassidy|Cassidy|unica|3g|1924|12
 cassidy|Cassidy|unica|1g|10625|48
 cassidy|Cassidy|unica|3g|30281|48
-chumash|Chumash|unica|1g|63875|83
-chumash|Chumash|unica|3g|182044|83
+chumash|Chumash|unica|1g|62650|83
+chumash|Chumash|unica|3g|178552|83
 elgordo|El Gordo|unica|1g|66500|100
 elgordo|El Gordo|unica|3g|189525|100
-golf|Golf|unica|1g|85|1
-golf|Golf|unica|3g|242|1
+golf|Golf|unica|1g|70|1
+golf|Golf|unica|3g|200|1
 landact|Land Act|unica|1g|350|5
 landact|Land Act|unica|3g|998|5
-landact|Land Act|unica|1g|2500|14
-landact|Land Act|unica|3g|7125|14
+landact|Land Act|unica|1g|2125|14
+landact|Land Act|unica|3g|6056|14
 landact|Land Act|unica|1g|2125|22
 landact|Land Act|unica|3g|6056|22
 mirrorpark|Mirror Park|unica|1g|130|3
 mirrorpark|Mirror Park|unica|3g|370|3
 pacificbluffs|Pacific Bluffs|unica|1g|63875|83
 pacificbluffs|Pacific Bluffs|unica|3g|182044|83
-paletobay|Paleto Bay|unica|1g|66500|100
-paletobay|Paleto Bay|unica|3g|189525|100
+paletobay|Paleto Bay|unica|1g|66325|100
+paletobay|Paleto Bay|unica|3g|189026|100
 paletocove|Paleto Cove|unica|1g|66500|100
 paletocove|Paleto Cove|unica|3g|189525|100
 palomino|Palomino|unica|1g|21500|54
@@ -60,10 +60,10 @@ tongva|Tongva|unica|1g|2138|20
 tongva|Tongva|unica|3g|6093|20
 tongva|Tongva|unica|1g|6750|38
 tongva|Tongva|unica|3g|19238|38
-vespucci|Vespucci|unica|1g|63875|83
-vespucci|Vespucci|unica|3g|182044|83
-vinewood|Vinewood|unica|1g|570|8
-vinewood|Vinewood|unica|3g|1624|8
+vespucci|Vespucci|unica|1g|34475|83
+vespucci|Vespucci|unica|3g|98254|83
+vinewood|Vinewood|unica|1g|540|8
+vinewood|Vinewood|unica|3g|1539|8
 zancudo|Zancudo|unica|1g|266|4
 zancudo|Zancudo|unica|3g|758|4
 zancudo|Zancudo|unica|1g|2125|18
