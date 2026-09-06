@@ -5367,6 +5367,10 @@ public class Pesca : Script
                 try { Function.Call(Hash.START_AUDIO_SCENE, sc); } catch { }
             }
             try { Function.Call(Hash.SET_AUDIO_FLAG, "DisableFlightMusic", true); } catch { }
+            // E LE OPZIONI AUDIO DEL GIOCO A ZERO: gli id in config
+            // (menu_audio_id: 300 effetti, 301 musica). I tuoi valori si
+            // rimettono alla chiusura, e se ricarichi gli script.
+            AbbassaAudio();
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
@@ -5397,9 +5401,45 @@ public class Pesca : Script
             try { Function.Call(Hash.STOP_AUDIO_SCENE, sc); } catch { }
         }
         try { Function.Call(Hash.SET_AUDIO_FLAG, "DisableFlightMusic", false); } catch { }
+        RialzaAudio();
         // l'orologio della pesca non deve aver contato il tempo in pausa
         prossimoMinuto += Game.GameTime - menuNuovoPausaDa;
         Suono("BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+    }
+
+    List<int> audioId = new List<int>();
+    List<int> audioPrima = new List<int>();
+
+    void AbbassaAudio()
+    {
+        if (audioId.Count > 0) return;
+        string[] ids = LeggiS("menu_audio_id", "300;301").Split(';');
+        int q;
+        for (q = 0; q < ids.Length; q++)
+        {
+            int id;
+            if (!int.TryParse(ids[q].Trim(), out id)) continue;
+            try
+            {
+                int prima = Function.Call<int>(Hash.GET_PROFILE_SETTING, id);
+                audioId.Add(id);
+                audioPrima.Add(prima);
+                Function.Call(Hash.STAT_SET_PROFILE_SETTING_VALUE, id, 0);
+            }
+            catch { }
+        }
+    }
+
+    void RialzaAudio()
+    {
+        int q;
+        for (q = 0; q < audioId.Count; q++)
+        {
+            try { Function.Call(Hash.STAT_SET_PROFILE_SETTING_VALUE, audioId[q], audioPrima[q]); }
+            catch { }
+        }
+        audioId.Clear();
+        audioPrima.Clear();
     }
 
     void DisegnaMenuNuovo()
