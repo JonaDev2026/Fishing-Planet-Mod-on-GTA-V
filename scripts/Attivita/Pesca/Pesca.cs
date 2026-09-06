@@ -6186,8 +6186,7 @@ public class Pesca : Script
             {
                 Sprite("img/cassette/Base.png", x + 4f, y + 4f, iw, ih);
                 TestoMenu(L("Backpack", "Zaino"), tx, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
-                TestoMenu(ZAINO_ROBA + " oggetti   " + ZAINO_LENZE + " lenze", tx, y + 6f + 18f,
-                          0.22f, 0, 0, 200, 202, 210, 255);
+                DatiACapo(ZAINO_ROBA + " oggetti   " + ZAINO_LENZE + " lenze", tx, y + 6f + 18f, x + w - 8f);
             }
             else
                 TestoMenu(L("none", "nessuno"), x + 10f, y + h * 0.5f - 9f, 0.26f, 0, 0, 200, 202, 210, 255);
@@ -6199,7 +6198,25 @@ public class Pesca : Script
         if (!Articolo(cat, id, out nome, out img, out prezzo, out liv)) return;
         if (img.Length > 0) Sprite(img, x + 4f, y + 4f, iw, ih);
         TestoMenu(nome, tx, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
-        TestoMenu(Dettaglio(cat, id), tx, y + 6f + 18f, 0.22f, 0, 0, 200, 202, 210, 255);
+        DatiACapo(Dettaglio(cat, id), tx, y + 6f + 18f, x + w - 8f);
+    }
+
+    // i dati del banner, separati da tre spazi: quando non ci stanno
+    // nella larghezza vanno a capo, una riga sotto
+    void DatiACapo(string dati, float x, float y, float xMax)
+    {
+        string[] pz = dati.Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
+        float dx = x, dy = y;
+        int z;
+        for (z = 0; z < pz.Length; z++)
+        {
+            string p1 = pz[z].Trim();
+            if (p1.Length == 0) continue;
+            float w1 = LarghezzaTesto(p1, 0.22f, 0);
+            if (dx + w1 > xMax && dx > x) { dx = x; dy += 18f; }
+            TestoMenu(p1, dx, dy, 0.22f, 0, 0, 200, 202, 210, 255);
+            dx += w1 + 9f;
+        }
     }
 
     void DisegnaSidebarEquip(float mx, float cy, float ch)
