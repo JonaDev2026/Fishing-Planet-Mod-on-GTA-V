@@ -1150,12 +1150,19 @@ public class Pesca : Script
         {
             try
             {
+                Function.Call(Hash.SET_CLOCK_TIME, oraMia, minutoMio, 0);
                 Function.Call(Hash.PAUSE_CLOCK, true);
                 orologioPreso = true;
                 prossimoMinuto = Game.GameTime + MS_PER_MINUTO;
             }
             catch { }
+            // il torneo che stavi facendo riparte col tempo che gli restava
+            if (torneoOra >= 0 && torneoOra < tornei.Count && torneoRestaMs >= 0)
+                torneoFine = Game.GameTime + torneoRestaMs;
+            else torneoOra = -1;
         }
+        else { torneoOra = -1; nassaOggi.Clear(); kgNassa = 0f; }
+        torneoRestaMs = -1;
         else
         {
             try { Function.Call(Hash.PAUSE_CLOCK, false); }
@@ -2745,6 +2752,8 @@ public class Pesca : Script
             string[] c = r.Split('|');
             if (c.Length < 2) continue;
             string k = c[0].Trim();
+            // la nassa di oggi: la riga intera, che ha gia' i suoi |
+            if (k == "nassaoggi") { nassaOggi.Add(r.Substring(10)); continue; }
             if (k == "xp") xpTot = Numero(c[1]);
             else if (k == "licenza")
             {
@@ -2816,6 +2825,15 @@ public class Pesca : Script
                 if (c[1].Trim() == "in_pesca") inPesca = (Numero(c[2]) != 0) && licZona.Length > 0 && licGiorni > 0;
                 if (c[1].Trim() == "torneo_tasca") torneoTasca = Numero(c[2]);
                 if (c[1].Trim() == "giorno_torneo") giornoTorneo = (Numero(c[2]) != 0);
+                if (c[1].Trim() == "kg_nassa") kgNassa = Numero(c[2]) / 1000f;
+                if (c[1].Trim() == "ora") oraMia = Numero(c[2]);
+                if (c[1].Trim() == "minuto") minutoMio = Numero(c[2]);
+                if (c[1].Trim() == "torneo_ora") torneoOra = Numero(c[2]);
+                if (c[1].Trim() == "torneo_resta_ms") torneoRestaMs = Numero(c[2]);
+                if (c[1].Trim() == "torneo_kg") torneoKg = Numero(c[2]) / 1000f;
+                if (c[1].Trim() == "torneo_pezzi") torneoPezzi = Numero(c[2]);
+                if (c[1].Trim() == "torneo_trofei") torneoTrofei = Numero(c[2]);
+                if (c[1].Trim() == "torneo_unici") torneoUnici = Numero(c[2]);
                 if (c[1].Trim() == "frizione")
                 {
                     frizione = Numero(c[2]);
@@ -2885,6 +2903,27 @@ public class Pesca : Script
         v.Add("imp|torneo_tasca|" + torneoTasca);
         v.Add("imp|giorno_torneo|" + (giornoTorneo ? "1" : "0"));
         v.Add("imp|minuti|" + minutiFatti);
+        // la giornata in corso: ora del gioco, nassa e torneo, per riprendere
+        // da dove eri se chiudi il gioco
+        v.Add("imp|ora|" + oraMia);
+        v.Add("imp|minuto|" + minutoMio);
+        v.Add("imp|kg_nassa|" + (int)(kgNassa * 1000f + 0.5f));
+        if (inPesca)
+        {
+            int qn;
+            for (qn = 0; qn < nassaOggi.Count; qn++) v.Add("nassaoggi|" + nassaOggi[qn]);
+        }
+        if (torneoOra >= 0)
+        {
+            int resta = torneoFine - Game.GameTime;
+            if (resta < 0) resta = 0;
+            v.Add("imp|torneo_ora|" + torneoOra);
+            v.Add("imp|torneo_resta_ms|" + resta);
+            v.Add("imp|torneo_kg|" + (int)(torneoKg * 1000f + 0.5f));
+            v.Add("imp|torneo_pezzi|" + torneoPezzi);
+            v.Add("imp|torneo_trofei|" + torneoTrofei);
+            v.Add("imp|torneo_unici|" + torneoUnici);
+        }
         {
             long oraP = AdessoSec();
             foreach (KeyValuePair<string, long> kv in pausaUnico)
@@ -3547,6 +3586,7 @@ public class Pesca : Script
     // ============================================================
     int torneoOra = -1;        // quale torneo stai facendo, -1 nessuno
     int torneoFine = 0;        // Game.GameTime in cui scade
+    int torneoRestaMs = -1;    // letto dal salvataggio: i ms che restavano
     float torneoKg = 0f;       // chili del pesce bersaglio messi insieme
     int torneoPezzi = 0, torneoTrofei = 0, torneoUnici = 0;
 
@@ -5615,6 +5655,9 @@ public class Pesca : Script
             if (oraMia >= 24) oraMia = 0;
             prossimoMinuto += MS_PER_MINUTO;
             minutiFatti++;
+            // un salvataggio a ogni minuto di giornata: se chiudi il gioco
+            // riprendi da qui
+            SalvaStato();
         }
         try
         {
