@@ -6292,10 +6292,19 @@ public class Pesca : Script
             sbSel = (sbSel + (giu ? 1 : n - 1)) % n;
             menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
         }
-        else if (menuLato == 0 && dx) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        // a destra si va solo dove c'e' qualcosa: una colonna vuota si salta
+        else if (menuLato == 0 && dx && (eqCasa.Count > 0 || eqBorsa.Count > 0))
+        {
+            menuLato = eqCasa.Count > 0 ? 1 : 2;
+            menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
+        }
         else if (menuLato == 1 && sx) { menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
-        else if (menuLato == 1 && dx) { menuLato = 2; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
-        else if (menuLato == 2 && sx) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && dx && eqBorsa.Count > 0) { menuLato = 2; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 2 && sx)
+        {
+            menuLato = eqCasa.Count > 0 ? 1 : 0;
+            menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
+        }
         else if (menuLato == 1 && (su || giu) && eqCasa.Count > 0)
         {
             int n = eqCasa.Count;
