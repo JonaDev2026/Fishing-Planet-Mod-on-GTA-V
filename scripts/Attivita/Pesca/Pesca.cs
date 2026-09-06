@@ -6810,7 +6810,7 @@ public class Pesca : Script
             Galleggiante x = galleggianti[k];
             id = x.Id; nome = x.Nome + "   " + x.Colore; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
             dati = Unisci(Corto(x.Misura), x.Forma);
-            dati = Unisci(dati, L("load ", "peso ") + x.Portata);
+            dati = Unisci(dati, L("load ", "piombo ") + PortataIt(x.Portata));
             dati = Unisci(dati, x.Materiale);
         }
         else if (cat == "artificiale")
@@ -7256,10 +7256,13 @@ public class Pesca : Script
         if (mis) return new int[] { 130, 200, 245 };
         // i punti esperienza hanno il loro azzurro, sempre lo stesso
         if (b.EndsWith("xp")) return new int[] { 130, 200, 245 };
-        // galleggianti: misure in pollici rosa, "peso" azzurro, materiale bianco
+        // galleggianti: misure in pollici rosa, "piombo" azzurro, materiale bianco;
+        // il "peso" delle esche resta giallo
         if (b.IndexOf('"') >= 0 || b.EndsWith("cm)")) return new int[] { 245, 150, 195 };
-        if (b.StartsWith("peso ") || b.StartsWith("load ")) return new int[] { 130, 200, 245 };
+        if (b.StartsWith("piombo ") || b.StartsWith("load ")) return new int[] { 130, 200, 245 };
         if (b == "plastic" || b == "balsa" || b == "polyurethane") return new int[] { 245, 245, 250 };
+        // i centimetri (artificiali, recupero mulinelli) bianchi
+        if (b.EndsWith(" cm")) return new int[] { 245, 245, 250 };
         return new int[] { 235, 210, 130 };
     }
 
