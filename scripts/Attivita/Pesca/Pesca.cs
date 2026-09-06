@@ -5750,7 +5750,15 @@ public class Pesca : Script
         string chiave = PossiedoFisso(cat);
         if (chiave.Length == 0)
         {
-            TestoMenu(L("none", "nessuno"), x + 10f, y + h * 0.5f - 9f, 0.26f, 0, 0, 200, 202, 210, 255);
+            // senza cassetta c'e' lo zaino, che hai da sempre
+            if (cat == "cassetta")
+            {
+                TestoMenu(L("Backpack", "Zaino"), x + 10f, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
+                TestoMenu(ZAINO_ROBA + " attrezzi   " + ZAINO_LENZE + " lenze", x + 10f, y + 6f + 18f,
+                          0.22f, 0, 0, 200, 202, 210, 255);
+            }
+            else
+                TestoMenu(L("none", "nessuno"), x + 10f, y + h * 0.5f - 9f, 0.26f, 0, 0, 200, 202, 210, 255);
             return;
         }
         string[] c = chiave.Split(':');
