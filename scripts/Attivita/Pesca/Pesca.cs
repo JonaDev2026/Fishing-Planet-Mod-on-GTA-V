@@ -1138,6 +1138,7 @@ public class Pesca : Script
         CaricaStato();
         livelloPescatore = LivelloDa(xpTot);
         ViaSfocatura();
+        try { Game.TimeScale = 1f; } catch { }
         // se il gioco era rimasto in muto (crash o ricarica col menu
         // aperto: Windows si ricorda il muto per programma e per
         // dispositivo) lo si toglie subito
@@ -1162,15 +1163,30 @@ public class Pesca : Script
             catch { }
             // il torneo che stavi facendo riparte col tempo che gli restava
             if (torneoOra >= 0 && torneoOra < tornei.Count && torneoRestaMs >= 0)
+            {
                 torneoFine = Game.GameTime + torneoRestaMs;
+                string mt = tornei[torneoOra].Meteo;
+                if (mt != null && mt.Length > 0)
+                {
+                    try
+                    {
+                        Function.Call(Hash.SET_WEATHER_TYPE_NOW_PERSIST, mt);
+                        Function.Call(Hash.SET_WEATHER_TYPE_PERSIST, mt);
+                    }
+                    catch { }
+                }
+            }
             else torneoOra = -1;
         }
         else
         {
-            torneoOra = -1; nassaOggi.Clear(); kgNassa = 0f;
+            torneoOra = -1; nassaOggi.Clear(); kgNassa = 0f; soldiNassa = 0; giornoTorneo = false;
+            torneoKg = 0f; torneoPezzi = 0; torneoTrofei = 0; torneoUnici = 0;
             try { Function.Call(Hash.PAUSE_CLOCK, false); }
             catch { }
         }
+        // un biglietto per un torneo che non c'e' piu' non vale
+        if (torneoTasca >= tornei.Count) torneoTasca = -1;
         torneoRestaMs = -1;
         RiscriviTutto();
     }
@@ -3721,6 +3737,9 @@ public class Pesca : Script
         // ai pesci gatto comincia alle due, quella al luccio all'alba.
         if (t.Ora >= 0 && t.Ora <= 23)
         {
+            // l'orologio lo teniamo noi (MuoviOrologio lo riscrive ogni
+            // giro): si cambia il nostro, non solo quello del gioco
+            oraMia = t.Ora; minutoMio = 0; oraPrec = t.Ora;
             try { Function.Call(Hash.SET_CLOCK_TIME, t.Ora, 0, 0); }
             catch { }
         }
@@ -3741,6 +3760,7 @@ public class Pesca : Script
         Avviso("~g~" + t.Nome + "~s~  " + L("started", "al via") + ".  "
                + t.Minuti + " " + L("minutes", "minuti") + ".");
         Diario("torneo iniziato: " + t.Nome + " - quota " + t.Quota);
+        SalvaStato();
         RiscriviTutto();
     }
 
@@ -3761,6 +3781,8 @@ public class Pesca : Script
         if (licGiorni > 0 && licZona.Length > 0) return L("You already hold a licence", "Hai gia' una licenza in tasca");
         if (torneoTasca >= 0 && torneoTasca != i) return L("You already hold a ticket", "Hai gia' un biglietto in tasca");
         if (livelloPescatore < t.LivMin) return L("Level " + t.LivMin + " needed", "Ci vuole il livello " + t.LivMin);
+        int luT = LuogoDalNome(t.Zona);
+        if (luT >= 0 && livelloPescatore < LivelloArea(luT)) return L("Level " + LivelloArea(luT) + " needed for the spot", "Ci vuole il livello " + LivelloArea(luT) + " per il posto");
         return "";
     }
 
@@ -3800,7 +3822,7 @@ public class Pesca : Script
         int i = torneoTasca;
         torneoTasca = -1;
         ApriTorneo(i, true);
-        if (torneoOra != i) { FinePesca(false); giornoTorneo = false; torneoTasca = i; return false; }
+        if (torneoOra != i) { FinePesca(false); giornoTorneo = false; torneoTasca = i; SalvaStato(); return false; }
         SalvaStato();
         return true;
     }
@@ -3816,6 +3838,8 @@ public class Pesca : Script
             Avviso("~y~" + L("Withdrawn from ", "Ritirato da ") + t.Nome + ".");
             Diario("torneo abbandonato: " + t.Nome);
             torneoOra = -1;
+            MeteoLibero();
+            SalvaStato();
             RiscriviTutto();
             return;
         }
@@ -3853,7 +3877,16 @@ public class Pesca : Script
                + med + ", premio " + tot);
 
         torneoOra = -1;
+        MeteoLibero();
+        SalvaStato();
         RiscriviTutto();
+    }
+
+    // il cielo del torneo era forzato: finito il torneo torna libero
+    void MeteoLibero()
+    {
+        try { Function.Call(Hash.CLEAR_WEATHER_TYPE_PERSIST); }
+        catch { }
     }
 
     // il cronometro, chiamato a ogni giro
@@ -4449,9 +4482,9 @@ public class Pesca : Script
             resetChiesto = false;
             // se hai la canna in mano o la lenza in acqua, prima si posa
             // tutto: senza, restavi congelato nella posa con la canna
+            FinePesca(false);
             RitiraLenza();
             ScenaGiu(Game.Player.Character);
-            FinePesca(false);
             fase = FASE_FERMO;
             quaderno.Clear();
             presoQui.Clear();
@@ -4476,6 +4509,18 @@ public class Pesca : Script
             minutiFatti = 0;
             licZona = "";
             licGiorni = 0;
+            // tutto il resto che restava: bobine tagliate, pezzi presi,
+            // pause dei colpi grossi, biglietto, record dei tornei
+            bobine.Clear(); bobineCasa.Clear(); metriInBobina = 0;
+            presoSu.Clear(); pausaUnico.Clear(); pausaTrofeo.Clear();
+            torneoTasca = -1; giornoTorneo = false; torneoOra = -1;
+            diarioChiesto = false;
+            {
+                int kt;
+                for (kt = 0; kt < tornei.Count; kt++)
+                { tornei[kt].RecKg = 0f; tornei[kt].RecMed = 0; tornei[kt].RecTrofei = 0; tornei[kt].RecUnici = 0; tornei[kt].RecFatte = 0; }
+                SalvaRecordTornei();
+            }
             SalvaStato();
             RiscriviTutto();
             Avviso("~g~" + L("All cleared. You are back at level 1.", "Tutto azzerato. Sei di nuovo al livello 1."));
@@ -4863,7 +4908,7 @@ public class Pesca : Script
         string nome, img;
         int prezzo, liv;
         if (!Articolo("lenza", id, out nome, out img, out prezzo, out liv)) return false;
-        if (!ChiediDueVolte("bob" + i,
+        if (!ChiediDueVolte("bob|" + bobine[i],
                 L("Press (Y) again to throw away ", "Premi ancora (Y) per gettare ") + nome + " (" + m + " m)"))
             return true;
         if (i < 0 || i >= bobine.Count) return true;
@@ -4885,6 +4930,7 @@ public class Pesca : Script
             return true;
         if (!daCasa && Quanti(d, k) <= 1) SeArmatoSmonta(cat, id);
         Aggiungi(d, k, -1);
+        if (!daCasa && Quanti(borsa, k) <= 0) usati.Remove(k);
         Messaggio(L("Thrown away: ", "Gettato: ") + nome);
         return true;
     }
@@ -4912,9 +4958,10 @@ public class Pesca : Script
         int reso = prezzo * perc / 100;
 
         int ora = Game.GameTime;
-        if (vendiChiesto != k || ora > vendiScade)
+        string kv2 = k + (daCasa ? "c" : "b");
+        if (vendiChiesto != kv2 || ora > vendiScade)
         {
-            vendiChiesto = k;
+            vendiChiesto = kv2;
             vendiScade = ora + 5000;
             Messaggio(L("Press (X) again to sell ", "Premi ancora (X) per vendere ") + nome + L(" for $", " a $") + Dollari(reso));
             return true;
@@ -4923,7 +4970,7 @@ public class Pesca : Script
         vendiChiesto = "";
         if (!daCasa && Quanti(magazzino, k) <= 1) SeArmatoSmonta(cat, id);
         magazzino[k] = Quanti(magazzino, k) - 1;
-        if (magazzino[k] <= 0) magazzino.Remove(k);
+        if (magazzino[k] <= 0) { magazzino.Remove(k); if (!daCasa) usati.Remove(k); }
         Paga(-reso);
         SalvaStato();
         RiscriviTutto();
@@ -5121,6 +5168,10 @@ public class Pesca : Script
         List<KeyValuePair<string, int>> tutti = new List<KeyValuePair<string, int>>();
         foreach (KeyValuePair<string, int> kv in borsa) tutti.Add(kv);
         foreach (KeyValuePair<string, int> kv in magazzino) tutti.Add(kv);
+        // di ogni contenitore vale IL MIGLIORE che possiedi, non la somma:
+        // si compra un modello piu' grande per avere piu' posto, non due
+        // uguali. Zaino + portacanne + cassetta si sommano fra loro.
+        int pc = 0, pm = 0, pl = 0, cr = 0, cl = 0, cm = 0;
         foreach (KeyValuePair<string, int> kv in tutti)
         {
             string[] c = kv.Key.Split(':');
@@ -5130,24 +5181,17 @@ public class Pesca : Script
             if (c[0] == "portacanne")
             {
                 for (i = 0; i < portacanne.Count; i++)
-                    if (portacanne[i].Id == id)
-                    {
-                        maxCanne += portacanne[i].Canne * kv.Value;
-                        maxMul += portacanne[i].Mulinelli * kv.Value;
-                        maxLenze += portacanne[i].Lenze * kv.Value;
-                    }
+                    if (portacanne[i].Id == id && portacanne[i].Canne >= pc)
+                    { pc = portacanne[i].Canne; pm = portacanne[i].Mulinelli; pl = portacanne[i].Lenze; }
             }
             else if (c[0] == "cassetta")
             {
                 for (i = 0; i < cassette.Count; i++)
-                    if (cassette[i].Id == id)
-                    {
-                        maxRoba += Numero(cassette[i].Attrezzi) * kv.Value;
-                        maxLenze += Numero(cassette[i].Lenze) * kv.Value;
-                        maxMul += Numero(cassette[i].Mulinelli) * kv.Value;
-                    }
+                    if (cassette[i].Id == id && Numero(cassette[i].Attrezzi) >= cr)
+                    { cr = Numero(cassette[i].Attrezzi); cl = Numero(cassette[i].Lenze); cm = Numero(cassette[i].Mulinelli); }
             }
         }
+        maxCanne += pc; maxMul += pm + cm; maxLenze += pl + cl; maxRoba += cr;
     }
 
     // roba lunga (canne, portacanne, borse, nasse, mulinelli) va nel banner
@@ -5439,7 +5483,7 @@ public class Pesca : Script
         Capienza(out mc, out mm, out ml, out mr);
         if (cat == "canna") return InBorsa("canna") < mc;
         if (cat == "mulinello") return InBorsa("mulinello") < mm;
-        if (cat == "lenza") return InBorsa("lenza") < ml;
+        if (cat == "lenza") return InBorsa("lenza") + bobine.Count < ml;
         if (id >= 0 && Quanti(borsa, cat + ":" + id) > 0) return true;
         return RobaMinuta() < mr;
     }
@@ -5486,6 +5530,10 @@ public class Pesca : Script
         if (inPesca) return false;
         if (torneoOra >= 0) { Messaggio(L("Competition running", "Hai un torneo in corso")); return false; }
         if (torneoTasca >= 0) { Messaggio(L("You hold a competition ticket", "Hai un biglietto del torneo in tasca")); return false; }
+        // con una licenza gia' in tasca non se ne compra un'altra: prima
+        // la seconda cancellava la prima, soldi compresi
+        if (licZona.Length > 0 && licGiorni > 0)
+        { Messaggio(L("You already hold a licence for ", "Hai gia' una licenza in tasca per ") + GruppoL(NomeGruppo(licZona))); return false; }
         int prezzo = PrezzoLicenza(zona, giorni);
         if (prezzo <= 0) return false;
         // IL LIVELLO DELL'ACQUA.
@@ -5616,6 +5664,8 @@ public class Pesca : Script
             Function.Call(Hash.PAUSE_CLOCK, true);
             orologioPreso = true;
             prossimoMinuto = Game.GameTime + MS_PER_MINUTO;
+            // se la giornata parte dal menu, la pausa del menu non conta
+            menuNuovoPausaDa = Game.GameTime;
             oraPrec = 5;
             oreFatte = 0;
             minutiFatti = 0;
@@ -5676,6 +5726,14 @@ public class Pesca : Script
     bool FinePesca(bool avvisa)
     {
         if (!inPesca) return false;
+        // prima si chiude la pesca in corso: lenza dentro, pesce e roba
+        // via, canna posata. Prima restava tutto a mezz'aria.
+        RitiraLenza();
+        TogliPesce();
+        ViaRoba(); robaOra = -1; robaAppesaFino = 0;
+        ScenaGiu(Game.Player.Character);
+        fase = FASE_FERMO;
+        escaInAcqua = false; metriLenza = 0f; tensione = 0f;
         // se avevi un torneo in corso finisce qui, e senza premio: sei
         // andato a casa prima del tempo
         if (torneoOra >= 0) ChiudiTorneo(true);
@@ -5709,6 +5767,7 @@ public class Pesca : Script
     // B chiude. Per ora dentro c'e' solo il velo e il titolo.
     bool menuNuovoAperto = false;
     bool menuTastoGiu = false;
+    bool menuYGiu = false;
     int menuApriScheda = -1;      // la ruota chiede di aprire su questa scheda
     string menuApriVoce = "";
     int menuNuovoPausaDa = 0;
@@ -5721,7 +5780,7 @@ public class Pesca : Script
 
     bool MenuNuovo()
     {
-        if (LeggiF("menu_nuovo", 1f) < 0.5f) return false;
+        if (!menuNuovoAperto && LeggiF("menu_nuovo", 1f) < 0.5f) return false;
         int now = OraPc();
         bool rb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 44)
                || Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 44);
@@ -5810,8 +5869,14 @@ public class Pesca : Script
         try { Game.TimeScale = 1f; } catch { }
         RialzaAudio();
         ViaSfocatura();
-        // l'orologio della pesca non deve aver contato il tempo in pausa
-        prossimoMinuto += Game.GameTime - menuNuovoPausaDa;
+        // l'orologio della pesca non deve aver contato il tempo in pausa,
+        // e nemmeno il cronometro del torneo
+        int pausa = Game.GameTime - menuNuovoPausaDa;
+        if (pausa > 0)
+        {
+            prossimoMinuto += pausa;
+            if (torneoOra >= 0) torneoFine += pausa;
+        }
     }
 
     // L'AUDIO DEL GIOCO SI AMMUTOLISCE DAL MIXER DI WINDOWS: e' la sessione
@@ -6284,7 +6349,7 @@ public class Pesca : Script
                 SuonoMenu("menu_apri.wav");
                 RiempiSidebar();
             }
-            else if (v == 2) { Esegui("imp_diario"); SuonoMenu("menu_apri.wav"); }
+            else if (v == 2) { Esegui("imp_diario"); SuonoMenu("menu_apri.wav"); if (!diarioChiesto) SalvaStato(); }
             else if (v == 3) { Esegui("imp_reset"); SuonoMenu("menu_apri.wav"); if (!resetChiesto) ChiudiMenuNuovo(); }
         }
     }
@@ -6310,6 +6375,7 @@ public class Pesca : Script
     {
         List<string> r = new List<string>();
         if (t == null || t.Length == 0) return r;
+        t = U(t);
         // la misura del testo di GTA si ferma a 99 caratteri: si misura
         // parola per parola e si sommano le larghezze
         string[] parole = t.Replace("|", " ").Split(' ');
@@ -6976,11 +7042,21 @@ public class Pesca : Script
     // il pezzo fisso che possiedi (casa o cassetta): chiave "cat:id" o ""
     string PossiedoFisso(string cat)
     {
-        foreach (KeyValuePair<string, int> kv in borsa)
-            if (kv.Value > 0 && kv.Key.StartsWith(cat + ":")) return kv.Key;
-        foreach (KeyValuePair<string, int> kv in magazzino)
-            if (kv.Value > 0 && kv.Key.StartsWith(cat + ":")) return kv.Key;
-        return "";
+        // il migliore che possiedi, che e' quello che conta in Capienza
+        string best = ""; int bv = -1;
+        List<KeyValuePair<string, int>> tutti = new List<KeyValuePair<string, int>>();
+        foreach (KeyValuePair<string, int> kv in borsa) tutti.Add(kv);
+        foreach (KeyValuePair<string, int> kv in magazzino) tutti.Add(kv);
+        foreach (KeyValuePair<string, int> kv in tutti)
+        {
+            if (kv.Value <= 0 || !kv.Key.StartsWith(cat + ":")) continue;
+            int id = Numero(kv.Key.Split(':')[1]);
+            int v = 0, i;
+            if (cat == "portacanne") { for (i = 0; i < portacanne.Count; i++) if (portacanne[i].Id == id) v = portacanne[i].Canne; }
+            else { for (i = 0; i < cassette.Count; i++) if (cassette[i].Id == id) v = Numero(cassette[i].Attrezzi); }
+            if (v > bv) { bv = v; best = kv.Key; }
+        }
+        return best;
     }
 
     // il banner di un pezzo fisso: l'immagine grande a sinistra, nome e
@@ -7390,9 +7466,13 @@ public class Pesca : Script
         else if (p1 > 0)
         {
             RigaLicenza(x, cw2, y, L("Buy 1 day", "Acquista 1 giorno"), p1, 0);
-            y += 20f;
-            RigaLicenza(x, cw2, y, L("Buy 3 days", "Acquista 3 giorni"), p3, 1);
-            pnRighe = 2;
+            pnRighe = 1;
+            if (p3 > 0)
+            {
+                y += 20f;
+                RigaLicenza(x, cw2, y, L("Buy 3 days", "Acquista 3 giorni"), p3, 1);
+                pnRighe = 2;
+            }
         }
         else TestoMenu(L("No license needed", "Senza licenza"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
 
@@ -7715,9 +7795,11 @@ public class Pesca : Script
             bool ok = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201);
             bool tx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 203)
                    || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 2, 179);
+            bool yGiu = Game.IsKeyPressed(System.Windows.Forms.Keys.Y);
             bool ty = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 2, 178)
                    || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 2, 178)
-                   || Game.IsKeyPressed(System.Windows.Forms.Keys.Y);
+                   || (yGiu && !menuYGiu);
+            menuYGiu = yGiu;
             if (!ok && !tx && !ty) return;
             List<string> lista = (menuLato == 1) ? eqCasa : eqBorsa;
             int sel = (menuLato == 1) ? eqSelCasa : eqSelBorsa;
@@ -9885,6 +9967,9 @@ public class Pesca : Script
 
     static bool TastoEsca()
     {
+        // con SINISTRA della croce premuta e' la combinazione del menu
+        if (Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 174)
+         || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 174)) return false;
         return Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 44)
             || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 44);
     }
@@ -9928,7 +10013,21 @@ public class Pesca : Script
     // quanto tiene l'attrezzatura montata: comanda il pezzo piu' debole
     float TenutaBorsa()
     {
-        float lenza = 0f, friz = 0f, canna = 0f;
+        // QUELLO CHE HAI MONTATO, non quello che hai nello zaino: la lenza
+        // imbobinata non sta piu' nello zaino, e una canna di scorta non
+        // pesca. Prima, con l'unica lenza imbobinata, il limite cadeva a
+        // 0,9 kg e i pesci grossi non uscivano.
+        float lenza = KgLenza(Armato("lenza"));
+        float friz = FrizioneMul(InUso("mulinello"));
+        float canna = MaxCanna(InUso("canna"));
+        if (lenza > 0f || friz > 0f || canna > 0f)
+        {
+            float tm = lenza;
+            if (friz > 0f && (tm <= 0f || friz < tm)) tm = friz;
+            if (canna > 0f && (tm <= 0f || canna < tm)) tm = canna;
+            if (tm > 0f) return tm;
+        }
+        // senza niente montato: il meglio dello zaino, come prima
         int i;
         foreach (KeyValuePair<string, int> kv in borsa)
         {
@@ -10734,6 +10833,8 @@ public class Pesca : Script
         // ---- canna in mano, pronta a lanciare ----
         if (fase == FASE_PRONTO)
         {
+            // qui la lenza e' dentro: niente esca in acqua, niente tensione
+            escaInAcqua = false; tensione = 0f;
             // CON LA CANNA IN MANO L'HUD C'E' GIA' TUTTO: barra, frizione
             // col mulinello, armatura. Non si aspetta il lancio.
             HudPesca();
@@ -11298,9 +11399,9 @@ public class Pesca : Script
                 int quanto = (int)(LeggiF("denti_secondi", 3.5f) * 1000f);
                 if (now - dentiDa > quanto)
                 {
-                    dentiDa = 0;
                     TogliPesce();
-                    PerdiArmatura();
+                    PerdiArmatura();      // legge dentiDa: "ti ha tranciato il filo"
+                    dentiDa = 0;
                     Vibra(400, 250);
                     fase = FASE_PRONTO;
                     grillettoMollato = false;
@@ -11444,6 +11545,7 @@ public class Pesca : Script
             if (tensione >= 100f)
             {
                 Suono("LOSER", "HUD_AWARDS");
+                dentiDa = 0;          // e' la tensione, non i denti
                 PerdiArmatura();
                 Vibra(400, 250);
                 TogliPesce();
@@ -12235,7 +12337,7 @@ public class Pesca : Script
         if (perc < 0) perc = 0;
         if (perc > 100) perc = 100;
         int reso = (int)((long)prezzo * m / tot * perc / 100);
-        string k = pref + i;
+        string k = pref + bobineCasa[i];
         int ora = Game.GameTime;
         if (vendiChiesto != k || ora > vendiScade)
         {
@@ -12262,7 +12364,7 @@ public class Pesca : Script
         int m = (c.Length > 1) ? Numero(c[1]) : 0;
         string nome, img; int prezzo, liv;
         if (!Articolo("lenza", id, out nome, out img, out prezzo, out liv)) return false;
-        if (!ChiediDueVolte("bobc" + i,
+        if (!ChiediDueVolte("bobc|" + bobineCasa[i],
                 L("Press (Y) again to throw away ", "Premi ancora (Y) per gettare ") + nome + " (" + m + " m)"))
             return true;
         if (i >= bobineCasa.Count) return true;
@@ -12415,11 +12517,20 @@ public class Pesca : Script
     // puo' restare sulla canna: prima si smonta.
     void SeArmatoSmonta(string cat, int id)
     {
+        // la lenza imbobinata non e' la confezione che sta lasciando lo
+        // zaino: una scorta che se ne va non svuota il mulinello
+        if (cat == "lenza") return;
         if (cat == "terminale") cat = CasellaTerm(SottoTerm(id));
         if (!SiArma(cat) && cat != "leader" && cat != "piombo") return;
         if (Armato(cat) != id) return;
-        if (cat == "mulinello" || cat == "lenza") DisarmaLenza();
-        if (presoSu.ContainsKey(cat)) presoSu.Remove(cat);
+        if (cat == "mulinello") DisarmaLenza();
+        // il pezzo montato torna nella sua scatola prima che la scatola
+        // se ne vada: prima spariva
+        if (presoSu.ContainsKey(cat))
+        {
+            Rimetti((cat == "galleggiante") ? "galleggiante" : "terminale", id);
+            presoSu.Remove(cat);
+        }
         armato[cat] = -1;
     }
 
@@ -13426,6 +13537,8 @@ public class Pesca : Script
         else cardTaglia = "COMUNE";
         SegnaColpoGrosso(s, pesceKg);
         fase = FASE_CARD;
+        tensione = 0f;
+        escaInAcqua = false;
 
         SalvaStato();
         RiscriviTutto();
@@ -13549,6 +13662,10 @@ public class Pesca : Script
         try
         {
             TogliCanna();
+            TogliPesce();
+            ViaPesceScena();
+            ViaRoba();
+            ViaProvaPesce();
             TogliBlipPunti();
             ViaCampo();
             ViaPescatore();
@@ -14684,6 +14801,7 @@ public class Pesca : Script
     {
         if (LeggiF("pnj_pescatore", 1f) < 0.5f) { ViaPescatore(); return; }
         Ped p = Game.Player.Character;
+        if (pnjPed != null && !pnjPed.Exists()) { ViaPescatore(); return; }
         if (pnjPed != null && pnjPed.Exists())
         {
             // se ne va a fine tempo, o se ti sei allontanato troppo
@@ -16231,6 +16349,9 @@ public class Pesca : Script
 
     void ScenaGiu(Ped p)
     {
+        // la roba appesa se ne va con la canna
+        ViaRoba(); robaOra = -1; robaAppesaFino = 0;
+        ruotaAperta = false;
         if (!inScena) return;
         inScena = false;
         TogliPesce();
