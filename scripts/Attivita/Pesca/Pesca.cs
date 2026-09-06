@@ -4402,6 +4402,10 @@ public class Pesca : Script
                 return true;
             }
             resetChiesto = false;
+            // se hai la canna in mano o la lenza in acqua, prima si posa
+            // tutto: senza, restavi congelato nella posa con la canna
+            RitiraLenza();
+            ScenaGiu(Game.Player.Character);
             FinePesca(false);
             fase = FASE_FERMO;
             quaderno.Clear();
