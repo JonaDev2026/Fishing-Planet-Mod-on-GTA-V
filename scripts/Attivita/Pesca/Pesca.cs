@@ -5365,7 +5365,7 @@ public class Pesca : Script
         DisegnaTestoSinistra(arNome[a], px, py, 0.30f, 245, 245, 250);
         // la riga dell'esplorazione ha la sua altezza (esplora_y): sta sotto
         // livello e XP, in alto a sinistra
-        float by = LeggiF("esplora_y", 140f);
+        float by = LeggiF("esplora_y", 280f);
         DisegnaRett(px, by, bw, 2f, 255, 255, 255, 45);
         DisegnaRett(px, by, bw * pct / 100f, 2f, 255, 255, 255, 210);
         DisegnaTestoSinistra(pct + "%  " + scoperte + "/" + qs, px + bw + 8f, by - 8f, 0.20f, 200, 202, 210);
@@ -5374,7 +5374,7 @@ public class Pesca : Script
         // sopra il grafico: l'icona del meteo con la temperatura dell'aria,
         // e l'icona dell'acqua con quella dell'acqua (le nostre)
         {
-            float ty = LeggiF("temp_y", 370f);
+            float ty = LeggiF("temp_y", 86f);
             float ic = LeggiF("temp_icona", 18f);
             float sp = LeggiF("temp_spazio", 6f);
             float gap = LeggiF("temp_gap", 22f);
