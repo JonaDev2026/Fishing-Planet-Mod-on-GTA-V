@@ -7389,9 +7389,11 @@ public class Pesca : Script
         // ogni stato ha il suo colore: verdolino per raggiungere, rosa
         // quando sei qui, arancione (quello del simulatore di riferimento) per iniziare
         string tb; bool attivo; int br, bg2, bb;
-        if (!qui) { tb = L("Get to the spot", "Raggiungi il posto"); attivo = true; br = 130; bg2 = 225; bb = 180; }
-        else if (inPesca && licZona == cod && torneoOra < 0) { tb = L("Stop fishing", "Smetti di pescare"); attivo = true; br = 235; bg2 = 90; bb = 80; }
+        // con la giornata in corso su quest'acqua il tasto e' "Smetti di
+        // pescare", ovunque tu sia: la giornata si chiude da dove vuoi
+        if (inPesca && licZona == cod && torneoOra < 0) { tb = L("Stop fishing", "Smetti di pescare"); attivo = true; br = 235; bg2 = 90; bb = 80; }
         else if (inPesca && licZona == cod) { tb = L("Competition running", "Torneo in corso"); attivo = false; br = 245; bg2 = 140; bb = 40; }
+        else if (!qui) { tb = L("Get to the spot", "Raggiungi il posto"); attivo = true; br = 130; bg2 = 225; bb = 180; }
         else if (LicenzaInTasca(cod)) { tb = L("Start fishing", "Inizia a pescare"); attivo = true; br = 245; bg2 = 140; bb = 40; }
         else { tb = L("You are here", "Ti trovi qui"); attivo = false; br = 250; bg2 = 175; bb = 205; }
         bool selB = (menuLato == 1 && pnSel == pnRighe);
@@ -7780,15 +7782,6 @@ public class Pesca : Script
                 if (CompraLicenza(cod, pnSel == 0 ? 1 : 3, false)) SuonoMenu("menu_apri.wav");
                 pnSel = 0;
             }
-            else if (LuogoQuiMenu() != a)
-            {
-                Esegui("gps_zona " + a);
-                SuonoMenu("menu_apri.wav");
-            }
-            else if (LicenzaInTasca(cod))
-            {
-                if (IniziaPesca()) { SuonoMenu("menu_apri.wav"); ChiudiMenuNuovo(); }
-            }
             else if (inPesca && licZona == cod && torneoOra < 0)
             {
                 // smetti quando vuoi: lenza e canna via, la giornata finisce,
@@ -7797,6 +7790,15 @@ public class Pesca : Script
                 ScenaGiu(Game.Player.Character);
                 fase = FASE_FERMO;
                 if (FinePesca(true)) { SuonoMenu("menu_chiudi.wav"); ChiudiMenuNuovo(); }
+            }
+            else if (LuogoQuiMenu() != a)
+            {
+                Esegui("gps_zona " + a);
+                SuonoMenu("menu_apri.wav");
+            }
+            else if (LicenzaInTasca(cod))
+            {
+                if (IniziaPesca()) { SuonoMenu("menu_apri.wav"); ChiudiMenuNuovo(); }
             }
         }
     }
