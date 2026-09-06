@@ -1,20 +1,20 @@
 # nome|img|kg_common|kg_trophy|kg_unique|$_common|$_trophy|$_unique|(non usato)|denti|amo|famiglia|esche|artificiali|zone|quando|rarita|predatore
-# pesi, prezzi, esche e ami presi dal wiki di Fishing Planet - niente inventato
+# pesi, prezzi, esche e ami presi dal catalogo di riferimento - niente inventato
 # esche = ricavate AL CONTRARIO dalle liste vere delle esche: ogni esca sul
-# wiki dice che pesci prende, e da quelle liste si e' costruito l'elenco per
+# catalogo dice che pesci prende, e da quelle liste si e' costruito l'elenco per
 # pesce. La prova sta in esche_pesci.txt. I pesci che nessuna esca nomina
 # restano vuoti: quelli si prendono con l'artificiale.
-# esche e artificiali vengono adesso dalla PAGINA DEL PESCE sul wiki, sezioni
+# esche e artificiali vengono adesso dalla PAGINA DEL PESCE sul catalogo, sezioni
 # "Preferred baits" e "Preferred lures". Anche l'amo viene da li'.
 # predatore = 1 se la sua pagina elenca degli artificiali.
 # quando = quando mangia davvero: notte / alba_tramonto / giorno / sempre.
-# ATTENZIONE: questa colonna NON viene dal wiki di Fishing Planet, che il dato
+# ATTENZIONE: questa colonna NON viene dal catalogo di riferimento, che il dato
 # non ce l'ha. Viene dalla biologia vera della specie, cercata sul web.
 # La prova e la fonte di ogni pesce stanno in orari_pesci.txt.
-# rarita = da 1 (comunissimo) a 5 (rarissimo). Questa VIENE dal wiki:
+# rarita = da 1 (comunissimo) a 5 (rarissimo). Questa VIENE dal catalogo:
 # e' calcolata su in quante delle 28 acque vere del gioco vive la specie
 # e su quali taglie quelle acque danno. Le prove stanno in rarita_pesci.txt.
-# NOSTRI (non del wiki): per 23 specie il wiki da' un peso solo. Trofeo e unico li abbiamo
+# NOSTRI (non del catalogo): per 23 specie il catalogo da' un peso solo. Trofeo e unico li abbiamo
 # ricavati noi con le proporzioni mediane delle altre 216 specie del file: kg trofeo = comune x1.9,
 # kg unico = comune x2.9, $/kg trofeo = comune x1.05, $/kg unico = comune x1.12.
 # Specie: Amur Bitterling, Beluga, Blacktail Shiner, Bluntnose Minnow, California Roach, Common Bleak, Common Minnow, Common Shiner, Eurasian Ruffe, European Bitterling, Golden Shiner, Green Sunfish, Gudgeon, Japanese Anchovy, Lake Chub, Lake Sturgeon, Monkey Goby, Red Tail Barracuda, Redbreast Sunfish, Rock Bass, White Catfish, White Sturgeon, White Sucker

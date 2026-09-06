@@ -1,7 +1,7 @@
-# id|tipo|marca|modello|lunghezza_m|esca_g|lenza_kg|potenza|liv_wiki|prezzo|img
-# dati veri dal wiki di Fishing Planet
+# id|tipo|marca|modello|lunghezza_m|esca_g|lenza_kg|potenza|livello|prezzo|img
+# dati veri dal catalogo di riferimento
 # esca_g = peso di lancio (Casting Weight / Lure weight, in grammi) preso dalle
-# pagine del wiki. Le canne match e telescopiche sul wiki NON hanno un peso di
+# pagine del catalogo. Le canne match e telescopiche sul catalogo NON hanno un peso di
 # lancio: sono canne da galleggiante, li' conta la lunghezza.
 1|spinning|MagFin|FeatherLight|1.90|0.5 - 7|1.50 - 4.00|Ultra-Light|9|3000|FeatherLight.png
 2|spinning|MagFin|FeatherLight|2.00|1 - 9|1.50 - 4.00|Ultra-Light|10|3200|FeatherLight.png

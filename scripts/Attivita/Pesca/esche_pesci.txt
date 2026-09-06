@@ -1,8 +1,8 @@
 # nome|amo|esche naturali|artificiali
-# COSA MANGIA OGNI PESCE - preso dalla PAGINA DEL PESCE sul wiki di Fishing
+# COSA MANGIA OGNI PESCE - preso dalla PAGINA DEL PESCE sul catalogo di Fishing
 # Planet, sezioni "Preferred baits" e "Preferred lures", piu' l'amo consigliato.
-# Le pagine stanno in _riferimenti/wiki_dump/pagine_pesci.
-# Se la sezione degli artificiali e' vuota, quel pesce sul wiki non ne ha:
+# Le pagine stanno in riferimenti.
+# Se la sezione degli artificiali e' vuota, quel pesce sul catalogo non ne ha:
 # e' un pesce che si prende solo con l'esca naturale.
 
 African Big Eye Catfish|#1/0 - #5/0|Red Worms, Maggots, Bloodworms, Wax Worms, Leeches, Centipedes, Giant Silk Moth Larva, Freshwater Prawns, Night Crawler, Caddis Larva, Small Minnows, Crawfish Cuts|

@@ -9,9 +9,9 @@
 # tre giornate alla volta. Il tetto e' 40 pesci al giorno.
 # La curva di prima (7400 per il livello 2) contava anche le prime
 # catture di tutte le specie della zona: in pratica non succede.
-# Non e' quella di Fishing Planet: la loro sale in modo esponenziale e per
+# Non e' quella del simulatore di riferimento: la loro sale in modo esponenziale e per
 # arrivare al livello 80 servirebbero piu' di duemila uscite.
-# Quella vera resta consultabile in _riferimenti/wiki_dump/livelli_fp.txt
+# Quella vera resta consultabile in riferimenti
 #
 # ---- come si guadagnano i punti ----
 # base:  20 + peso_kg x 15

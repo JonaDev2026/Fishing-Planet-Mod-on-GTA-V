@@ -1,5 +1,5 @@
-# id|tipo|nome|colore|grammi|cm|amo|prezzo|liv_wiki|img
-# ESCHE ARTIFICIALI - dati veri dal wiki di Fishing Planet
+# id|tipo|nome|colore|grammi|cm|amo|prezzo|livello|img
+# ESCHE ARTIFICIALI - dati veri dal catalogo di riferimento
 # tipo: cucchiaino, rotante, minnow, jig, siliconico, mare
 1|cucchiaino|Casting Spoon|Silver|5|3|#2|100|3|388.png
 2|cucchiaino|Casting Spoon|Gold|5|3|#2|100|3|389.png

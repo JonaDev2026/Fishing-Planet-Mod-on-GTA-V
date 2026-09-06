@@ -1,5 +1,5 @@
-# id|nome|materiale|canne|mulinelli|lenze|prezzo|liv_wiki|img
-# borse portacanne (Rod Cases) - dati veri dal wiki di Fishing Planet
+# id|nome|materiale|canne|mulinelli|lenze|prezzo|livello|img
+# borse portacanne (Rod Cases) - dati veri dal catalogo di riferimento
 1|HobbyGear|Polyester D600|2|2|2|1000|3|HobbyGear.png
 2|Triple Case|Polyester D600|3|3|3|2940|12|Triple_Case.png
 3|Fantastic Four|D900 Nylon|4|4|4|5472|19|Fantastic_Four.png

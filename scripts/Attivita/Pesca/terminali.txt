@@ -1,7 +1,7 @@
-# id|categoria|marca|modello|misura|mm|kg|pezzi|prezzo|liv_wiki|img|grammi|forma
-# ami, jig head, rig, leader e piombi - dati veri dal wiki di Fishing Planet
-# grammi = peso reale del piombo/testina, dalle tabelle del wiki. Ami, rig e leader sul wiki non hanno peso.
-# forma = il disegno grande dell'amo/piombo, quello che sul wiki sta
+# id|categoria|marca|modello|misura|mm|kg|pezzi|prezzo|livello|img|grammi|forma
+# ami, jig head, rig, leader e piombi - dati veri dal catalogo di riferimento
+# grammi = peso reale del piombo/testina, dalle tabelle del catalogo. Ami, rig e leader sul catalogo non hanno peso.
+# forma = il disegno grande dell'amo/piombo, quello che sul catalogo sta
 # sotto le scatoline nella riga "Hook". Va accanto alla scatolina.
 1|amo|MagFin|Kirby|#10|||10|20|1|Kirby10.png||Kirby.png
 2|amo|MagFin|Kirby|#8|||10|20|1|Kirby8.png||Kirby.png

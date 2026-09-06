@@ -1,9 +1,9 @@
-# id|categoria|nome|quantita|peso|prezzo|liv_wiki|amo|pesci|img
-# esche vere dal wiki di Fishing Planet - rifatte dalle pagine Common Baits,
-# Worms e Insects Baits, Fresh Baits e Saltwater Baits del wiki_dump.
-# 157 Tuna Fish Heads: sul wiki sta a livello 1 perche' e' l'esca dell'evento del
+# id|categoria|nome|quantita|peso|prezzo|livello|amo|pesci|img
+# esche vere dal catalogo di riferimento - rifatte dalle pagine Common Baits,
+# Worms e Insects Baits, Fresh Baits e Saltwater Baits del riferimenti.
+# 157 Tuna Fish Heads: sul catalogo sta a livello 1 perche' e' l'esca dell'evento del
 # Butcher Shark (che da noi non c'e'); qui sta a 94 con la Fish Head, e la
-# mangiano gli stessi pesci della Fish Head (scelta nostra, non del wiki).
+# mangiano gli stessi pesci della Fish Head (scelta nostra, non del catalogo).
 1|comuni|Bread|50|Light|10|1|#10 - #6|Crappie, Bluegill, Pumpkinseed, Common Shiner, Carp, Thicklip Grey Mullet|Bread.png
 2|comuni|Cheese|50|Light|60|3|#8 - #2|Bluegill, Trout, Catfish, Bullhead|Cheese.png
 3|comuni|Pearl Barley|50|Light|75|3|#10 - #2|Roach|Pearl_Barley.png

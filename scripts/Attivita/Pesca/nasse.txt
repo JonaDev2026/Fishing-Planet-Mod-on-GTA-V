@@ -1,5 +1,5 @@
-# id|tipo|nome|taglia|kg_pesce_max|kg_totale|materiale|prezzo|liv_wiki
-# nasse (keepnet) e fili (stringer) - dati veri dal wiki di Fishing Planet
+# id|tipo|nome|taglia|kg_pesce_max|kg_totale|materiale|prezzo|livello
+# nasse (keepnet) e fili (stringer) - dati veri dal catalogo di riferimento
 # il filo costa meno ma rovina il pesce; la nassa lo tiene vivo
 1|filo|FishCell|XS|3.50|10.00|Stainless Steel|1200|6
 2|filo|FishJail|XS|4.00|15.00|Stainless Steel|2880|10

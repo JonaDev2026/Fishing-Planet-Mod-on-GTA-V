@@ -1,8 +1,7 @@
 # nome|banner|pesce|zona|minuti|liv_min|quota|primo_premio|punteggio_en|attrezzatura_en|lago_vero|punteggio_it|attrezzatura_it|kg_bronzo|kg_argento|kg_oro|premio_bronzo|premio_argento|premio_oro|extra_trofeo|extra_unico|ora_inizio|meteo
-# I TORNEI - tutto vero, dalle pagine dei singoli tornei sul wiki di Fishing
-# Planet (_riferimenti/wiki_dump/pagine_gare). Tempo, livello minimo, quota
+# I TORNEI - tutto vero, dalle schede dei singoli tornei del catalogo di riferimento (riferimenti). Tempo, livello minimo, quota
 # d'iscrizione, premio e regola di punteggio sono i loro.
-# L'unica cosa nostra e' la ZONA: il wiki li tiene su laghi che noi non
+# L'unica cosa nostra e' la ZONA: il catalogo li tiene su laghi che noi non
 # abbiamo, quindi ogni torneo l'abbiamo messo nella nostra zona dove quel
 # pesce vive. Un torneo per specie, i doppioni in zone diverse.
 

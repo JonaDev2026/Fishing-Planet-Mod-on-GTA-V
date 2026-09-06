@@ -1,5 +1,5 @@
 # nome|min|max|ottimo   - gradi dell'acqua in cui il pesce mangia
-# ATTENZIONE: questi numeri NON vengono dal wiki di Fishing Planet (le pagine
+# ATTENZIONE: questi numeri NON vengono dal catalogo di riferimento (le pagine
 # dei pesci non hanno la temperatura) e non da fishbase. Sono INDICATIVI,
 # messi da noi per gruppi dalla biologia generale: trote e salmerini acqua
 # fredda, carpe e pesci gatto acqua calda, Amazzonia e Africa tropicale,

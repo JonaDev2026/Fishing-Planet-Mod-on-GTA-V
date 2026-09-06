@@ -1,5 +1,5 @@
 # I GRAFICI DELL'ATTIVITA' DELLA GIORNATA, un PNG per posto e per meteo,
-# come le collinette del wiki ma coi NOSTRI numeri (le stesse regole del
+# come le collinette del catalogo ma coi NOSTRI numeri (le stesse regole del
 # codice: temperatura dell'acqua ora per ora, intervalli dei pesci,
 # ore in cui mangiano). Si lancia da scripts\Attivita\Pesca:
 #   python gen_attivita.py
@@ -25,7 +25,7 @@ for c in righe('orari_pesci.txt'):
     quando[c[0].strip()] = c[1].strip() if len(c) > 1 else 'sempre'
 aree = [(c[0].strip(), [p.strip() for p in c[1].split(';') if p.strip()]) for c in righe('pesci_aree.txt')]
 
-# i meteo di GTA raggruppati come sul wiki: quanto spostano l'aria
+# i meteo di GTA raggruppati come sul catalogo: quanto spostano l'aria
 METEO = {'sole': 4.0, 'sereno': 2.0, 'nuvole': -1.0, 'pioggia': -4.0, 'neve': -12.0}
 BORDO, FUORI = 0.4, 4.0
 

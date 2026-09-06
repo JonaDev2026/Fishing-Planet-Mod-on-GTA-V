@@ -1,5 +1,5 @@
 # I COLORI DELLE ARTIFICIALI IN ITALIANO.  inglese|italiano
-# ATTENZIONE: queste traduzioni le abbiamo fatte noi. Sul wiki di Fishing
+# ATTENZIONE: queste traduzioni le abbiamo fatte noi. Sul catalogo di Fishing
 # Planet i colori stanno solo in inglese, quindi qui non c'e' un dato
 # preso da loro: c'e' il nome inglese vero e accanto come si dice in
 # italiano. Un colore che qui non c'e' resta scritto in inglese.

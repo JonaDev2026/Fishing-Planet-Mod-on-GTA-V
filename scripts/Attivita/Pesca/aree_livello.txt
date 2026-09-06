@@ -1,9 +1,9 @@
-# OGNI NOSTRA ZONA E' UNA ACQUA VERA DI FISHING PLANET.
+# OGNI NOSTRA ZONA E' UNA ACQUA VERA DI IL SIMULATORE DI RIFERIMENTO.
 # area|acqua_vera|livello_richiesto|taglia_massima
 # taglia_massima (nostra): 1 = qui escono solo i comuni, 2 = fino al trofeo,
 # 3 o vuoto = anche gli unici. Ai Laghetti del golf, il primo posto, solo comuni.
 # Il livello e' il required_level della loro pagina (pagine_acque).
-# Lone Star Lake sul wiki e' livello 2 perche' l'1 e' il tutorial: da noi
+# Lone Star Lake sul catalogo e' livello 2 perche' l'1 e' il tutorial: da noi
 # il tutorial non c'e', quindi apre all'1.
 # L'abbinamento zona -> acqua e' NOSTRO, sul carattere dell'acqua.
 # I tre posti di Lone Star Lake NON sono tutti a 1 (6 settembre 2026): i

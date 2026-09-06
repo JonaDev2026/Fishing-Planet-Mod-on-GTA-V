@@ -9,7 +9,7 @@
 # E NEI POSTI CHE CONDIVIDONO L'ACQUA (Emerald, Falcon, Saint-Croix, Sander,
 # Kaiji No Ri, Skarland) i pesci comuni (rarita' 1-2) stanno ovunque, quelli
 # piu' rari sono spartiti: ogni posto ne ha alcuni che gli altri non hanno,
-# cosi' vale la pena girarli tutti. Spartizione nostra, non del wiki.
+# cosi' vale la pena girarli tutti. Spartizione nostra, non del catalogo.
 Riva ovest di Alamo|Black Crappie;Bluntnose Minnow;Chain Pickerel;Common Shiner;Golden Shiner;Grass Pickerel;Northern Pike;Pumpkinseed;Redfin Pickerel;Walleye
 Slab|Blacktail Shiner;Bluegill;Channel Catfish;Golden Shiner;Grass Pickerel;Green Sunfish;Redear Sunfish;Smallmouth Buffalo;Spotted Bass;White Crappie
 Foce dello Zancudo|Bluegill;California Roach;Chinook Salmon;Common Carp;Largemouth Bass;Redear Sunfish;Smallmouth Bass;Steelhead;Striped Bass;White Catfish;White Crappie;White Sturgeon

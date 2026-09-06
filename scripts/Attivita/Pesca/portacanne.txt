@@ -1,5 +1,5 @@
-# id|nome|canne|prezzo|liv_wiki|img
-# ATTENZIONE: i portacanne NON esistono sul wiki di Fishing Planet.
+# id|nome|canne|prezzo|livello|img
+# ATTENZIONE: i portacanne NON esistono sul catalogo di riferimento.
 # La', il numero di canne e' fisso e non si compra. Questi li abbiamo
 # inventati noi, seguendo la stessa curva di livelli e prezzi delle
 # cassette vere (dal livello 1 al 75, da 200 a 30000 crediti).

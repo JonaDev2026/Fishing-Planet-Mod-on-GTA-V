@@ -1,5 +1,5 @@
-# id|nome|materiale|attrezzi|lenze|mulinelli|prezzo|liv_wiki|img|gilet_incluso
-# cassette e borse - dati veri dal wiki di Fishing Planet.
+# id|nome|materiale|attrezzi|lenze|mulinelli|prezzo|livello|img|gilet_incluso
+# cassette e borse - dati veri dal catalogo di riferimento.
 # NOTA: alla capienza abbiamo SOMMATO quella del gilet migliore
 # disponibile a quel livello, per non dover gestire due oggetti.
 # L'ultima colonna dice quale gilet e' stato sommato.

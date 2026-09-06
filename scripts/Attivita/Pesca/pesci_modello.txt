@@ -18,8 +18,8 @@
 #   1 = fusiforme, tipo tonnetto (tonni, sgombri, marlin, mare)
 #   2 = alto e schiacciato, tipo persico (persici, boccaloni,
 #                                 carpe, breme, panfish, ombrine)
-# La forma viene dalla FAMIGLIA vera del wiki di Fishing Planet.
-# I quarantaquattro pesci che sul wiki la famiglia non ce l'hanno -
+# La forma viene dalla FAMIGLIA vera del catalogo di riferimento.
+# I quarantaquattro pesci che sul catalogo la famiglia non ce l'hanno -
 # quasi tutti tropicali - li ho indovinati dal nome: quelli sono
 # una scelta mia. Se ne vedi uno sbagliato, cambia il numero.
 # I GROSSI (6 settembre 2026): squali e spinarolo = squalo tigre, lo squalo toro

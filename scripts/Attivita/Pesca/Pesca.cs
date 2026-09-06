@@ -99,7 +99,7 @@ public class Pesca : Script
     }
 
     // LE ESCHE IN ITALIANO, da esche_it.txt e colori_it.txt.
-    // Le liste vere restano in inglese - sono i nomi del wiki e servono
+    // Le liste vere restano in inglese - sono i nomi del catalogo e servono
     // per far tornare i conti - qui c'e' solo come si leggono.
     Dictionary<string, string> escheIt = new Dictionary<string, string>();
     Dictionary<string, string> coloriIt = new Dictionary<string, string>();
@@ -219,7 +219,7 @@ public class Pesca : Script
     }
     List<Specie> pesci = new List<Specie>();
 
-    List<string> esche = new List<string>();      // i nomi veri del wiki
+    List<string> esche = new List<string>();      // i nomi veri del catalogo
     List<string> escheTipo = new List<string>();  // naturale / artificiale
 
     // ---------- le acque della mappa ----------
@@ -549,7 +549,7 @@ public class Pesca : Script
     // I PESCI DI OGNI AREA, da pesci_aree.txt.
     // Non piu' i codici zona di GTA: quelli davano gli stessi settanta
     // pesci a tutto il lago. Adesso ogni tratto ha la sua lista, presa
-    // dalle acque vere di Fishing Planet che quel tratto rappresenta.
+    // dalle acque vere del simulatore di riferimento che quel tratto rappresenta.
     List<List<string>> arPesci = new List<List<string>>();
 
     void CaricaPesciAree()
@@ -836,7 +836,7 @@ public class Pesca : Script
         return arPesci[lu].Contains(s.Nome);
     }
 
-    // ---------- le lenze lette da lenze.txt (dati veri del wiki) ----------
+    // ---------- le lenze lette da lenze.txt (dati veri del catalogo) ----------
     class Lenza
     {
         public int Id;
@@ -855,7 +855,7 @@ public class Pesca : Script
         "Fortissima e per niente elastica, ma i pesci la vedono bene.",
         "Le piu' potenti, fatte per il mare e per i pesci grossi." };
 
-    // ---------- canne e mulinelli (dati veri del wiki) ----------
+    // ---------- canne e mulinelli (dati veri del catalogo) ----------
     class Canna
     {
         public int Id;
@@ -903,7 +903,7 @@ public class Pesca : Script
         "Il pezzo di filo prima dell'amo. Quello in titanio serve per i pesci coi denti.",
         "Per portare l'esca sul fondo e lanciare piu' lontano." };
 
-    // I prezzi sul wiki sono in crediti di Fishing Planet, gonfiati perche'
+    // I prezzi sul catalogo sono in crediti del simulatore di riferimento, gonfiati perche'
     // quel gioco ci vende sopra la moneta a pagamento. Qui li divido per
     // avere cifre da GTA. Cambia solo questo numero per rifare i conti.
     const int CAMBIO = 10;
@@ -944,7 +944,7 @@ public class Pesca : Script
     }
     List<Cassetta> cassette = new List<Cassetta>();
 
-    // le borse portacanne (Rod Cases): dati veri dal wiki
+    // le borse portacanne (Rod Cases): dati veri dal catalogo
     class Portacanne
     {
         public int Id;
@@ -963,7 +963,7 @@ public class Pesca : Script
     }
     List<Nassa> nasse = new List<Nassa>();
 
-    // galleggianti: dati veri dal wiki (Classic Bobbers, Wagglers, Sliders)
+    // galleggianti: dati veri dal catalogo (Classic Bobbers, Wagglers, Sliders)
     class Galleggiante
     {
         public int Id;
@@ -972,7 +972,7 @@ public class Pesca : Script
     }
     List<Galleggiante> galleggianti = new List<Galleggiante>();
 
-    int livelloPescatore = 1;  // 1..100 come su Fishing Planet
+    int livelloPescatore = 1;  // 1..100 come sul simulatore di riferimento
 
     public Pesca()
     {
@@ -1076,7 +1076,7 @@ public class Pesca : Script
             int.TryParse(c[5], out v); x.Prezzo = v;
             int.TryParse(c[6], out v); x.LivWiki = v;
             x.Amo = c[7].Trim();
-            // sul wiki alcune esche non hanno l'amo consigliato e la cella
+            // sul catalogo alcune esche non hanno l'amo consigliato e la cella
             // resta un trattino: non deve finire a schermo
             if (x.Amo == "-" || x.Amo == "/-" || x.Amo == "/") x.Amo = "";
             x.Pesci = c[8].Trim();
@@ -1291,7 +1291,7 @@ public class Pesca : Script
             x.Materiale = c[6].Trim();
             int.TryParse(c[7], out v); x.Prezzo = v;
             int.TryParse(c[8], out v); x.LivWiki = v;
-            // sul wiki c'e' una foto sola per famiglia, non per modello
+            // sul catalogo c'e' una foto sola per famiglia, non per modello
             // le nasse cambiano faccia con la taglia: le immagini sono
             // divise per fasce di capienza, come le ha preparate lui
             string fimg = "filo.png";
@@ -1746,7 +1746,7 @@ public class Pesca : Script
                     if (marcaMod.Length == 0) { img0 = x.Img; lenza0 = x.LenzaKg; pot0 = x.Potenza; marcaMod = x.Marca; }
                     string et = x.Lunghezza + " m   lenza " + Corto(x.LenzaKg) + " kg";
                     // il peso di lancio non ce l'hanno tutte: le canne da
-                    // galleggiante e le telescopiche sul wiki non lo portano.
+                    // galleggiante e le telescopiche sul catalogo non lo portano.
                     // Se manca non si scrive "esca g" e basta.
                     string pl = (x.Esca != null && x.Esca.Trim().Length > 0)
                                 ? ("esca " + x.Esca + " g   ") : "";
@@ -2351,7 +2351,7 @@ public class Pesca : Script
 
     // ============================================================
     //  IL GIOCO VERO: soldi, roba comprata, licenza, giornata.
-    //  Tutto quello che sta qui sotto e' roba NOSTRA, non del wiki.
+    //  Tutto quello che sta qui sotto e' roba NOSTRA, non del catalogo.
     //  Lo stato sta in stato.txt, dentro questa cartella.
     // ============================================================
 
@@ -2477,7 +2477,7 @@ public class Pesca : Script
     }
 
     // i soldi dei tornei sono gia' in dollari nostri: qui si aggiunge
-    // solo il punto delle migliaia, niente cambio dai crediti del wiki
+    // solo il punto delle migliaia, niente cambio dai crediti del catalogo
     static string Soldo(int v)
     {
         return v.ToString("#,0", CultureInfo.InvariantCulture);
@@ -2893,7 +2893,7 @@ public class Pesca : Script
     // ------------------------------------------------------------
     //  I TORNEI
     //  Nome, immagine, pesce, tempo, livello, quota e premio vengono
-    //  dalle pagine dei singoli tornei sul wiki. La zona e' nostra:
+    //  dalle pagine dei singoli tornei sul catalogo. La zona e' nostra:
     //  i loro laghi non ci sono, quindi ogni torneo sta dove quel pesce
     //  vive da noi. Tutto in tornei.txt.
     // ------------------------------------------------------------
@@ -2903,7 +2903,7 @@ public class Pesca : Script
         public string PunteggioIt, AttrezziIt;
         public int Minuti, LivMin, Quota, Premio;
         // i traguardi: chili di quel pesce da mettere insieme, e i premi.
-        // Sono NOSTRI, non del wiki: bilanciati sul peso medio del pesce,
+        // Sono NOSTRI, non del catalogo: bilanciati sul peso medio del pesce,
         // sulla durata della gara e sul livello richiesto.
         public float KgBronzo, KgArgento, KgOro;
         public int PrBronzo, PrArgento, PrOro, ExTrofeo, ExUnico;
@@ -4835,7 +4835,7 @@ public class Pesca : Script
     // ------------------------------------------------------------
     //  L'EQUILIBRIO DELL'ATTREZZATURA (regola nostra, semplificata)
     //
-    //  Nel wiki la portata della canna ("1.00 - 2.00") non e' la forza
+    //  Nel catalogo la portata della canna ("1.00 - 2.00") non e' la forza
     //  della canna: e' LA LENZA CHE QUELLA CANNA VUOLE. Da li' esce
     //  tutto il resto.
     //
@@ -5329,7 +5329,7 @@ public class Pesca : Script
         int prezzo = PrezzoLicenza(zona, giorni);
         if (prezzo <= 0) return false;
         // IL LIVELLO DELL'ACQUA.
-        // Come su Fishing Planet: in certi posti non ti fanno entrare
+        // Come sul simulatore di riferimento: in certi posti non ti fanno entrare
         // finche' non sei del livello giusto. Non e' che il pesce non c'e',
         // e' che quel lago non e' ancora aperto per te. Comprando da
         // lontano vale il tratto piu' basso di quell'acqua.
@@ -7126,7 +7126,7 @@ public class Pesca : Script
         if (sbSel < 0 || sbSel >= sbArea.Count) return;
         int a = sbArea[sbSel];
         float pad = LeggiF("menu_pn_bordo", 10f);
-        // LA COLONNA DEL POSTO, sullo stile della scheda di Fishing Planet:
+        // LA COLONNA DEL POSTO, sullo stile della scheda del simulatore di riferimento:
         // banner, ora e giornata, previsioni con la curva dell'attivita',
         // le licenze, e in fondo il tasto per raggiungere il posto.
         float cw2 = LeggiF("menu_pn2_larga", 200f);
@@ -7214,7 +7214,7 @@ public class Pesca : Script
         // dove sei adesso, non dove eri quando e' stata scritta la pagina
         bool qui = (LuogoQuiMenu() == a);
         // ogni stato ha il suo colore: verdolino per raggiungere, rosa
-        // quando sei qui, arancione (quello di Fishing Planet) per iniziare
+        // quando sei qui, arancione (quello del simulatore di riferimento) per iniziare
         string tb; bool attivo; int br, bg2, bb;
         if (!qui) { tb = L("Get to the spot", "Raggiungi il posto"); attivo = true; br = 130; bg2 = 225; bb = 180; }
         else if (inPesca && licZona == cod) { tb = L("Fishing", "Stai pescando"); attivo = false; br = 245; bg2 = 140; bb = 40; }
@@ -7239,7 +7239,7 @@ public class Pesca : Script
         DisegnaColonnaPesci(a, x + cw2 + pad, py + pad, fondo, px + pw - pad);
     }
 
-    // LA COLONNA DEI PESCI del posto, come in Fishing Planet: ogni riga ha
+    // LA COLONNA DEI PESCI del posto, come nel simulatore di riferimento: ogni riga ha
     // la foto, il nome e sotto le tre spunte (comune, trofeo, unico) che si
     // accendono quando l'hai preso. Si scorre con la croce; a destra la
     // scheda del pesce su cui stai.
@@ -7894,7 +7894,7 @@ public class Pesca : Script
         DisegnaAttivita(a, px, LeggiF("attivita_y", 390f), LeggiF("attivita_larga", bw));
     }
 
-    // L'ATTIVITA' DELLA GIORNATA, stilizzata come nel wiki: una riga base
+    // L'ATTIVITA' DELLA GIORNATA, stilizzata come nel catalogo: una riga base
     // larga come quella dell'esplorazione, sotto le ore, sopra la curva
     // di quanto e' viva l'acqua ora per ora (dalle nostre regole: la
     // temperatura dell'acqua a quell'ora col meteo di adesso, e l'ora in
@@ -9199,7 +9199,7 @@ public class Pesca : Script
         // iconcina appiccicata a ogni riga
         v.Add("nota|Si salvano da sole");
         // QUANTO SI VEDE IL GALLEGGIANTE.
-        // La misura vera e' quella del wiki, ma su uno schermo lontano un
+        // La misura vera e' quella del catalogo, ma su uno schermo lontano un
         // galleggiante da due centimetri sparisce: chi vuole se lo
         // ingrossa, senza toccare i dati.
         // E' una LISTA vera - destra e sinistra per scegliere, A per
@@ -9329,7 +9329,7 @@ public class Pesca : Script
         }
     }
 
-    // ---------- esche artificiali (dati veri dal wiki) ----------
+    // ---------- esche artificiali (dati veri dal catalogo) ----------
     class Artificiale
     {
         public int Id;
@@ -9441,7 +9441,7 @@ public class Pesca : Script
     int giroMulinello = 0;    // il tic tic del mulinello mentre giri
 
     // LA PROFONDITA' DELL'ESCA sotto il galleggiante: quanto filo c'e'
-    // fra galleggiante e amo. Come in Fishing Planet si regola a passi di
+    // fra galleggiante e amo. Come nel simulatore di riferimento si regola a passi di
     // 5 pollici (12,7 cm), da 5 a 99 pollici (2,50 m), con SU e GIU'
     // della croce, senza la lenza in acqua (canna in mano o in riva).
     // Se e' piu' del fondo l'esca tocca terra e il galleggiante si sdraia.
@@ -9472,7 +9472,7 @@ public class Pesca : Script
     }
 
     // LA FRIZIONE: le tacche del cerchio, si gira con destra e sinistra.
-    // COME IN FISHING PLANET: piu' tacche accese = piu' frizione = piu'
+    // COME IN IL SIMULATORE DI RIFERIMENTO: piu' tacche accese = piu' frizione = piu'
     // freno sulla bobina.
     //   tutte accese   = frizione TIRATA: il mulinello non molla, guadagni
     //                    lenza in fretta ma la tensione sale subito.
@@ -9480,7 +9480,7 @@ public class Pesca : Script
     //                    il pesce si riprende il filo e non finisci mai.
     // Sta a te trovare la via di mezzo col pesce che hai attaccato.
     // QUANTE POSIZIONI: "friz_posizioni" in config, 12 come le tacche.
-    // (Sul wiki il numero c'e' solo per una ventina di mulinelli, quasi
+    // (Sul catalogo il numero c'e' solo per una ventina di mulinelli, quasi
     // tutti 12: si usa 12 per tutti.) Le quattro tabelle sotto sono i
     // punti di riferimento da tirata a morbida: fra un punto e l'altro
     // si interpola, cosi' le posizioni possono essere quante si vuole.
@@ -9743,11 +9743,11 @@ public class Pesca : Script
     //  LE REGOLE VERE DELL'ABBOCCATA
     //  Sono sempre accese (il modo arcade "abbocca di tutto" non c'e' piu').
     //  Per il sorteggio del pesce contano:
-    //    1. il pesce vive in questa zona                (dato vero, wiki)
-    //    2. la misura dell'amo e' la sua, o vicina      (dato vero, wiki)
+    //    1. il pesce vive in questa zona                (dato vero, catalogo)
+    //    2. la misura dell'amo e' la sua, o vicina      (dato vero, catalogo)
     //    3. la tua lenza lo regge
     //    4. e' l'ora in cui quel pesce mangia           (biologia reale)
-    //    5. quanto e' raro                              (dato vero, wiki)
+    //    5. quanto e' raro                              (dato vero, catalogo)
     //    6. la canna e l'amo giusti per la sua famiglia
     //    7. la temperatura dell'acqua per quel pesce    (numeri nostri, temperature_pesci.txt)
     //  L'esca non scarta: pesce estratto con esca non sua abbocca 1 su 3.
@@ -9822,7 +9822,7 @@ public class Pesca : Script
         if (mio < 0) return 1f;              // niente amo: non filtriamo
         int da, a;
         RangeAmo(s.Amo, out da, out a);
-        if (da < 0 || a < 0) return 1f;      // pesce senza misura sul wiki
+        if (da < 0 || a < 0) return 1f;      // pesce senza misura sul catalogo
         int fuori = 0;
         if (mio < da) fuori = da - mio;
         else if (mio > a) fuori = mio - a;
@@ -9831,7 +9831,7 @@ public class Pesca : Script
     }
 
     // L'ESCA DEVE ESSERE UNA DELLE SUE.
-    // Le liste vengono dalla pagina del pesce sul wiki: "Preferred baits"
+    // Le liste vengono dalla pagina del pesce sul catalogo: "Preferred baits"
     // e "Preferred lures". Il controllo e' secco tutte e due le volte:
     // o quell'esca e' fra le sue, o quel pesce non c'e'.
     bool EscaGiusta(Specie s)
@@ -9959,7 +9959,7 @@ public class Pesca : Script
     // l'acqua e' lenta: si muove la meta' dell'aria
     float GradiAcqua() { return 16f + (GradiAria() - 20f) * 0.45f; }
 
-    // quanto e' viva l'acqua adesso. Numero nostro: il wiki dice solo che
+    // quanto e' viva l'acqua adesso. Numero nostro: il catalogo dice solo che
     // col freddo si pesca meglio a mezzogiorno, non da' una formula.
     // Quanto e' viva l'acqua adesso = il pesce di questo posto che sta
     // meglio con la temperatura di adesso (temperature_pesci.txt). Se uno
@@ -10010,7 +10010,7 @@ public class Pesca : Script
     }
 
     // ---------- LA TECNICA ----------
-    // Il wiki dice QUALI PESCI PRENDONO L'ARTIFICIALE (sezione "Preferred
+    // Il catalogo dice QUALI PESCI PRENDONO L'ARTIFICIALE (sezione "Preferred
     // lures" della loro pagina): quelli sono i predatori. La regola che
     // ci mettiamo noi e' che il predatore a galleggiante con l'esca
     // naturale abbocca poco, e quando abbocca e' piccolo. Col cucchiaino
@@ -10058,13 +10058,13 @@ public class Pesca : Script
     // ==============================================================
     //  L'ATTREZZO GIUSTO PER QUEL PESCE
     //  Non e' il peso: quello lo filtra gia' la lenza. E' che gli
-    //  attrezzi il wiki li chiama col nome del pesce a cui servono -
+    //  attrezzi il catalogo li chiama col nome del pesce a cui servono -
     //  "Carp rods", "Carp Hooks", "Catfish", "Feeder rods", "Saltwater
     //  rods" - e se esistono un motivo ce l'hanno. Con la canna e l'amo
     //  suoi la carpa abbocca come deve; con una canna qualunque abbocca
     //  lo stesso, ma parecchio meno.
     //  L'accoppiata famiglia-attrezzo la scriviamo noi, ma il nome da
-    //  cui la ricaviamo e' del wiki.
+    //  cui la ricaviamo e' del catalogo.
     // ==============================================================
     static string[] CanneBuonePer(string famiglia)
     {
@@ -10091,7 +10091,7 @@ public class Pesca : Script
         return null;                       // famiglia non scritta: non giudichiamo
     }
 
-    // l'amo specialista: il wiki li vende col nome del pesce
+    // l'amo specialista: il catalogo li vende col nome del pesce
     static string FamigliaDellAmo(string modello)
     {
         if (modello == null) return "";
@@ -10227,8 +10227,8 @@ public class Pesca : Script
         return scelto;
     }
 
-    // L'AMO DECIDE FINO A CHE TAGLIA SI PESCA (regola di Fishing Planet).
-    // Il pesce ha il suo range di ami sul wiki: con l'amo alla misura
+    // L'AMO DECIDE FINO A CHE TAGLIA SI PESCA (regola del simulatore di riferimento).
+    // Il pesce ha il suo range di ami sul catalogo: con l'amo alla misura
     // piccola del range escono solo i comuni, dalla meta' in su anche i
     // trofei, con la misura grande anche gli unici. Fuori dal range si
     // conta la misura del range piu' vicina. amo_taglia=0 spegne.
@@ -10244,7 +10244,7 @@ public class Pesca : Script
         if (mio < da) mio = da;
         if (mio > a) mio = a;
         float trofeo = (sp.KgT > sp.KgC) ? sp.KgT : sp.KgC;
-        // anche il trofeo ha il suo margine sopra il peso del wiki
+        // anche il trofeo ha il suo margine sopra il peso del catalogo
         // (trofeo_extra), ma senza arrivare al peso dell'unico: quello
         // e' dell'amo grande
         trofeo = trofeo * (1f + LeggiF("trofeo_extra", 10f) / 100f);
@@ -10296,9 +10296,9 @@ public class Pesca : Script
     }
 
     // IL TETTO DEGLI UNICI.
-    // La tabella del wiki dice il peso dell'unico, ma in gioco ogni tanto
+    // La tabella del catalogo dice il peso dell'unico, ma in gioco ogni tanto
     // esce qualcosa di piu' grosso ancora: Clear Muskie dati a 30 kg
-    // pescati da 35-37. Il tetto vero e' quello del wiki piu' una
+    // pescati da 35-37. Il tetto vero e' quello del catalogo piu' una
     // percentuale, "unico_extra" in config.ini (di suo +20%). E' raro:
     // per arrivarci il sorteggio deve gia' essere sul massimo.
     float TettoUnico(Specie sp)
@@ -11221,7 +11221,7 @@ public class Pesca : Script
 
     // LE QUATTRO TACCHE DELLA FRIZIONE, in colonna accanto alla barra.
     // Accese dal basso: una sola = tirata, tutte e quattro = morbida.
-    // LA FRIZIONE E' UN CERCHIO A TACCHE, come in Fishing Planet: dodici
+    // LA FRIZIONE E' UN CERCHIO A TACCHE, come nel simulatore di riferimento: dodici
     // tacche attorno a un disco scuro, accese in senso orario dall'alto.
     // Ogni tacca e' una posizione di frizione. In mezzo il mulinello.
     //   friz_cx / friz_cy   centro
@@ -11682,9 +11682,9 @@ public class Pesca : Script
 
     // IL PESO CHE HAI IN PUNTA, in grammi.
     // Artificiale, testina piombata e piombo hanno un peso VERO preso dal
-    // wiki. Amo, esca naturale e galleggiante sul wiki NON hanno un peso:
+    // catalogo. Amo, esca naturale e galleggiante sul catalogo NON hanno un peso:
     // se non hai niente di pesante montato resta 1.5 g simbolici, e questo
-    // numero e' una scelta nostra, non un dato di Fishing Planet.
+    // numero e' una scelta nostra, non un dato del simulatore di riferimento.
     float GrammiInPunta()
     {
         float g = 0f;
@@ -11707,7 +11707,7 @@ public class Pesca : Script
     }
 
     // QUANTO LONTANO ARRIVI.
-    // Il wiki lo spiega: a lanciare non e' la lunghezza, e' il PESO che la
+    // Il catalogo lo spiega: a lanciare non e' la lunghezza, e' il PESO che la
     // canna e' tarata per tirare (il campo esca_g) contro il peso che hai
     // davvero attaccato. Se il carico sta dentro il range della canna il
     // lancio e' pieno; se e' troppo leggero la canna non si carica e il
@@ -11758,7 +11758,7 @@ public class Pesca : Script
 
         if (gmax <= 0f)
         {
-            // canna da galleggiante (match, telescopica): sul wiki non ha un
+            // canna da galleggiante (match, telescopica): sul catalogo non ha un
             // peso di lancio, la lenza la si accompagna. Conta la lunghezza,
             // e un filo di peso in punta aiuta ad allungare.
             d = 4f + 4f * lung;
@@ -12598,7 +12598,7 @@ public class Pesca : Script
         // A spinning l'esca E' il cucchiaino: non c'e' il pane, e nella
         // casella dell'esca ci sta l'artificiale che hai montato, con
         // quanti ne hai. E' li' che si guarda cosa stai offrendo.
-        // COME IN FISHING PLANET: un cerchio leggero attorno all'esca, un
+        // COME IN IL SIMULATORE DI RIFERIMENTO: un cerchio leggero attorno all'esca, un
         // cerchietto in alto a destra con quante ne restano, e a
         // sinistra il nome dell'esca e l'amo che sta pescando.
         //   esca_cx / esca_cy    centro del cerchio grande
@@ -12730,7 +12730,7 @@ public class Pesca : Script
     // NELL'HUD L'AMO E' L'AMO, non la scatola.
     // La scatolina va bene in negozio, in cassetta e a casa: li' stai
     // comprando o spostando una confezione. Sulla canna invece ci sta
-    // l'amo montato, e il wiki il disegno ce l'ha: e' il campo "forma".
+    // l'amo montato, e il catalogo il disegno ce l'ha: e' il campo "forma".
     string FormaTerminale(int id)
     {
         int i;
@@ -12812,7 +12812,7 @@ public class Pesca : Script
              + b.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
     }
 
-    // la portata di una canna, come sta scritta nel wiki: "1.50 - 4.00"
+    // la portata di una canna, come sta scritta nel catalogo: "1.50 - 4.00"
     string KgCanna(int id)
     {
         int i;
@@ -12831,14 +12831,14 @@ public class Pesca : Script
     }
 
     // QUANTO FILO STA SU UN MULINELLO.
-    // Il wiki da' per ogni mulinello la capacita' a un diametro di
+    // Il catalogo da' per ogni mulinello la capacita' a un diametro di
     // riferimento, un valore per tipo di filo:
     //     "mono 0.25/100;  braid 0.20/125"
     // cioe' 100 metri di monofilo dello 0.25, oppure 125 metri di
     // trecciato dello 0.20. Sulla bobina del mulinello c'e' un volume
     // fisso: piu' il filo e' sottile, piu' ne sta.
     // Il fluorocarbon e le lenze da mare li trattiamo come il monofilo,
-    // perche' il wiki per loro non da' una riga a parte.
+    // perche' il catalogo per loro non da' una riga a parte.
     int MetriSulMulinello(int idMul, string tipoLenza)
     {
         string cap = "";
@@ -12854,7 +12854,7 @@ public class Pesca : Script
             string s = pezzi[i].Trim().ToLower();
             if (s.Length == 0) continue;
             if (!s.StartsWith(cerco)) continue;
-            // l'ultima barra, non la prima: un mulinello nel wiki ha
+            // l'ultima barra, non la prima: un mulinello nel catalogo ha
             // "0.18//80" con due barre
             int barra = s.LastIndexOf('/');
             if (barra < 0) continue;
@@ -12866,7 +12866,7 @@ public class Pesca : Script
     // I metri di filo che stanno sul mulinello montato, calcolati col
     // tipo di lenza che ci hai messo sopra.
     // QUANTO RECUPERA IL MULINELLO CHE HAI MONTATO.
-    // Sul wiki ogni mulinello ha i centimetri di filo per giro di manovella
+    // Sul catalogo ogni mulinello ha i centimetri di filo per giro di manovella
     // ("recupero_cm"). Ottanta e' la media: sopra recuperi piu' in fretta,
     // sotto piu' piano. Cosi' un mulinello grosso si sente davvero.
     float FattoreRecupero()
@@ -12929,7 +12929,7 @@ public class Pesca : Script
     int soldiNassa = 0;      // quanto vale il pesce nella nassa, si incassa a fine giornata
 
     // LA NASSA SI VENDE: a fine giornata (e a ogni giornata della licenza)
-    // il pesce tenuto si incassa al prezzo al chilo del wiki.
+    // il pesce tenuto si incassa al prezzo al chilo del catalogo.
     void VendiNassa()
     {
         if (soldiNassa <= 0) { soldiNassa = 0; return; }
@@ -13070,14 +13070,14 @@ public class Pesca : Script
         xpTot += guadagno;
 
         // QUANTO VALE: E' UN PREZZO AL CHILO.
-        // Sul wiki "price_common = 70" vuol dire settanta crediti AL
+        // Sul catalogo "price_common = 70" vuol dire settanta crediti AL
         // CHILO, non settanta a pesce: un bluegill da 180 grammi e uno
         // da 400 non possono valere uguale. La fascia - comune, trofeo,
         // unico - decide la tariffa, il peso decide il totale.
         int tariffa = s.PrC;
         if (s.KgU > 0f && pesceKg >= s.KgU) tariffa = s.PrU;
         else if (s.KgT > 0f && pesceKg >= s.KgT) tariffa = s.PrT;
-        // IL PREZZO DEL PESCE E' QUELLO DEL WIKI, AL CHILO, PIENO: la
+        // IL PREZZO DEL PESCE E' QUELLO DEL CATALOGO, AL CHILO, PIENO: la
         // divisione per dieci (CAMBIO) e' solo dell'attrezzatura, che ha i
         // prezzi gonfiati. Il pesce no: un luccio vale 170 al chilo.
         int vale = (int)(tariffa * pesceKg + 0.5f);
@@ -15000,7 +15000,7 @@ public class Pesca : Script
     // OGNI GALLEGGIANTE E' IL SUO.
     // Non un pallino uguale per tutti: forma, misure e colori vengono
     // dalla riga di galleggianti.txt di quello che hai montato, che sono
-    // dati veri del wiki. "5 1/2" x 4/5"(14 x 2 cm) Oval" vuol dire
+    // dati veri del catalogo. "5 1/2" x 4/5"(14 x 2 cm) Oval" vuol dire
     // quattordici centimetri di lunghezza, due di spessore, forma ovale;
     // "Natural / Red / Green" sono le fasce, dal basso verso la punta.
     int gallVisto = -1;

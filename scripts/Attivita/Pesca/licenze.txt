@@ -4,8 +4,8 @@
 # PREZZI NOSTRI, con questa regola (decisa il 6 settembre 2026):
 #   un giorno = il 25% di quanto vale la nassa piena in quel tratto, cioe'
 #   la nassa migliore che si puo' comprare al livello del tratto, piena del
-#   pesce del tratto che paga di piu' al chilo (prezzi del wiki, al chilo).
-#   Tre giorni = 2.85 volte un giorno, il rapporto vero di Fishing Planet.
+#   pesce del tratto che paga di piu' al chilo (prezzi del catalogo, al chilo).
+#   Tre giorni = 2.85 volte un giorno, il rapporto vero del simulatore di riferimento.
 # Un'acqua con piu' tratti ha una riga per ogni livello di tratto: la mod
 # prende la riga col livello piu' alto che NON supera il livello del
 # pescatore (paghi per quello che puoi pescare). Sotto il primo tratto

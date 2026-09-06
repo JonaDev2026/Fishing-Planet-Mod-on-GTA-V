@@ -1,5 +1,5 @@
-# id|tipo|marca|serie|misura|rapporto|recupero_cm|capacita|frizione_kg|liv_wiki|prezzo|img
-# dati veri dal wiki di Fishing Planet
+# id|tipo|marca|serie|misura|rapporto|recupero_cm|capacita|frizione_kg|livello|prezzo|img
+# dati veri dal catalogo di riferimento
 # niente versioni SE/NE: sono a baitcoin, la moneta a pagamento,
 # e avevano livello 1 con frizioni da 15 kg. Fuori dal catalogo.
 1|spinning|MagFin|Espira Slim|1000|5.4:1|80|mono 0.12/100;  braid 0.12/100|2.30|6|2500|EspiraSlim.png

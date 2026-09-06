@@ -1,7 +1,7 @@
 # Mod Pesca per GTA V Enhanced
 
-Una mod di pesca per Grand Theft Auto V Enhanced costruita sui dati veri di
-**Fishing Planet**: 239 specie con i loro pesi, le loro esche, i loro ami, i
+Una mod di pesca per Grand Theft Auto V Enhanced costruita su dati veri:
+239 specie con i loro pesi, le loro esche, i loro ami, i
 loro orari e la loro rarità; 137 canne, 134 mulinelli, 233 lenze, 381 fra ami,
 leader, rig e piombi, 527 esche artificiali, 205 esche naturali. Non è una
 pesca "premi un tasto e prendi un pesce": conta dove sei, che ora è, che
@@ -19,7 +19,7 @@ https://www.youtube.com/watch?v=fE_OSdsgQKs
 
 Questo file è il manuale: spiega come si gioca e, soprattutto, **perché un
 pesce abbocca o no**. Tutte le regole descritte qui sono quelle scritte nel
-codice; dove un numero è nostro e non del wiki, è detto.
+codice; dove un numero è nostro e non del catalogo, è detto.
 
 ---
 
@@ -163,7 +163,7 @@ mano; se smonti la canna, la riponi.
 
 Dal menu, **Zone di pesca** elenca le 35 acque: il livello richiesto, quante
 specie ci vivono, il prezzo della licenza. Ogni zona della mappa corrisponde a
-un'acqua vera di Fishing Planet e ne ha i pesci: l'Alamo Sea è un lago
+un'acqua vera e ne ha i pesci: l'Alamo Sea è un lago
 americano di pesci gatto e bass, il fiume Zancudo è un torrente di trote, il
 mare di Paleto è il fiordo norvegese dei merluzzi e degli squali, Vespucci e
 Chumash sono le coste della Florida. Selezionando una zona la mod mette il
@@ -186,7 +186,7 @@ il singolo tratto di riva.
 
 Quattro tagli: 1 giorno, 3 giorni (2,85 volte un giorno), una settimana (6,3
 volte), un mese (24 volte). I rapporti fra i tagli e il raddoppio
-Basic → Advanced sono quelli di Fishing Planet; i prezzi di partenza sono
+Basic → Advanced sono quelli del simulatore di riferimento; i prezzi di partenza sono
 nostri. Scaduta la giornata, se sei ancora lì, puoi **prolungare** di un
 giorno a prezzo pieno.
 
@@ -317,13 +317,13 @@ GTA non ha una temperatura: la calcola la mod, ed è mostrata sull'HUD
 - la **quota**: sopra i 50 metri l'aria scende di 0,6° ogni 100 metri.
 
 L'acqua è più stabile dell'aria: 16° più il 45% dello scarto dell'aria dai 20°.
-Questi numeri sono nostri, non del wiki.
+Questi numeri sono nostri, non del catalogo.
 
 Ogni specie ha il suo **intervallo di temperatura** (`temperature_pesci.txt`:
 minimo, massimo, ottimo). Trote e salmerini stanno bene fra 4 e 16°, carpe e
 pesci gatto fra 15 e 28°, i pesci dell'Amazzonia fra 24 e 32°, i merluzzi del
 mare del Nord fra 3 e 12°. Sono valori indicativi, presi dalla biologia
-generale: il wiki di Fishing Planet non li ha.
+generale: il catalogo di riferimento non li ha.
 
 Alla sua temperatura ottima un pesce **vale pieno**; ai bordi del suo
 intervallo vale il 40%; oltre 4° fuori dall'intervallo **non esce**. Quindi al
@@ -361,10 +361,10 @@ A quelle rimaste si dà un **peso** nel sorteggio, che è il prodotto di:
 
 | fattore | come conta |
 |---|---|
-| **rarità** (dal wiki, 1–5) | comunissimo 100, comune 55, normale 28, raro 12, rarissimo 5 |
-| **misura dell'amo** (dal wiki) | dentro il range del pesce 1; una misura fuori 0,55; due fuori 0,25; tre fuori 0,08; oltre non esce |
+| **rarità** (dal catalogo, 1–5) | comunissimo 100, comune 55, normale 28, raro 12, rarissimo 5 |
+| **misura dell'amo** (dal catalogo) | dentro il range del pesce 1; una misura fuori 0,55; due fuori 0,25; tre fuori 0,08; oltre non esce |
 | **ora del giorno** (abitudine della specie) | chi mangia di notte: notte 1, alba/tramonto 0,45, pieno giorno 0,12. Chi mangia all'alba e al tramonto: 1 nelle sue ore, 0,35 di giorno, 0,30 di notte. Chi mangia di giorno: 1, 0,45, 0,10. Notte = 21–5, alba/tramonto = 5–8 e 18–21 |
-| **tecnica** | il predatore (specie che sul wiki ha gli artificiali) a esca naturale abbocca a 0,25 e quasi solo piccolo; il cucchiaino con una canna da lancio vale 1, con una match o telescopica 0,15 |
+| **tecnica** | il predatore (specie che sul catalogo ha gli artificiali) a esca naturale abbocca a 0,25 e quasi solo piccolo; il cucchiaino con una canna da lancio vale 1, con una match o telescopica 0,15 |
 | **canna per la famiglia** | ogni famiglia ha le sue canne (carpa → canne da carpa, feeder, spod, fondo; lucci, bass e persici → spinning e casting; trote e salmoni → spinning, casting, match; mare → canne da mare e casting; abramidi e panfish → match, feeder, telescopica; pesci gatto → fondo, carpa, mare; storioni → fondo, carpa). Con la canna sbagliata 0,60 se è una match, fondo o telescopica, 0,35 altrimenti |
 | **amo per la famiglia** | amo specialista di un'altra famiglia 0,55; amo generico 0,80; amo della sua famiglia 1 |
 | **temperatura** | 1 all'ottima, 0,4 ai bordi dell'intervallo |
@@ -381,7 +381,7 @@ L'esca **non scarta** nessuno dal sorteggio: decide dopo. Il pesce estratto
 guarda cosa c'è sull'amo:
 
 - se è una delle **sue** (la lista "Preferred baits" o "Preferred lures" della
-  sua pagina sul wiki) → **abbocca sempre**;
+  sua pagina sul catalogo) → **abbocca sempre**;
 - se **non** è la sua → abbocca **una volta su tre** (ha fame); le altre due se
   ne va, e tu riaspetti.
 
@@ -411,8 +411,8 @@ quell'acqua: ti dicono cosa c'è, non cosa abboccherà.
 
 Sorteggiata la specie, si tira il **peso**, fra un minimo e un tetto:
 
-- il minimo è il 60% del peso "comune" del wiki;
-- il tetto lo decide **l'amo**, come in Fishing Planet. Ogni pesce ha il suo
+- il minimo è il 60% del peso "comune" del catalogo;
+- il tetto lo decide **l'amo**, come nel simulatore di riferimento. Ogni pesce ha il suo
   range di ami: con l'amo alla misura **piccola** del range escono solo i
   **comuni**; dalla **metà** del range in su anche i **trofei**; con la misura
   **grande** anche gli **esemplari unici**. Il luccio va da #1/0 a #5/0: con
@@ -424,7 +424,7 @@ Sorteggiata la specie, si tira il **peso**, fra un minimo e un tetto:
 Il dado è **truccato verso il basso**: l'amo apre il tetto, non ci porta. Con
 la tecnica sbagliata (predatore a esca naturale) escono quasi solo i piccoli;
 sul punto profondo il tiro si sposta verso l'alto. L'unico può superare del 20%
-il peso del wiki, perché in gioco succede.
+il peso del catalogo, perché in gioco succede.
 
 Dopo un **colpo grosso** c'è una pausa, per specie, in minuti veri e salvata:
 preso un esemplare unico, quella specie non dà altri unici per 20 minuti; preso
@@ -490,9 +490,9 @@ benissimo. Si sale pescando specie diverse, non ripetendo la stessa.
 
 ### I livelli
 
-Il livello sblocca l'attrezzatura e le zone, coi livelli veri del wiki. Quanto
+Il livello sblocca l'attrezzatura e le zone, coi livelli veri del catalogo. Quanto
 ci metti a salire è nostro: circa **tre uscite per livello**, dall'inizio alla
-fine, senza muri (`livelli.txt`). La curva vera di Fishing Planet, 110 livelli e
+fine, senza muri (`livelli.txt`). La curva vera del simulatore di riferimento, 110 livelli e
 109 milioni di punti per l'ultimo, resta nei riferimenti: là per il livello 80
 servono più di duemila uscite.
 
@@ -506,19 +506,19 @@ che nell'Alamo non trovi.
 
 ### I soldi
 
-I prezzi del wiki sono in crediti; qui sono divisi per 10. Il freno vero non
+I prezzi del catalogo sono in crediti; qui sono divisi per 10. Il freno vero non
 è il prezzo dell'attrezzatura, è la licenza. A fine giornata il pesce della
-nassa si vende a un prezzo al chilo, quello del wiki; la robaccia vale quello
+nassa si vende a un prezzo al chilo, quello del catalogo; la robaccia vale quello
 che vale. L'attrezzatura si rivende a casa a una percentuale del prezzo.
 
 ---
 
 ## 11. I tornei
 
-51 tornei, uno per specie, presi dalle pagine dei singoli tornei del wiki:
+51 tornei, uno per specie, presi dalle schede dei singoli tornei del catalogo:
 durata, livello minimo, quota d'iscrizione, premi, regola di punteggio,
 attrezzatura ammessa, ora d'inizio e meteo sono i loro. L'unica cosa nostra è
-la **zona**: il wiki li tiene su laghi che noi non abbiamo, quindi ogni torneo
+la **zona**: il catalogo li tiene su laghi che noi non abbiamo, quindi ogni torneo
 sta nella nostra acqua dove quel pesce vive. Bronzo, argento e oro con i loro
 premi in denaro, più un extra per trofeo ed esemplare unico.
 
@@ -539,7 +539,7 @@ Le più utili per la pesca:
 | `amo_taglia` | l'amo che decide la taglia (1 acceso) |
 | `unico_pausa_min`, `trofeo_pausa_min` | la pausa dopo il colpo grosso |
 | `denti_kg` | da che peso il predatore senza leader trancia la lenza |
-| `unico_extra` | quanto l'unico può superare il peso del wiki (%) |
+| `unico_extra` | quanto l'unico può superare il peso del catalogo (%) |
 | `friz_posizioni` | le posizioni della frizione |
 | `pesci_scena_*` | i pesci che passano: ogni quanto, quanti, dove |
 | `canna_disegnata` | 1 canna disegnata che si piega, 0 modello di GTA |
@@ -549,7 +549,7 @@ Le più utili per la pesca:
 
 ## 13. I dati: cosa è vero e cosa è nostro
 
-**Dal wiki di Fishing Planet**: il catalogo intero (pesci con pesi comune,
+**Dal catalogo di riferimento**: il catalogo intero (pesci con pesi comune,
 trofeo e unico, prezzi, esche preferite, artificiali, misura dell'amo,
 famiglia, orari e rarità; canne, mulinelli, lenze, ami, terminali, esche
 naturali con la loro classe di peso, artificiali, galleggianti, cassette,
@@ -562,7 +562,7 @@ rapporti fra i tagli delle licenze.
 - i pesi del sorteggio (rarità, amo, ora, tecnica, canne per famiglia);
 - l'attesa e i suoi numeri;
 - il "una su tre" dell'esca sbagliata e la robaccia;
-- l'amo che decide la taglia (la regola è di Fishing Planet, i gradini sono nostri) e le pause;
+- l'amo che decide la taglia (la regola è del simulatore di riferimento, i gradini sono nostri) e le pause;
 - i punti caldi;
 - la curva dei livelli, la formula dei punti, i prezzi delle licenze, il cambio crediti → dollari;
 - le zone dove stanno i tornei.
@@ -574,7 +574,4 @@ italiani di pesci, esche e colori stanno in file di traduzione separati.
 
 ## 14. Note
 
-Progetto personale, senza scopo di lucro, non affiliato né a Rockstar Games né
-a Fishing Planet. *Fishing Planet* è un marchio di Fishing Planet LLC; i dati e
-le immagini del catalogo vengono dal loro wiki e restano dei rispettivi
-proprietari. *Grand Theft Auto V* è un marchio di Rockstar Games.
+Progetto personale, senza scopo di lucro, non affiliato a Rockstar Games. *Grand Theft Auto V* è un marchio di Rockstar Games.

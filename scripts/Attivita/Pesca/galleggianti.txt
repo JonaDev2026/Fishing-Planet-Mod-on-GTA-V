@@ -1,5 +1,5 @@
-# id|tipo|nome|colore|misura|forma|portata|materiale|prezzo|liv_wiki|img
-# galleggianti - dati veri dal wiki di Fishing Planet
+# id|tipo|nome|colore|misura|forma|portata|materiale|prezzo|livello|img
+# galleggianti - dati veri dal catalogo di riferimento
 # portata = quanto peso di piombo regge (Low/Medium/High)
 1|classico|Oval|Natural / Red / Green|5 1/2" x 4/5"/(14 x 2 cm)|Oval|Medium|Plastic|20|1|116.png
 2|classico|Oval|Black / Red / Light Green|5 1/2" x 4/5"(14 x 2 cm)|Oval|Medium|Plastic|20|2|1142.png

@@ -5,7 +5,7 @@
 # ============================================================
 
 ## COSA E' DATO VERO E COSA E' NOSTRO
-Tutto il catalogo viene dal wiki di Fishing Planet: pesci, canne,
+Tutto il catalogo viene dal catalogo di riferimento: pesci, canne,
 mulinelli, lenze, ami, terminali, esche, borse, portacanne, nasse,
 con i loro livelli, prezzi e caratteristiche.
 Sono NOSTRE: la curva dell'esperienza (livelli.txt), la formula dei
@@ -13,8 +13,8 @@ punti per pesce, i prezzi delle licenze, e il cambio crediti->dollari.
 Ogni file che contiene roba nostra lo dice in cima.
 
 ## I SOLDI
-I prezzi dell'ATTREZZATURA sul wiki sono gonfiati, perche' e' quella
-che Fishing Planet vende per soldi veri: quelli li dividiamo per 10
+I prezzi dell'ATTREZZATURA sul catalogo sono gonfiati, perche' e' quella
+che il simulatore di riferimento vende per soldi veri: quelli li dividiamo per 10
 (const CAMBIO in Pesca.cs). I prezzi del PESCE invece sono regolari,
 al chilo, e restano pieni: un luccio vale 170 al chilo.
 Il pesce nella nassa si incassa a fine giornata.
@@ -22,10 +22,10 @@ Il freno vero non e' il prezzo dell'attrezzatura: e' la LICENZA.
 
 ## I LIVELLI
 Il livello sblocca l'attrezzatura, e i livelli degli oggetti sono
-quelli veri del wiki. Quanto ci metti a salire lo decidiamo noi:
+quelli veri del catalogo. Quanto ci metti a salire lo decidiamo noi:
 circa 3 uscite per livello, dall'inizio alla fine, senza muri.
-La curva vera di Fishing Planet (110 livelli, 109 milioni di XP per
-l'ultimo) resta in _riferimenti/wiki_dump/livelli_fp.txt: la' per
+La curva vera del simulatore di riferimento (110 livelli, 109 milioni di XP per
+l'ultimo) resta in riferimenti: la' per
 arrivare al livello 80 servono piu' di duemila uscite.
 
 ## L'ESPERIENZA
@@ -76,7 +76,7 @@ quel posto. Due tipi:
   ADVANCED  - nessuna restrizione
 Quattro tagli: 1 giorno, 3 giorni, settimana, mese. I rapporti fra i
 tagli (2.8x, 6.3x, 24x) e il raddoppio Basic->Advanced sono quelli
-veri del wiki; i prezzi di partenza per le nostre dieci acque no.
+veri del catalogo; i prezzi di partenza per le nostre dieci acque no.
 Nell'oceano aperto si pesca solo dalla barca, e la Basic la barca la
 vieta: li' o prendi l'Advanced o non ci vai.
 
@@ -119,10 +119,10 @@ quello che vuoi: e' sempre GTA, non ti riporta a casa nessuno.
 ## ORA E METEO
 Il pesce non abbocca sempre uguale: contano l'esca, ma anche l'ora e
 il tempo che fa. Alba e tramonto meglio, sole a picco peggio.
-Queste sono regole di gioco nostre, non dati del wiki.
+Queste sono regole di gioco nostre, non dati del catalogo.
 
 ## IL SENSO
-Il livello non e' una corsa. In Fishing Planet la barra ti sta sempre
+Il livello non e' una corsa. In il simulatore di riferimento la barra ti sta sempre
 davanti agli occhi e finisci che peschi per i numeri. Qui la
 soddisfazione sta nel quaderno: 239 specie da riempire, sapere che il
 Gudgeon lo prendi a Zancudo all'alba coi vermi rossi e che nel canyon

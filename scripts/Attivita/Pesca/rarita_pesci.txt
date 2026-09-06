@@ -1,6 +1,6 @@
 # nome|rarita|acque|taglie|elenco delle acque vere
-# QUANTO E' RARO OGNI PESCE - dato vero, dalle 28 pagine delle acque del wiki.
-# Sotto ogni pesce il wiki scrive che taglie da' quell'acqua: Young, Common,
+# QUANTO E' RARO OGNI PESCE - dato vero, dalle 28 pagine delle acque del catalogo.
+# Sotto ogni pesce il catalogo scrive che taglie da' quell'acqua: Young, Common,
 # Trophy, Unique. Incrociando le 28 acque si vede in quante vive ogni specie.
 # rarita: 5 = una sola acqua e da' l'Unique (rarissimo)
 #         4 = una sola acqua, oppure due con l'Unique

@@ -1,6 +1,6 @@
 # I PUNTI CALDI.
 # area|x|y|raggio|specie|bonus_rarita
-# ROBA NOSTRA, non del wiki: dentro un'acqua i pesci non stanno sparsi
+# ROBA NOSTRA, non del catalogo: dentro un'acqua i pesci non stanno sparsi
 # uguali, stanno dove c'e' l'erba, la buca, la corrente che gira.
 # Due punti a specie - li' quel pesce abbocca molto piu' che altrove -
 # e un punto profondo, dove vengono piu' trofei ed esemplari unici.

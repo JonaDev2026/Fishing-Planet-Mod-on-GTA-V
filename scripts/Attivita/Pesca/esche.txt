@@ -1,7 +1,7 @@
-# id|nome|tipo|immagine|peso   - nomi veri dal wiki di Fishing Planet
-# peso = colonna "Weight" del wiki, com'e' scritta li' (Light, Med-Light, Medium, Med-Heavy,
+# id|nome|tipo|immagine|peso   - nomi veri dal catalogo di riferimento
+# peso = colonna "Weight" del catalogo, com'e' scritta li' (Light, Med-Light, Medium, Med-Heavy,
 # Heavy, X Heavy, XXL Heavy): quanto pesa l'esca sull'amo, per la portata del
-# galleggiante. Vuoto = sul wiki quell'esca non ha la colonna.
+# galleggiante. Vuoto = sul catalogo quell'esca non ha la colonna.
 0|African Giant Water Bug|naturale|African_Giant_Water_Bug.png|Heavy
 1|Amazonian Sardine|naturale|Amazonian_Sardine.png|Heavy
 2|Aracu Minnow|naturale|Aracu_Minnow.png|X Heavy

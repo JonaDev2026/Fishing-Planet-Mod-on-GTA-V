@@ -1,6 +1,6 @@
 # LE ESCHE IN ITALIANO.  nome_inglese|nome_italiano
-# ATTENZIONE: queste traduzioni le abbiamo fatte noi. Il wiki di
-# Fishing Planet le pagine in italiano non ce le ha, quindi qui non
+# ATTENZIONE: queste traduzioni le abbiamo fatte noi. Il catalogo di
+# il simulatore di riferimento le pagine in italiano non ce le ha, quindi qui non
 # c'e' un dato preso da loro: c'e' il nome inglese vero (quello si')
 # e accanto come si dice in italiano. Dove in italiano si usa la
 # parola inglese - popper, shad, crankbait, boilies - e' rimasta
