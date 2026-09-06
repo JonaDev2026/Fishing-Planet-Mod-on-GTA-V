@@ -6372,7 +6372,7 @@ public class Pesca : Script
                    || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 2, 179);
             bool ty = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 2, 178)
                    || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 2, 178)
-                   || Game.IsKeyPressed(Keys.Y);
+                   || Game.IsKeyPressed(System.Windows.Forms.Keys.Y);
             if (!ok && !tx && !ty) return;
             List<string> lista = (menuLato == 1) ? eqCasa : eqBorsa;
             int sel = (menuLato == 1) ? eqSelCasa : eqSelBorsa;
