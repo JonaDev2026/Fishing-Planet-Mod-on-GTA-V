@@ -14927,7 +14927,8 @@ public class Pesca : Script
         {
             if (robaProp == null || !robaProp.Exists()) { robaProp = null; return; }
             Ped p = Game.Player.Character;
-            GTA.Math.Vector3 dove = p.Position + p.RightVector * 1.2f + p.ForwardVector * 0.5f;
+            // dietro al pescatore, non davanti: davanti c'e' l'acqua
+            GTA.Math.Vector3 dove = p.Position - p.ForwardVector * 1.5f + p.RightVector * 0.8f;
             dove.Z += 0.6f;
             Function.Call(Hash.FREEZE_ENTITY_POSITION, robaProp, false);
             Function.Call(Hash.SET_ENTITY_COLLISION, robaProp, true, true);
