@@ -996,6 +996,7 @@ public class Pesca : Script
 
         CaricaStato();
         livelloPescatore = LivelloDa(xpTot);
+        ViaSfocatura();
         // il campo torna dov'era, se la licenza e' ancora in corso
         if (inPesca && campoMesso) MettiCampo();
         ScaffaliDelNegozio();
@@ -5358,10 +5359,18 @@ public class Pesca : Script
             try { Game.TimeScale = 0f; } catch { }
             // e l'audio di GTA in muto dal mixer di Windows
             AbbassaAudio();
-            // LO SFONDO SFOCATO: e' la sfocatura del menu di pausa di GTA
-            // (TRANSITION_TO_BLURRED); menu_blur=0 la toglie
+            // LO SFONDO SFOCATO: col tempo a zero la transizione di GTA non
+            // parte (e restava da sfocare all'uscita), quindi si usa il
+            // timecycle della pausa, che e' immediato. menu_blur=0 lo toglie.
             if (LeggiF("menu_blur", 1f) > 0.5f)
-                try { Function.Call((Hash)0xA328A24AAA6B7FDC, 250f); } catch { }
+            {
+                try
+                {
+                    Function.Call(Hash.SET_TIMECYCLE_MODIFIER, LeggiS("menu_blur_tc", "hud_def_blur"));
+                    Function.Call(Hash.SET_TIMECYCLE_MODIFIER_STRENGTH, LeggiF("menu_blur_forza", 1f));
+                }
+                catch { }
+            }
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
@@ -5384,7 +5393,7 @@ public class Pesca : Script
         menuNuovoTasto = Game.GameTime + 400;
         try { Game.TimeScale = 1f; } catch { }
         RialzaAudio();
-        try { Function.Call((Hash)0xEFACC8AEF94430D5, 250f); } catch { }   // TRANSITION_FROM_BLURRED
+        ViaSfocatura();
         // l'orologio della pesca non deve aver contato il tempo in pausa
         prossimoMinuto += Game.GameTime - menuNuovoPausaDa;
         Suono("BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET");
@@ -5492,6 +5501,13 @@ public class Pesca : Script
         if (int.TryParse(pz[1].Trim(), out x)) c[1] = x;
         if (int.TryParse(pz[2].Trim(), out x)) c[2] = x;
         return c;
+    }
+
+    // via ogni sfocatura, anche quella rimasta da una versione precedente
+    void ViaSfocatura()
+    {
+        try { Function.Call(Hash.CLEAR_TIMECYCLE_MODIFIER); } catch { }
+        try { Function.Call((Hash)0xEFACC8AEF94430D5, 0f); } catch { }   // TRANSITION_FROM_BLURRED, subito
     }
 
     void DisegnaMenuNuovo()
