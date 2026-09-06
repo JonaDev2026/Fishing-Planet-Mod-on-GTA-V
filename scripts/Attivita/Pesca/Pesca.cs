@@ -5341,10 +5341,14 @@ public class Pesca : Script
     int menuNuovoPausaDa = 0;
     int menuNuovoTasto = 0;
 
+    // COL TEMPO A ZERO IL TIMER DEL GIOCO STA FERMO: per i tasti del menu
+    // si usa l'orologio del PC, se no l'antirimbalzo non scade mai.
+    static int OraPc() { return Environment.TickCount; }
+
     bool MenuNuovo()
     {
         if (LeggiF("menu_nuovo", 1f) < 0.5f) return false;
-        int now = Game.GameTime;
+        int now = OraPc();
         bool rb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 44)
                || Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 44);
         bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174)
@@ -5355,7 +5359,7 @@ public class Pesca : Script
             if (!combo) return false;
             menuNuovoAperto = true;
             menuNuovoTasto = now + 400;
-            menuNuovoPausaDa = now;
+            menuNuovoPausaDa = Game.GameTime;
             try { Game.TimeScale = 0f; } catch { }
             // e l'audio di GTA in muto dal mixer di Windows
             AbbassaAudio();
@@ -5390,7 +5394,7 @@ public class Pesca : Script
     {
         if (!menuNuovoAperto) return;
         menuNuovoAperto = false;
-        menuNuovoTasto = Game.GameTime + 400;
+        menuNuovoTasto = OraPc() + 400;
         try { Game.TimeScale = 1f; } catch { }
         RialzaAudio();
         ViaSfocatura();
@@ -5518,7 +5522,7 @@ public class Pesca : Script
 
     void TastiMenuNuovo()
     {
-        int now = Game.GameTime;
+        int now = OraPc();
         if (now < menuNuovoTasto) return;
         bool lb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 37);
         bool rb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 44);
