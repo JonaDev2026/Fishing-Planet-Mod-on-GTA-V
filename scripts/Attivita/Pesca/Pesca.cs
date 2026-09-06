@@ -7233,11 +7233,14 @@ public class Pesca : Script
             if (qta) return new int[] { 130, 40, 80 };
             if (kg) return new int[] { 30, 90, 60 };
             if (mis) return new int[] { 30, 70, 105 };
+            if (b.EndsWith("xp")) return new int[] { 30, 70, 105 };
             return new int[] { 95, 80, 25 };
         }
         if (qta) return new int[] { 245, 150, 195 };
         if (kg) return new int[] { 140, 225, 175 };
         if (mis) return new int[] { 130, 200, 245 };
+        // i punti esperienza hanno il loro azzurro, sempre lo stesso
+        if (b.EndsWith("xp")) return new int[] { 130, 200, 245 };
         return new int[] { 235, 210, 130 };
     }
 
@@ -13461,8 +13464,10 @@ public class Pesca : Script
             cardPerche = L("Too big for this keepnet (max ", "Troppo grosso per questa nassa (max ")
                        + maxPesce.ToString("0.##", CultureInfo.InvariantCulture) + " kg)";
         }
-        else if (kgNassa >= max)
+        else if (kgNassa + pesceKg > max + 0.001f)
         {
+            // col suo peso si supererebbe il totale della rete: prima si
+            // guardava solo se era gia' piena, e ci finiva un pesce di troppo
             cardPuoTenere = false;
             cardPerche = L("The keepnet is full", "La nassa e' piena");
         }
