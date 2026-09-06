@@ -13464,10 +13464,8 @@ public class Pesca : Script
             cardPerche = L("Too big for this keepnet (max ", "Troppo grosso per questa nassa (max ")
                        + maxPesce.ToString("0.##", CultureInfo.InvariantCulture) + " kg)";
         }
-        else if (kgNassa + pesceKg > max + 0.001f)
+        else if (kgNassa >= max)
         {
-            // col suo peso si supererebbe il totale della rete: prima si
-            // guardava solo se era gia' piena, e ci finiva un pesce di troppo
             cardPuoTenere = false;
             cardPerche = L("The keepnet is full", "La nassa e' piena");
         }
