@@ -5819,21 +5819,25 @@ public class Pesca : Script
         // pescare"; con la giornata in corso "Stai pescando".
         float by = fondo - 34f;
         bool qui = (zonaQui == a);
-        string tb; bool attivo;
-        if (!qui) { tb = L("Get to the spot", "Raggiungi il posto"); attivo = true; }
-        else if (inPesca && licZona == cod) { tb = L("Fishing", "Stai pescando"); attivo = false; }
-        else if (LicenzaInTasca(cod)) { tb = L("Start fishing", "Inizia a pescare"); attivo = true; }
-        else { tb = L("You are here", "Ti trovi qui"); attivo = false; }
+        // ogni stato ha il suo colore: verdolino per raggiungere, rosa
+        // quando sei qui, arancione (quello di Fishing Planet) per iniziare
+        string tb; bool attivo; int br, bg2, bb;
+        if (!qui) { tb = L("Get to the spot", "Raggiungi il posto"); attivo = true; br = 130; bg2 = 225; bb = 180; }
+        else if (inPesca && licZona == cod) { tb = L("Fishing", "Stai pescando"); attivo = false; br = 245; bg2 = 140; bb = 40; }
+        else if (LicenzaInTasca(cod)) { tb = L("Start fishing", "Inizia a pescare"); attivo = true; br = 245; bg2 = 140; bb = 40; }
+        else { tb = L("You are here", "Ti trovi qui"); attivo = false; br = 250; bg2 = 175; bb = 205; }
         bool selB = (menuLato == 1 && pnSel == pnRighe);
-        if (selB && attivo)
+        if (attivo)
         {
-            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, 245, 245, 250, 255);
+            // pieno del suo colore, piu' acceso quando e' scelto
+            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, br, bg2, bb, selB ? 255 : 150);
             TestoMenu(tb, x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, 20, 22, 28, 255);
         }
         else
         {
-            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, 255, 255, 255, selB ? 60 : 30);
-            TestoMenu(tb, x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, attivo ? 245 : 250, attivo ? 245 : 175, attivo ? 250 : 205, 255);
+            // spento: solo il bordo del colore e il testo colorato
+            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, br, bg2, bb, selB ? 60 : 35);
+            TestoMenu(tb, x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, br, bg2, bb, 255);
         }
 
         // I PESCI, a destra della colonna: foto e nome in griglia
