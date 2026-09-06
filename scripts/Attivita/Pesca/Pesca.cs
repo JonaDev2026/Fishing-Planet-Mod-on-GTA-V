@@ -5514,8 +5514,8 @@ public class Pesca : Script
     {
         // il pannello a tutto schermo: grigio scuro trasparente, lo stesso
         // grigio delle righe del trainer (menu_bg r,g,b e menu_velo alfa)
-        int[] bg = ColoreCfg("menu_bg", 30, 32, 38);
-        DisegnaRett(0f, 0f, 1280f, 720f, bg[0], bg[1], bg[2], (int)LeggiF("menu_velo", 215f));
+        int[] bg = ColoreCfg("menu_bg", 14, 22, 40);
+        DisegnaRett(0f, 0f, 1280f, 720f, bg[0], bg[1], bg[2], (int)LeggiF("menu_velo", 190f));
         DisegnaTesto(L("FISHING", "PESCA"), 640f, 60f, 0.9f, 245, 245, 250);
         DisegnaTesto(L("B  back", "B  indietro"), 640f, 660f, 0.28f, 200, 202, 210);
     }
