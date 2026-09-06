@@ -6364,6 +6364,31 @@ public class Pesca : Script
             eqSelBorsa = (eqSelBorsa + (giu ? 1 : n - 1)) % n;
             menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
         }
+        // sull'oggetto: A sposta, X vende (solo da casa), Y getta
+        else if (menuLato == 1 || menuLato == 2)
+        {
+            bool ok = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201);
+            bool tx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 203)
+                   || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 2, 179);
+            bool ty = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 2, 178)
+                   || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 2, 178)
+                   || Game.IsKeyPressed(Keys.Y);
+            if (!ok && !tx && !ty) return;
+            List<string> lista = (menuLato == 1) ? eqCasa : eqBorsa;
+            int sel = (menuLato == 1) ? eqSelCasa : eqSelBorsa;
+            if (sel < 0 || sel >= lista.Count) return;
+            string[] c = lista[sel].Split(':');
+            int id = Numero(c[1]);
+            menuNuovoTasto = now + 250;
+            bool fatto = false;
+            if (ok) fatto = Sposta(c[0], id, menuLato == 1);
+            else if (tx && menuLato == 1) fatto = Vendi(c[0], id);
+            else if (ty) fatto = Butta(c[0], id, menuLato == 1);
+            if (fatto) { SuonoMenu("menu_apri.wav"); SalvaStato(); }
+            RiempiEquip(eqCat);
+            // se la colonna si e' svuotata si torna alla lista
+            if (lista.Count == 0) menuLato = 0;
+        }
     }
 
     void TastiSidebar(int now)
@@ -6561,15 +6586,21 @@ public class Pesca : Script
         if (menuScheda == 1 && menuLato == 1)
         {
             Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Move", "Sposta"));
+            Voce(ic, tx, "x", L("SPACE", "SPAZIO"), L("Sell", "Vendi"));
+            Voce(ic, tx, "y", "Y", L("Throw away", "Getta"));
             Voce(ic, tx, "croce_sxdx", ">", L("List", "Lista"));
         }
         if (menuScheda == 1 && menuLato == 2)
         {
             Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Move", "Sposta"));
+            Voce(ic, tx, "y", "Y", L("Throw away", "Getta"));
             Voce(ic, tx, "croce_sxdx", "<", L("List", "Lista"));
         }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
+        DisegnaMessaggio();
     }
 
     // L'ORA DEL GIOCO, in alto a sinistra (orario_x / orario_y)
