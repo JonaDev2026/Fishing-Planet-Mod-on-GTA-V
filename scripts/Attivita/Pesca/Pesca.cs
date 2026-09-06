@@ -5386,6 +5386,11 @@ public class Pesca : Script
         Function.Call(Hash.DISABLE_ALL_CONTROL_ACTIONS, 0);
 
         bool b = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 202);
+        if (b && menuLato == 1 && now > menuNuovoTasto)
+        {
+            menuLato = 0; menuNuovoTasto = now + 150; TicMenu("BACK");
+            b = false;
+        }
         if (combo || b)
         {
             ChiudiMenuNuovo();
@@ -5554,12 +5559,14 @@ public class Pesca : Script
     // scheda, con le zone di pesca.
     List<string> sbVoci = new List<string>();
     List<string> sbDestra = new List<string>();
+    List<int> sbArea = new List<int>();
     int sbSel = 0, sbTop = 0;
     int sbScheda = -1;
+    int menuLato = 0;         // 0 sulla lista a sinistra, 1 sul pannello a destra
 
     void RiempiSidebar()
     {
-        sbVoci.Clear(); sbDestra.Clear();
+        sbVoci.Clear(); sbDestra.Clear(); sbArea.Clear();
         if (menuScheda == 0)
         {
             // le zone, nell'ordine della pagina del trainer (per livello)
@@ -5576,6 +5583,7 @@ public class Pesca : Script
             {
                 sbVoci.Add(arNome[ord[i]]);
                 sbDestra.Add(L("Lv.", "Liv.") + LivelloArea(ord[i]));
+                sbArea.Add(ord[i]);
             }
         }
         if (sbSel >= sbVoci.Count) sbSel = 0;
@@ -5599,13 +5607,77 @@ public class Pesca : Script
             int k = sbTop + i;
             float y = cy + pad + i * rh;
             bool sel = (k == sbSel);
-            if (sel) DisegnaRett(mx + pad, y, w, rh - 2f, 245, 245, 250, 255);
+            if (sel) DisegnaRett(mx + pad, y, w, rh - 2f, 245, 245, 250, menuLato == 0 ? 255 : 170);
             else DisegnaRett(mx + pad, y, w, rh - 2f, 0, 0, 0, 120);
             int r = sel ? 20 : 245, g = sel ? 22 : 245, b = sel ? 28 : 250;
             TestoMenu(sbVoci[k], mx + pad + 10f, y + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
             if (sbDestra[k].Length > 0)
                 TestoMenu(sbDestra[k], mx + pad + w - 10f, y + rh * 0.5f - 9f, 0.26f, 0, 2,
                           sel ? 60 : 245, sel ? 62 : 205, sel ? 70 : 80, 255);
+        }
+    }
+
+    // IL PANNELLO DELLA ZONA, a destra della lista: il banner, due righe di
+    // dati, i pesci che ci vivono con la loro foto, e in fondo il tasto
+    // "Raggiungi il posto". Con DESTRA ci vai sopra, con SINISTRA torni.
+    void DisegnaPannelloZona(float px, float py, float pw, float ph)
+    {
+        if (sbSel < 0 || sbSel >= sbArea.Count) return;
+        int a = sbArea[sbSel];
+        float pad = LeggiF("menu_pn_bordo", 10f);
+        float x = px + pad, y = py + pad, w = pw - pad * 2f;
+        // il banner del posto (630x191 nei nostri PNG)
+        string ban = BannerArea(a);
+        float bh = 0f;
+        if (ban.Length > 0)
+        {
+            bh = w * 191f / 630f;
+            float bmax = LeggiF("menu_pn_banner_max", 150f);
+            float bw2 = w;
+            if (bh > bmax) { bh = bmax; bw2 = bh * 630f / 191f; }
+            Sprite(ban, x + (w - bw2) * 0.5f, y, bw2, bh);
+            y += bh + 8f;
+        }
+        int quanti = (a < arPesci.Count) ? arPesci[a].Count : 0;
+        bool aperta = (livelloPescatore >= LivelloArea(a));
+        TestoMenu(arNome[a], x, y, 0.42f, 4, 0, 245, 245, 250, 255);
+        y += 22f;
+        string riga = arTipo[a] + "   " + quanti + " " + L("species", "specie")
+                    + "   " + L("level ", "livello ") + LivelloArea(a);
+        if (!aperta) riga += "   " + L("closed for you", "per te e' chiusa");
+        TestoMenu(riga, x, y, 0.26f, 0, 0, aperta ? 200 : 235, aperta ? 202 : 90, aperta ? 210 : 80, 255);
+        y += 24f;
+        // i pesci: foto e nome, in griglia
+        float th = LeggiF("menu_pn_pesce", 44f);
+        int perRiga = (int)(w / (th + 34f));
+        if (perRiga < 1) perRiga = 1;
+        float cw = w / perRiga;
+        int i, n = 0;
+        for (i = 0; i < pesci.Count; i++)
+        {
+            if (a >= arPesci.Count || !arPesci[a].Contains(pesci[i].Nome)) continue;
+            float cx = x + (n % perRiga) * cw;
+            float cy2 = y + (n / perRiga) * (th + 18f);
+            if (cy2 + th + 14f > py + ph - 40f) break;
+            if (pesci[i].Img.Length > 0) Sprite(pesci[i].Img, cx + (cw - th * 1.6f) * 0.5f, cy2, th * 1.6f, th);
+            string nn = NomeIt(pesci[i].Nome);
+            if (nn.Length > 16) nn = nn.Substring(0, 15) + ".";
+            TestoMenu(nn, cx + cw * 0.5f, cy2 + th + 1f, 0.17f, 0, 1, 200, 202, 210, 255);
+            n++;
+        }
+        // il tasto in fondo: acceso quando sei sul pannello
+        float by = py + ph - 34f;
+        bool qui = (zonaQui == a);
+        string tb = qui ? L("You are here", "Sei qui") : L("Get to the spot", "Raggiungi il posto");
+        if (menuLato == 1 && !qui)
+        {
+            DisegnaRett(x, by, w, 26f, 245, 245, 250, 255);
+            TestoMenu(tb, x + w * 0.5f, by + 4f, 0.28f, 0, 1, 20, 22, 28, 255);
+        }
+        else
+        {
+            DisegnaRett(x, by, w, 26f, 0, 0, 0, 120);
+            TestoMenu(tb, x + w * 0.5f, by + 4f, 0.28f, 0, 1, qui ? 250 : 245, qui ? 175 : 245, qui ? 205 : 250, 255);
         }
     }
 
@@ -5616,12 +5688,33 @@ public class Pesca : Script
                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
         bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 19)
                 || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 173);
-        if (su || giu)
+        bool dx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 175);
+        bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174);
+        bool ok = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201);
+        if (menuLato == 0 && (su || giu))
         {
             int n = sbVoci.Count;
             sbSel = (sbSel + (giu ? 1 : n - 1)) % n;
             menuNuovoTasto = now + 120;
             TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 0 && dx)
+        {
+            menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 1 && sx)
+        {
+            menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 1 && ok && sbSel < sbArea.Count)
+        {
+            int a = sbArea[sbSel];
+            if (zonaQui != a)
+            {
+                Esegui("gps_zona " + a);
+                menuNuovoTasto = now + 300;
+                SuonoMenu("menu_apri.wav");
+            }
         }
     }
 
@@ -5636,6 +5729,7 @@ public class Pesca : Script
         {
             int n = SCHEDE_IT.Length;
             menuScheda = (menuScheda + (rb ? 1 : n - 1)) % n;
+            menuLato = 0;
             menuNuovoTasto = now + 150;
             TicMenu("NAV_UP_DOWN");
         }
@@ -5691,14 +5785,29 @@ public class Pesca : Script
         float cy = sy + sh + LeggiF("menu_cont_giu", 12f);
         float ch = LeggiF("menu_cont_fondo", 630f) - cy;
         DisegnaRett(mx, cy, mw, ch, 0, 0, 0, (int)LeggiF("menu_cont_alfa", 150f));
-        // la prima scheda ha la lista a sinistra, come le pagine di GTA
-        if (menuScheda == 0) DisegnaSidebar(mx, cy, ch);
+        // la prima scheda ha la lista a sinistra, come le pagine di GTA,
+        // e a destra il pannello della zona scelta
+        if (menuScheda == 0)
+        {
+            DisegnaSidebar(mx, cy, ch);
+            float sbw = LeggiF("menu_sb_larga", 300f) + LeggiF("menu_sb_bordo", 8f) * 2f;
+            DisegnaPannelloZona(mx + sbw, cy, mw - sbw, ch);
+        }
 
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
         Voce(ic, tx, "lb", "TAB", L("Tab", "Scheda"));
         Voce(ic, tx, "rb", "Q", L("Tab", "Scheda"));
-        if (menuScheda == 0) Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+        if (menuScheda == 0 && menuLato == 0)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "croce_dx", ">", L("Details", "Dettagli"));
+        }
+        if (menuScheda == 0 && menuLato == 1)
+        {
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Get to the spot", "Raggiungi il posto"));
+            Voce(ic, tx, "croce_sxdx", "<", L("List", "Lista"));
+        }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
     }
