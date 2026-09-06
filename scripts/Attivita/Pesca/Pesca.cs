@@ -5341,7 +5341,7 @@ public class Pesca : Script
                                  ox, oy + LeggiF("orario_lic_giu", 24f), 0.22f, 200, 202, 210);
         // livello e XP sotto "Esplorazione", con lo stesso font
         DisegnaTestoSinistra(L("Level ", "Liv. ") + livelloPescatore + "   " + xpTot + " XP",
-                             LeggiF("liv_x", 24f), LeggiF("liv_y", 302f), LeggiF("orario_liv_testo", 0.22f), 200, 202, 210);
+                             LeggiF("liv_x", 192f), LeggiF("liv_y", 286f), LeggiF("orario_liv_testo", 0.22f), 200, 202, 210);
     }
 
     // IL POSTO SULL'HUD: nome dell'acqua, sotto una riga bianca
