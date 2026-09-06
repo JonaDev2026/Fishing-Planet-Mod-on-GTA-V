@@ -5340,7 +5340,7 @@ public class Pesca : Script
     bool menuNuovoAperto = false;
     int menuNuovoPausaDa = 0;
     int menuNuovoTasto = 0;
-    int menuGeloA = 0;        // quando congelare il tempo (orologio del PC)
+
 
     // COL TEMPO A ZERO IL TIMER DEL GIOCO STA FERMO: per i tasti del menu
     // si usa l'orologio del PC, se no l'antirimbalzo non scade mai.
@@ -5361,22 +5361,13 @@ public class Pesca : Script
             menuNuovoAperto = true;
             menuNuovoTasto = now + 400;
             menuNuovoPausaDa = Game.GameTime;
-            Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
-            // L'AUDIO DEL MONDO SI SPEGNE CON LE SCENE AUDIO DI GTA (i tic
-            // del menu restano). Le scene sfumano col tempo del gioco, quindi
-            // il tempo si congela solo DOPO, fra menu_gelo_ms: in quell'attimo
-            // il mondo si muove ancora, ma l'audio fa in tempo a spegnersi.
-            string[] scene = LeggiS("menu_audio", "FBI_HEIST_H5_MUTE_AMBIENCE_SCENE;CHARACTER_CHANGE_IN_SKY_SCENE").Split(';');
-            int q;
-            for (q = 0; q < scene.Length; q++)
-            {
-                string sc = scene[q].Trim();
-                if (sc.Length == 0) continue;
-                try { Function.Call(Hash.START_AUDIO_SCENE, sc); } catch { }
-            }
-            menuGeloA = now + (int)LeggiF("menu_gelo_ms", 1200f);
-            // in piu', se vuoi il muto totale di Windows (spegne anche i tic)
-            if (LeggiF("menu_muto_windows", 0f) > 0.5f) AbbassaAudio();
+            // GTA IN MUTO dal mixer di Windows (le scene audio del gioco non
+            // spegnevano il mondo, e col tempo a zero il suono restava
+            // gelato), il tempo a zero subito, e i suoni del menu sono
+            // file nostri che passano dalla sessione di sistema di Windows.
+            AbbassaAudio();
+            try { Game.TimeScale = 0f; } catch { }
+            SuonoMenu("menu_apri.wav");
             // LO SFONDO SFOCATO: col tempo a zero la transizione di GTA non
             // parte (e restava da sfocare all'uscita), quindi si usa il
             // timecycle della pausa, che e' immediato. menu_blur=0 lo toglie.
@@ -5393,12 +5384,7 @@ public class Pesca : Script
         }
         // aperto: niente comandi al gioco
         Function.Call(Hash.DISABLE_ALL_CONTROL_ACTIONS, 0);
-        // e il tempo si congela quando l'audio si e' spento
-        if (menuGeloA > 0 && now >= menuGeloA)
-        {
-            menuGeloA = 0;
-            try { Game.TimeScale = 0f; } catch { }
-        }
+
         bool b = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 202);
         if (combo || b)
         {
@@ -5414,22 +5400,12 @@ public class Pesca : Script
         if (!menuNuovoAperto) return;
         menuNuovoAperto = false;
         menuNuovoTasto = OraPc() + 400;
-        audioSbloccoFino = 0;
-        menuGeloA = 0;
-        string[] scene = LeggiS("menu_audio", "FBI_HEIST_H5_MUTE_AMBIENCE_SCENE;CHARACTER_CHANGE_IN_SKY_SCENE").Split(';');
-        int q;
-        for (q = 0; q < scene.Length; q++)
-        {
-            string sc = scene[q].Trim();
-            if (sc.Length == 0) continue;
-            try { Function.Call(Hash.STOP_AUDIO_SCENE, sc); } catch { }
-        }
+        SuonoMenu("menu_chiudi.wav");
         try { Game.TimeScale = 1f; } catch { }
         RialzaAudio();
         ViaSfocatura();
         // l'orologio della pesca non deve aver contato il tempo in pausa
         prossimoMinuto += Game.GameTime - menuNuovoPausaDa;
-        Suono("BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET");
     }
 
     // L'AUDIO DEL GIOCO SI AMMUTOLISCE DAL MIXER DI WINDOWS: e' la sessione
@@ -5466,6 +5442,23 @@ public class Pesca : Script
         int GetMasterVolume(out float level);
         int SetMute([MarshalAs(UnmanagedType.Bool)] bool mute, ref Guid eventContext);
         int GetMute([MarshalAs(UnmanagedType.Bool)] out bool mute);
+    }
+
+    // I SUONI DEL MENU passano dalla sessione "suoni di sistema" di Windows
+    // (PlaySound con SND_SYSTEM): cosi' si sentono anche con GTA in muto.
+    [DllImport("winmm.dll", CharSet = CharSet.Unicode)]
+    static extern bool PlaySound(string nome, IntPtr modulo, uint flag);
+    const uint SND_ASYNC = 0x0001, SND_FILENAME = 0x00020000, SND_SYSTEM = 0x00200000, SND_NODEFAULT = 0x0002;
+
+    void SuonoMenu(string file)
+    {
+        try
+        {
+            string f = Path.Combine(Path.Combine(MY_DIR, "suoni"), file);
+            if (!File.Exists(f)) return;
+            PlaySound(f, IntPtr.Zero, SND_ASYNC | SND_FILENAME | SND_SYSTEM | SND_NODEFAULT);
+        }
+        catch { }
     }
 
     ISimpleAudioVolume audioSessione = null;
@@ -5549,33 +5542,15 @@ public class Pesca : Script
     static readonly string[] SCHEDE_EN = { "SPOTS", "TACKLE", "SHOP", "FISH", "TOURNAMENTS", "SETTINGS" };
     int menuScheda = 0;
 
-    // IL TIC DEL MENU: con l'audio di GTA in muto non si sentirebbe. Allora
-    // per un attimo (menu_tic_ms) si toglie il muto, si suona, e si rimette.
-    int audioSbloccoFino = 0;
-
+    // il tic del menu: un file nostro nella sessione di sistema di Windows
     void TicMenu(string nome)
     {
-        if (audioAbbassato)
-        {
-            RialzaAudio();
-            audioSbloccoFino = OraPc() + (int)LeggiF("menu_tic_ms", 140f);
-        }
-        Suono(nome, "HUD_FRONTEND_DEFAULT_SOUNDSET");
-    }
-
-    void RimettiMutoSeScaduto()
-    {
-        if (audioSbloccoFino > 0 && OraPc() > audioSbloccoFino)
-        {
-            audioSbloccoFino = 0;
-            if (menuNuovoAperto && LeggiF("menu_muto_windows", 0f) > 0.5f) AbbassaAudio();
-        }
+        SuonoMenu("menu_tic.wav");
     }
 
     void TastiMenuNuovo()
     {
         int now = OraPc();
-        RimettiMutoSeScaduto();
         if (now < menuNuovoTasto) return;
         bool lb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 37);
         bool rb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 44);
