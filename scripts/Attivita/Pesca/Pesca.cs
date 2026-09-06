@@ -5374,7 +5374,7 @@ public class Pesca : Script
         // sopra il grafico: l'icona del meteo con la temperatura dell'aria,
         // e l'icona dell'acqua con quella dell'acqua (le nostre)
         {
-            float ty = LeggiF("temp_y", 90f);
+            float ty = LeggiF("temp_y", 368f);
             float ic = LeggiF("temp_icona", 14f);
             float sp = LeggiF("temp_spazio", 6f);
             float gap = LeggiF("temp_gap", 22f);
