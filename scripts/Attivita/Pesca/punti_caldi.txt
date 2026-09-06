@@ -7,39 +7,44 @@
 # La specie e' sempre una di quelle che in quell'area ci vivono davvero.
 # specie vuota = punto profondo. Il raggio e' in metri.
 # Non compaiono in nessun menu: si scoprono pescando.
-Riva ovest di Alamo|-191.9|4073.0|40|Northern Pike|1.0
+# ALAMO: il punto profondo sta 220 m al largo verso il centro del lago e uno
+# dei due punti di specie 100 m al largo (raggio 60): dalla riva non ci
+# arrivi, ci vuole la barca. L'altro punto di specie resta a riva.
+# MARE: stesso discorso, punto profondo 200 m al largo e un punto di specie
+# a 100 m (raggio 60), allontanandosi dalla terraferma.
+Riva ovest di Alamo|-91.9|4073.7|60|Northern Pike|1.0
 Riva ovest di Alamo|-136.7|3848.7|40|Sauger|1.0
-Riva ovest di Alamo|-147.9|3927.7|40||2.2
-Slab|3.3|3798.9|40|Channel Catfish|1.0
+Riva ovest di Alamo|70.4|3955.1|60||2.2
+Slab|100.0|3824.3|60|Channel Catfish|1.0
 Slab|171.5|3722.9|40|Bluegill|1.0
-Slab|108.3|3805.5|40||2.2
-Foce dello Zancudo|162.0|3535.4|40|Chinook Salmon|1.0
+Slab|319.9|3865.5|60||2.2
+Foce dello Zancudo|248.0|3586.4|60|Chinook Salmon|1.0
 Foce dello Zancudo|257.8|3526.4|40|Largemouth Bass|1.0
-Foce dello Zancudo|187.9|3476.9|40||2.2
-Sponda sud di Alamo|550.3|3637.8|40|Channel Catfish|1.0
+Foce dello Zancudo|370.2|3600.1|60||2.2
+Sponda sud di Alamo|627.1|3701.9|60|Channel Catfish|1.0
 Sponda sud di Alamo|1051.5|3680.8|40|Bluegill|1.0
-Sponda sud di Alamo|802.5|3684.8|40||2.2
-Sandy Shores|1494.5|3805.3|40|Northern Pike|1.0
+Sponda sud di Alamo|929.3|3864.5|60||2.2
+Sandy Shores|1411.5|3861.1|60|Northern Pike|1.0
 Sandy Shores|1847.4|4010.1|40|Round Goby|1.0
-Sandy Shores|1559.7|3926.4|40||2.2
-Riva est di Alamo|2328.3|4016.1|40|Northern Pike|1.0
+Sandy Shores|1350.5|3994.6|60||2.2
+Riva est di Alamo|2228.4|4021.4|60|Northern Pike|1.0
 Riva est di Alamo|2379.3|4375.0|40|Zander|1.0
-Riva est di Alamo|2351.0|4194.6|40||2.2
-Grapeseed|2300.3|4572.6|40|Northern Pike|1.0
+Riva est di Alamo|2131.9|4175.1|60||2.2
+Grapeseed|2207.5|4535.2|60|Northern Pike|1.0
 Grapeseed|2179.8|4625.1|40|Wels Catfish|1.0
-Grapeseed|2245.1|4611.7|40||2.2
-Riva nord-est di Alamo|1923.3|4509.6|40|Northern Pike|1.0
+Grapeseed|2044.9|4520.5|60||2.2
+Riva nord-est di Alamo|1834.2|4464.3|60|Northern Pike|1.0
 Riva nord-est di Alamo|1711.8|4461.6|40|Round Goby|1.0
-Riva nord-est di Alamo|1828.4|4522.1|40||2.2
-Mount Chiliad|1566.2|4359.9|40|Blue Catfish|1.0
+Riva nord-est di Alamo|1638.9|4410.3|60||2.2
+Mount Chiliad|1479.5|4310.1|60|Blue Catfish|1.0
 Mount Chiliad|1503.6|4327.3|40|Northern Pike|1.0
-Mount Chiliad|1540.2|4344.0|40||2.2
-Riva nord di Alamo|1143.2|4267.1|40|Blue Catfish|1.0
+Mount Chiliad|1349.3|4234.6|60||2.2
+Riva nord di Alamo|1112.2|4172.0|60|Blue Catfish|1.0
 Riva nord di Alamo|364.7|4230.2|40|Northern Pike|1.0
-Riva nord di Alamo|783.6|4136.2|40||2.2
-Ponte Calafia|0.6|4381.3|40|Brown Trout|1.0
+Riva nord di Alamo|1000.1|4096.9|60||2.2
+Ponte Calafia|97.0|4354.6|60|Brown Trout|1.0
 Ponte Calafia|-98.9|4240.0|40|Cutthroat Trout|1.0
-Ponte Calafia|-36.1|4304.7|40||2.2
+Ponte Calafia|179.7|4261.7|60||2.2
 Fiume Zancudo alto|55.3|3167.4|25|Northern Pike|1.0
 Fiume Zancudo alto|-337.6|3021.9|25|Wels Catfish|1.0
 Fiume Zancudo alto|-146.8|3093.2|25||2.2
@@ -64,9 +69,9 @@ Cassidy Creek alto|-506.3|4446.3|25||2.2
 Cassidy Creek basso|-1057.9|4393.6|25|Flathead Catfish|1.0
 Cassidy Creek basso|-1444.6|4333.8|25|American Shad|1.0
 Cassidy Creek basso|-1256.3|4380.4|25||2.2
-Foce del Cassidy|-1678.0|4473.0|40|Northern Pike|1.0
+Foce del Cassidy|-1742.8|4549.2|60|Northern Pike|1.0
 Foce del Cassidy|-1810.9|4591.8|40|European Flounder|1.0
-Foce del Cassidy|-1755.5|4523.8|40||2.2
+Foce del Cassidy|-1886.6|4674.9|60||2.2
 Lago di Vinewood|-44.5|637.6|40|Northern Pike|1.0
 Lago di Vinewood|39.9|770.5|40|Sauger|1.0
 Lago di Vinewood|226.3|841.0|40||2.2
@@ -82,30 +87,30 @@ Land Act ovest|1888.9|233.9|40||2.2
 Mirror Park|1072.2|-614.8|40|Northern Pike|1.0
 Mirror Park|1119.7|-669.9|40|Mirror Carp|1.0
 Mirror Park|1126.3|-574.9|40||2.2
-Vespucci Beach e molo di Del Perro|-1463.9|-1563.0|40|Pacific Bluefin Tuna|1.0
+Vespucci Beach e molo di Del Perro|-1497.8|-1657.1|60|Pacific Bluefin Tuna|1.0
 Vespucci Beach e molo di Del Perro|-1842.4|-1138.7|40|Yellowfin Tuna|1.0
-Vespucci Beach e molo di Del Perro|-1709.9|-1244.0|40||2.2
-Isolotto di San Chianski|3421.0|2627.4|40|Swordfish|1.0
+Vespucci Beach e molo di Del Perro|-1793.0|-1425.9|60||2.2
+Isolotto di San Chianski|3520.9|2631.1|60|Swordfish|1.0
 Isolotto di San Chianski|3491.2|2514.0|40|Sailfish|1.0
-Isolotto di San Chianski|3589.2|2588.0|40||2.2
-Faro di El Gordo|3442.8|5189.2|40|Porbeagle Shark|1.0
+Isolotto di San Chianski|3789.1|2592.9|60||2.2
+Faro di El Gordo|3521.6|5250.8|60|Porbeagle Shark|1.0
 Faro di El Gordo|3376.3|5119.7|40|Meagre|1.0
-Faro di El Gordo|3439.3|5143.5|40||2.2
-Molo di Paleto Cove|-1627.7|5247.2|40|Porbeagle Shark|1.0
+Faro di El Gordo|3597.9|5265.4|60||2.2
+Molo di Paleto Cove|-1678.7|5333.2|60|Porbeagle Shark|1.0
 Molo di Paleto Cove|-1656.8|5258.6|40|Meagre|1.0
-Molo di Paleto Cove|-1640.1|5147.6|40||2.2
-Paleto Bay ovest|-858.5|6135.0|40|Porbeagle Shark|1.0
+Molo di Paleto Cove|-1745.4|5317.6|60||2.2
+Paleto Bay ovest|-881.5|6232.3|60|Porbeagle Shark|1.0
 Paleto Bay ovest|-644.2|6358.4|40|Meagre|1.0
-Paleto Bay ovest|-697.1|6162.1|40||2.2
-Paleto Bay est|-283.9|6617.0|40|Porbeagle Shark|1.0
+Paleto Bay ovest|-734.5|6358.6|60||2.2
+Paleto Bay est|-290.8|6716.8|60|Porbeagle Shark|1.0
 Paleto Bay est|-52.7|6930.8|40|Meagre|1.0
-Paleto Bay est|-148.7|6737.7|40||2.2
-Spiaggia e molo di Chumash|-3427.2|941.2|40|Pacific Bluefin Tuna|1.0
+Paleto Bay est|-155.7|6937.6|60||2.2
+Spiaggia e molo di Chumash|-3518.2|899.8|60|Pacific Bluefin Tuna|1.0
 Spiaggia e molo di Chumash|-3289.5|1208.6|40|Yellowfin Tuna|1.0
-Spiaggia e molo di Chumash|-3333.1|997.9|40||2.2
-Spiaggia di Pacific Bluffs|-3142.5|153.3|40|Pacific Bluefin Tuna|1.0
+Spiaggia e molo di Chumash|-3515.4|915.7|60||2.2
+Spiaggia di Pacific Bluffs|-3222.6|93.5|60|Pacific Bluefin Tuna|1.0
 Spiaggia di Pacific Bluffs|-2907.5|-63.4|40|Yellowfin Tuna|1.0
-Spiaggia di Pacific Bluffs|-3057.3|2.0|40||2.2
-Palomino Highlands|2878.7|-1550.9|40|Tarpon|1.0
+Spiaggia di Pacific Bluffs|-3212.2|-124.5|60||2.2
+Palomino Highlands|2936.6|-1632.4|60|Tarpon|1.0
 Palomino Highlands|2516.4|-1314.0|40|Red Drum|1.0
-Palomino Highlands|2608.2|-1602.4|40||2.2
+Palomino Highlands|2715.5|-1771.2|60||2.2
