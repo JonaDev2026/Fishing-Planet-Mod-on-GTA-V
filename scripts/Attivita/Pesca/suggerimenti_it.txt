@@ -1,0 +1,68 @@
+# I SUGGERIMENTI: appaiono sull'HUD mentre peschi, uno alla volta, a caso.
+# Una riga per suggerimento. Le righe vuote e quelle che iniziano con # si saltano.
+# Scritti in linguaggio da giocatore, ma dicono solo cose che il gioco fa davvero.
+# La stessa riga in suggerimenti_en.txt e' la traduzione: l'ordine deve combaciare.
+# Ogni suggerimento deve stare in sette righe del riquadro: circa 300 caratteri.
+La temperatura dell'acqua conta: ogni pesce ha la sua. Con l'acqua fredda escono le trote, con l'acqua calda le carpe e i pesci gatto. La vedi sull'HUD, accanto a quella dell'aria.
+Non tutti i pesci mangiano alla stessa ora. Alcuni si muovono di notte, altri all'alba e al tramonto, altri in pieno giorno. Se non abbocca nulla, prova a cambiare orario.
+Nella scheda della zona c'e' il grafico dell'attivita' dei pesci ora per ora. Le ore in cui la curva e' alta sono quelle buone per pescare.
+Ogni pesce ha le sue esche preferite. Le trovi nella sua scheda, dentro ZONE. Con l'esca giusta abbocca sempre, con quella sbagliata spesso se ne va.
+Con l'esca sbagliata ogni tanto all'amo si attacca un rifiuto: una scarpa, un copertone, una bottiglia. Con l'esca giusta non succede mai.
+Senza niente all'amo non abbocca nessuno. Prima di lanciare controlla di avere un'esca o un artificiale in punta.
+La misura dell'amo va scelta in base al pesce: ami piccoli per i pesci piccoli, ami grandi per quelli grossi. Nella scheda di ogni pesce c'e' la sua misura.
+Con un amo grande prendi i pesci piu' grossi di quella specie, ma con un amo troppo grande il pesce piccolo non abbocca. Scegli in base a cosa vuoi portare a casa.
+Gli ami vanno dal numero 16, il piu' piccolo, al numero 1. Poi si passa alle misure con lo zero, dall'1/0 al 18/0: piu' e' alto il numero, piu' e' grande l'amo.
+Lucci, bass e altri predatori coi denti tranciano la lenza. Contro di loro monta un leader in titanio prima dell'amo.
+I predatori con l'esca naturale abboccano poco, e quasi solo i piccoli. Per loro servono gli artificiali: cucchiaini, minnow, siliconici.
+Nella scheda di ogni predatore c'e' la lista degli artificiali che insegue. Con uno di quelli abbocca volentieri, con gli altri quasi mai.
+Ogni famiglia di pesci vuole la sua canna: la carpa le canne da carpa e da fondo, i predatori spinning e casting, i pesci di mare le canne da mare. Con la canna sbagliata abbocca meno.
+Il cucchiaino si usa con una canna da spinning o da casting. Con una canna da galleggiante non serve quasi a niente.
+La canna, il mulinello e la lenza reggono ognuno un certo peso. Quello che puoi tirare su e' il piu' debole dei tre: lo leggi sull'HUD accanto alla canna.
+Un pesce piu' pesante di quello che reggi non lo prendi nemmeno. Se in una zona ci sono pesci grossi, porta attrezzatura piu' robusta.
+Per lanciare lontano l'esca deve avere il peso giusto per la canna: sulla canna e' scritto in grammi. Troppo leggera fa pochi metri, troppo pesante non parte.
+Piu' tieni premuto il tasto del lancio, piu' lontano arriva l'esca. Gli ultimi istanti di carica valgono piu' dei primi.
+Una lenza sottile va piu' lontano e ne entra di piu' nel mulinello, ma regge meno. Una lenza grossa regge di piu' ma frena il lancio.
+Una canna lunga lancia piu' lontano di una corta.
+La frizione del mulinello si regola con la croce, a sinistra e a destra. Chiusa tutta, il pesce tira sulla lenza e la tensione sale in fretta. Piu' e' aperta, piu' il pesce si porta via filo.
+Durante la lotta guarda la barra della tensione: se resta nel rosso la lenza si spezza. Molla il recupero quando il pesce corre, riprendi quando si ferma.
+Gli ultimi metri sono i piu' difficili: vicino alla riva il pesce si impunta. Non forzare proprio alla fine.
+Quando il pesce abbocca hai poco piu' di un secondo per agganciarlo con A. Il galleggiante che balla e il pad che vibra ti avvisano poco prima.
+A galleggiante, se tiri forte mentre il pesce assaggia l'esca lo spaventi. Recupera piano e aspetta che affondi.
+La profondita' dell'esca sotto il galleggiante si regola con la croce, su e giu'. Alcuni pesci mangiano vicino al fondo, altri a mezz'acqua.
+Se sull'HUD il galleggiante si corica sull'acqua, l'esca tocca il fondo. Accorcia la profondita'.
+Il galleggiante ha una portata: leggera, media o pesante. Deve reggere il piombo e l'esca che ci metti sotto.
+Il cucchiaino e il galleggiante non si usano insieme. A spinning l'artificiale fa da esca e da amo.
+Se il lancio finisce sul prato o sull'asfalto, la lenza rientra da sola. Cerca uno spazio libero verso l'acqua.
+Quando la lenza si spezza perdi l'amo, il galleggiante e l'esca. Con un leader montato si spezza solo il leader e la lenza resta intera.
+La nassa ha due limiti: il peso del singolo pesce piu' grosso che ci sta e il peso totale. Quando e' piena, il pesce lo puoi solo ributtare.
+Mentre peschi, sotto la nassa nell'HUD vedi cosa hai gia' preso oggi.
+Per uscire a pescare servono almeno una canna, un mulinello con la lenza e una nassa.
+Prima di uscire carica lo zaino dalla scheda EQUIPAGGIAMENTO. Quello che lasci a casa, a casa resta: durante la giornata non ci torni.
+Lo zaino tiene una canna, un mulinello, due lenze e dieci oggetti. Un secondo pezzo uguale a uno che hai gia' non occupa posto.
+Il portacanne fa posto a piu' canne, mulinelli e lenze. La cassetta a piu' oggetti. Basta possederli, anche se restano a casa.
+La lenza si compra a bobina. Montandola sul mulinello ne prendi solo quanta ce ne sta; il resto rimane come bobina da usare un'altra volta.
+Tieni premuto LB per aprire la ruota degli attrezzi. Scegli lo spicchio con la levetta, scorri i pezzi con la croce, lascia LB e si monta tutto.
+Nella ruota la prima voce di ogni spicchio e' Vuoto: serve a smontare quel pezzo.
+La licenza si compra dalla scheda ZONE, anche da lontano. Poi vai sul posto e premi Inizia a pescare. Vale per tutta l'acqua, non solo per il tratto dove sei.
+La licenza da tre giorni costa meno di tre licenze da un giorno. Se torni spesso nella stessa acqua conviene.
+Una giornata di pesca dura circa due ore vere. Alla fine il pesce nella nassa si vende da solo e l'attrezzatura montata torna nello zaino.
+Il pesce si vende a fine giornata, a peso. Piu' e' grosso e pregiato, piu' vale.
+L'attrezzatura si rivende a meta' prezzo, con X, da casa o dallo zaino.
+Prendere una specie nuova vale molto piu' che riprendere sempre la stessa. Per salire di livello cambia pesci, non solo posto.
+L'esca giusta fa abboccare il pesce, l'amo giusto ne apre la taglia. I punti li fanno le specie nuove e i pesci grossi.
+I trofei e gli esemplari unici valgono molto di piu' dei pesci comuni, in punti e in soldi.
+Dentro ogni acqua ci sono punti dove una specie sta di casa: una buca, una sponda, un canneto. Non sono segnati sulla mappa, si scoprono provando.
+Al largo, sui punti profondi, i pesci sono piu' grossi. Non pescare sempre sotto riva.
+I pesci che vedi passare sott'acqua sono quelli che vivono in quell'acqua. Ti dicono cosa c'e', non cosa abbocchera'.
+Se non abbocca nulla chiediti quattro cose: che ora e', che temperatura ha l'acqua, che amo hai e che esca hai.
+Le acque grandi hanno piu' tratti di riva, e ogni tratto ha i suoi pesci e il suo livello. Guardali nella scheda ZONE.
+Il diario, scheda DIARIO, tiene per ogni zona i pesci che hai preso e per ogni specie il tuo record, con l'esca e l'amo che hai usato.
+Nella scheda della zona le tre caselle comune, trofeo e unico si segnano quando li prendi in quel posto. La barra dell'esplorazione dice quante specie del posto hai scoperto.
+Salendo di livello si sbloccano attrezzatura e zone nuove. Al livello 100 tutte le 35 acque sono aperte.
+I tornei stanno nella scheda TORNEI. Compri il biglietto, vai sul posto e premi Inizia il torneo. Ogni torneo e' su un solo pesce, nell'acqua dove vive.
+Non puoi iscriverti a un torneo con una licenza in tasca, e non puoi comprare la licenza con un biglietto in tasca. Prima finisci una cosa, poi l'altra.
+Nel torneo vince chi mette insieme piu' chili di quel pesce. Bronzo, argento e oro hanno ciascuno il suo premio, e trofei e unici danno un extra.
+Il menu si apre con RB + SINISTRA della croce, o con F7. Dentro al menu il gioco e' fermo: prenditi il tempo che vuoi.
+La guida completa sta nel menu, scheda IMPOSTAZIONI, voce Guida. Li' cambi anche lingua e unita' di misura.
+I pesci rari sono rari davvero. Per prenderli serve tutto insieme: il loro punto, la loro ora, il loro amo e la loro esca.
+Ogni acqua della mappa ha i pesci di un'acqua vera: l'Alamo Sea e' un lago americano di pesci gatto e bass, il fiume Zancudo un torrente di trote, il mare di Paleto un fiordo del nord.

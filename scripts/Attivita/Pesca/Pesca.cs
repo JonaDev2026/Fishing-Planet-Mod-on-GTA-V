@@ -1153,6 +1153,7 @@ public class Pesca : Script
         // rimasto in pausa: lo riprendiamo in mano da dove stava
         if (inPesca)
         {
+            ScaldaModelli();
             try
             {
                 Function.Call(Hash.SET_CLOCK_TIME, oraMia, minutoMio, 0);
@@ -2436,7 +2437,7 @@ public class Pesca : Script
         if (inPesca && inRivaOra && !ruotaAperta
             && !Game.Player.Character.IsInVehicle()) Consigli();
         // il posto, l'esplorazione e la licenza
-        if (!ruotaAperta) { DisegnaOrario(); DisegnaPosto(); }
+        if (!ruotaAperta) { DisegnaOrario(); DisegnaPosto(); DisegnaSuggerimento(); }
         // LB: la ruota degli attrezzi al posto di quella delle armi
         Ruota();
         // mentre guardi l'inventario, l'HUD dell'attrezzatura: la stessa
@@ -5607,6 +5608,7 @@ public class Pesca : Script
         }
         if (!AttrezzaturaMinima()) return false;
         inPesca = true;
+        ScaldaModelli();
         Alba();
         SegnaCampo(Game.Player.Character);
         MettiCampo();
@@ -5733,6 +5735,7 @@ public class Pesca : Script
         // andato a casa prima del tempo
         if (torneoOra >= 0) ChiudiTorneo(true);
         VendiNassa();
+        RaffreddaModelli();
         inPesca = false;
         licZona = "";
         licGiorni = 0;
@@ -8179,6 +8182,81 @@ public class Pesca : Script
                              LeggiF("liv_x", 24f), LeggiF("liv_y", 75f), LeggiF("orario_liv_testo", 0.20f), 200, 202, 210);
     }
 
+    // I SUGGERIMENTI: un riquadro sotto livello e XP, sopra il posto.
+    // Escono a caso, uno ogni sugg_ogni_min minuti veri, e restano
+    // sugg_dura_sec secondi. Il testo sta in suggerimenti_it/en.txt.
+    //   sugg_x / sugg_y / sugg_larga / sugg_alta / sugg_alfa   il riquadro
+    //   sugg_titolo_testo / sugg_testo / sugg_riga / sugg_pad  il testo
+    List<string> suggerimenti = new List<string>();
+    List<int> suggOrdine = new List<int>();
+    int suggLang = -1;
+    int suggFino = 0, suggProssimo = 0;
+    string suggTesto = "";
+
+    void CaricaSuggerimenti()
+    {
+        suggerimenti.Clear(); suggOrdine.Clear();
+        string[] r = LeggiRighe(lang == 1 ? "suggerimenti_it.txt" : "suggerimenti_en.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string t = r[i].Trim();
+            if (t.Length == 0 || t.StartsWith("#")) continue;
+            suggerimenti.Add(t);
+        }
+        suggLang = lang;
+    }
+
+    // il prossimo a caso, senza ripetere finche' non sono usciti tutti
+    string ProssimoSuggerimento()
+    {
+        if (suggerimenti.Count == 0) return "";
+        if (suggOrdine.Count == 0)
+        {
+            int i;
+            for (i = 0; i < suggerimenti.Count; i++) suggOrdine.Add(i);
+            for (i = suggOrdine.Count - 1; i > 0; i--)
+            {
+                int j = caso.Next(i + 1);
+                int t = suggOrdine[i]; suggOrdine[i] = suggOrdine[j]; suggOrdine[j] = t;
+            }
+        }
+        int k = suggOrdine[0];
+        suggOrdine.RemoveAt(0);
+        return suggerimenti[k];
+    }
+
+    void DisegnaSuggerimento()
+    {
+        if (!inPesca) { suggProssimo = 0; suggTesto = ""; return; }
+        if (suggLang != lang) CaricaSuggerimenti();
+        int ora = OraPc();
+        int ogni = (int)(LeggiF("sugg_ogni_min", 5f) * 60000f);
+        if (suggProssimo == 0) suggProssimo = ora + ogni;
+        if (suggTesto.Length == 0 && ora >= suggProssimo)
+        {
+            suggTesto = ProssimoSuggerimento();
+            suggFino = ora + (int)(LeggiF("sugg_dura_sec", 30f) * 1000f);
+            suggProssimo = suggFino + ogni;
+        }
+        if (suggTesto.Length == 0) return;
+        if (ora >= suggFino) { suggTesto = ""; return; }
+        float x = LeggiF("sugg_x", 24f), y = LeggiF("sugg_y", 138f);
+        float w = LeggiF("sugg_larga", 300f), h = LeggiF("sugg_alta", 180f);
+        // niente riquadro: testo col bordino nero, come il resto dell'HUD
+        if (LeggiF("sugg_alfa", 0f) > 0f) DisegnaRett(x, y, w, h, 0, 0, 0, (int)LeggiF("sugg_alfa", 0f));
+        float pad = LeggiF("sugg_pad", 10f);
+        float st = LeggiF("sugg_titolo_testo", 0.26f), sc = LeggiF("sugg_testo", 0.24f);
+        float riga = LeggiF("sugg_riga", 16f);
+        List<string> righe = RigheMenu(suggTesto, sc, 0, w - pad * 2f);
+        float ty = y + pad + riga * 1.5f + riga;   // titolo, poi una riga vuota
+        int max = (int)((y + h - pad - ty) / riga);
+        DisegnaTestoSinistra(L("TIP", "SUGGERIMENTO"), x + pad, y + pad, st, 245, 245, 250);
+        int k;
+        for (k = 0; k < righe.Count && k < max; k++)
+            DisegnaTestoSinistra(righe[k], x + pad, ty + k * riga, sc, 245, 245, 250);
+    }
+
     // IL POSTO SULL'HUD: nome dell'acqua, sotto una riga bianca
     // trasparente che si riempie con le specie del posto gia' prese
     // (l'esplorazione, in percento), e quanto manca alla licenza.
@@ -8488,10 +8566,11 @@ public class Pesca : Script
         ScriviVoci("marca_voci.txt", v);
     }
 
+    // tutti gli avvisi vanno nella fascia in basso al centro, come i
+    // messaggi: niente ticker sopra il radar
     void Avviso(string t)
     {
-        try { Notification.PostTicker(U(t), false); }
-        catch { }
+        Messaggio(t);
     }
 
     // ------------------------------------------------------------
@@ -13749,6 +13828,7 @@ public class Pesca : Script
             ViaPesceScena();
             ViaRoba();
             ViaProvaPesce();
+            RaffreddaModelli();
             TogliBlipPunti();
             ViaCampo();
             ViaPescatore();
@@ -13795,7 +13875,7 @@ public class Pesca : Script
             while (!m.IsLoaded && w < 1500) { Script.Wait(50); w += 50; }
             if (!m.IsLoaded) return;
             cannaProp = World.CreateProp(m, p.Position + new GTA.Math.Vector3(0f, 0f, 1f), false, false);
-            m.MarkAsNoLongerNeeded();
+            /* modello tenuto caldo: si rilascia a fine giornata */
             if (cannaProp == null || !cannaProp.Exists()) { cannaProp = null; return; }
             int osso = Function.Call<int>(Hash.GET_PED_BONE_INDEX, p, 18905);  // mano destra
             Function.Call(Hash.ATTACH_ENTITY_TO_ENTITY, cannaProp, p, osso,
@@ -14732,6 +14812,45 @@ public class Pesca : Script
         catch { }
     }
 
+    // I MODELLI TENUTI CALDI. Model.Request(ms) aspetta bloccando lo
+    // script, e mentre lo script aspetta l'HUD non si disegna: ogni
+    // pesce, rifiuto o pescatore che spuntava faceva sparire l'HUD per
+    // qualche fotogramma. Allora all'inizio della giornata si chiedono
+    // tutti i modelli che servono, senza aspettare, e non si rilasciano
+    // finche' la giornata non finisce: quando servono sono gia' in memoria.
+    List<Model> modelliCaldi = new List<Model>();
+
+    void ScaldaModelli()
+    {
+        List<string> nomi = new List<string>();
+        nomi.Add("a_c_fish"); nomi.Add("a_c_sharktiger"); nomi.Add("a_c_sharkhammer"); nomi.Add("a_c_stingray");
+        nomi.Add("prop_fishing_rod_01");
+        int i;
+        for (i = 0; i < robaccia.Count; i++) nomi.Add(robaccia[i].Modello);
+        for (i = 0; i < PNJ_MODELLI.Length; i++) nomi.Add(PNJ_MODELLI[i]);
+        for (i = 0; i < nomi.Count; i++)
+        {
+            try
+            {
+                Model m = new Model(nomi[i]);
+                if (!m.IsValid || !m.IsInCdImage) continue;
+                m.Request();
+                modelliCaldi.Add(m);
+            }
+            catch { }
+        }
+    }
+
+    void RaffreddaModelli()
+    {
+        int i;
+        for (i = 0; i < modelliCaldi.Count; i++)
+        {
+            try { modelliCaldi[i].MarkAsNoLongerNeeded(); } catch { }
+        }
+        modelliCaldi.Clear();
+    }
+
     void MettiPesce()
     {
         TogliPesce();
@@ -14750,7 +14869,7 @@ public class Pesca : Script
             }
             float z = AcquaSottoEsca();
             pescePed = World.CreatePed(m, new GTA.Math.Vector3(escaX, escaY, z - 0.3f));
-            m.MarkAsNoLongerNeeded();
+            /* modello tenuto caldo: si rilascia a fine giornata */
             if (pescePed == null || !pescePed.Exists()) { pescePed = null; return; }
             Function.Call(Hash.SET_ENTITY_INVINCIBLE, pescePed, true);
             Function.Call(Hash.SET_ENTITY_COLLISION, pescePed, false, false);
@@ -14963,7 +15082,7 @@ public class Pesca : Script
             m.Request(800);
             if (!m.IsLoaded) return;
             pnjPed = World.CreatePed(m, new GTA.Math.Vector3(x, y, z + 0.1f), dir);
-            m.MarkAsNoLongerNeeded();
+            /* modello tenuto caldo: si rilascia a fine giornata */
             if (pnjPed == null || !pnjPed.Exists()) { pnjPed = null; return; }
             pnjX = x; pnjY = y; pnjZ = z; pnjDir = dir;
             Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pnjPed, true, true);
@@ -14990,7 +15109,7 @@ public class Pesca : Script
             if (!m.IsLoaded) { m = new Model("a_c_fish"); m.Request(600); if (!m.IsLoaded) return; }
             GTA.Math.Vector3 pos = pnjPed.Position;
             pnjPesce = World.CreatePed(m, new GTA.Math.Vector3(pos.X, pos.Y, pos.Z + 0.5f));
-            m.MarkAsNoLongerNeeded();
+            /* modello tenuto caldo: si rilascia a fine giornata */
             if (pnjPesce == null || !pnjPesce.Exists()) { pnjPesce = null; return; }
             Function.Call(Hash.SET_ENTITY_INVINCIBLE, pnjPesce, true);
             Function.Call(Hash.SET_ENTITY_COLLISION, pnjPesce, false, false);
@@ -15203,7 +15322,7 @@ public class Pesca : Script
                     if (!m.IsLoaded) continue;
                 }
                 Ped pz2 = World.CreatePed(m, new GTA.Math.Vector3(scenaX, scenaY, z0));
-                m.MarkAsNoLongerNeeded();
+                /* modello tenuto caldo: si rilascia a fine giornata */
                 if (pz2 == null || !pz2.Exists()) continue;
                 Function.Call(Hash.SET_ENTITY_INVINCIBLE, pz2, true);
                 Function.Call(Hash.SET_ENTITY_COLLISION, pz2, false, false);
@@ -15458,7 +15577,7 @@ public class Pesca : Script
             float z = AcquaSottoEsca();
             robaProp = World.CreateProp(m, new GTA.Math.Vector3(escaX, escaY, z - 0.2f),
                                         false, false);
-            m.MarkAsNoLongerNeeded();
+            /* modello tenuto caldo: si rilascia a fine giornata */
             if (robaProp == null || !robaProp.Exists()) { robaProp = null; return; }
             Function.Call(Hash.SET_ENTITY_COLLISION, robaProp, false, false);
             Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, robaProp, false);

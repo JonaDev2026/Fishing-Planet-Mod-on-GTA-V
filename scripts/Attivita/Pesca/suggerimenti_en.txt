@@ -1,0 +1,68 @@
+# THE TIPS: shown on the HUD while fishing, one at a time, at random.
+# One line per tip. Empty lines and lines starting with # are skipped.
+# Written in player language, but they only say things the game really does.
+# Same line in suggerimenti_it.txt is the Italian: the order must match.
+# Each tip must fit seven lines of the box: about 300 characters.
+Water temperature matters: every fish has its own. In cold water trout come out, in warm water carp and catfish. You see it on the HUD, next to the air temperature.
+Not every fish feeds at the same hour. Some move at night, some at dawn and dusk, some in broad daylight. If nothing bites, try a different time.
+In the zone card there's a graph of fish activity hour by hour. The hours where the curve is high are the good ones for fishing.
+Every fish has its favourite baits. Find them in its card, inside ZONES. With the right bait it always bites, with the wrong one it often leaves.
+With the wrong bait, now and then a piece of junk hooks up: a shoe, a tyre, a bottle. With the right bait it never happens.
+With nothing on the hook nobody bites. Before casting, check you have a bait or a lure at the tip.
+Hook size depends on the fish: small hooks for small fish, big hooks for big ones. Every fish card shows its size.
+With a big hook you catch the bigger fish of that species, but with a hook too big the small fish won't bite. Choose by what you want to bring home.
+Hooks go from number 16, the smallest, to number 1. Then come the sizes with a zero, from 1/0 to 18/0: the higher the number, the bigger the hook.
+Pike, bass and other toothy predators cut the line. Against them mount a titanium leader before the hook.
+Predators rarely bite natural bait, and almost only the small ones. For them you need lures: spoons, minnows, soft plastics.
+Every predator's card lists the lures it chases. With one of those it bites gladly, with the others almost never.
+Every fish family wants its own rod: carp wants carp and bottom rods, predators spinning and casting, sea fish sea rods. With the wrong rod it bites less.
+The spoon is for a spinning or casting rod. With a float rod it's nearly useless.
+Rod, reel and line each hold a certain weight. What you can land is the weakest of the three: read it on the HUD next to the rod.
+A fish heavier than what you can hold won't even hook up. If a zone has big fish, bring sturdier gear.
+To cast far, the bait must have the right weight for the rod: it's written on the rod in grams. Too light makes a few metres, too heavy won't fly.
+The longer you hold the cast button, the farther the bait goes. The last moments of the charge are worth more than the first.
+A thin line goes farther and more of it fits on the reel, but it holds less. A thick line holds more but brakes the cast.
+A long rod casts farther than a short one.
+The reel drag is set with the dpad, left and right. Fully closed, the fish pulls on the line and tension rises fast. The more it's open, the more line the fish takes.
+During the fight watch the tension bar: if it stays in the red the line snaps. Ease off when the fish runs, reel in when it stops.
+The last metres are the hardest: near the shore the fish digs in. Don't force it right at the end.
+When the fish bites you have just over a second to set the hook with A. The dancing float and the vibrating pad warn you just before.
+With a float, if you pull hard while the fish tastes the bait you scare it. Reel slowly and wait for it to go under.
+Bait depth under the float is set with the dpad, up and down. Some fish feed near the bottom, others mid-water.
+If the float on the HUD lies flat on the water, the bait is touching the bottom. Shorten the depth.
+The float has a load: light, medium or heavy. It must carry the sinker and the bait you hang under it.
+Spoon and float are not used together. Spinning, the lure is both bait and hook.
+If the cast lands on grass or asphalt, the line comes back by itself. Find a clear spot towards the water.
+When the line snaps you lose the hook, the float and the bait. With a leader mounted only the leader snaps and the line stays whole.
+The keepnet has two limits: the weight of the biggest single fish it takes and the total weight. When it's full, you can only release the fish.
+While fishing, under the keepnet on the HUD you see what you've already caught today.
+To go fishing you need at least a rod, a reel with line and a keepnet.
+Before going out load the backpack from the EQUIPMENT tab. What you leave at home stays at home: you won't go back during the day.
+The backpack holds one rod, one reel, two lines and ten items. A second piece identical to one you already have takes no room.
+The rod case makes room for more rods, reels and lines. The tackle box for more items. Owning them is enough, even if they stay at home.
+Line is bought by the spool. Mounting it on the reel you take only as much as fits; the rest stays as a spool to use another time.
+Hold LB to open the tackle wheel. Pick the slice with the stick, scroll the pieces with the dpad, release LB and everything mounts.
+In the wheel the first entry of every slice is Empty: it unmounts that piece.
+The licence is bought from the ZONES tab, even from far away. Then go to the spot and press Start fishing. It covers the whole water, not just the stretch you're on.
+The three-day licence costs less than three one-day licences. If you come back often to the same water it pays.
+A fishing day lasts about two real hours. At the end the fish in the keepnet sells itself and the mounted gear goes back to the backpack.
+Fish sells at the end of the day, by weight. The bigger and finer, the more it's worth.
+Gear resells at half price, with X, from home or from the backpack.
+Catching a new species is worth much more than catching the same one again. To level up change fish, not just place.
+The right bait makes the fish bite, the right hook opens up its size. Points come from new species and big fish.
+Trophies and unique specimens are worth much more than common fish, in points and in money.
+Inside every water there are spots where a species lives: a hole, a bank, a reed bed. They aren't marked on the map, you find them by trying.
+Offshore, on the deep spots, the fish are bigger. Don't always fish under the bank.
+The fish you see passing underwater are the ones living in that water. They tell you what's there, not what will bite.
+If nothing bites ask yourself four things: what time it is, how warm the water is, what hook you have and what bait.
+Big waters have several stretches of shore, and each stretch has its own fish and its own level. Check them in the ZONES tab.
+The log, LOG tab, keeps for every zone the fish you caught and for every species your record, with the bait and hook you used.
+In the zone card the three boxes common, trophy and unique get ticked when you catch them in that place. The exploration bar says how many species of the place you've found.
+Levelling up unlocks new gear and zones. At level 100 all 35 waters are open.
+Tournaments are in the TOURNAMENTS tab. Buy the ticket, go to the spot and press Start the tournament. Each tournament is about one fish, in the water where it lives.
+You can't enter a tournament with a licence in your pocket, and you can't buy a licence with a ticket in your pocket. Finish one thing first, then the other.
+In a tournament the winner is who puts together the most kilos of that fish. Bronze, silver and gold each have their prize, and trophies and uniques give an extra.
+The menu opens with RB + dpad LEFT, or with F7. Inside the menu the game is paused: take all the time you want.
+The full guide is in the menu, SETTINGS tab, Guide entry. There you also change language and units.
+Rare fish are really rare. To catch them you need everything together: their spot, their hour, their hook and their bait.
+Every water on the map has the fish of a real water: the Alamo Sea is an American lake of catfish and bass, the Zancudo river a trout stream, the Paleto sea a northern fjord.
