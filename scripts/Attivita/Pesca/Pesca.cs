@@ -5901,7 +5901,9 @@ public class Pesca : Script
         int ic = sbArea[sbSel];
         if (eqCat != ic || OraPc() - eqQuando > 500) RiempiEquip(ic);
         float pad = LeggiF("menu_pn_bordo", 10f);
-        float w = (pw - pad * 3f) * 0.5f;
+        // lo spazio in mezzo alle due colonne (menu_eq_mezzo)
+        float mezzo = LeggiF("menu_eq_mezzo", 40f);
+        float w = (pw - pad * 2f - mezzo) * 0.5f;
         float fondo = py + ph - pad;
         ColonnaEquip(eqCasa, ref eqSelCasa, ref eqTopCasa, menuLato == 1,
                      L("AT HOME", "A CASA"), L("Unlimited space", "Spazio illimitato"),
@@ -5917,7 +5919,7 @@ public class Pesca : Script
                 tit = nome.ToUpper();
         }
         ColonnaEquip(eqBorsa, ref eqSelBorsa, ref eqTopBorsa, menuLato == 2,
-                     tit, Contatori(), px + pad * 2f + w, py + pad, w, fondo);
+                     tit, Contatori(), px + pad + w + mezzo, py + pad, w, fondo);
     }
 
     void DisegnaSidebar(float mx, float cy, float ch)
