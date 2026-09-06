@@ -2407,7 +2407,7 @@ public class Pesca : Script
                 MuoviRoba(Game.GameTime, true);
             else if (robaAppesaFino > 0)
             {
-                PosaRobaATerra();
+                ViaRoba();
                 robaOra = -1;
                 robaAppesaFino = 0;
             }
@@ -7388,7 +7388,8 @@ public class Pesca : Script
         // quando sei qui, arancione (quello del simulatore di riferimento) per iniziare
         string tb; bool attivo; int br, bg2, bb;
         if (!qui) { tb = L("Get to the spot", "Raggiungi il posto"); attivo = true; br = 130; bg2 = 225; bb = 180; }
-        else if (inPesca && licZona == cod) { tb = L("Fishing", "Stai pescando"); attivo = false; br = 245; bg2 = 140; bb = 40; }
+        else if (inPesca && licZona == cod && torneoOra < 0) { tb = L("Stop fishing", "Smetti di pescare"); attivo = true; br = 235; bg2 = 90; bb = 80; }
+        else if (inPesca && licZona == cod) { tb = L("Competition running", "Torneo in corso"); attivo = false; br = 245; bg2 = 140; bb = 40; }
         else if (LicenzaInTasca(cod)) { tb = L("Start fishing", "Inizia a pescare"); attivo = true; br = 245; bg2 = 140; bb = 40; }
         else { tb = L("You are here", "Ti trovi qui"); attivo = false; br = 250; bg2 = 175; bb = 205; }
         bool selB = (menuLato == 1 && pnSel == pnRighe);
@@ -7785,6 +7786,11 @@ public class Pesca : Script
             else if (LicenzaInTasca(cod))
             {
                 if (IniziaPesca()) { SuonoMenu("menu_apri.wav"); ChiudiMenuNuovo(); }
+            }
+            else if (inPesca && licZona == cod && torneoOra < 0)
+            {
+                // smetti quando vuoi: la giornata finisce, la nassa si vende
+                if (FinePesca(true)) { SuonoMenu("menu_chiudi.wav"); ChiudiMenuNuovo(); }
             }
         }
     }
@@ -10776,7 +10782,7 @@ public class Pesca : Script
                 fase = FASE_ACQUA;
                 // la robaccia della pescata prima non deve tornare in acqua:
                 // se penzola ancora dalla canna finisce per terra adesso
-                if (robaOra >= 0) { PosaRobaATerra(); robaOra = -1; robaAppesaFino = 0; }
+                if (robaOra >= 0) { ViaRoba(); robaOra = -1; robaAppesaFino = 0; }
                 // appena tocca l'acqua il cucchiaino e' in superficie:
                 // da li' comincia a scendere
                 profEsca = 0f;
@@ -14917,28 +14923,6 @@ public class Pesca : Script
             Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, robaProp, true, true);
         }
         catch { ViaRoba(); }
-    }
-
-    // LA ROBACCIA SI SGANCIA E RESTA LI': cade per terra a un metro dal
-    // pescatore, con la fisica del gioco, e la mod se ne dimentica.
-    void PosaRobaATerra()
-    {
-        try
-        {
-            if (robaProp == null || !robaProp.Exists()) { robaProp = null; return; }
-            Ped p = Game.Player.Character;
-            // dietro al pescatore, non davanti: davanti c'e' l'acqua
-            GTA.Math.Vector3 dove = p.Position - p.ForwardVector * 1.5f + p.RightVector * 0.8f;
-            dove.Z += 0.6f;
-            Function.Call(Hash.FREEZE_ENTITY_POSITION, robaProp, false);
-            Function.Call(Hash.SET_ENTITY_COLLISION, robaProp, true, true);
-            Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, robaProp, true);
-            robaProp.Position = dove;
-            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, robaProp, false, false);
-            robaProp.MarkAsNoLongerNeeded();
-        }
-        catch { }
-        robaProp = null;
     }
 
     void ViaRoba()
