@@ -2412,6 +2412,9 @@ public class Pesca : Script
         // attorno all'esca, se no in un punto d'acqua davanti a te.
         if (inPesca && inRivaOra) PesceDiPassaggio(Game.GameTime);
         else ViaPesceScena();
+        // e ogni tanto arriva un altro pescatore, poco lontano
+        if (inPesca && inRivaOra) PescatoreDiPassaggio(Game.GameTime);
+        else ViaPescatore();
         // i consigli dei tasti in basso: finche' hai la licenza e sei in
         // riva, in ogni fase (anche senza canna in mano)
         if (inPesca && inRivaOra && !ruotaAperta
@@ -5686,6 +5689,7 @@ public class Pesca : Script
         // REGOLA: a fine giornata si smonta tutto, torna tutto in borsa
         DisarmaTutto();
         TempoNormale();
+        ViaPescatore();
         // la giornata chiusa va scritta subito: se no, ricaricando gli
         // script, la licenza tornava viva
         SalvaStato();
@@ -13543,6 +13547,7 @@ public class Pesca : Script
             TogliCanna();
             TogliBlipPunti();
             ViaCampo();
+            ViaPescatore();
             ChiudiMenuNuovo();
             Ped p = Game.Player.Character;
             if (p != null && p.Exists()) p.Task.ClearAll();
@@ -14652,6 +14657,192 @@ public class Pesca : Script
         }
         catch { }
         return -9999f;
+    }
+
+    // ============================================================
+    //  L'ALTRO PESCATORE
+    //  Ogni tanto (pnj_ogni_min_min..max minuti veri) su un punto di
+    //  riva della zona, a pnj_vicino..pnj_lontano metri da te, compare un
+    //  pescatore: lo scenario del gioco con la canna, rivolto all'acqua.
+    //  Sta li' pnj_dura_min minuti, e ogni pnj_pesce_sec secondi tira su
+    //  un pesce del posto, che gli penzola un attimo dalla canna. Se ti
+    //  allontani, o quando la giornata finisce, se ne va.
+    // ============================================================
+    Ped pnjPed = null;
+    Ped pnjPesce = null;
+    int pnjProssimo = 0, pnjFine = 0, pnjPesceDa = 0, pnjPesceFino = 0;
+    float pnjX = 0f, pnjY = 0f, pnjZ = 0f, pnjDir = 0f;
+    static readonly string[] PNJ_MODELLI = new string[] {
+        "a_m_m_hillbilly_01", "a_m_m_hillbilly_02", "a_m_y_hiker_01", "a_m_m_farmer_01",
+        "a_m_y_beach_01", "a_m_m_rurmeth_01", "a_m_o_genstreet_01", "a_m_m_salton_01" };
+
+    void PescatoreDiPassaggio(int now)
+    {
+        if (LeggiF("pnj_pescatore", 1f) < 0.5f) { ViaPescatore(); return; }
+        Ped p = Game.Player.Character;
+        if (pnjPed != null && pnjPed.Exists())
+        {
+            // se ne va a fine tempo, o se ti sei allontanato troppo
+            float dx = pnjPed.Position.X - p.Position.X, dy = pnjPed.Position.Y - p.Position.Y;
+            if (now > pnjFine || dx * dx + dy * dy > 250f * 250f || pnjPed.IsDead)
+            {
+                ViaPescatore();
+                pnjProssimo = now + ProssimoPnj();
+                return;
+            }
+            // ogni tanto tira su un pesce
+            if (pnjPesce == null && now > pnjPesceDa) PnjPesca(now);
+            else if (pnjPesce != null)
+            {
+                if (now > pnjPesceFino) { ViaPnjPesce(); pnjPesceDa = now + (int)(LeggiF("pnj_pesce_sec", 90f) * 1000f * (0.6f + caso.Next(80) / 100f)); }
+                else PnjPesceAppeso(now);
+            }
+            return;
+        }
+        if (pnjProssimo == 0) { pnjProssimo = now + ProssimoPnj(); return; }
+        if (now < pnjProssimo) return;
+        pnjProssimo = now + ProssimoPnj();
+        MettiPescatore(now);
+    }
+
+    int ProssimoPnj()
+    {
+        int a = (int)(LeggiF("pnj_ogni_min_min", 1f) * 60000f);
+        int b = (int)(LeggiF("pnj_ogni_min_max", 5f) * 60000f);
+        if (b < a) b = a;
+        return a + caso.Next(b - a + 1);
+    }
+
+    void MettiPescatore(int now)
+    {
+        try
+        {
+            int lu = LuogoQui();
+            if (lu < 0) return;
+            Ped p = Game.Player.Character;
+            float vicino = LeggiF("pnj_vicino", 30f), lontano = LeggiF("pnj_lontano", 80f);
+            // un punto di riva della zona alla distanza giusta
+            List<int> buoni = new List<int>();
+            int i;
+            for (i = 0; i < apX.Count; i++)
+            {
+                if (apA[i] != lu) continue;
+                float dx = apX[i] - p.Position.X, dy = apY[i] - p.Position.Y;
+                float d = (float)Math.Sqrt(dx * dx + dy * dy);
+                if (d >= vicino && d <= lontano) buoni.Add(i);
+            }
+            if (buoni.Count == 0) return;
+            int k = buoni[caso.Next(buoni.Count)];
+            float x = apX[k], y = apY[k];
+            OutputArgument oz = new OutputArgument();
+            float z = p.Position.Z;
+            if (Function.Call<bool>(Hash.GET_GROUND_Z_FOR_3D_COORD, x, y, p.Position.Z + 50f, oz, false))
+                z = oz.GetResult<float>();
+            // deve stare sull'asciutto, con l'acqua davanti: si cerca la
+            // direzione dove l'acqua c'e' entro pochi metri
+            float acquaQui = AcquaA(x, y, z);
+            if (acquaQui > -9000f && acquaQui > z - 0.2f) return;   // punto in acqua: si salta
+            float dir = -1f;
+            int g;
+            for (g = 0; g < 12; g++)
+            {
+                float ang = g * 30f;
+                float rx = x - (float)Math.Sin(ang * Math.PI / 180.0) * 6f;
+                float ry = y + (float)Math.Cos(ang * Math.PI / 180.0) * 6f;
+                float za = AcquaA(rx, ry, z);
+                if (za > -9000f && za < z + 1.5f) { dir = ang; break; }
+            }
+            if (dir < 0f) return;
+            Model m = new Model(PNJ_MODELLI[caso.Next(PNJ_MODELLI.Length)]);
+            m.Request(800);
+            if (!m.IsLoaded) return;
+            pnjPed = World.CreatePed(m, new GTA.Math.Vector3(x, y, z + 0.1f), dir);
+            m.MarkAsNoLongerNeeded();
+            if (pnjPed == null || !pnjPed.Exists()) { pnjPed = null; return; }
+            pnjX = x; pnjY = y; pnjZ = z; pnjDir = dir;
+            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pnjPed, true, true);
+            Function.Call(Hash.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS, pnjPed, true);
+            Function.Call(Hash.SET_PED_CAN_BE_TARGETTED, pnjPed, false);
+            Function.Call(Hash.SET_PED_FLEE_ATTRIBUTES, pnjPed, 0, false);
+            Function.Call(Hash.TASK_START_SCENARIO_IN_PLACE, pnjPed, "WORLD_HUMAN_STAND_FISHING", 0, true);
+            pnjFine = now + (int)(LeggiF("pnj_dura_min", 5f) * 60000f * (0.7f + caso.Next(60) / 100f));
+            pnjPesceDa = now + (int)(LeggiF("pnj_pesce_sec", 90f) * 1000f * (0.5f + caso.Next(80) / 100f));
+        }
+        catch { pnjPed = null; }
+    }
+
+    // il pesce dell'altro: una specie del posto, appesa davanti a lui
+    void PnjPesca(int now)
+    {
+        try
+        {
+            int lu = LuogoQui();
+            if (lu < 0 || lu >= arPesci.Count || arPesci[lu].Count == 0) return;
+            string nome = arPesci[lu][caso.Next(arPesci[lu].Count)];
+            Model m = new Model(ModelloDi(nome));
+            m.Request(600);
+            if (!m.IsLoaded) { m = new Model("a_c_fish"); m.Request(600); if (!m.IsLoaded) return; }
+            GTA.Math.Vector3 pos = pnjPed.Position;
+            pnjPesce = World.CreatePed(m, new GTA.Math.Vector3(pos.X, pos.Y, pos.Z + 0.5f));
+            m.MarkAsNoLongerNeeded();
+            if (pnjPesce == null || !pnjPesce.Exists()) { pnjPesce = null; return; }
+            Function.Call(Hash.SET_ENTITY_INVINCIBLE, pnjPesce, true);
+            Function.Call(Hash.SET_ENTITY_COLLISION, pnjPesce, false, false);
+            Function.Call(Hash.SET_BLOCKING_OF_NON_TEMPORARY_EVENTS, pnjPesce, true);
+            Function.Call(Hash.SET_PED_CAN_RAGDOLL, pnjPesce, false);
+            Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, pnjPesce, false);
+            Function.Call(Hash.FREEZE_ENTITY_POSITION, pnjPesce, true);
+            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pnjPesce, true, true);
+            Function.Call(Hash.SET_PED_COMPONENT_VARIATION, pnjPesce, 0, FormaDi(nome), 0, 0);
+            pnjPesceFino = now + (int)LeggiF("pnj_pesce_appeso_ms", 4000f);
+        }
+        catch { pnjPesce = null; }
+    }
+
+    void PnjPesceAppeso(int now)
+    {
+        if (pnjPesce == null || !pnjPesce.Exists() || pnjPed == null || !pnjPed.Exists()) return;
+        try
+        {
+            // davanti al pescatore, all'altezza della mano, a testa in giu'
+            float ang = pnjDir * (float)Math.PI / 180f;
+            float t = now / 1000f;
+            float dx = -(float)Math.Sin(ang) * 1.4f + (float)Math.Sin(t * 2.1) * 0.08f;
+            float dy = (float)Math.Cos(ang) * 1.4f + (float)Math.Cos(t * 1.7) * 0.08f;
+            Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, pnjPesce, pnjX + dx, pnjY + dy, pnjZ + 1.1f, false, false, false);
+            Function.Call(Hash.SET_ENTITY_ROTATION, pnjPesce, 90f, 0f, pnjDir, 2, true);
+        }
+        catch { }
+    }
+
+    void ViaPnjPesce()
+    {
+        try
+        {
+            if (pnjPesce != null && pnjPesce.Exists())
+            {
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pnjPesce, true, true);
+                Function.Call(Hash.FREEZE_ENTITY_POSITION, pnjPesce, false);
+                pnjPesce.Delete();
+            }
+        }
+        catch { }
+        pnjPesce = null;
+    }
+
+    void ViaPescatore()
+    {
+        ViaPnjPesce();
+        try
+        {
+            if (pnjPed != null && pnjPed.Exists())
+            {
+                Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pnjPed, true, true);
+                pnjPed.Delete();
+            }
+        }
+        catch { }
+        pnjPed = null;
     }
 
     void PesceDiPassaggio(int now)
