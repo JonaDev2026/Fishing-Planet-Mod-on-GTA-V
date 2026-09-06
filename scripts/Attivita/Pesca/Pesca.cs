@@ -14691,6 +14691,7 @@ public class Pesca : Script
             pesceSbanda = 0f;
             pesceVerso = 1f;
             pesceCambio = 0;
+            FaiNuotare(pescePed, nomeM, LeggiF("pesce_nuota_vel", 1.6f));
         }
         catch { pescePed = null; }
     }
@@ -15131,6 +15132,7 @@ public class Pesca : Script
                 Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, pz2, true, true);
                 Function.Call(Hash.SET_PED_COMPONENT_VARIATION, pz2, 0,
                               FormaDi(pesci[sc].Nome), 0, 0);
+                FaiNuotare(pz2, ModelloDi(pesci[sc].Nome), 1f);
                 pesceScena[scenaN] = pz2;
                 // il primo in mezzo, gli altri di lato e un po' indietro
                 scenaLato[scenaN] = (scenaN == 0) ? 0f
@@ -15429,6 +15431,38 @@ public class Pesca : Script
         catch { }
     }
 
+    // IL PESCE NUOTA: il ped e' congelato (lo muoviamo noi), ma la sua
+    // animazione di nuoto la puo' fare lo stesso. Senza, sembrava un
+    // pezzo di legno trascinato. Il dizionario dipende dal modello.
+    string DizNuoto(string modello)
+    {
+        string m = (modello == null) ? "" : modello.ToLower();
+        if (m.IndexOf("shark") >= 0) return "creatures@shark@move";
+        if (m.IndexOf("stingray") >= 0) return "creatures@stingray@move";
+        if (m.IndexOf("dolphin") >= 0) return "creatures@dolphin@move";
+        if (m.IndexOf("killerwhale") >= 0) return "creatures@killerwhale@move";
+        if (m.IndexOf("humpback") >= 0) return "creatures@humpback@move";
+        return "creatures@fish@move";
+    }
+
+    void FaiNuotare(Ped pesce, string modello, float velocita)
+    {
+        if (pesce == null || !pesce.Exists()) return;
+        try
+        {
+            string diz = DizNuoto(modello);
+            Function.Call(Hash.REQUEST_ANIM_DICT, diz);
+            int giri = 0;
+            while (!Function.Call<bool>(Hash.HAS_ANIM_DICT_LOADED, diz) && giri < 50) { Script.Wait(10); giri++; }
+            if (!Function.Call<bool>(Hash.HAS_ANIM_DICT_LOADED, diz)) return;
+            // flag 1 = in loop; 4 = solo il corpo sopra, non serve; 16 =
+            // continua dopo il task
+            Function.Call(Hash.TASK_PLAY_ANIM, pesce, diz, "swim", 8f, -8f, -1, 1, 0f, false, false, false);
+            Function.Call(Hash.SET_ENTITY_ANIM_SPEED, pesce, diz, "swim", velocita);
+        }
+        catch { }
+    }
+
     void PesceInPosa(float px, float py, float pz, float gradi, float rollio)
     {
         if (pescePed == null || !pescePed.Exists()) return;
@@ -15581,11 +15615,19 @@ public class Pesca : Script
 
             float za = AcquaSottoEsca();
             float giu2 = LeggiF("pesce_sotto", 0.25f);
-            // guarda verso il pescatore, storto di quanto sta sbandando
+            // guarda verso il pescatore, storto di quanto sta sbandando,
+            // e in lotta si dimena: coda che batte e corpo che rolla
             GTA.Math.Vector3 o = p.Position;
             double ang = Math.Atan2(o.X - escaX, o.Y - escaY) * 180.0 / Math.PI;
+            float coda = 0f, rollio = 0f;
+            if (tira)
+            {
+                float vig = 1f - stanchezza * 0.6f;
+                coda = (float)Math.Sin(now * 0.014) * LeggiF("pesce_coda", 9f) * vig;
+                rollio = (float)Math.Sin(now * 0.009) * LeggiF("pesce_rollio", 14f) * vig;
+            }
             PesceInPosa(escaX, escaY, za - giu2,
-                        (float)(-ang) + pesceSbanda, 0f);
+                        (float)(-ang) + pesceSbanda + coda, rollio);
         }
         catch { }
     }
