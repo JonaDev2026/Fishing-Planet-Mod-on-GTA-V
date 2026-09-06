@@ -5726,6 +5726,14 @@ public class Pesca : Script
             eqBorsa.Add(kv.Key);
         }
         eqCasa.Sort(); eqBorsa.Sort();
+        // le bobine tagliate, sotto Lenze: "bob:indice" nello zaino,
+        // "bobc:indice" a casa (l'indice nella loro lista)
+        if (CAT_COD[ic] == "lenza")
+        {
+            int q;
+            for (q = 0; q < bobineCasa.Count; q++) eqCasa.Add("bobc:" + q);
+            for (q = 0; q < bobine.Count; q++) eqBorsa.Add("bob:" + q);
+        }
         if (eqCat != ic) { eqSelCasa = 0; eqTopCasa = 0; eqSelBorsa = 0; eqTopBorsa = 0; }
         if (eqSelCasa >= eqCasa.Count) eqSelCasa = eqCasa.Count > 0 ? eqCasa.Count - 1 : 0;
         if (eqSelBorsa >= eqBorsa.Count) eqSelBorsa = eqBorsa.Count > 0 ? eqBorsa.Count - 1 : 0;
@@ -5835,10 +5843,24 @@ public class Pesca : Script
             string[] c = lista[top + i].Split(':');
             int id = Numero(c[1]);
             string nome, img; int prezzo, liv;
-            if (!Articolo(c[0], id, out nome, out img, out prezzo, out liv)) { nome = lista[top + i]; img = ""; }
             int quante = 0;
-            Dictionary<string, int> da = (lista == eqBorsa) ? borsa : magazzino;
-            da.TryGetValue(lista[top + i], out quante);
+            int metriBob = -1;
+            if (c[0] == "bob" || c[0] == "bobc")
+            {
+                // una bobina tagliata: la lenza e' quella, i metri i suoi
+                List<string> lb = (c[0] == "bob") ? bobine : bobineCasa;
+                string[] bb = (id < lb.Count) ? lb[id].Split('|') : new string[0];
+                id = (bb.Length > 1) ? Numero(bb[0]) : -1;
+                metriBob = (bb.Length > 1) ? Numero(bb[1]) : 0;
+                c[0] = "lenza";
+                quante = 1;
+            }
+            else
+            {
+                Dictionary<string, int> da = (lista == eqBorsa) ? borsa : magazzino;
+                da.TryGetValue(lista[top + i], out quante);
+            }
+            if (!Articolo(c[0], id, out nome, out img, out prezzo, out liv)) { nome = lista[top + i]; img = ""; }
             float ry = y + i * rh;
             bool s = attiva && top + i == sel;
             if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, 255);
@@ -5857,7 +5879,7 @@ public class Pesca : Script
             float dx = tx, dmax = x + w - 8f;
             List<string> pz = new List<string>();
             pz.Add(Quantita(c[0], id, quante, lista == eqBorsa));
-            string det = Dettaglio(c[0], id);
+            string det = (metriBob >= 0) ? DettaglioBobina(id, metriBob) : Dettaglio(c[0], id);
             if (det.Length > 0)
             {
                 string[] sp = det.Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
@@ -6381,7 +6403,18 @@ public class Pesca : Script
             int id = Numero(c[1]);
             menuNuovoTasto = now + 250;
             bool fatto = false;
-            if (ok) fatto = Sposta(c[0], id, menuLato == 1);
+            if (c[0] == "bobc")
+            {
+                if (ok) fatto = BobinaInBorsa(id);
+                else if (tx) fatto = VendiBobinaCasa(id);
+                else if (ty) fatto = ButtaBobinaCasa(id);
+            }
+            else if (c[0] == "bob")
+            {
+                if (ok) fatto = BobinaACasa(id);
+                else if (ty) fatto = ButtaBobina(id);
+            }
+            else if (ok) fatto = Sposta(c[0], id, menuLato == 1);
             else if (tx && menuLato == 1) fatto = Vendi(c[0], id);
             else if (ty) fatto = Butta(c[0], id, menuLato == 1);
             if (fatto) { SuonoMenu("menu_apri.wav"); SalvaStato(); }
