@@ -5339,9 +5339,9 @@ public class Pesca : Script
         if (licGiorni > 0)
             DisegnaTestoSinistra(L("License ", "Licenza ") + TempoCheResta(),
                                  ox, oy + LeggiF("orario_lic_giu", 24f), 0.22f, 200, 202, 210);
-        // livello e XP al centro dello schermo, all'altezza dell'ora
-        DisegnaTesto(L("Level ", "Liv. ") + livelloPescatore + "   " + xpTot + " XP",
-                     LeggiF("liv_x", 640f), LeggiF("liv_y", 40f), LeggiF("orario_liv_testo", 0.30f), 200, 202, 210);
+        // livello e XP sotto "Esplorazione", con lo stesso font
+        DisegnaTestoSinistra(L("Level ", "Liv. ") + livelloPescatore + "   " + xpTot + " XP",
+                             LeggiF("liv_x", 24f), LeggiF("liv_y", 302f), LeggiF("orario_liv_testo", 0.22f), 200, 202, 210);
     }
 
     // IL POSTO SULL'HUD: nome dell'acqua, sotto una riga bianca
