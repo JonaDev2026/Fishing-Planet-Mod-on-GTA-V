@@ -5380,11 +5380,12 @@ public class Pesca : Script
             float gap = LeggiF("temp_gap", 22f);
             string aria = GradiAria().ToString("0", CultureInfo.InvariantCulture) + "\u00B0";
             string acqua = GradiAcqua().ToString("0", CultureInfo.InvariantCulture) + "\u00B0";
+            float tt = LeggiF("temp_testo", 0.30f);
             Sprite("img\\hud\\meteo\\" + IconaMeteoHud() + ".png", px, ty, ic, ic);
-            DisegnaTestoSinistra(aria, px + ic + sp, ty + ic * 0.5f - 8f, 0.22f, 245, 245, 250);
+            DisegnaTestoSinistra(aria, px + ic + sp, ty + ic * 0.5f - 10f, tt, 245, 245, 250);
             float x2 = px + ic + sp + LeggiF("temp_larga", 30f) + gap;
             Sprite("img\\hud\\meteo\\acqua.png", x2, ty, ic, ic);
-            DisegnaTestoSinistra(acqua, x2 + ic + sp, ty + ic * 0.5f - 8f, 0.22f, 245, 245, 250);
+            DisegnaTestoSinistra(acqua, x2 + ic + sp, ty + ic * 0.5f - 10f, tt, 245, 245, 250);
         }
         // il grafico resta dov'era: sotto il nome del posto (attivita_y)
         DisegnaAttivita(a, px, LeggiF("attivita_y", 390f), LeggiF("attivita_larga", bw));
