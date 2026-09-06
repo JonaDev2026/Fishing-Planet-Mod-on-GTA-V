@@ -5361,8 +5361,10 @@ public class Pesca : Script
             menuNuovoTasto = now + 400;
             menuNuovoPausaDa = Game.GameTime;
             try { Game.TimeScale = 0f; } catch { }
-            // e l'audio di GTA in muto dal mixer di Windows
-            AbbassaAudio();
+            // il tic d'apertura, e poi l'audio di GTA in muto dal mixer di
+            // Windows (dopo il tic: RimettiMutoSeScaduto)
+            Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            audioSbloccoFino = now + (int)LeggiF("menu_tic_ms", 140f);
             // LO SFONDO SFOCATO: col tempo a zero la transizione di GTA non
             // parte (e restava da sfocare all'uscita), quindi si usa il
             // timecycle della pausa, che e' immediato. menu_blur=0 lo toglie.
@@ -5375,7 +5377,6 @@ public class Pesca : Script
                 }
                 catch { }
             }
-            Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
         // aperto: niente comandi al gioco
@@ -5395,6 +5396,7 @@ public class Pesca : Script
         if (!menuNuovoAperto) return;
         menuNuovoAperto = false;
         menuNuovoTasto = OraPc() + 400;
+        audioSbloccoFino = 0;
         try { Game.TimeScale = 1f; } catch { }
         RialzaAudio();
         ViaSfocatura();
@@ -5520,9 +5522,30 @@ public class Pesca : Script
     static readonly string[] SCHEDE_EN = { "SPOTS", "TACKLE", "SHOP", "FISH", "TOURNAMENTS", "SETTINGS" };
     int menuScheda = 0;
 
+    // IL TIC DEL MENU: con l'audio di GTA in muto non si sentirebbe. Allora
+    // per un attimo (menu_tic_ms) si toglie il muto, si suona, e si rimette.
+    int audioSbloccoFino = 0;
+
+    void TicMenu(string nome)
+    {
+        RialzaAudio();
+        Suono(nome, "HUD_FRONTEND_DEFAULT_SOUNDSET");
+        audioSbloccoFino = OraPc() + (int)LeggiF("menu_tic_ms", 140f);
+    }
+
+    void RimettiMutoSeScaduto()
+    {
+        if (audioSbloccoFino > 0 && OraPc() > audioSbloccoFino)
+        {
+            audioSbloccoFino = 0;
+            if (menuNuovoAperto) AbbassaAudio();
+        }
+    }
+
     void TastiMenuNuovo()
     {
         int now = OraPc();
+        RimettiMutoSeScaduto();
         if (now < menuNuovoTasto) return;
         bool lb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 37);
         bool rb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 44);
@@ -5531,7 +5554,7 @@ public class Pesca : Script
             int n = SCHEDE_IT.Length;
             menuScheda = (menuScheda + (rb ? 1 : n - 1)) % n;
             menuNuovoTasto = now + 150;
-            Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            TicMenu("NAV_UP_DOWN");
         }
     }
 
