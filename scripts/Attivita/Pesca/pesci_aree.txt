@@ -3,6 +3,9 @@
 # Sono esattamente i pesci che vivono nell'acqua vera che quella zona
 # rappresenta, dalla sezione Locations delle loro pagine. Se in
 # quell'acqua non c'e', qui non abbocca.
+# ECCEZIONE NOSTRA (6 settembre 2026): ai Laghetti del golf, il primo posto,
+# stanno solo sei dei dieci pesci di Lone Star Lake (i piccoli); pesce gatto,
+# bufalo, spotted bass e pickerel si trovano a Slab e alla Sponda sud (liv. 2).
 Riva ovest di Alamo|Black Crappie;Bluntnose Minnow;Chain Pickerel;Common Shiner;Golden Shiner;Grass Pickerel;Northern Pike;Pumpkinseed;Redfin Pickerel;Sauger;Walleye;Yellow Perch
 Slab|Blacktail Shiner;Bluegill;Channel Catfish;Golden Shiner;Grass Pickerel;Green Sunfish;Redear Sunfish;Smallmouth Buffalo;Spotted Bass;White Crappie
 Foce dello Zancudo|Bluegill;California Roach;Chinook Salmon;Common Carp;Largemouth Bass;Redear Sunfish;Smallmouth Bass;Steelhead;Striped Bass;White Catfish;White Crappie;White Sturgeon
@@ -28,7 +31,7 @@ Diga di Land Act|Black Crappie;Bluegill;Colorado Golden Trout;Cutthroat Trout;Go
 Land Act nord|Atlantic Salmon;Brook Trout;Burbot;Lake Chub;Lake Trout;Lake Whitefish;Northern Pike;Pumpkinseed;Splake;White Sucker;Yellow Perch
 Land Act ovest|Brown Trout;Cutthroat Trout;Oregon Redband Trout;Pumpkinseed;Rainbow Trout;Redbreast Sunfish;Rock Bass;Smallmouth Bass
 Mirror Park|Common Carp;Common Roach;European Perch;European Weatherfish;Mirror Carp;Northern Pike;Prussian Carp;Silver Bream;Tench
-Laghetti del golf|Blacktail Shiner;Bluegill;Channel Catfish;Golden Shiner;Grass Pickerel;Green Sunfish;Redear Sunfish;Smallmouth Buffalo;Spotted Bass;White Crappie
+Laghetti del golf|Blacktail Shiner;Bluegill;Golden Shiner;Green Sunfish;Redear Sunfish;White Crappie
 Vespucci Beach e molo di Del Perro|Albacore;Bigeye Tuna;Bigfin Reef Squid;Dogtooth Tuna;Giant Grouper;Giant Trevally;Greater Amberjack;Green Jobfish;Japanese Amberjack;Japanese Anchovy;Japanese Jack Mackerel;Mahi-Mahi;Narrow-Barred Mackerel;Pacific Bluefin Tuna;Ruby Snapper;Skipjack Tuna;Striped Bonito;Striped Marlin;Yellowfin Tuna
 Isolotto di San Chianski|Albacore;Bigeye Tuna;Indo-Pacific King Mackerel;Sailfish;Sickle Pomfret;Striped Marlin;Swordfish
 Faro di El Gordo|Arctic Char;Atlantic Cod;Atlantic Halibut;Atlantic Herring;Atlantic Horse Mackerel;Atlantic Mackerel;Atlantic Saury;Atlantic Wolffish;Brill;Coalfish;Common Ling;Cusk;European Angler;European Hake;European Sea Sturgeon;Greenland Halibut;Greenland Shark;Haddock;Meagre;Norway Atlantic Salmon;Norway Seaperch;Porbeagle Shark;Sea Trout;Spiny Dogfish;Whiting

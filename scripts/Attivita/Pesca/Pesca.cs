@@ -325,7 +325,21 @@ public class Pesca : Script
             int lv = Numero(c[2]);
             if (lv < 1) lv = 1;
             arLiv[a] = lv;
+            // quarta colonna: la taglia massima che esce qui (1 comune,
+            // 2 trofeo, 3 unico); senza, tutto
+            int tm = (c.Length > 3) ? Numero(c[3]) : 3;
+            if (tm < 1 || tm > 3) tm = 3;
+            arTagliaMax[a] = tm;
         }
+    }
+
+    Dictionary<int, int> arTagliaMax = new Dictionary<int, int>();
+
+    int TagliaMaxArea(int a)
+    {
+        int v;
+        if (arTagliaMax.TryGetValue(a, out v)) return v;
+        return 3;
     }
 
     int LivelloArea(int lu)
@@ -8628,6 +8642,16 @@ public class Pesca : Script
         float tettoAmo = TettoAmo(sp);
         if (alto > tettoAmo) alto = tettoAmo;
         alto = TettoPausa(sp, alto);
+        // IL POSTO HA UNA TAGLIA MASSIMA (aree_livello.txt): nei laghetti
+        // del primo livello escono solo i comuni, i trofei stanno piu' in la'
+        int tmA = TagliaMaxArea(lu);
+        if (tmA == 1 && alto > sp.KgC) alto = sp.KgC;
+        if (tmA == 2)
+        {
+            float trofeo2 = (sp.KgT > sp.KgC) ? sp.KgT : sp.KgC;
+            if (sp.KgU > sp.KgT && trofeo2 >= sp.KgU) trofeo2 = sp.KgU - 0.001f;
+            if (alto > trofeo2) alto = trofeo2;
+        }
         if (alto > tenuta) alto = tenuta;
         float basso = sp.KgC * 0.6f;
         if (basso < 0.05f) basso = 0.05f;

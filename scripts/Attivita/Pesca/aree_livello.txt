@@ -1,5 +1,7 @@
 # OGNI NOSTRA ZONA E' UNA ACQUA VERA DI FISHING PLANET.
-# area|acqua_vera|livello_richiesto
+# area|acqua_vera|livello_richiesto|taglia_massima
+# taglia_massima (nostra): 1 = qui escono solo i comuni, 2 = fino al trofeo,
+# 3 o vuoto = anche gli unici. Ai Laghetti del golf, il primo posto, solo comuni.
 # Il livello e' il required_level della loro pagina (pagine_acque).
 # Lone Star Lake sul wiki e' livello 2 perche' l'1 e' il tutorial: da noi
 # il tutorial non c'e', quindi apre all'1.
@@ -32,7 +34,7 @@ Diga di Land Act|Rocky Lake, Colorado|5
 Land Act nord|White Moose Lake, Alberta|22
 Land Act ovest|Falcon Lake, Oregon|14
 Mirror Park|Lesni Vila Fishery, Cechia|3
-Laghetti del golf|Lone Star Lake, Texas|1
+Laghetti del golf|Lone Star Lake, Texas|1|1
 Vespucci Beach e molo di Del Perro|Kaiji No Ri, Giappone|83
 Isolotto di San Chianski|Noomaa Kuda Atholhu, Maldive|94
 Faro di El Gordo|Fiordo di Skårland, Norvegia|100
