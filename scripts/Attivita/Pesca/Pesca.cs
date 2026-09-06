@@ -5548,10 +5548,88 @@ public class Pesca : Script
         SuonoMenu("menu_tic.wav");
     }
 
+    // LA SIDEBAR: la lista a sinistra dentro il contenitore, righe scure e
+    // quella scelta bianca col testo scuro, come nella pausa di GTA. Si
+    // scorre con la croce (o la levetta). Per ora sta solo nella prima
+    // scheda, con le zone di pesca.
+    List<string> sbVoci = new List<string>();
+    List<string> sbDestra = new List<string>();
+    int sbSel = 0, sbTop = 0;
+    int sbScheda = -1;
+
+    void RiempiSidebar()
+    {
+        sbVoci.Clear(); sbDestra.Clear();
+        if (menuScheda == 0)
+        {
+            // le zone, nell'ordine della pagina del trainer (per livello)
+            List<int> ord = new List<int>();
+            int i, k;
+            for (i = 0; i < arNome.Count; i++) ord.Add(i);
+            for (i = 1; i < ord.Count; i++)
+            {
+                int t = ord[i]; int l1 = LivelloArea(t); k = i - 1;
+                while (k >= 0 && LivelloArea(ord[k]) > l1) { ord[k + 1] = ord[k]; k--; }
+                ord[k + 1] = t;
+            }
+            for (i = 0; i < ord.Count; i++)
+            {
+                sbVoci.Add(arNome[ord[i]]);
+                sbDestra.Add(L("Lv.", "Liv.") + LivelloArea(ord[i]));
+            }
+        }
+        if (sbSel >= sbVoci.Count) sbSel = 0;
+        sbTop = 0;
+        sbScheda = menuScheda;
+    }
+
+    void DisegnaSidebar(float mx, float cy, float ch)
+    {
+        if (sbScheda != menuScheda) RiempiSidebar();
+        float w = LeggiF("menu_sb_larga", 300f);
+        float rh = LeggiF("menu_sb_riga", 26f);
+        float pad = LeggiF("menu_sb_bordo", 8f);
+        int righe = (int)((ch - pad * 2f) / rh);
+        if (righe < 1) righe = 1;
+        if (sbSel < sbTop) sbTop = sbSel;
+        if (sbSel >= sbTop + righe) sbTop = sbSel - righe + 1;
+        int i;
+        for (i = 0; i < righe && sbTop + i < sbVoci.Count; i++)
+        {
+            int k = sbTop + i;
+            float y = cy + pad + i * rh;
+            bool sel = (k == sbSel);
+            if (sel) DisegnaRett(mx + pad, y, w, rh - 2f, 245, 245, 250, 255);
+            else DisegnaRett(mx + pad, y, w, rh - 2f, 0, 0, 0, 120);
+            int r = sel ? 20 : 245, g = sel ? 22 : 245, b = sel ? 28 : 250;
+            TestoMenu(sbVoci[k], mx + pad + 10f, y + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
+            if (sbDestra[k].Length > 0)
+                TestoMenu(sbDestra[k], mx + pad + w - 10f, y + rh * 0.5f - 9f, 0.26f, 0, 2,
+                          sel ? 60 : 245, sel ? 62 : 205, sel ? 70 : 80, 255);
+        }
+    }
+
+    void TastiSidebar(int now)
+    {
+        if (menuScheda != 0 || sbVoci.Count == 0) return;
+        bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
+               || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
+        bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 19)
+                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 173);
+        if (su || giu)
+        {
+            int n = sbVoci.Count;
+            sbSel = (sbSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120;
+            TicMenu("NAV_UP_DOWN");
+        }
+    }
+
     void TastiMenuNuovo()
     {
         int now = OraPc();
         if (now < menuNuovoTasto) return;
+        TastiSidebar(now);
         bool lb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 37);
         bool rb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 44);
         if (lb || rb)
@@ -5610,14 +5688,17 @@ public class Pesca : Script
         TestoMenu(">", mx + mw + 24f, sy + sh * 0.5f - 12f, 0.42f, 0, 1, 245, 245, 250, 255);
 
         // il contenitore
-        float cy = sy + sh + LeggiF("menu_cont_giu", 16f);
-        float ch = LeggiF("menu_cont_fondo", 660f) - cy;
+        float cy = sy + sh + LeggiF("menu_cont_giu", 12f);
+        float ch = LeggiF("menu_cont_fondo", 630f) - cy;
         DisegnaRett(mx, cy, mw, ch, 0, 0, 0, (int)LeggiF("menu_cont_alfa", 150f));
+        // la prima scheda ha la lista a sinistra, come le pagine di GTA
+        if (menuScheda == 0) DisegnaSidebar(mx, cy, ch);
 
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
         Voce(ic, tx, "lb", "TAB", L("Tab", "Scheda"));
         Voce(ic, tx, "rb", "Q", L("Tab", "Scheda"));
+        if (menuScheda == 0) Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
     }
