@@ -5548,12 +5548,11 @@ public class Pesca : Script
         float mw = LeggiF("menu_larga", 1168f);
         float ty = LeggiF("menu_titolo_y", 26f);
         TestoMenu(L("Fishing", "Pesca"), mx, ty, LeggiF("menu_titolo_testo", 1.1f), 4, 0, 245, 245, 250, 255);
-        int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
-        int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
+        // a destra, sulla stessa riga del titolo: livello e XP
         float dx = mx + mw;
-        TestoMenu(L("LEVEL ", "LIV. ") + livelloPescatore, dx, ty + 2f, 0.42f, 4, 2, 245, 245, 250, 255);
-        TestoMenu(hh.ToString("00") + ":" + mi.ToString("00"), dx, ty + 20f, 0.42f, 4, 2, 245, 245, 250, 255);
-        TestoMenu(xpTot + " XP", dx, ty + 38f, 0.42f, 4, 2, 130, 200, 245, 255);
+        float dy = ty + LeggiF("menu_liv_giu", 14f);
+        TestoMenu(L("LEVEL ", "LIV. ") + livelloPescatore + "   " + xpTot + " XP", dx, dy,
+                  LeggiF("menu_liv_testo", 0.55f), 4, 2, 245, 245, 250, 255);
 
         // le schede
         float sy = LeggiF("menu_schede_y", 82f);
