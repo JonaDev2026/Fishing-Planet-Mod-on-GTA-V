@@ -5802,6 +5802,14 @@ public class Pesca : Script
                 sbArea.Add(ord[i]);
             }
         }
+        if (menuScheda == 5)
+        {
+            sbVoci.Add(L("Float size", "Grandezza galleggiante")); sbDestra.Add(GallZoomTxt()); sbArea.Add(0);
+            sbVoci.Add(L("Language", "Lingua")); sbDestra.Add(lang == 1 ? "Italiano" : "English"); sbArea.Add(1);
+            sbVoci.Add(L("Clear the log", "Azzera il diario")); sbDestra.Add(""); sbArea.Add(2);
+            sbVoci.Add(L("Start over", "Ricomincia da zero")); sbDestra.Add(""); sbArea.Add(3);
+            sbVoci.Add(L("Guide", "Guida")); sbDestra.Add(""); sbArea.Add(4);
+        }
         if (menuScheda == 2)
         {
             // il negozio: tutte le categorie, nell'ordine degli scaffali
@@ -5816,6 +5824,230 @@ public class Pesca : Script
         if (sbSel >= sbVoci.Count) sbSel = 0;
         sbTop = 0;
         sbScheda = menuScheda;
+    }
+
+    // LE IMPOSTAZIONI: la lista a sinistra (galleggiante, lingua, azzera,
+    // ricomincia, guida) e a destra le scelte, o la guida coi capitoli.
+    int impSel = 0;                      // la riga scelta a destra
+    List<string> guCapitoli = new List<string>();
+    List<List<string>> guTesti = new List<List<string>>();   // i paragrafi di ogni capitolo ("- " = punto)
+    int guLingua = -1, guCap = 0, guTop = 0, guScroll = 0;
+
+    void CaricaGuida()
+    {
+        guCapitoli.Clear(); guTesti.Clear();
+        string[] r = LeggiRighe(lang == 1 ? "guida_it.txt" : "guida_en.txt");
+        List<string> cur = null;
+        string par = "";
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].TrimEnd();
+            if (l.StartsWith("#") && !l.StartsWith("## ")) continue;
+            if (l.StartsWith("## "))
+            {
+                if (cur != null && par.Length > 0) cur.Add(par);
+                par = "";
+                cur = new List<string>();
+                guCapitoli.Add(l.Substring(3).Trim());
+                guTesti.Add(cur);
+                continue;
+            }
+            if (cur == null) continue;
+            if (l.Trim().Length == 0) { if (par.Length > 0) cur.Add(par); par = ""; continue; }
+            if (l.StartsWith("- ")) { if (par.Length > 0) cur.Add(par); par = ""; cur.Add(l); continue; }
+            par = (par.Length == 0) ? l.Trim() : par + " " + l.Trim();
+        }
+        if (cur != null && par.Length > 0) cur.Add(par);
+        guLingua = lang;
+        if (guCap >= guCapitoli.Count) guCap = 0;
+    }
+
+    // una riga di scelta a destra: bianca quando e' la scelta, con la spunta
+    void RigaScelta(float x, float w, float y, string testo, bool scelto, bool sel)
+    {
+        if (sel)
+        {
+            DisegnaRett(x, y, w, 24f, 245, 245, 250, 255);
+            TestoMenu(testo, x + 12f, y + 3f, 0.26f, 0, 0, 20, 22, 28, 255);
+            if (scelto) TestoMenu("X", x + w - 14f, y + 3f, 0.26f, 0, 1, 20, 22, 28, 255);
+        }
+        else
+        {
+            DisegnaRett(x, y, w, 24f, 0, 0, 0, 120);
+            TestoMenu(testo, x + 12f, y + 3f, 0.26f, 0, 0, 245, 245, 250, 255);
+            if (scelto) TestoMenu("X", x + w - 14f, y + 3f, 0.26f, 0, 1, 130, 225, 180, 255);
+        }
+    }
+
+    void DisegnaImpostazioni(float px, float py, float pw, float ph)
+    {
+        if (sbSel < 0 || sbSel >= sbArea.Count) return;
+        int v = sbArea[sbSel];
+        float pad = LeggiF("menu_pn_bordo", 10f);
+        float x = px + pad, w = pw - pad * 2f;
+        float ts = LeggiF("menu_eq_titolo_testo", 0.32f), ta = LeggiF("menu_eq_titolo_alto", 26f);
+        float fondo = py + ph - pad;
+        float y = py + pad;
+        if (v == 0)
+        {
+            y = SezioneColonna(L("FLOAT SIZE ON SCREEN", "GRANDEZZA DEL GALLEGGIANTE SULLO SCHERMO"), x, y, w, ts, ta);
+            int k;
+            for (k = 0; k < GALL_ZOOM.Length; k++)
+            {
+                string t = (k == 0) ? L("Real size", "Vera") : "x" + GALL_ZOOM[k].ToString("0.0", CultureInfo.InvariantCulture);
+                RigaScelta(x, w, y, t, gallZoom == k, menuLato == 1 && impSel == k);
+                y += 26f;
+            }
+        }
+        else if (v == 1)
+        {
+            y = SezioneColonna(L("LANGUAGE", "LINGUA"), x, y, w, ts, ta);
+            RigaScelta(x, w, y, "Italiano", lang == 1, menuLato == 1 && impSel == 0); y += 26f;
+            RigaScelta(x, w, y, "English", lang != 1, menuLato == 1 && impSel == 1); y += 26f;
+        }
+        else if (v == 2)
+        {
+            y = SezioneColonna(L("CLEAR THE LOG", "AZZERA IL DIARIO"), x, y, w, ts, ta);
+            y = TestoRighe(L("Deletes every catch from the log: species, records, baits and hooks. Level, money and tackle stay. It does not come back.",
+                             "Cancella tutte le prese dal diario: specie, record, esche e ami. Livello, soldi e attrezzatura restano. Non torna indietro."),
+                           x + 10f, y + 4f, w - 20f, 0.24f, 200, 202, 210);
+            y += 10f;
+            RigaScelta(x, w, y, L("Clear the log", "Azzera il diario"), false, menuLato == 1 && impSel == 0);
+        }
+        else if (v == 3)
+        {
+            y = SezioneColonna(L("START OVER", "RICOMINCIA DA ZERO"), x, y, w, ts, ta);
+            y = TestoRighe(L("Deletes everything: log, points, level, and all the tackle you bought. Money stays, that is GTA's. It does not come back.",
+                             "Cancella tutto: diario, punti, livello e tutta l'attrezzatura comprata. I soldi restano, quelli sono di GTA. Non torna indietro."),
+                           x + 10f, y + 4f, w - 20f, 0.24f, 235, 90, 80);
+            y += 10f;
+            RigaScelta(x, w, y, L("Start over", "Ricomincia da zero"), false, menuLato == 1 && impSel == 0);
+        }
+        else
+        {
+            // LA GUIDA: i capitoli in una colonna, il testo a destra
+            if (guLingua != lang) CaricaGuida();
+            float cw = LeggiF("menu_guida_cap", 240f);
+            float rh = LeggiF("menu_sb_riga", 26f);
+            int righe = (int)((fondo - y) / rh);
+            if (righe < 1) righe = 1;
+            if (guCap < guTop) guTop = guCap;
+            if (guCap >= guTop + righe) guTop = guCap - righe + 1;
+            int i;
+            for (i = 0; i < righe && guTop + i < guCapitoli.Count; i++)
+            {
+                int k = guTop + i;
+                float ry = y + i * rh;
+                bool sel = (k == guCap);
+                if (sel) DisegnaRett(x, ry, cw, rh - 2f, 245, 245, 250, menuLato == 1 ? 255 : 170);
+                else DisegnaRett(x, ry, cw, rh - 2f, 0, 0, 0, 120);
+                TestoMenu(EntraMenu(guCapitoli[k], 0.26f, 0, cw - 20f), x + 10f, ry + rh * 0.5f - 9f, 0.26f, 0, 0,
+                          sel ? 20 : 245, sel ? 22 : 245, sel ? 28 : 250, 255);
+            }
+            // il testo
+            float tx = x + cw + pad, tw = w - cw - pad;
+            DisegnaRett(tx, y, tw, fondo - y, 0, 0, 0, 120);
+            if (guCap < guCapitoli.Count)
+            {
+                float ty = y;
+                ty = SezioneColonna(guCapitoli[guCap].ToUpper(), tx, ty, tw, ts, ta);
+                float sc = LeggiF("menu_guida_testo", 0.24f), lh = LeggiF("menu_guida_riga", 16f);
+                // tutte le righe del capitolo, poi si mostrano da guScroll in giu'
+                List<string> tutte = new List<string>();
+                List<string> par = guTesti[guCap];
+                int q;
+                for (q = 0; q < par.Count; q++)
+                {
+                    bool punto = par[q].StartsWith("- ");
+                    List<string> rr = RigheMenu(punto ? par[q].Substring(2) : par[q], sc, 0, tw - 24f - (punto ? 14f : 0f));
+                    int z;
+                    for (z = 0; z < rr.Count; z++) tutte.Add((punto ? (z == 0 ? "-\u0001" : " \u0001") : "") + rr[z]);
+                    if (!punto) tutte.Add("");
+                }
+                int vis = (int)((fondo - ty - 6f) / lh);
+                if (vis < 1) vis = 1;
+                if (guScroll > tutte.Count - vis) guScroll = tutte.Count - vis;
+                if (guScroll < 0) guScroll = 0;
+                for (q = guScroll; q < tutte.Count && q - guScroll < vis; q++)
+                {
+                    string l = tutte[q];
+                    float lx = tx + 12f;
+                    if (l.IndexOf('\u0001') >= 0)
+                    {
+                        string pre = l.Substring(0, l.IndexOf('\u0001'));
+                        l = l.Substring(l.IndexOf('\u0001') + 1);
+                        if (pre == "-") TestoMenu("-", lx, ty, sc, 0, 0, 245, 205, 80, 255);
+                        lx += 14f;
+                    }
+                    if (l.Length > 0) TestoMenu(l, lx, ty, sc, 0, 0, 225, 227, 232, 255);
+                    ty += lh;
+                }
+                // la freccia se c'e' altro sotto
+                if (guScroll + vis < tutte.Count)
+                    TestoMenu("v", tx + tw * 0.5f, fondo - 16f, 0.24f, 0, 1, 245, 245, 250, 200);
+            }
+        }
+    }
+
+    void TastiImpostazioni(int now)
+    {
+        if (sbVoci.Count == 0) return;
+        bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
+               || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
+        bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 19)
+                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 173);
+        bool dx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 175);
+        bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174);
+        bool ok = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201);
+        int v = (sbSel < sbArea.Count) ? sbArea[sbSel] : 0;
+        int n = 1;
+        if (v == 0) n = GALL_ZOOM.Length;
+        else if (v == 1) n = 2;
+        if (menuLato == 0 && (su || giu))
+        {
+            int q = sbVoci.Count;
+            sbSel = (sbSel + (giu ? 1 : q - 1)) % q;
+            impSel = 0; guScroll = 0;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 0 && dx) { menuLato = 1; impSel = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && sx) { menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (v == 4 && menuLato == 1 && dx) { menuLato = 2; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (v == 4 && menuLato == 2 && sx) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (v == 4 && menuLato == 1 && (su || giu))
+        {
+            int q = guCapitoli.Count;
+            if (q > 0) guCap = (guCap + (giu ? 1 : q - 1)) % q;
+            guScroll = 0;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (v == 4 && menuLato == 2 && (su || giu))
+        {
+            guScroll += giu ? 3 : -3;
+            if (guScroll < 0) guScroll = 0;
+            menuNuovoTasto = now + 80;
+        }
+        else if (menuLato == 1 && (su || giu))
+        {
+            impSel = (impSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 1 && ok)
+        {
+            menuNuovoTasto = now + 300;
+            if (v == 0) { Esegui("imp_gall " + impSel); SuonoMenu("menu_apri.wav"); RiempiSidebar(); }
+            else if (v == 1)
+            {
+                lang = (impSel == 0) ? 1 : 0;
+                ScriviCfg("lingua", "" + lang);
+                RiscriviTutto();
+                SuonoMenu("menu_apri.wav");
+                RiempiSidebar();
+            }
+            else if (v == 2) { Esegui("imp_diario"); SuonoMenu("menu_apri.wav"); }
+            else if (v == 3) { Esegui("imp_reset"); SuonoMenu("menu_apri.wav"); if (!resetChiesto) ChiudiMenuNuovo(); }
+        }
     }
 
     // I TORNEI: come la scheda delle zone. La lista dei tornei a sinistra,
@@ -7246,6 +7478,7 @@ public class Pesca : Script
         if (menuScheda == 2) { TastiNegozio(now); return; }
         if (menuScheda == 3) { TastiDiario(now); return; }
         if (menuScheda == 4) { TastiTornei(now); return; }
+        if (menuScheda == 5) { TastiImpostazioni(now); return; }
         if (menuScheda != 0 || sbVoci.Count == 0) return;
         bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
@@ -7422,6 +7655,12 @@ public class Pesca : Script
             float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
             DisegnaPannelloTorneo(mx + sbw, cy, mw - sbw, ch);
         }
+        if (menuScheda == 5)
+        {
+            DisegnaSidebar(mx, cy, ch);
+            float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
+            DisegnaImpostazioni(mx + sbw, cy, mw - sbw, ch);
+        }
 
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
@@ -7505,6 +7744,22 @@ public class Pesca : Script
         {
             Voce(ic, tx, "croce_sugiu", "^ v", L("Fish", "Pesce"));
             Voce(ic, tx, "croce_sxdx", "<", L("Competition", "Torneo"));
+        }
+        if (menuScheda == 5 && menuLato == 0)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "croce_dx", ">", L("Open", "Apri"));
+        }
+        if (menuScheda == 5 && menuLato == 1)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            if (sbSel < sbArea.Count && sbArea[sbSel] == 4) Voce(ic, tx, "croce_sxdx", "< >", L("List / Text", "Lista / Testo"));
+            else { Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Confirm", "Conferma")); Voce(ic, tx, "croce_sxdx", "<", L("List", "Lista")); }
+        }
+        if (menuScheda == 5 && menuLato == 2)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Scroll", "Scorri"));
+            Voce(ic, tx, "croce_sxdx", "<", L("Chapters", "Capitoli"));
         }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);

@@ -1,0 +1,177 @@
+# LA GUIDA - si legge dal menu, scheda IMPOSTAZIONI, voce Guida.
+# "## " apre un capitolo; una riga vuota separa i paragrafi; "- " e' un punto.
+# Tutto quello che c'e' scritto qui e' quello che fa il codice.
+
+## Come si gioca
+La mod e' una pesca vera, costruita sui dati di Fishing Planet: 239 specie con i loro pesi, le loro esche, i loro ami, le loro ore e la loro rarita'. Non e' "premi un tasto e prendi un pesce": conta dove sei, che ora e', che temperatura ha l'acqua, cosa hai montato e come lo usi.
+
+La giornata funziona cosi': dal menu compri la licenza di un'acqua, vai sul posto e premi "Inizia a pescare". L'orologio va alle 5 del mattino e rallenta: una giornata di 24 ore dura circa due ore vere. A fine giornata la nassa si svuota, il pesce si vende e tutto quello che avevi montato torna nello zaino.
+
+Il senso della mod sta nel diario piu' che nella barra dei livelli: sapere che il Gudgeon lo prendi a Zancudo all'alba coi vermi rossi, e che nel canyon c'e' una trota che nell'Alamo non trovi.
+
+## I comandi
+Il menu si apre con RB + SINISTRA della croce, oppure con F7 dalla tastiera. Dentro al menu il mondo e' fermo. LB e RB cambiano scheda, la croce si muove, A conferma, B torna indietro. In basso c'e' sempre la barra dei tasti: mostra solo quelli utili in quel momento.
+
+Con la canna in mano, prima del lancio:
+- LB tenuto premuto (TAB): la ruota degli attrezzi.
+- RT tenuto e mollato (clic): carica e lancia.
+- Croce sinistra e destra: la frizione del mulinello.
+- Croce su e giu': la profondita' dell'esca sotto il galleggiante.
+- RB (Q): cambia esca. X (SPAZIO): ripone la canna.
+
+Con la lenza in acqua:
+- RT (clic): recupera la lenza e combatte il pesce.
+- A (INVIO): aggancia il pesce quando abbocca. Hai un secondo e mezzo.
+- Levetta destra (mouse): muove la canna.
+- LB (TAB): ritira la lenza e apre la ruota.
+
+Col pesce in mano: A lo tieni, va nella nassa. B lo ributti in acqua.
+
+## La ruota degli attrezzi
+Mentre peschi LB non apre la ruota delle armi: apre la ruota degli attrezzi. Tieni premuto LB, con la levetta destra scegli lo spicchio, con la croce sinistra e destra scorri i pezzi di quella categoria che hai nello zaino, lasci LB e tutte le scelte si montano insieme.
+
+La prima voce di ogni spicchio e' "Vuoto": smonta quel pezzo. Se lasci LB con la canna montata e non ce l'hai in mano, la prendi in mano; se smonti la canna, la riponi.
+
+## Le zone e la licenza
+Ci sono 35 acque fra Los Santos e Blaine County. Ogni zona della mappa corrisponde a un'acqua vera di Fishing Planet e ne ha i pesci: l'Alamo Sea e' un lago americano di pesci gatto e bass, il fiume Zancudo e' un torrente di trote, il mare di Paleto e' il fiordo norvegese dei merluzzi e degli squali, Vespucci e Chumash sono le coste della Florida.
+
+Ogni acqua ha un livello: sotto quel livello non ti fanno entrare. Le acque grandi hanno piu' tratti di riva, e tratti diversi hanno livelli e pesci diversi.
+
+La licenza si compra dalla scheda ZONE, da qualsiasi posto: resta in tasca finche' non sei sul posto e premi "Inizia a pescare". Vale per tutta l'acqua, non per il singolo tratto. Due tagli: un giorno e tre giorni (2,85 volte un giorno, il rapporto di Fishing Planet). Il prezzo e' il 25% di quello che vale una nassa piena del miglior pesce di quell'acqua: la licenza e' il vero freno, non l'attrezzatura.
+
+Per partire servono almeno una canna, un mulinello con la lenza e una nassa.
+
+## Casa, zaino, cassetta e portacanne
+Tutto quello che compri sta a casa. Prima di uscire carichi lo zaino dalla scheda EQUIPAGGIAMENTO: A sposta un pezzo da casa allo zaino e viceversa, X lo vende, Y lo getta. Con la giornata in corso lo zaino e' quello che ti sei portato: quello che hai dimenticato a casa te lo sei dimenticato.
+
+Lo zaino ce l'hai da sempre: una canna, un mulinello, due lenze e dieci oggetti (ami, galleggianti, artificiali, esche). Gli oggetti si contano per tipo, non per pezzo: un secondo cucchiaino uguale a uno che hai gia' non prende posto.
+
+Il portacanne e la cassetta sono fissi: appena li possiedi fanno posto, che stiano a casa o dietro. Il portacanne aggiunge canne, mulinelli e lenze; la cassetta aggiunge oggetti e lenze. Gli spazi si sommano.
+
+La nassa va a parte, una sola alla volta, e mentre peschi sotto la nassa vedi quello che c'e' nella rete.
+
+## Le canne
+Ogni canna ha una lunghezza, un peso di lancio (i grammi dell'esca che lancia bene), i chili di lenza che regge e una potenza. Nove tipi: spinning, casting, da fondo, feeder, match, da carpa, telescopiche, da mare, spod.
+
+Ogni famiglia di pesci ha le sue canne: la carpa vuole canne da carpa, feeder, spod o da fondo; lucci, bass e persici spinning e casting; trote e salmoni spinning, casting o match; il mare canne da mare e casting; abramidi e pesci piccoli match, feeder o telescopica; i pesci gatto fondo, carpa o mare; gli storioni fondo e carpa. Con la canna sbagliata il pesce esce meno: 0,60 se e' una match, fondo o telescopica, 0,35 altrimenti.
+
+Il cucchiaino con una canna da lancio vale pieno; con una match o una telescopica vale 0,15.
+
+## I mulinelli e la frizione
+Il mulinello ha una frizione in chili, un rapporto di recupero e una capacita': quanti metri di filo ci stanno, secondo il diametro. Piu' sottile e' la lenza, piu' metri entrano.
+
+La frizione ha 12 posizioni. Tutta chiusa, la lenza non cede e la tensione sale alla svelta; piu' la apri, piu' il pesce si porta via filo e meno tira sulla lenza. Sull'HUD e' l'anello attorno al mulinello.
+
+## Le lenze
+Quattro tipi: monofilo, fluorocarbon, trecciato e lenze da mare. Ogni lenza ha un diametro in millimetri, un carico in chili e i metri della bobina.
+
+La lenza e' una bobina coi suoi metri. Armandola, il mulinello ne taglia quanti ne tiene; quello che avanza resta come bobina separata coi metri rimasti. Smontandola torna una bobina. Le bobine tagliate le vedi sotto Lenze, con i loro metri.
+
+Quando la lenza si spezza perdi tre metri, l'amo, il galleggiante e l'esca. Se avevi un leader si spezza lui e la lenza madre resta intera.
+
+## Quanto reggi
+Il pesce che riesci a tirare su e' il piu' debole dei tre pezzi: la canna regge fino a tot chili, il mulinello frena fino a tot, la lenza si spezza a tot. Vince il numero piu' basso, ed e' scritto sull'HUD accanto alla canna. Un pesce piu' pesante di cosi' non ti viene proprio attaccato.
+
+La nassa ha due limiti suoi: il pesce singolo piu' grosso che ci sta e i chili in tutto. Con la nassa piena il pesce lo puoi solo ributtare.
+
+## Gli ami e i terminali
+Gli ami vanno dal #16 (il piu' piccolo) al #1, poi dal #1/0 al #18/0 (il piu' grande). Ogni pesce ha sul wiki il suo intervallo di misure. Ci sono anche le testine piombate (amo e piombo in un pezzo solo, per le esche morbide), i rig gia' montati, i leader (il pezzo di filo prima dell'amo: quello in titanio serve coi pesci che hanno i denti) e i piombi.
+
+Il piombo e il galleggiante da soli non pescano: in punta ci vuole un amo, una testina, un rig o un artificiale.
+
+Un predatore da 1,2 kg in su, agganciato senza leader, la lenza te la trancia e se ne va. I piccoli si prendono anche col filo nudo.
+
+## I galleggianti
+Il galleggiante ha una misura e una portata: quanto piombo regge (leggera, media, pesante). Sull'HUD lo vedi in scala col fondo vero: se il terminale e' piu' lungo del fondo, il galleggiante si corica sull'acqua. E' il segno che l'esca tocca terra.
+
+La profondita' dell'esca sotto il galleggiante si regola con la croce, da 13 cm a 2,5 metri. Il cucchiaino e il galleggiante non convivono: a spinning l'artificiale e' l'amo.
+
+## Le esche
+Cinque famiglie di esche naturali: comuni (pane, formaggio, mais), vermi e insetti, fresche, boilies e pellet, da mare. Ogni esca ha una quantita' per confezione, un peso (che deve stare nel lancio della canna) e le misure d'amo con cui si usa. L'esca si consuma a ogni abboccata.
+
+Ogni pesce ha le sue esche preferite, quelle della sua pagina sul wiki: le vedi nella scheda del pesce, dentro ZONE. Con una delle sue abbocca sempre. Con un'esca che non e' la sua abbocca una volta su tre; le altre due se ne va e riaspetti. Senza niente all'amo non abbocca nessuno.
+
+## Le esche artificiali
+Sei tipi: cucchiaini, rotanti, minnow e popper, jig da bass, siliconici, da mare. Ogni artificiale ha un peso, una lunghezza e la misura del suo amo, che conta per la taglia come un amo normale.
+
+I predatori (le specie che sul wiki hanno gli artificiali) con un'esca naturale abboccano a 0,25 e quasi solo piccoli: per loro ci vuole il cucchiaino. Un artificiale che quel pesce non insegue lo prende una volta su tre, come un'esca sbagliata.
+
+## Sull'acqua, passo per passo
+Prendi la canna in mano. Puoi camminare lungo la riva, scegliere la frizione e la profondita'. Tieni premuto RT: la barra si carica; molla e l'esca parte. Se finisce sul prato o sull'asfalto la lenza rientra da sola.
+
+Poi si aspetta. Il galleggiante sta a galla, o il cucchiaino affonda. Puoi recuperare piano per portare l'esca verso di te; a galleggiante, tirare forte mentre il pesce assaggia lo spaventa.
+
+Negli ultimi secondi prima dell'abboccata il galleggiante balla e il pad vibra. Poi sparisce, il pad vibra forte e nella barra compare "A - Aggancia il pesce". Hai un secondo e mezzo.
+
+La lotta: tieni RT per recuperare. La barra della tensione va da blu a rosso. Il pesce fa le sue corse: si porta via filo, cambia direzione e carica la lenza; man mano che si stanca il raggio si stringe. Se la tensione arriva a fondo scala la lenza si spezza. Gli ultimi metri sono i piu' duri: sotto i tre metri il pesce vede la riva e si impunta.
+
+A riva compare la scheda: nome, foto, taglia, peso, valore e punti. A lo tieni, B lo ributti.
+
+## Perche' abbocca: la temperatura
+GTA non ha una temperatura: la calcola la mod, e la vedi sull'HUD. L'aria fa 13 gradi alle 4 del mattino e 27 alle 16, con una curva morbida in mezzo; il meteo sposta di qualche grado; sopra i 50 metri di quota l'aria scende di 0,6 gradi ogni 100 metri. L'acqua e' piu' stabile: 16 gradi piu' il 45% dello scarto dell'aria dai 20. Questi numeri sono nostri.
+
+Ogni specie ha il suo intervallo: minimo, massimo, ottimo. Trote e salmerini stanno bene fra 4 e 16 gradi, carpe e pesci gatto fra 15 e 28, i pesci dell'Amazzonia fra 24 e 32, i merluzzi del mare del Nord fra 3 e 12. Sono valori indicativi presi dalla biologia generale: il wiki non li ha.
+
+Alla sua temperatura ottima un pesce vale pieno; ai bordi del suo intervallo vale il 40%; oltre 4 gradi fuori non esce. Quindi al lago d'inverno escono trote e lucci, d'estate carpe e pesci gatto. Il merluzzo di Paleto non lo prendi con l'acqua a 25 gradi.
+
+Nella scheda della zona, in ZONE, c'e' il grafico dell'attivita' dei pesci di quel posto ora per ora, col meteo di adesso, e la riga dell'ora in cui sei.
+
+## Perche' abbocca: l'attesa
+Quanto aspetti dopo il lancio dipende da quanto e' viva l'acqua adesso: si guarda, fra i pesci del posto, quello che sta meglio con la temperatura di adesso. Se ce n'e' uno alla sua ottima, l'attesa e' di circa un minuto. Se tutti stanno ai bordi del loro intervallo, due minuti e mezzo. Se nessuno e' nel suo intervallo, fino a sei o sette minuti.
+
+La distanza del lancio non conta. L'esca non conta.
+
+## Perche' abbocca: il sorteggio
+Scaduta l'attesa si guarda ogni specie del posto. Alcune vengono scartate: pesa piu' di quanto reggi, l'amo e' troppo lontano dalla sua misura, la tecnica e' impossibile, e' piu' di 4 gradi fuori dalla sua temperatura.
+
+A quelle rimaste si da' un peso nel sorteggio, che e' il prodotto di:
+- La rarita', dal wiki: comunissimo 100, comune 55, normale 28, raro 12, rarissimo 5.
+- La misura dell'amo: dentro l'intervallo del pesce 1; una misura fuori 0,55; due fuori 0,25; tre fuori 0,08.
+- L'ora del giorno, secondo l'abitudine della specie: chi mangia di notte esce di notte, poco all'alba e al tramonto, quasi niente di giorno; e cosi' via. Notte e' dalle 21 alle 5, alba e tramonto 5-8 e 18-21.
+- La tecnica: predatore a esca naturale 0,25; cucchiaino con canna sbagliata 0,15.
+- La canna per la famiglia del pesce e l'amo per la famiglia (specialista di un'altra famiglia 0,55, generico 0,80, il suo 1).
+- La temperatura: 1 all'ottima, 0,4 ai bordi.
+- Il punto caldo: se l'esca sta sopra il punto di quella specie, per sei.
+
+Si estrae in proporzione ai pesi. Se nessuna specie resta in gioco non succede niente: la lenza resta in acqua e si riprova, senza avvisi. Se non abbocca mai, la domanda e' sempre la stessa: che ora e', che temperatura ha l'acqua, che amo hai.
+
+## I punti caldi
+Dentro ogni acqua i pesci non stanno sparsi: ci sono punti, una buca, una sponda, un canneto, dove una specie sta di casa. Sopra il punto di quella specie il pesce pesa sei volte tanto nel sorteggio; sui punti profondi la taglia si sposta verso l'alto. I punti non sono segnati: si scoprono.
+
+Mentre sei in riva ogni tanto passa un pesce sott'acqua, da solo o in un gruppetto. Sono le specie di quell'acqua: ti dicono cosa c'e', non cosa abbocchera'.
+
+## La taglia del pesce
+Sorteggiata la specie si tira il peso, fra un minimo e un tetto. Il minimo e' il 60% del peso comune del wiki. Il tetto lo decide l'amo, come in Fishing Planet: con l'amo alla misura piccola dell'intervallo del pesce escono solo i comuni; dalla meta' in su anche i trofei; con la misura grande anche gli esemplari unici. Il luccio va da #1/0 a #5/0: con #1/0 e #2/0 comuni, con #3/0 e #4/0 trofei, con #5/0 unici. L'amo dell'artificiale conta allo stesso modo.
+
+Il tetto non passa mai quello che reggi. Il dado e' truccato verso il basso: l'amo apre il tetto, non ci porta. L'unico puo' superare del 20% il peso del wiki.
+
+Dopo un colpo grosso c'e' una pausa per specie, in minuti veri: preso un esemplare unico, quella specie non da' altri unici per 20 minuti; preso un trofeo, niente trofei per 5 minuti.
+
+## La robaccia
+Ogni tanto all'amo si attacca una scarpa, un sacchetto, un cono, un copertone, una pianta. Valgono due soldi, non danno punti e nella nassa non ci vanno.
+
+La robaccia esce solo con l'esca sbagliata: quando il pesce estratto trova un'esca che non e' la sua e se ne va, una volta su quattro al suo posto si aggancia la robaccia. Con l'esca giusta non esce mai. Senza niente all'amo esce una volta su tre.
+
+## Esperienza e livelli
+Ogni pesce tenuto da' esperienza: 20 punti piu' 15 per chilo, moltiplicati per come l'hai preso (esca preferita 1,5, amo giusto 1,3, tutti e due 2), per quante volte l'hai gia' preso (prima volta 8, dalla seconda alla quinta 3, fino alla ventesima 1,5, oltre 1,3) e per la taglia (trofeo 2, unico 3).
+
+Nessun fattore domina: un pesce nuovo preso male vale come uno noto preso benissimo. Si sale pescando specie diverse, non ripetendo la stessa.
+
+Il livello sblocca l'attrezzatura e le zone, coi livelli veri del wiki. Quanto ci metti a salire e' nostro: circa tre uscite per livello.
+
+## Il diario e i soldi
+Quello che prendi finisce nel diario: per ogni zona i pesci che hai preso li' e quante volte, e per ogni specie il record di peso, l'esca e l'amo con cui l'hai fatto. Nella scheda della zona le tre caselle comune, trofeo e unico si segnano quando le hai prese; la barra dell'esplorazione dice quante specie del posto hai gia' scoperto.
+
+I prezzi dell'attrezzatura sono quelli del wiki divisi per 10. Il pesce si vende a fine giornata a prezzo pieno al chilo, quello del wiki. L'attrezzatura si rivende a meta' prezzo, da casa o dallo zaino.
+
+## I tornei
+51 tornei, uno per specie, presi dalle pagine del wiki: durata, livello minimo, quota, premi, regola di punteggio, attrezzatura ammessa, ora d'inizio e meteo sono i loro. L'unica cosa nostra e' la zona: ogni torneo sta nella nostra acqua dove quel pesce vive.
+
+Il torneo e' una giornata a se'. Dalla scheda TORNEI compri l'iscrizione da qualsiasi posto: il biglietto resta in tasca. Sul posto premi "Inizia il torneo": parte la giornata, l'ora e il cielo del torneo, e i minuti. Alla fine, o se ti ritiri, la giornata si chiude.
+
+Con una licenza in tasca o in corso non ti puoi iscrivere; col biglietto in tasca non compri la licenza. Bronzo, argento e oro sono chili di quel pesce da mettere insieme, con i loro premi, piu' un extra per ogni trofeo ed esemplare unico.
+
+## Cosa e' vero e cosa e' nostro
+Dal wiki di Fishing Planet: il catalogo intero, i pesci con pesi comune, trofeo e unico, prezzi, esche preferite, artificiali, misura dell'amo, famiglia, orari e rarita'; canne, mulinelli, lenze, ami, terminali, esche, artificiali, galleggianti, cassette, nasse con livelli e prezzi; le acque e i loro pesci; i tornei.
+
+Nostri, e scritti come tali in testa al file che li contiene: la temperatura dell'acqua e gli intervalli per specie; i pesi del sorteggio; l'attesa; l'una su tre dell'esca sbagliata e la robaccia; i gradini dell'amo per la taglia e le pause; i punti caldi; la curva dei livelli, la formula dei punti, i prezzi delle licenze, il cambio; le zone dei tornei; i portacanne; trofeo e unico delle 23 specie che sul wiki hanno un peso solo.

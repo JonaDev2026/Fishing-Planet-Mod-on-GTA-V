@@ -1,0 +1,177 @@
+# THE GUIDE - read from the menu, SETTINGS tab, Guide entry.
+# "## " opens a chapter; an empty line separates paragraphs; "- " is a bullet.
+# Everything written here is what the code does.
+
+## How it works
+This is real fishing, built on Fishing Planet data: 239 species with their weights, baits, hooks, hours and rarity. It is not "press a button and get a fish": where you are, what time it is, how warm the water is, what you have rigged and how you use it all matter.
+
+A day goes like this: from the menu you buy the licence for a water, you go there and press "Start fishing". The clock goes to 5 in the morning and slows down: a 24-hour day lasts about two real hours. At the end of the day the keepnet is emptied, the fish is sold and everything you had rigged goes back into the backpack.
+
+The point of the mod is the log more than the level bar: knowing that you get the Gudgeon at Zancudo at dawn with red worms, and that in the canyon there is a trout you will not find in the Alamo.
+
+## Controls
+The menu opens with RB + DPAD LEFT, or F7 on the keyboard. Inside the menu the world stands still. LB and RB switch tab, the dpad moves, A confirms, B goes back. At the bottom there is always the key bar: it shows only the keys that matter right now.
+
+Rod in hand, before the cast:
+- LB held (TAB): the tackle wheel.
+- RT held and released (click): load and cast.
+- Dpad left and right: the reel drag.
+- Dpad up and down: the depth of the bait under the float.
+- RB (Q): change bait. X (SPACE): put the rod away.
+
+Line in the water:
+- RT (click): retrieve the line and fight the fish.
+- A (ENTER): hook the fish when it bites. You have a second and a half.
+- Right stick (mouse): moves the rod.
+- LB (TAB): pull the line in and open the wheel.
+
+Fish in hand: A keeps it, it goes in the keepnet. B throws it back.
+
+## The tackle wheel
+While fishing LB does not open the weapon wheel: it opens the tackle wheel. Hold LB, pick the slice with the right stick, scroll the pieces of that category you have in the backpack with dpad left and right, release LB and every choice is rigged together.
+
+The first entry of every slice is "Empty": it unrigs that piece. If you release LB with a rod rigged and not in hand, you take it in hand; if you unrig the rod, you put it away.
+
+## Spots and licence
+There are 35 waters between Los Santos and Blaine County. Every zone of the map matches a real Fishing Planet water and has its fish: the Alamo Sea is an American lake of catfish and bass, the Zancudo river is a trout stream, the Paleto sea is the Norwegian fjord of cod and sharks, Vespucci and Chumash are the Florida coasts.
+
+Every water has a level: below it you are not let in. Big waters have several stretches of shore, and different stretches have different levels and fish.
+
+The licence is bought from the SPOTS tab, from anywhere: it stays in your pocket until you are on the spot and press "Start fishing". It covers the whole water, not a single stretch. Two cuts: one day and three days (2.85 times one day, the Fishing Planet ratio). The price is 25% of what a full keepnet of the best fish of that water is worth: the licence is the real brake, not the tackle.
+
+To start you need at least a rod, a reel with its line and a keepnet.
+
+## Home, backpack, tackle box and rod case
+Everything you buy stays at home. Before going out you load the backpack from the TACKLE tab: A moves a piece from home to the backpack and back, X sells it, Y throws it away. With a day running the backpack is what you took with you: what you left at home stays at home.
+
+The backpack you always have: one rod, one reel, two lines and ten items (hooks, floats, lures, baits). Items count by type, not by piece: a second spoon identical to one you already have takes no room.
+
+The rod case and the tackle box are fixed: as soon as you own them they make room, whether at home or with you. The rod case adds rods, reels and lines; the tackle box adds items and lines. The spaces add up.
+
+The keepnet is separate, one at a time, and while fishing you see under it what is in the net.
+
+## Rods
+Every rod has a length, a casting weight (the grams of lure it casts well), the kilos of line it holds and a power. Nine types: spinning, casting, bottom, feeder, match, carp, telescopic, sea, spod.
+
+Every fish family has its rods: carp wants carp, feeder, spod or bottom rods; pike, bass and perch spinning and casting; trout and salmon spinning, casting or match; the sea wants sea rods and casting; bream and small fish match, feeder or telescopic; catfish bottom, carp or sea; sturgeon bottom and carp. With the wrong rod the fish comes out less: 0.60 with a match, bottom or telescopic rod, 0.35 otherwise.
+
+A lure on a casting rod is full value; on a match or telescopic rod it is 0.15.
+
+## Reels and drag
+The reel has a drag in kilos, a gear ratio and a capacity: how many metres of line fit, by diameter. The thinner the line, the more metres go in.
+
+The drag has 12 positions. Fully closed, the line does not give and tension rises fast; the more you open it, the more line the fish takes and the less it pulls on the line. On the HUD it is the ring around the reel.
+
+## Lines
+Four types: mono, fluorocarbon, braid and sea lines. Every line has a diameter in millimetres, a load in kilos and the metres on the spool.
+
+The line is a spool with its metres. When you rig it, the reel cuts as many as it holds; what is left stays as a separate spool with the remaining metres. Unrigging it gives a spool back. Cut spools show under Lines, with their metres.
+
+When the line snaps you lose three metres, the hook, the float and the bait. If you had a leader, the leader snaps and the main line stays whole.
+
+## What you can hold
+The fish you can land is the weakest of the three pieces: the rod holds up to so many kilos, the reel brakes up to so many, the line snaps at so many. The lowest number wins, and it is written on the HUD next to the rod. A heavier fish does not even take.
+
+The keepnet has two limits of its own: the biggest single fish that fits and the total kilos. With the keepnet full you can only release.
+
+## Hooks and terminal tackle
+Hooks go from #16 (the smallest) to #1, then from #1/0 to #18/0 (the largest). Every fish has its hook range on the wiki. There are also jig heads (hook and weight in one piece, for soft lures), ready rigs, leaders (the bit of line before the hook: the titanium one is for fish with teeth) and sinkers.
+
+A sinker and a float do not fish on their own: at the end there must be a hook, a jig head, a rig or a lure.
+
+A predator of 1.2 kg or more, hooked without a leader, cuts your line and leaves. Small ones are taken even on bare line.
+
+## Floats
+A float has a size and a load: how much lead it carries (light, medium, heavy). On the HUD you see it to scale with the real bottom: if the leader is longer than the depth, the float lies flat on the water. That is the sign the bait touches the ground.
+
+The depth of the bait under the float is set with the dpad, from 13 cm to 2.5 metres. A lure and a float do not go together: spinning, the lure is the hook.
+
+## Baits
+Five families of natural baits: common (bread, cheese, corn), worms and insects, fresh, boilies and pellets, sea. Every bait has a quantity per pack, a weight (which must fit the rod's casting weight) and the hook sizes it is used with. Bait is used up at every bite.
+
+Every fish has its preferred baits, the ones on its wiki page: you see them on the fish sheet, in SPOTS. With one of its own it always bites. With a bait that is not its own it bites one time in three; the other two it leaves and you wait again. With nothing on the hook nobody bites.
+
+## Lures
+Six types: spoons, spinners, minnows and poppers, bass jigs, soft plastics, sea. Every lure has a weight, a length and its hook size, which counts for the size like a normal hook.
+
+Predators (the species that have lures on the wiki) on natural bait bite at 0.25 and almost only small: for them you need the lure. A lure that fish does not chase is taken one time in three, like a wrong bait.
+
+## On the water, step by step
+Take the rod in hand. You can walk along the shore, set the drag and the depth. Hold RT: the bar loads; release and the bait flies. If it lands on grass or asphalt the line comes back by itself.
+
+Then you wait. The float sits, or the lure sinks. You can retrieve slowly to bring the bait toward you; on the float, pulling hard while the fish is tasting scares it away.
+
+In the last seconds before the bite the float dances and the pad vibrates. Then it disappears, the pad shakes hard and the bar shows "A - Hook the fish". You have a second and a half.
+
+The fight: hold RT to retrieve. The tension bar goes from blue to red. The fish makes its runs: it takes line, changes direction and loads the line; as it tires the radius shrinks. If tension reaches the top the line snaps. The last metres are the hardest: under three metres the fish sees the shore and digs in.
+
+On shore the card appears: name, photo, size, weight, value and points. A keeps it, B throws it back.
+
+## Why it bites: temperature
+GTA has no temperature: the mod computes it, and you see it on the HUD. Air is 13 degrees at 4 in the morning and 27 at 16, with a smooth curve in between; the weather shifts it a few degrees; above 50 metres of altitude air drops 0.6 degrees every 100 metres. Water is steadier: 16 degrees plus 45% of the air's distance from 20. These numbers are ours.
+
+Every species has its range: minimum, maximum, optimum. Trout and char are happy between 4 and 16 degrees, carp and catfish between 15 and 28, Amazon fish between 24 and 32, North Sea cod between 3 and 12. They are indicative values from general biology: the wiki does not have them.
+
+At its optimum a fish is worth full; at the edges of its range 40%; more than 4 degrees outside it does not come out. So at the lake in winter you get trout and pike, in summer carp and catfish. You will not get the Paleto cod with the water at 25 degrees.
+
+In the spot sheet, in SPOTS, there is the activity graph of that spot's fish hour by hour, with today's weather, and the line of the hour you are in.
+
+## Why it bites: the wait
+How long you wait after the cast depends on how alive the water is right now: among the spot's fish, the one that likes the current temperature best. If one is at its optimum, the wait is about a minute. If all are at the edges of their range, two and a half minutes. If none is in its range, up to six or seven minutes.
+
+Casting distance does not count. Bait does not count.
+
+## Why it bites: the draw
+When the wait is over every species of the spot is looked at. Some are discarded: heavier than you can hold, your hook too far from its size, the technique impossible, more than 4 degrees outside its temperature.
+
+The rest get a weight in the draw, the product of:
+- Rarity, from the wiki: very common 100, common 55, normal 28, rare 12, very rare 5.
+- Hook size: inside the fish's range 1; one size out 0.55; two out 0.25; three out 0.08.
+- Time of day, by the species' habit: night feeders come out at night, little at dawn and dusk, almost never by day; and so on. Night is 21 to 5, dawn and dusk 5-8 and 18-21.
+- Technique: predator on natural bait 0.25; lure on the wrong rod 0.15.
+- The rod for the fish's family and the hook for the family (specialist of another family 0.55, generic 0.80, its own 1).
+- Temperature: 1 at the optimum, 0.4 at the edges.
+- The hot spot: if the bait sits on that species' spot, times six.
+
+The draw is in proportion to the weights. If no species is left nothing happens: the line stays in the water and it tries again, with no warning. If it never bites, the question is always the same: what time is it, how warm is the water, what hook do you have.
+
+## Hot spots
+Inside every water the fish are not scattered: there are spots, a hole, a bank, a reed bed, where a species lives. On that species' spot the fish weighs six times as much in the draw; on deep spots the size shifts up. The spots are not marked: you find them.
+
+While you are on shore now and then a fish swims by underwater, alone or in a small group. They are the species of that water: they tell you what is there, not what will bite.
+
+## Fish size
+Once the species is drawn the weight is rolled, between a minimum and a ceiling. The minimum is 60% of the wiki's common weight. The ceiling is set by the hook, as in Fishing Planet: with the hook at the small size of the fish's range only commons come out; from the middle up trophies too; with the large size unique specimens too. Pike goes from #1/0 to #5/0: with #1/0 and #2/0 commons, with #3/0 and #4/0 trophies, with #5/0 uniques. The lure's hook counts the same way.
+
+The ceiling never exceeds what you can hold. The die is loaded toward the bottom: the hook opens the ceiling, it does not take you there. A unique can exceed the wiki weight by 20%.
+
+After a big catch there is a pause per species, in real minutes: after a unique specimen that species gives no other uniques for 20 minutes; after a trophy, no trophies for 5 minutes.
+
+## Junk
+Now and then a shoe, a bag, a cone, a tyre, a plant gets on the hook. They are worth pennies, give no points and do not go in the keepnet.
+
+Junk comes only with the wrong bait: when the drawn fish finds a bait that is not its own and leaves, one time in four junk hooks up instead. With the right bait it never comes. With nothing on the hook it comes one time in three.
+
+## Experience and levels
+Every fish kept gives experience: 20 points plus 15 per kilo, multiplied by how you took it (preferred bait 1.5, right hook 1.3, both 2), by how many times you already took it (first time 8, second to fifth 3, up to the twentieth 1.5, beyond 1.3) and by the size (trophy 2, unique 3).
+
+No factor dominates: a new fish taken badly is worth as much as a known one taken perfectly. You climb by fishing different species, not by repeating the same one.
+
+The level unlocks tackle and spots, with the real wiki levels. How long it takes to climb is ours: about three outings per level.
+
+## Log and money
+What you catch goes in the log: for every spot the fish you took there and how many times, and for every species the record weight, the bait and the hook you did it with. In the spot sheet the three boxes common, trophy and unique get ticked when you have taken them; the exploration bar says how many species of the spot you have already found.
+
+Tackle prices are the wiki's divided by 10. Fish is sold at the end of the day at full price per kilo, the wiki's. Tackle sells back at half price, from home or from the backpack.
+
+## Competitions
+51 competitions, one per species, from the wiki pages: duration, minimum level, entry fee, prizes, scoring rule, allowed tackle, start hour and weather are theirs. The only thing ours is the spot: every competition sits in our water where that fish lives.
+
+A competition is a day of its own. From the TOURNAMENTS tab you buy the entry from anywhere: the ticket stays in your pocket. On the spot you press "Start the competition": the day starts, with the competition's hour and sky, and the minutes run. At the end, or if you withdraw, the day closes.
+
+With a licence in your pocket or running you cannot sign up; with a ticket in your pocket you cannot buy a licence. Bronze, silver and gold are kilos of that fish to put together, with their prizes, plus an extra for every trophy and unique specimen.
+
+## What is real and what is ours
+From the Fishing Planet wiki: the whole catalogue, fish with common, trophy and unique weights, prices, preferred baits, lures, hook size, family, hours and rarity; rods, reels, lines, hooks, terminal tackle, baits, lures, floats, tackle boxes, keepnets with levels and prices; the waters and their fish; the competitions.
+
+Ours, and written as such at the top of the file that holds them: water temperature and the ranges per species; the draw weights; the wait; the one-in-three of the wrong bait and the junk; the hook steps for size and the pauses; the hot spots; the level curve, the points formula, licence prices, the exchange rate; the competition spots; the rod cases; trophy and unique for the 23 species that have a single weight on the wiki.
