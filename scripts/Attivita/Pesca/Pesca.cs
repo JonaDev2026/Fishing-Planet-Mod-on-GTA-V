@@ -14992,8 +14992,31 @@ public class Pesca : Script
                 float avanti = (t - 0.5f) * scenaLung;
                 float px = scenaX + dx * avanti - dy * scenaLato[q];
                 float py = scenaY + dy * avanti + dx * scenaLato[q];
-                float pz = scenaAcquaZ - LeggiF("pesci_scena_giu", 0.45f)
-                         + (float)Math.Sin(now * 0.003 + q) * 0.06f;
+                // IL PESCE STA SOTTO L'ACQUA DI DOVE PASSA, non sotto quella
+                // del punto di partenza: col mare mosso o la riva che sale
+                // usciva fuori. Si legge il pelo dell'acqua li' dove sta, e
+                // se li' l'acqua non c'e' piu' (o e' troppo bassa) si tiene
+                // un metro piu' sotto dell'ultimo punto buono, che non si veda
+                float giu = LeggiF("pesci_scena_giu", 0.45f);
+                float zq = AcquaA(px, py, scenaAcquaZ);
+                float pz;
+                if (zq > -9000f)
+                {
+                    pz = zq - giu + (float)Math.Sin(now * 0.003 + q) * 0.06f;
+                    // sopra il fondo, se il fondo e' vicino
+                    try
+                    {
+                        OutputArgument og = new OutputArgument();
+                        if (Function.Call<bool>(Hash.GET_GROUND_Z_FOR_3D_COORD, px, py, zq - 0.05f, og, false))
+                        {
+                            float fondo = og.GetResult<float>();
+                            if (zq - fondo < giu + 0.2f) pz = zq - 1000f;    // troppo basso: via dalla vista
+                            else if (pz < fondo + 0.15f) pz = fondo + 0.15f;
+                        }
+                    }
+                    catch { }
+                }
+                else pz = scenaAcquaZ - 1000f;
                 float coda = (float)Math.Sin(now * 0.012 + q * 2) * 8f;
                 try
                 {
