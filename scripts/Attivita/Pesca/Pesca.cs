@@ -6237,7 +6237,7 @@ public class Pesca : Script
                 int k = guTop + i;
                 float ry = y + i * rh;
                 bool sel = (k == guCap);
-                if (sel) DisegnaRett(x, ry, cw, rh - 2f, 245, 245, 250, AlfaSel(menuLato == 1));
+                if (sel) DisegnaRett(x, ry, cw, rh - 2f, 245, 245, 250, menuLato == 1 ? 255 : 170);
                 else DisegnaRett(x, ry, cw, rh - 2f, 0, 0, 0, 120);
                 TestoMenu(EntraMenu(guCapitoli[k], 0.26f, 0, cw - 20f), x + 10f, ry + rh * 0.5f - 9f, 0.26f, 0, 0,
                           sel ? 20 : 245, sel ? 22 : 245, sel ? 28 : 250, 255);
@@ -6646,7 +6646,7 @@ public class Pesca : Script
             Specie sp = pesci[diPesci[diTop + i]];
             float ry = y + i * rh;
             bool s = (menuLato == 1 && diTop + i == diSel);
-            if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, AlfaSel(true));
+            if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, 255);
             else DisegnaRett(x, ry, w, rh - 2f, 0, 0, 0, 120);
             if (sp.Img.Length > 0) Sprite(sp.Img, x + 4f, ry + 3f, iw, rh - 8f);
             float tx = x + 4f + iw + 10f;
@@ -6878,7 +6878,7 @@ public class Pesca : Script
             int k = top + i;
             float ry = y + i * rh;
             bool s = (k == sel);
-            if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, AlfaSel(attiva));
+            if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, attiva ? 255 : 170);
             else DisegnaRett(x, ry, w, rh - 2f, 0, 0, 0, 120);
             int r = s ? 20 : 245, g = s ? 22 : 245, b = s ? 28 : 250;
             TestoMenu(voci[k], x + 10f, ry + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
@@ -6921,7 +6921,7 @@ public class Pesca : Script
             float ry = y + i * rh;
             bool s = (menuLato == 2 && ngTop + i == ngSel);
             bool ok = (liv <= livelloPescatore);
-            if (s) DisegnaRett(x3, ry, w3, rh - 2f, 245, 245, 250, AlfaSel(true));
+            if (s) DisegnaRett(x3, ry, w3, rh - 2f, 245, 245, 250, 255);
             else DisegnaRett(x3, ry, w3, rh - 2f, 0, 0, 0, 120);
             if (img.Length > 0) Sprite(img, x3 + 4f, ry + 3f, iw, rh - 8f);
             float tx = x3 + 4f + iw + 10f;
@@ -7125,7 +7125,7 @@ public class Pesca : Script
         for (k = 0; k < sbVoci.Count; k++)
         {
             bool sel = (k == sbSel);
-            if (sel) DisegnaRett(x, y, w, rh - 2f, 245, 245, 250, AlfaSel(menuLato == 0));
+            if (sel) DisegnaRett(x, y, w, rh - 2f, 245, 245, 250, menuLato == 0 ? 255 : 170);
             else DisegnaRett(x, y, w, rh - 2f, 0, 0, 0, 120);
             int r = sel ? 20 : 245, g = sel ? 22 : 245, b = sel ? 28 : 250;
             TestoMenu(sbVoci[k], x + 10f, y + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
@@ -7185,7 +7185,7 @@ public class Pesca : Script
             if (!Articolo(c[0], id, out nome, out img, out prezzo, out liv)) { nome = lista[top + i]; img = ""; }
             float ry = y + i * rh;
             bool s = attiva && top + i == sel;
-            if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, AlfaSel(true));
+            if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, 255);
             else DisegnaRett(x, ry, w, rh - 2f, 0, 0, 0, 120);
             int r = s ? 20 : 245, g = s ? 22 : 245, b = s ? 28 : 250;
             // l'immagine a sinistra, in un riquadro sempre uguale
@@ -7334,7 +7334,7 @@ public class Pesca : Script
             int k = sbTop + i;
             float y = cy + pad + i * rh;
             bool sel = (k == sbSel);
-            if (sel) DisegnaRett(mx + pad, y, w, rh - 2f, 245, 245, 250, AlfaSel(menuLato == 0));
+            if (sel) DisegnaRett(mx + pad, y, w, rh - 2f, 245, 245, 250, menuLato == 0 ? 255 : 170);
             else DisegnaRett(mx + pad, y, w, rh - 2f, 0, 0, 0, 120);
             int r = sel ? 20 : 245, g = sel ? 22 : 245, b = sel ? 28 : 250;
             TestoMenu(sbVoci[k], mx + pad + 10f, y + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
@@ -13624,13 +13624,6 @@ public class Pesca : Script
             File.WriteAllLines(f, r.ToArray());
         }
         catch { }
-    }
-
-    int AlfaSel(bool attiva)
-    {
-        int a = (int)LeggiF("menu_sel_alfa", 200f);
-        if (a < 30) a = 30; if (a > 255) a = 255;
-        return attiva ? a : a * 2 / 3;
     }
 
     float LeggiF(string chiave, float dif)
