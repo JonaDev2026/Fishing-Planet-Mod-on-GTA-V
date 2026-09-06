@@ -5510,14 +5510,83 @@ public class Pesca : Script
         try { Function.Call((Hash)0xEFACC8AEF94430D5, 0f); } catch { }   // TRANSITION_FROM_BLURRED, subito
     }
 
+    // LE SCHEDE del menu nuovo, come quelle della pausa di GTA: LB e RB
+    // le cambiano. Il contenuto arriva scheda per scheda.
+    static readonly string[] SCHEDE_IT = { "ZONE", "EQUIPAGGIAMENTO", "NEGOZIO", "PESCI", "TORNEI", "IMPOSTAZIONI" };
+    static readonly string[] SCHEDE_EN = { "SPOTS", "TACKLE", "SHOP", "FISH", "TOURNAMENTS", "SETTINGS" };
+    int menuScheda = 0;
+
+    void TastiMenuNuovo()
+    {
+        int now = Game.GameTime;
+        if (now < menuNuovoTasto) return;
+        bool lb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 37);
+        bool rb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 44);
+        if (lb || rb)
+        {
+            int n = SCHEDE_IT.Length;
+            menuScheda = (menuScheda + (rb ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 150;
+            Suono("NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+        }
+    }
+
     void DisegnaMenuNuovo()
     {
+        TastiMenuNuovo();
         // il pannello a tutto schermo: grigio scuro trasparente, lo stesso
         // grigio delle righe del trainer (menu_bg r,g,b e menu_velo alfa)
         int[] bg = ColoreCfg("menu_bg", 14, 22, 40);
         DisegnaRett(0f, 0f, 1280f, 720f, bg[0], bg[1], bg[2], (int)LeggiF("menu_velo", 190f));
+        // LA CORNICE, come la pausa di GTA: titolo a sinistra, a destra
+        // livello, ora e XP, le schede in fila, e sotto il contenitore.
+        float mx = LeggiF("menu_x", 56f);
+        float mw = LeggiF("menu_larga", 1168f);
+        float ty = LeggiF("menu_titolo_y", 26f);
+        TestoMenu(L("Fishing", "Pesca"), mx, ty, LeggiF("menu_titolo_testo", 1.1f), 4, 0, 245, 245, 250, 255);
+        int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
+        int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
+        float dx = mx + mw;
+        TestoMenu(L("LEVEL ", "LIV. ") + livelloPescatore, dx, ty + 2f, 0.42f, 4, 2, 245, 245, 250, 255);
+        TestoMenu(hh.ToString("00") + ":" + mi.ToString("00"), dx, ty + 20f, 0.42f, 4, 2, 245, 245, 250, 255);
+        TestoMenu(xpTot + " XP", dx, ty + 38f, 0.42f, 4, 2, 130, 200, 245, 255);
+
+        // le schede
+        float sy = LeggiF("menu_schede_y", 82f);
+        float sh = LeggiF("menu_schede_alte", 40f);
+        int n = SCHEDE_IT.Length;
+        float gap = 3f;
+        float sw = (mw - gap * (n - 1)) / n;
+        int k;
+        for (k = 0; k < n; k++)
+        {
+            float sx = mx + k * (sw + gap);
+            bool sel = (k == menuScheda);
+            if (sel)
+            {
+                DisegnaRett(sx, sy, sw, sh, 245, 245, 250, 255);
+                DisegnaRett(sx, sy, sw, 4f, 150, 235, 180, 255);
+                TestoMenu(L(SCHEDE_EN[k], SCHEDE_IT[k]), sx + sw * 0.5f, sy + sh * 0.5f - 9f, 0.30f, 0, 1, 20, 22, 28, 255);
+            }
+            else
+            {
+                DisegnaRett(sx, sy, sw, sh, 0, 0, 0, 150);
+                TestoMenu(L(SCHEDE_EN[k], SCHEDE_IT[k]), sx + sw * 0.5f, sy + sh * 0.5f - 9f, 0.30f, 0, 1, 245, 245, 250, 255);
+            }
+        }
+        // le frecce ai lati
+        TestoMenu("<", mx - 24f, sy + sh * 0.5f - 12f, 0.42f, 0, 1, 245, 245, 250, 255);
+        TestoMenu(">", mx + mw + 24f, sy + sh * 0.5f - 12f, 0.42f, 0, 1, 245, 245, 250, 255);
+
+        // il contenitore
+        float cy = sy + sh + LeggiF("menu_cont_giu", 16f);
+        float ch = LeggiF("menu_cont_fondo", 660f) - cy;
+        DisegnaRett(mx, cy, mw, ch, 0, 0, 0, (int)LeggiF("menu_cont_alfa", 150f));
+
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
+        Voce(ic, tx, "lb", "TAB", L("Tab", "Scheda"));
+        Voce(ic, tx, "rb", "Q", L("Tab", "Scheda"));
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
     }
@@ -10353,6 +10422,22 @@ public class Pesca : Script
                     DisegnaTestoDestra(misA, tx, ecy - 4f, LeggiF("esca_amo_testo", 0.22f), 245, 245, 250);
             }
         }
+    }
+
+    // testo del menu: font a scelta (0 ChaletLondon, 4 ChaletComprime, 7 Pricedown),
+    // allineamento 0 sinistra 1 centro 2 destra, senza contorno
+    void TestoMenu(string txt, float x, float y, float scala, int font, int all, int r, int g, int b, int a)
+    {
+        try
+        {
+            TextElement el = new TextElement(txt, new PointF(x, y), scala);
+            el.Color = Color.FromArgb(a, r, g, b);
+            el.Font = (GTA.UI.Font)font;
+            el.Alignment = (all == 1) ? Alignment.Center : (all == 2 ? Alignment.Right : Alignment.Left);
+            el.Outline = false;
+            el.Draw();
+        }
+        catch { }
     }
 
     void DisegnaTestoDestra(string txt, float x, float y, float scala, int r, int g, int b)
