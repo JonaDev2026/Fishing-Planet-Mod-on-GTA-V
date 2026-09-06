@@ -339,7 +339,6 @@ public class Pesca : Script
     List<bool> arAcc = new List<bool>();
     // tutti i punti, con l'indice dell'area a cui appartengono
     List<float> apX = new List<float>();
-    List<float> apZ = new List<float>();
     List<float> apY = new List<float>();
     List<int> apA = new List<int>();
 
@@ -394,7 +393,7 @@ public class Pesca : Script
                 arLiv.Add(1); arAcqua.Add("");
             }
             float x = Decimale(c[2]), y = Decimale(c[3]), z = Decimale(c[4]);
-            apX.Add(x); apY.Add(y); apZ.Add(z); apA.Add(a);
+            apX.Add(x); apY.Add(y); apA.Add(a);
             sx[a] = sx[a] + x; sy[a] = sy[a] + y; sz[a] = sz[a] + z; sn[a] = sn[a] + 1;
             string zg = c[5].Trim().ToUpper();
             if (zg.Length > 0 && !arZoneGta[a].Contains(zg)) arZoneGta[a].Add(zg);
@@ -10835,11 +10834,9 @@ public class Pesca : Script
                 // Erba, rocce, asfalto: la lenza rientra da sola e torni
                 // con la canna in mano, pronto a rilanciare. Il messaggio
                 // c'e', il suono no: quello a ripetizione era un martello.
-                string perAcqua;
-                if (!EscaSullAcqua() || !AcquaDellaZona(AcquaSottoEsca(), out perAcqua))
+                if (!EscaSullAcqua())
                 {
-                    if (!EscaSullAcqua()) Messaggio("~y~" + L("Out of the water: the line came back.", "Fuori dall'acqua: la lenza e' rientrata."));
-                    else Messaggio("~y~" + L("No fishing here: ", "Qui non si pesca: ") + perAcqua + ".");
+                    Messaggio("~y~" + L("Out of the water: the line came back.", "Fuori dall'acqua: la lenza e' rientrata."));
                     metriLenza = 0f;
                     escaInAcqua = false;
                     escaATerra = false;
@@ -14409,38 +14406,6 @@ public class Pesca : Script
     // serve: il lancio finito sull'erba. Questa invece non ricorda
     // niente - chiede e basta - e controlla anche che l'acqua stia sopra
     // il terreno, se no una pozza sotto una collina varrebbe come lago.
-    // E' L'ACQUA DELLA ZONA? Una piscina dietro una villa e' acqua per
-    // GTA come lo stagno accanto. La differenza la fanno i punti di riva
-    // registrati (acque.txt, uno ogni dieci metri): l'esca deve stare a
-    // meno di acqua_lontano metri dal punto piu' vicino della zona della
-    // licenza, e il pelo dell'acqua a meno di acqua_dislivello metri di
-    // quota da quel punto. Una piscina sta lontana, e quasi sempre a
-    // un'altra altezza.
-    bool AcquaDellaZona(float zAcqua, out string perche)
-    {
-        perche = "";
-        try
-        {
-            int lu = LuogoQui();
-            if (lu < 0 || apX.Count == 0) return true;
-            float lontano = LeggiF("acqua_lontano", 80f);
-            float disl = LeggiF("acqua_dislivello", 3f);
-            int i, best = -1; float bd = 0f;
-            for (i = 0; i < apX.Count; i++)
-            {
-                if (apA[i] != lu) continue;
-                float dx = apX[i] - escaX, dy = apY[i] - escaY;
-                float d = dx * dx + dy * dy;
-                if (best < 0 || d < bd) { bd = d; best = i; }
-            }
-            if (best < 0) return true;
-            if (bd > lontano * lontano) { perche = L("too far from the shore of the spot", "troppo lontano dalla riva del posto"); return false; }
-            if (Math.Abs(apZ[best] - zAcqua) > disl) { perche = L("this is not the water of the spot", "questa non e' l'acqua del posto"); return false; }
-        }
-        catch { }
-        return true;
-    }
-
     bool EscaSullAcqua()
     {
         try
