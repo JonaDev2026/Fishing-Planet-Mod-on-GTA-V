@@ -5886,7 +5886,7 @@ public class Pesca : Script
     {
         // il cerchietto: pieno se preso
         DisegnaRett(x, y + 3f, 9f, 9f, r, g, b, si ? 255 : 70);
-        TestoMenu(testo, x + 13f, y - 1f, 0.19f, 0, 0, r, g, b, si ? 255 : 120);
+        TestoMenu(testo, x + 13f, y + LeggiF("menu_spunta_giu", 2f), 0.19f, 0, 0, r, g, b, si ? 255 : 120);
     }
 
     void DisegnaColonnaPesci(int a, float x, float y0, float fondo, float xFine)
@@ -5906,9 +5906,9 @@ public class Pesca : Script
             float y = y0 + i * rh;
             bool sel = (menuLato == 2 && pcTop + i == pcSel);
             if (sel) DisegnaRett(x, y, cw, rh - 2f, 255, 255, 255, 40);
-            TestoMenu(NomeIt(sp.Nome).ToUpper(), x + 8f, y + 4f, 0.24f, 4, 0, 245, 245, 250, 255);
-            float ih = rh - 44f, iw = ih * 1.6f;
-            if (sp.Img.Length > 0) Sprite(sp.Img, x + (cw - iw) * 0.5f, y + 22f, iw, ih);
+            // senza il nome: sta gia' nella scheda a destra
+            float ih = rh - 30f, iw = ih * 1.6f;
+            if (sp.Img.Length > 0) Sprite(sp.Img, x + (cw - iw) * 0.5f, y + 4f, iw, ih);
             int presa = TagliaPresa(sp);
             float sy2 = y + rh - 18f;
             Spunta(x + 8f, sy2, presa >= 1, L("Common", "Comune"), 200, 202, 210);
@@ -5932,62 +5932,103 @@ public class Pesca : Script
     void DisegnaSchedaPesce(Specie sp, float x, float y, float xFine, float fondo)
     {
         float w = xFine - x;
-        TestoMenu(NomeIt(sp.Nome).ToUpper(), x, y, 0.55f, 4, 0, 245, 245, 250, 255);
-        y += 30f;
-        TestoMenu(sp.Nome + (sp.Famiglia.Length > 0 ? "   -   " + sp.Famiglia : ""), x, y, 0.24f, 0, 0, 200, 202, 210, 255);
+        // il nome, e sotto in piccolo il nome inglese e la famiglia
+        TestoMenu(NomeIt(sp.Nome).ToUpper(), x, y, 0.60f, 4, 0, 245, 245, 250, 255);
+        y += 32f;
+        string sotto = sp.Nome;
+        if (sp.Famiglia.Length > 0) sotto += "   -   " + sp.Famiglia;
+        TestoMenu(sotto, x, y, 0.22f, 0, 0, 150, 152, 160, 255);
         y += 26f;
-        // le taglie e il prezzo
-        string kgC = sp.KgC.ToString("0.##", CultureInfo.InvariantCulture);
-        string kgT = sp.KgT.ToString("0.##", CultureInfo.InvariantCulture);
-        string kgU = sp.KgU.ToString("0.##", CultureInfo.InvariantCulture);
-        TestoMenu(L("Common ", "Comune ") + kgC + " kg", x, y, 0.26f, 0, 0, 200, 202, 210, 255);
-        TestoMenu(L("Trophy ", "Trofeo ") + kgT + " kg", x + w * 0.33f, y, 0.26f, 0, 0, 130, 225, 180, 255);
-        TestoMenu(L("Unique ", "Unico ") + kgU + " kg", x + w * 0.66f, y, 0.26f, 0, 0, 245, 205, 80, 255);
+        DisegnaRett(x, y, w, 1f, 255, 255, 255, 40);
+        y += 12f;
+
+        // LE TAGLIE: tre caselle coi colori delle spunte
+        float cw3 = (w - 16f) / 3f;
+        string[] et = { L("COMMON", "COMUNE"), L("TROPHY", "TROFEO"), L("UNIQUE", "UNICO") };
+        float[] kg = { sp.KgC, sp.KgT, sp.KgU };
+        int[] cr = { 200, 130, 245 }, cg = { 202, 225, 205 }, cb = { 210, 180, 80 };
+        int presa = TagliaPresa(sp);
+        int k;
+        for (k = 0; k < 3; k++)
+        {
+            float cx = x + k * (cw3 + 8f);
+            DisegnaRett(cx, y, cw3, 40f, cr[k], cg[k], cb[k], presa > k ? 60 : 20);
+            TestoMenu(et[k], cx + 8f, y + 3f, 0.20f, 0, 0, cr[k], cg[k], cb[k], 255);
+            TestoMenu(kg[k].ToString("0.##", CultureInfo.InvariantCulture) + " kg", cx + 8f, y + 17f, 0.30f, 4, 0, 245, 245, 250, 255);
+            if (presa > k) TestoMenu(L("caught", "preso"), cx + cw3 - 8f, y + 20f, 0.19f, 0, 2, cr[k], cg[k], cb[k], 255);
+        }
+        y += 52f;
+
+        // I DATI: etichetta grigia, valore bianco, su due colonne
+        float c2 = x + w * 0.5f;
+        Dato(x, y, L("Price", "Prezzo"), "$" + sp.PrC + "/kg");
+        Dato(c2, y, L("Hook", "Amo"), sp.Amo);
         y += 22f;
-        TestoMenu("$" + sp.PrC + L("/kg", "/kg") + "   " + L("hook ", "amo ") + sp.Amo
-                  + (sp.Denti > 0 ? "   " + L("teeth: leader needed", "denti: serve il leader") : ""),
-                  x, y, 0.26f, 0, 0, 200, 202, 210, 255);
+        Dato(x, y, L("Feeds", "Mangia"), QuandoIt(sp.Quando));
+        if (sp.TMin >= 0f)
+            Dato(c2, y, L("Water", "Acqua"), sp.TMin.ToString("0") + "-" + sp.TMax.ToString("0") + "\u00B0C");
         y += 22f;
-        // quando mangia e la temperatura
-        string tmp = (sp.TMin >= 0f) ? ("   " + L("water ", "acqua ") + sp.TMin.ToString("0") + "-" + sp.TMax.ToString("0") + "\u00B0C") : "";
-        TestoMenu(L("Feeds ", "Mangia ") + QuandoIt(sp.Quando) + tmp, x, y, 0.26f, 0, 0, 200, 202, 210, 255);
-        y += 30f;
-        // le esche preferite
+        if (sp.Denti > 0)
+        {
+            TestoMenu(L("Teeth: leader needed", "Denti: serve il leader"), x, y, 0.24f, 0, 0, 235, 90, 80, 255);
+            y += 22f;
+        }
+        y += 6f;
+        DisegnaRett(x, y, w, 1f, 255, 255, 255, 40);
+        y += 12f;
+
+        // LE ESCHE PREFERITE, con la loro foto
         if (sp.Esche != null && sp.Esche.Length > 0)
         {
-            TestoMenu(L("Preferred baits:", "Esche preferite:"), x, y, 0.28f, 0, 0, 245, 245, 250, 255);
-            y += 20f;
+            TestoMenu(L("PREFERRED BAITS", "ESCHE PREFERITE"), x, y, 0.24f, 4, 0, 245, 205, 80, 255);
+            y += 22f;
+            float ie = LeggiF("menu_esca_img", 34f);
+            int perRiga = (int)(w / (ie + 100f));
+            if (perRiga < 1) perRiga = 1;
+            float ew = w / perRiga;
             int i, n = 0;
-            for (i = 0; i < sp.Esche.Length && y < fondo - 20f; i++)
+            for (i = 0; i < sp.Esche.Length; i++)
             {
-                int k;
                 for (k = 0; k < escheShop.Count; k++)
                     if (escheShop[k].Id == sp.Esche[i])
                     {
-                        TestoMenu("- " + EscaIt(escheShop[k].Nome), x + 8f, y, 0.25f, 0, 0, 200, 202, 210, 255);
-                        y += 17f; n++;
+                        float ex = x + (n % perRiga) * ew;
+                        float ey = y + (n / perRiga) * (ie + 6f);
+                        if (ey + ie > fondo - 30f) break;
+                        string img = ImgOk("img\\esche\\" + escheShop[k].Img);
+                        if (img.Length > 0) Sprite(img, ex, ey, ie, ie);
+                        TestoMenu(EscaIt(escheShop[k].Nome), ex + ie + 6f, ey + ie * 0.5f - 8f, 0.23f, 0, 0, 200, 202, 210, 255);
+                        n++;
                         break;
                     }
             }
-            y += 8f;
+            y += ((n + perRiga - 1) / perRiga) * (ie + 6f) + 10f;
         }
-        // gli artificiali: quanti e di che tipo
-        if (sp.Art != null && sp.Art.Length > 0 && y < fondo - 40f)
+        // GLI ARTIFICIALI: solo i tipi
+        if (sp.Art != null && sp.Art.Length > 0 && y < fondo - 30f)
         {
-            TestoMenu(L("Lures:", "Artificiali:"), x, y, 0.28f, 0, 0, 245, 245, 250, 255);
-            y += 20f;
+            TestoMenu(L("LURES", "ARTIFICIALI"), x, y, 0.24f, 4, 0, 130, 200, 245, 255);
+            y += 22f;
             List<string> tipi = new List<string>();
-            int i, k;
+            int i;
             for (i = 0; i < sp.Art.Length; i++)
                 for (k = 0; k < artificiali.Count; k++)
                     if (artificiali[k].Id == sp.Art[i])
                     {
-                        if (!tipi.Contains(artificiali[k].Tipo)) tipi.Add(artificiali[k].Tipo);
+                        int t2 = Array.IndexOf(ART_COD, artificiali[k].Tipo);
+                        string nt = (t2 >= 0) ? ART_NOME[t2] : artificiali[k].Tipo;
+                        if (!tipi.Contains(nt)) tipi.Add(nt);
                         break;
                     }
-            string t = sp.Art.Length + " " + L("models: ", "modelli: ") + string.Join(", ", tipi.ToArray());
-            TestoMenu(t, x + 8f, y, 0.25f, 0, 0, 200, 202, 210, 255);
+            TestoMenu(string.Join(", ", tipi.ToArray()), x, y, 0.25f, 0, 0, 200, 202, 210, 255);
         }
+    }
+
+    // etichetta grigia e valore bianco, uno sotto l'altro stretti
+    void Dato(float x, float y, string etichetta, string valore)
+    {
+        TestoMenu(etichetta.ToUpper(), x, y, 0.18f, 0, 0, 150, 152, 160, 255);
+        TestoMenu(valore, x + 62f, y - 2f, 0.26f, 0, 0, 245, 245, 250, 255);
     }
 
     void TastiSidebar(int now)
