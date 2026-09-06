@@ -5358,6 +5358,10 @@ public class Pesca : Script
             try { Game.TimeScale = 0f; } catch { }
             // e l'audio di GTA in muto dal mixer di Windows
             AbbassaAudio();
+            // LO SFONDO SFOCATO: e' la sfocatura del menu di pausa di GTA
+            // (TRANSITION_TO_BLURRED); menu_blur=0 la toglie
+            if (LeggiF("menu_blur", 1f) > 0.5f)
+                try { Function.Call((Hash)0xA328A24AAA6B7FDC, 250f); } catch { }
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
@@ -5380,6 +5384,7 @@ public class Pesca : Script
         menuNuovoTasto = Game.GameTime + 400;
         try { Game.TimeScale = 1f; } catch { }
         RialzaAudio();
+        try { Function.Call((Hash)0xEFACC8AEF94430D5, 250f); } catch { }   // TRANSITION_FROM_BLURRED
         // l'orologio della pesca non deve aver contato il tempo in pausa
         prossimoMinuto += Game.GameTime - menuNuovoPausaDa;
         Suono("BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET");
