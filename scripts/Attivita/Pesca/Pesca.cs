@@ -5625,40 +5625,44 @@ public class Pesca : Script
         if (sbSel < 0 || sbSel >= sbArea.Count) return;
         int a = sbArea[sbSel];
         float pad = LeggiF("menu_pn_bordo", 10f);
-        float x = px + pad, y = py + pad, w = pw - pad * 2f;
-        // il banner del posto: tolto per ora (menu_pn_banner=1 lo rimette)
-        if (LeggiF("menu_pn_banner", 0f) > 0.5f)
+        // LA SECONDA COLONNA, accanto alla lista: in alto il riquadro col
+        // banner del posto, sotto i dati; a destra di tutto i pesci.
+        float cw2 = LeggiF("menu_pn2_larga", 230f);
+        float x = px + pad, y = py + pad;
+        float bh = LeggiF("menu_pn2_banner_alto", 130f);
+        DisegnaRett(x, y, cw2, bh, 0, 0, 0, 120);
+        string ban = BannerArea(a);
+        if (ban.Length > 0)
         {
-            string ban = BannerArea(a);
-            if (ban.Length > 0)
-            {
-                float bh = w * 191f / 630f;
-                float bmax = LeggiF("menu_pn_banner_max", 150f);
-                float bw2 = w;
-                if (bh > bmax) { bh = bmax; bw2 = bh * 630f / 191f; }
-                Sprite(ban, x + (w - bw2) * 0.5f, y, bw2, bh);
-                y += bh + 8f;
-            }
+            float ih = cw2 * 191f / 630f;
+            Sprite(ban, x, y + (bh - ih) * 0.5f, cw2, ih);
         }
+        float iy = y + bh + 8f;
+        DisegnaRett(x, iy, cw2, py + ph - 40f - iy, 0, 0, 0, 120);
         int quanti = (a < arPesci.Count) ? arPesci[a].Count : 0;
         bool aperta = (livelloPescatore >= LivelloArea(a));
-        TestoMenu(arNome[a], x, y, 0.42f, 4, 0, 245, 245, 250, 255);
-        y += 22f;
-        string riga = arTipo[a] + "   " + quanti + " " + L("species", "specie")
-                    + "   " + L("level ", "livello ") + LivelloArea(a);
-        if (!aperta) riga += "   " + L("closed for you", "per te e' chiusa");
-        TestoMenu(riga, x, y, 0.26f, 0, 0, aperta ? 200 : 235, aperta ? 202 : 90, aperta ? 210 : 80, 255);
-        y += 24f;
-        // i pesci: foto e nome, in griglia
+        float tx2 = x + 8f;
+        iy += 6f;
+        TestoMenu(arNome[a], tx2, iy, 0.40f, 4, 0, 245, 245, 250, 255);
+        iy += 24f;
+        TestoMenu(arTipo[a], tx2, iy, 0.26f, 0, 0, 200, 202, 210, 255); iy += 18f;
+        TestoMenu(quanti + " " + L("species", "specie"), tx2, iy, 0.26f, 0, 0, 200, 202, 210, 255); iy += 18f;
+        TestoMenu(L("level ", "livello ") + LivelloArea(a), tx2, iy, 0.26f, 0, 0, 245, 205, 80, 255); iy += 18f;
+        if (!aperta)
+        { TestoMenu(L("closed for you", "per te e' chiusa"), tx2, iy, 0.26f, 0, 0, 235, 90, 80, 255); iy += 18f; }
+
+        // i pesci: foto e nome, in griglia, a destra della colonna
+        float gx = x + cw2 + pad;
+        float gw = px + pw - pad - gx;
         float th = LeggiF("menu_pn_pesce", 44f);
-        int perRiga = (int)(w / (th + 34f));
+        int perRiga = (int)(gw / (th + 34f));
         if (perRiga < 1) perRiga = 1;
-        float cw = w / perRiga;
+        float cw = gw / perRiga;
         int i, n = 0;
         for (i = 0; i < pesci.Count; i++)
         {
             if (a >= arPesci.Count || !arPesci[a].Contains(pesci[i].Nome)) continue;
-            float cx = x + (n % perRiga) * cw;
+            float cx = gx + (n % perRiga) * cw;
             float cy2 = y + (n / perRiga) * (th + 18f);
             if (cy2 + th + 14f > py + ph - 40f) break;
             if (pesci[i].Img.Length > 0) Sprite(pesci[i].Img, cx + (cw - th * 1.6f) * 0.5f, cy2, th * 1.6f, th);
@@ -5668,6 +5672,7 @@ public class Pesca : Script
             n++;
         }
         // il tasto in fondo: acceso quando sei sul pannello
+        float w = pw - pad * 2f;
         float by = py + ph - 34f;
         bool qui = (zonaQui == a);
         string tb = qui ? L("You are here", "Sei qui") : L("Get to the spot", "Raggiungi il posto");
