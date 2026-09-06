@@ -5371,10 +5371,21 @@ public class Pesca : Script
         DisegnaTestoSinistra(pct + "%  " + scoperte + "/" + qs, px + bw + 8f, by - 8f, 0.20f, 200, 202, 210);
         DisegnaTestoSinistra(L("Exploration", "Esplorazione"),
                              px, by + LeggiF("posto_lic_giu", 6f), 0.22f, 200, 202, 210);
-        // sopra il grafico: la temperatura dell'aria e dell'acqua (le nostre)
-        DisegnaTestoSinistra(L("Air ", "Aria ") + GradiAria().ToString("0", CultureInfo.InvariantCulture) + "\u00B0"
-                             + "   " + L("Water ", "Acqua ") + GradiAcqua().ToString("0", CultureInfo.InvariantCulture) + "\u00B0",
-                             px, LeggiF("temp_y", 370f), 0.22f, 245, 245, 250);
+        // sopra il grafico: l'icona del meteo con la temperatura dell'aria,
+        // e l'icona dell'acqua con quella dell'acqua (le nostre)
+        {
+            float ty = LeggiF("temp_y", 370f);
+            float ic = LeggiF("temp_icona", 18f);
+            float sp = LeggiF("temp_spazio", 6f);
+            float gap = LeggiF("temp_gap", 22f);
+            string aria = GradiAria().ToString("0", CultureInfo.InvariantCulture) + "\u00B0";
+            string acqua = GradiAcqua().ToString("0", CultureInfo.InvariantCulture) + "\u00B0";
+            Sprite("img\\hud\\meteo\\" + IconaMeteoHud() + ".png", px, ty, ic, ic);
+            DisegnaTestoSinistra(aria, px + ic + sp, ty + ic * 0.5f - 8f, 0.22f, 245, 245, 250);
+            float x2 = px + ic + sp + LeggiF("temp_larga", 30f) + gap;
+            Sprite("img\\hud\\meteo\\acqua.png", x2, ty, ic, ic);
+            DisegnaTestoSinistra(acqua, x2 + ic + sp, ty + ic * 0.5f - 8f, 0.22f, 245, 245, 250);
+        }
         // il grafico resta dov'era: sotto il nome del posto (attivita_y)
         DisegnaAttivita(a, px, LeggiF("attivita_y", 390f), LeggiF("attivita_larga", bw));
     }
@@ -7397,6 +7408,20 @@ public class Pesca : Script
         }
         catch { }
         return m;
+    }
+
+    // l'icona del meteo per l'HUD (img\hud\meteo): di notte col sereno la luna
+    string IconaMeteoHud()
+    {
+        string m = MeteoOra();
+        int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
+        bool notte = (hh >= 21 || hh < 5);
+        if (m == "EXTRASUNNY" || m == "CLEAR") return notte ? "luna" : "sole";
+        if (m == "CLEARING" || m == "SMOG" || m == "NEUTRAL") return notte ? "luna" : "variabile";
+        if (m == "RAIN") return "pioggia";
+        if (m == "THUNDER") return "temporale";
+        if (m == "SNOW" || m == "SNOWLIGHT" || m == "BLIZZARD" || m == "XMAS") return "tormenta";
+        return "nuvole";
     }
 
     // i meteo di GTA raggruppati in cinque, per i grafici (gen_attivita.py)
