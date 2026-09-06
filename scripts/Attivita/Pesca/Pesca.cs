@@ -5686,6 +5686,9 @@ public class Pesca : Script
         // REGOLA: a fine giornata si smonta tutto, torna tutto in borsa
         DisarmaTutto();
         TempoNormale();
+        // la giornata chiusa va scritta subito: se no, ricaricando gli
+        // script, la licenza tornava viva
+        SalvaStato();
         if (avvisa) Avviso("~y~" + L("Day over. Back home.", "Giornata finita. Si torna a casa."));
         return true;
     }
