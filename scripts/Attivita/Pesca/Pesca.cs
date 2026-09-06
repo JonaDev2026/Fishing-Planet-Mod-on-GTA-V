@@ -5375,15 +5375,15 @@ public class Pesca : Script
         // e l'icona dell'acqua con quella dell'acqua (le nostre)
         {
             float ty = LeggiF("temp_y", 90f);
-            float ic = LeggiF("temp_icona", 18f);
+            float ic = LeggiF("temp_icona", 14f);
             float sp = LeggiF("temp_spazio", 6f);
             float gap = LeggiF("temp_gap", 22f);
             string aria = GradiAria().ToString("0", CultureInfo.InvariantCulture) + "\u00B0";
             string acqua = GradiAcqua().ToString("0", CultureInfo.InvariantCulture) + "\u00B0";
-            float tt = LeggiF("temp_testo", 0.30f);
+            float tt = LeggiF("temp_testo", 0.24f);
             Sprite("img\\hud\\meteo\\" + IconaMeteoHud() + ".png", px, ty, ic, ic);
             DisegnaTestoSinistra(aria, px + ic + sp, ty + ic * 0.5f - 10f, tt, 245, 245, 250);
-            float x2 = px + ic + sp + LeggiF("temp_larga", 30f) + gap;
+            float x2 = px + ic + sp + LeggiF("temp_larga", 24f) + gap;
             Sprite("img\\hud\\meteo\\acqua.png", x2, ty, ic, ic);
             DisegnaTestoSinistra(acqua, x2 + ic + sp, ty + ic * 0.5f - 10f, tt, 245, 245, 250);
         }
