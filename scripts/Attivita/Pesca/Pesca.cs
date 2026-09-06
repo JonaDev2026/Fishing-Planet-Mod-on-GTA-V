@@ -22,7 +22,7 @@ public class Pesca : Script
     // ---------- LA LINGUA ----------
     // Come Bus, Camionista e Fuzer: si legge 900= dal config.ini del
     // trainer. 0 = inglese, 1 = italiano.
-    int lang = 1;
+    int lang = 0;
 
     void LeggiLingua()
     {
