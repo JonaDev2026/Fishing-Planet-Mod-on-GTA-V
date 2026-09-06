@@ -5997,9 +5997,17 @@ public class Pesca : Script
                         if (ey + ie > fondo - 30f) break;
                         // Img e' gia' il percorso completo (img\esche\...)
                         if (escheShop[k].Img.Length > 0) Sprite(escheShop[k].Img, ex, ey, ie, ie);
-                        // il nome non esce mai dalla sua casella: si accorcia
-                        string ne = EntraMenu(EscaIt(escheShop[k].Nome), 0.23f, 0, ew - ie - 14f);
-                        TestoMenu(ne, ex + ie + 6f, ey + ie * 0.5f - 8f, 0.23f, 0, 0, 200, 202, 210, 255);
+                        // il nome non esce mai dalla sua casella: se e' lungo
+                        // va a capo su due righe, non si accorcia
+                        string r1, r2;
+                        SpezzaMenu(EscaIt(escheShop[k].Nome), 0.23f, 0, ew - ie - 14f, out r1, out r2);
+                        if (r2.Length == 0)
+                            TestoMenu(r1, ex + ie + 6f, ey + ie * 0.5f - 8f, 0.23f, 0, 0, 200, 202, 210, 255);
+                        else
+                        {
+                            TestoMenu(r1, ex + ie + 6f, ey + ie * 0.5f - 15f, 0.23f, 0, 0, 200, 202, 210, 255);
+                            TestoMenu(r2, ex + ie + 6f, ey + ie * 0.5f - 1f, 0.23f, 0, 0, 200, 202, 210, 255);
+                        }
                         n++;
                         break;
                     }
@@ -6024,6 +6032,22 @@ public class Pesca : Script
                     }
             TestoMenu(string.Join(", ", tipi.ToArray()), x, y, 0.25f, 0, 0, 200, 202, 210, 255);
         }
+    }
+
+    // un testo su due righe: si spezza all'ultimo spazio che ci sta; se
+    // nemmeno la seconda riga ci sta, quella si accorcia
+    void SpezzaMenu(string t, float scala, int font, float maxW, out string r1, out string r2)
+    {
+        r1 = t; r2 = "";
+        if (t == null) { r1 = ""; return; }
+        if (LarghezzaTesto(t, scala, font) <= maxW) return;
+        int taglio = -1;
+        int i;
+        for (i = 0; i < t.Length; i++)
+            if (t[i] == ' ' && LarghezzaTesto(t.Substring(0, i), scala, font) <= maxW) taglio = i;
+        if (taglio <= 0) { r1 = EntraMenu(t, scala, font, maxW); return; }
+        r1 = t.Substring(0, taglio);
+        r2 = EntraMenu(t.Substring(taglio + 1), scala, font, maxW);
     }
 
     // un testo che deve stare in tot pixel: se e' piu' largo si accorcia con un punto
