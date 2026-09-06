@@ -6374,6 +6374,55 @@ public class Pesca : Script
         }
         ColonnaEquip(eqBorsa, ref eqSelBorsa, ref eqTopBorsa, menuLato == 2,
                      tit, Contatori(), xZaino, py + pad, w, fondo);
+        // sotto la nassa, mentre peschi: quello che c'e' dentro la rete
+        if (CAT_COD[ic] == "nassa" && inPesca) DisegnaRete(xZaino, py + pad, w, fondo);
+    }
+
+    void DisegnaRete(float x, float y0, float w, float fondo)
+    {
+        float rh = LeggiF("menu_eq_riga", 52f);
+        float ts = LeggiF("menu_eq_titolo_testo", 0.32f), ta = LeggiF("menu_eq_titolo_alto", 26f);
+        float y = y0 + ta + 4f + eqBorsa.Count * rh + LeggiF("menu_rete_giu", 8f);
+        fondo = fondo - ta - 4f;
+        if (y + ta > fondo) return;
+        y = SezioneColonna(L("IN THE NET", "NELLA RETE") + "   "
+                           + KgNassaDentro().ToString("0.0", CultureInfo.InvariantCulture) + " kg", x, y, w, ts, ta);
+        if (nassaOggi.Count == 0)
+        {
+            TestoMenu(L("Empty net", "Nassa vuota"), x + 10f, y + 6f, 0.26f, 0, 0, 200, 202, 210, 255);
+            return;
+        }
+        float iw = (rh - 8f) * LeggiF("menu_eq_img_rapporto", 1.6f);
+        float ns = LeggiF("menu_eq_nome_testo", 0.24f), dt = LeggiF("menu_eq_dati_testo", 0.22f);
+        int righe = (int)((fondo - y) / rh);
+        int i;
+        for (i = 0; i < righe && i < nassaOggi.Count; i++)
+        {
+            // dall'ultimo preso: nome|niente|img|classe||kg $ XP|colore classe
+            string[] rn = nassaOggi[nassaOggi.Count - 1 - i].Split('|');
+            if (rn.Length < 6) continue;
+            float ry = y + i * rh;
+            DisegnaRett(x, ry, w, rh - 2f, 0, 0, 0, 120);
+            if (rn[2].Length > 0) Sprite(rn[2], x + 4f, ry + 3f, iw, rh - 8f);
+            float tx = x + 4f + iw + 10f;
+            TestoMenu(rn[0], tx, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 0, 245, 245, 250, 255);
+            int[] cc = ColoreCfgTesto(rn.Length > 6 ? rn[6] : "245,245,250");
+            TestoMenu(rn[3], x + w - 8f, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 2, cc[0], cc[1], cc[2], 255);
+            float dy = ry + LeggiF("menu_eq_dati_giu", 26f);
+            float dx = tx, dmax = x + w - 8f;
+            string[] pz = rn[5].Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
+            int z;
+            for (z = 0; z < pz.Length; z++)
+            {
+                string p1 = pz[z].Trim();
+                if (p1.Length == 0) continue;
+                float w1 = LarghezzaTesto(p1, dt, 0);
+                if (dx + w1 > dmax) break;
+                int[] col = ColoreValore(p1, false);
+                TestoMenu(p1, dx, dy, dt, 0, 0, col[0], col[1], col[2], 255);
+                dx += w1 + 9f;
+            }
+        }
     }
 
     void DisegnaSidebar(float mx, float cy, float ch)
