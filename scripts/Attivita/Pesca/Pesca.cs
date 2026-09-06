@@ -5542,6 +5542,8 @@ public class Pesca : Script
     // B chiude. Per ora dentro c'e' solo il velo e il titolo.
     bool menuNuovoAperto = false;
     bool menuTastoGiu = false;
+    int menuApriScheda = -1;      // la ruota chiede di aprire su questa scheda
+    string menuApriVoce = "";
     int menuNuovoPausaDa = 0;
     int menuNuovoTasto = 0;
 
@@ -5572,9 +5574,26 @@ public class Pesca : Script
         bool combo = (rb && sx || tasto) && now > menuNuovoTasto;
         if (!menuNuovoAperto)
         {
+            if (menuApriScheda >= 0) combo = true;
             if (!combo) return false;
             menuNuovoAperto = true;
             menuNuovoTasto = now + 400;
+            if (menuApriScheda >= 0)
+            {
+                menuScheda = menuApriScheda; menuLato = 0;
+                RiempiSidebar();
+                int q;
+                if (menuApriVoce == "nassa")
+                {
+                    for (q = 0; q < sbArea.Count; q++) if (CAT_COD[sbArea[q]] == "nassa") sbSel = q;
+                }
+                else if (menuApriVoce == "qui")
+                {
+                    int lu = LuogoQui();
+                    for (q = 0; q < sbArea.Count; q++) if (sbArea[q] == lu) sbSel = q;
+                }
+                menuApriScheda = -1; menuApriVoce = "";
+            }
             menuNuovoPausaDa = Game.GameTime;
             // GTA IN MUTO dal mixer di Windows (le scene audio del gioco non
             // spegnevano il mondo, e col tempo a zero il suono restava
@@ -13887,18 +13906,15 @@ public class Pesca : Script
         // ZAINO: si apre l'equipaggiamento nel menu. Glielo si dice al
         // trainer con un file, come per chiudere.
         // "file|voce": la pagina, e la voce su cui mettere il cursore
-        string pagina = "";
+        // adesso si apre il menu nuovo sulla scheda giusta: zaino ->
+        // EQUIPAGGIAMENTO, nassa -> EQUIPAGGIAMENTO su Nasse e fili (con
+        // la rete sotto), pesci -> DIARIO sul posto dove sei
         if (ruotaSpicchio >= 0)
         {
             string cs = RUOTA_CAT[ruotaSpicchio];
-            if (cs == "zaino") pagina = "casa_voci.txt";
-            else if (cs == "nassa") pagina = "casa_voci.txt|" + PESCATO;
-            else if (cs == "pesci") pagina = FileLuogo(LuogoQui());
-        }
-        if (pagina.Length > 0)
-        {
-            try { File.WriteAllText(Path.Combine(MY_DIR, "apri.txt"), pagina); }
-            catch { }
+            if (cs == "zaino") { menuApriScheda = 1; menuApriVoce = ""; }
+            else if (cs == "nassa") { menuApriScheda = 1; menuApriVoce = "nassa"; }
+            else if (cs == "pesci") { menuApriScheda = 3; menuApriVoce = "qui"; }
         }
         List<VoceRuota> scelte = new List<VoceRuota>();
         int k;
