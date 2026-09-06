@@ -5833,7 +5833,7 @@ public class Pesca : Script
             string[] c = lista[top + i].Split(':');
             int id = Numero(c[1]);
             string nome, img; int prezzo, liv;
-            if (!Articolo(c[0], id, out nome, out img, out prezzo, out liv)) nome = lista[top + i];
+            if (!Articolo(c[0], id, out nome, out img, out prezzo, out liv)) { nome = lista[top + i]; img = ""; }
             int quante = 0;
             Dictionary<string, int> da = (lista == eqBorsa) ? borsa : magazzino;
             da.TryGetValue(lista[top + i], out quante);
@@ -5842,7 +5842,10 @@ public class Pesca : Script
             if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, 255);
             else DisegnaRett(x, ry, w, rh - 2f, 0, 0, 0, 120);
             int r = s ? 20 : 245, g = s ? 22 : 245, b = s ? 28 : 250;
-            TestoMenu(nome, x + 10f, ry + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
+            // l'immagine a sinistra, in un riquadro sempre uguale
+            float ih = rh - 8f, iw = ih * LeggiF("menu_eq_img_rapporto", 1.6f);
+            if (img != null && img.Length > 0) Sprite(img, x + 4f, ry + 3f, iw, ih);
+            TestoMenu(nome, x + 4f + iw + 10f, ry + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
             TestoMenu(Quantita(c[0], id, quante, lista == eqBorsa), x + w - 10f, ry + rh * 0.5f - 9f,
                       0.26f, 0, 2, s ? 60 : 245, s ? 62 : 205, s ? 70 : 80, 255);
         }
