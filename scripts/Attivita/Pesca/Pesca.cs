@@ -11219,7 +11219,7 @@ public class Pesca : Script
         if (fase == FASE_FERMO)
         {
             Voce(ic, tx, "lb", "TAB", L("Manage tackle", "Gestisci l'armatura"));
-            Voce(ic, tx, "rb+croce_dx", "F7", L("Fishing menu", "Menu della pesca"));
+            Voce(ic, tx, "rb+croce_sx", LeggiS("menu_tasto", "F7"), L("Fishing menu", "Menu della pesca"));
         }
         else if (fase == FASE_PRONTO)
         {
