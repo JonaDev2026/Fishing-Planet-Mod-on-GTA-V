@@ -5703,10 +5703,10 @@ public class Pesca : Script
         else if (p1 > 0)
         {
             TestoMenu(L("1 day", "1 giorno"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
-            TestoMenu("$" + Dollari(p1), x + cw2 - 8f, y, 0.24f, 0, 2, 130, 225, 180, 255);
+            TestoMenu("$" + p1, x + cw2 - 8f, y, 0.24f, 0, 2, 130, 225, 180, 255);
             y += 16f;
             TestoMenu(L("3 days", "3 giorni"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
-            TestoMenu("$" + Dollari(p3), x + cw2 - 8f, y, 0.24f, 0, 2, 130, 225, 180, 255);
+            TestoMenu("$" + p3, x + cw2 - 8f, y, 0.24f, 0, 2, 130, 225, 180, 255);
         }
         else TestoMenu(L("No license needed", "Senza licenza"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
 
