@@ -2786,6 +2786,11 @@ public class Pesca : Script
                 int v = Numero(c[3]);
                 if (v > 0) presoQui[c[1].Trim() + "|" + c[2].Trim()] = v;
             }
+            else if (k == "tagliaqui" && c.Length > 3)
+            {
+                int v = Numero(c[3]);
+                if (v > 0) tagliaQui[c[1].Trim() + "|" + c[2].Trim()] = v;
+            }
             else if (k == "borsa" && c.Length > 2)
             {
                 int v = Numero(c[2]);
@@ -2888,6 +2893,8 @@ public class Pesca : Script
             v.Add("preso|" + kv.Key + "|" + kv.Value);
         foreach (KeyValuePair<string, int> kv in presoQui)
             v.Add("presoqui|" + kv.Key + "|" + kv.Value);
+        foreach (KeyValuePair<string, int> kv in tagliaQui)
+            v.Add("tagliaqui|" + kv.Key + "|" + kv.Value);
         v.Add("imp|avvisa_zona|" + (avvisaZona ? "1" : "0"));
         v.Add("imp|gall_zoom|" + gallZoom);
         v.Add("imp|profondita_cm|" + (int)(profondita * 100f + 0.5f));
@@ -4416,6 +4423,7 @@ public class Pesca : Script
             diarioChiesto = false;
             quaderno.Clear();
             presoQui.Clear();
+            tagliaQui.Clear();
             record.Clear();
             dovePreso.Clear();
             recEsca.Clear();
@@ -4444,6 +4452,7 @@ public class Pesca : Script
             fase = FASE_FERMO;
             quaderno.Clear();
             presoQui.Clear();
+            tagliaQui.Clear();
             record.Clear();
             dovePreso.Clear();
             recEsca.Clear();
@@ -7432,6 +7441,21 @@ public class Pesca : Script
     }
 
     // che taglia hai gia' preso di questa specie: 0 mai, 1 comune, 2 trofeo, 3 unico
+    // LA TAGLIA PRESA IN QUEL POSTO: ogni acqua ha la sua esplorazione,
+    // come nel simulatore di riferimento. Un pesce preso ai laghetti del
+    // golf non e' preso a Slab.
+    Dictionary<string, int> tagliaQui = new Dictionary<string, int>();
+
+    int TagliaPresaQui(int a, Specie sp)
+    {
+        if (a < 0 || a >= arNome.Count) return 0;
+        int t;
+        if (tagliaQui.TryGetValue(arNome[a] + "|" + sp.Nome, out t)) return t;
+        // preso qui prima che si segnasse la taglia: vale come comune
+        if (presoQui.ContainsKey(arNome[a] + "|" + sp.Nome)) return 1;
+        return 0;
+    }
+
     int TagliaPresa(Specie sp)
     {
         float kg;
@@ -7475,7 +7499,7 @@ public class Pesca : Script
             // senza il nome: sta gia' nella scheda a destra
             float ih = rh - 30f, iw = ih * 1.6f;
             if (sp.Img.Length > 0) Sprite(sp.Img, x + (cw - iw) * 0.5f, y + 4f, iw, ih);
-            int presa = TagliaPresa(sp);
+            int presa = TagliaPresaQui(a, sp);
             float sy2 = y + rh - 18f;
             Spunta(x + 8f, sy2, presa >= 1, L("Common", "Comune"), 200, 202, 210);
             Spunta(x + 72f, sy2, presa >= 2, L("Trophy", "Trofeo"), 130, 225, 180);
@@ -7484,7 +7508,7 @@ public class Pesca : Script
         }
         // la scheda a destra
         if (pcSel >= 0 && pcSel < pcPesci.Count)
-            DisegnaSchedaPesce(pesci[pcPesci[pcSel]], x + cw + 12f, y0, xFine, fondo);
+            DisegnaSchedaPesce(a, pesci[pcPesci[pcSel]], x + cw + 12f, y0, xFine, fondo);
     }
 
     // la taglia del pesce nella lingua scelta: dentro resta COMUNE/TROFEO/UNICO
@@ -7505,7 +7529,7 @@ public class Pesca : Script
         return L("all day", "tutto il giorno");
     }
 
-    void DisegnaSchedaPesce(Specie sp, float x, float y, float xFine, float fondo)
+    void DisegnaSchedaPesce(int a, Specie sp, float x, float y, float xFine, float fondo)
     {
         float w = xFine - x;
         // il nome, e sotto in piccolo il nome inglese e la famiglia
@@ -7523,7 +7547,7 @@ public class Pesca : Script
         string[] et = { L("COMMON", "COMUNE"), L("TROPHY", "TROFEO"), L("UNIQUE", "UNICO") };
         float[] kg = { sp.KgC, sp.KgT, sp.KgU };
         int[] cr = { 200, 130, 245 }, cg = { 202, 225, 205 }, cb = { 210, 180, 80 };
-        int presa = TagliaPresa(sp);
+        int presa = TagliaPresaQui(a, sp);
         int k;
         for (k = 0; k < 3; k++)
         {
@@ -13339,7 +13363,16 @@ public class Pesca : Script
         Aggiungi(quaderno, s.Nome, 1);
         {
             int aq = LuogoQui();
-            if (aq >= 0 && aq < arNome.Count) Aggiungi(presoQui, arNome[aq] + "|" + s.Nome, 1);
+            if (aq >= 0 && aq < arNome.Count)
+            {
+                Aggiungi(presoQui, arNome[aq] + "|" + s.Nome, 1);
+                int tq = 1;
+                if (s.KgU > 0f && pesceKg >= s.KgU) tq = 3;
+                else if (s.KgT > 0f && pesceKg >= s.KgT) tq = 2;
+                string kq = arNome[aq] + "|" + s.Nome;
+                int vq;
+                if (!tagliaQui.TryGetValue(kq, out vq) || tq > vq) tagliaQui[kq] = tq;
+            }
         }
         // il diario tiene il piu' grosso, non l'ultimo
         float vecchio = record.ContainsKey(s.Nome) ? record[s.Nome] : 0f;
