@@ -2400,18 +2400,8 @@ public class Pesca : Script
         if (MenuNuovo()) return;
         // la pescata gira a ogni frame: le barre devono essere fluide
         Pescata();
-        // la robaccia appena tirata su penzola dalla canna un momento
-        if (robaOra >= 0)
-        {
-            if (robaAppesaFino > 0 && Game.GameTime < robaAppesaFino)
-                MuoviRoba(Game.GameTime, true);
-            else if (robaAppesaFino > 0)
-            {
-                ViaRoba();
-                robaOra = -1;
-                robaAppesaFino = 0;
-            }
-        }
+        // la robaccia tirata su penzola dalla canna finche' non la getti
+        if (robaOra >= 0 && fase == FASE_ROBA) MuoviRoba(Game.GameTime, true);
         DisegnaMessaggio();
         // I PESCI CHE PASSANO NON DIPENDONO DALLA CANNA: finche' hai la
         // licenza e stai in riva, passano. Con la lenza in acqua girano
@@ -9623,6 +9613,7 @@ public class Pesca : Script
     const int FASE_LOTTA = 4;
     const int FASE_PRONTO = 5;
     const int FASE_CARD = 6;    // il pesce in mano: tieni o ributti
+    const int FASE_ROBA = 7;    // la robaccia appesa alla canna: getta via
 
     int fase = FASE_FERMO;
     // vero solo dopo che hai davvero mollato il grilletto: serve a non
@@ -10903,7 +10894,7 @@ public class Pesca : Script
                     fase = FASE_PRONTO;
                     grillettoMollato = false;
                     tastoDa = now + 400;
-                    if (robaOra >= 0) RobacciaSu(now);
+                    if (robaOra >= 0) { fase = FASE_ROBA; robaAppesaFino = 0; }
                     else Messaggio("~y~" + L("Line pulled in.", "Lenza ritirata."));
                     return;
                 }
@@ -11079,6 +11070,51 @@ public class Pesca : Script
         }
 
         // ---- il pesce in mano: METTILO NELLA RETE o RIBUTTALO IN ACQUA ----
+        // LA ROBACCIA IN MANO: penzola dalla canna come il pesce, con la
+        // sua scheda, e con B la getti via. Prima spariva da sola.
+        if (fase == FASE_ROBA)
+        {
+            PosaFerma(p);
+            HudPesca();
+            BarraCanna(0f, 130, 225, 180);
+            TacchePrizione();
+            DisegnaFiloRoba();
+            if (robaOra < 0 || robaOra >= robaccia.Count) { fase = FASE_PRONTO; return; }
+            Roba rb = robaccia[robaOra];
+            float w = LeggiF("card_larga", 300f);
+            float k = w / 380f;
+            float kt = k * LeggiF("card_testi", 1f);
+            float h = 74f * k;
+            float x = LeggiF("card_x", 1280f - 300f - 24f);
+            float y = LeggiF("card_y", 60f);
+            float cx = x + w * 0.5f;
+            DisegnaRett(x - 2f, y - 2f, w + 4f, h + 4f, 26, 22, 12, 240);
+            DisegnaRett(x, y, w, 20f * k, 74, 62, 26, 250);
+            DisegnaTesto(L("JUNK", "RIFIUTI"), cx, y + 2f * k, 0.33f * kt, 245, 240, 225);
+            DisegnaRett(x, y + 20f * k, w, 34f * k, 46, 44, 40, 235);
+            DisegnaTesto(L("You caught: ", "Hai pescato: ") + RobaIt(rb.Nome), cx, y + 28f * k, 0.30f * kt, 245, 245, 250);
+            DisegnaRett(x, y + 54f * k, w, 20f * k, 34, 30, 16, 245);
+            DisegnaTesto(rb.Kg.ToString("0.##", CultureInfo.InvariantCulture) + " kg", x + 72f * k, y + 56f * k, 0.29f * kt, 235, 235, 230);
+            DisegnaTesto("$" + rb.Dollari, cx, y + 56f * k, 0.29f * kt, 130, 225, 180);
+            DisegnaTesto("+0 XP", x + w - 72f * k, y + 56f * k, 0.29f * kt, 150, 155, 165);
+            bool getta = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 202)
+                      || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 202)
+                      || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201)
+                      || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 201);
+            if (now > tastoDa && getta)
+            {
+                if (rb.Dollari > 0) Paga(-rb.Dollari);
+                Messaggio("~y~" + L("Thrown away: ", "Gettato: ") + RobaIt(rb.Nome)
+                          + (rb.Dollari > 0 ? "  ~g~$" + rb.Dollari : ""));
+                ViaRoba();
+                robaOra = -1;
+                Suono("BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+                fase = FASE_PRONTO;
+                tastoDa = now + 400;
+            }
+            return;
+        }
+
         if (fase == FASE_CARD)
         {
             PosaFerma(p);
@@ -11460,6 +11496,10 @@ public class Pesca : Script
         {
             Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Keep", "Tieni"));
             Voce(ic, tx, "b", "ESC", L("Release", "Ributta"));
+        }
+        else if (fase == FASE_ROBA)
+        {
+            Voce(ic, tx, "b", "ESC", L("Throw away", "Getta via"));
         }
         DisegnaBarraTasti(ic, tx);
     }
@@ -13991,7 +14031,7 @@ public class Pesca : Script
     // la lenza rientra e la canna resta in mano
     void RitiraLenza()
     {
-        if (fase == FASE_FERMO || fase == FASE_PRONTO || fase == FASE_CARD) return;
+        if (fase == FASE_FERMO || fase == FASE_PRONTO || fase == FASE_CARD || fase == FASE_ROBA) return;
         TogliPesce();
         ViaRoba();
         robaOra = -1;
@@ -14013,7 +14053,7 @@ public class Pesca : Script
         // CON LA LENZA IN ACQUA LB LA RITIRA, la canna resta in mano:
         // non si cambia il mulinello col filo fuori. Col pesce in mano
         // (la scheda) non si apre: prima decidi se tenerlo.
-        if (fase == FASE_CARD) { ruotaAperta = false; return; }
+        if (fase == FASE_CARD || fase == FASE_ROBA) { ruotaAperta = false; return; }
         if (lb && fase != FASE_FERMO && fase != FASE_PRONTO) RitiraLenza();
         if (!lb)
         {
@@ -14850,6 +14890,7 @@ public class Pesca : Script
     List<Roba> robaccia = new List<Roba>();
     int robaOra = -1;
     int robaAppesaFino = 0;
+    float robaX = 0f, robaY = 0f, robaZ = 0f;   // dov'e' la roba appesa, per il filo
     Prop robaProp = null;
 
     void CaricaRobaccia()
@@ -14893,18 +14934,28 @@ public class Pesca : Script
     }
 
     // lenza ritirata con la roba attaccata: penzola dalla canna un momento
+    string RobaIt(string n)
+    {
+        if (lang == 1) return n;
+        if (n == "Vecchia scarpa") return "Old shoe";
+        if (n == "Sacchetto di plastica") return "Plastic bag";
+        if (n == "Cono stradale") return "Traffic cone";
+        if (n == "Pianta acquatica") return "Water plant";
+        if (n == "Bottiglia vuota") return "Empty bottle";
+        if (n == "Lattina") return "Can";
+        if (n == "Copertone") return "Tyre";
+        if (n == "Sportello di un'auto") return "Car door";
+        if (n == "Barattolo di vernice") return "Paint can";
+        if (n == "Valigetta") return "Briefcase";
+        return n;
+    }
+
     void RobacciaSu(int now)
     {
         if (robaOra < 0 || robaOra >= robaccia.Count) return;
         Roba x = robaccia[robaOra];
         robaAppesaFino = now + (int)LeggiF("roba_appesa_ms", 2500f);
-        string t = "~y~Hai tirato su: " + x.Nome;
-        if (x.Dollari > 0)
-        {
-            t += "  ~g~$" + x.Dollari;
-            Paga(-x.Dollari);
-        }
-        Messaggio(t);
+        Messaggio("~y~" + L("You pulled up: ", "Hai tirato su: ") + RobaIt(x.Nome));
     }
 
     void MettiRoba()
@@ -14953,12 +15004,17 @@ public class Pesca : Script
             float gradi = (float)(now * 0.06) % 360f;
             if (appesa)
             {
+                // sotto la punta della canna, come il pesce: stesso stacco
+                // (pesce_appeso_giu) e stesso dondolio, e il filo arriva li'
                 GTA.Math.Vector3 pt = PuntaCanna();
                 if (pt == GTA.Math.Vector3.Zero) return;
-                float dond = (float)Math.Sin(now * 0.0021) * 0.09f;
-                Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, robaProp,
-                              pt.X + dond, pt.Y + dond, pt.Z - LeggiF("roba_giu", 0.5f),
-                              false, false, false);
+                float t = now / 1000f;
+                float amp = LeggiF("pesce_dondola", 0.10f);
+                float rx = pt.X + (float)Math.Sin(t * 2.1) * amp;
+                float ry = pt.Y + (float)Math.Cos(t * 1.7) * amp;
+                float rz = pt.Z - LeggiF("roba_giu", LeggiF("pesce_appeso_giu", 0.55f));
+                Function.Call(Hash.SET_ENTITY_COORDS_NO_OFFSET, robaProp, rx, ry, rz, false, false, false);
+                robaX = rx; robaY = ry; robaZ = rz;
             }
             else
             {
@@ -15494,6 +15550,21 @@ public class Pesca : Script
     }
 
     // il filo corto che regge il pesce appeso alla canna
+    void DisegnaFiloRoba()
+    {
+        if (robaProp == null || !robaProp.Exists()) return;
+        try
+        {
+            GTA.Math.Vector3 a = PuntaCanna();
+            if (a == GTA.Math.Vector3.Zero) return;
+            ColoreDellaLenza();
+            int alfa2 = (int)LeggiF("lenza_alfa", 130f) + 40;
+            if (alfa2 > 255) alfa2 = 255;
+            Function.Call(Hash.DRAW_LINE, a.X, a.Y, a.Z, robaX, robaY, robaZ, lenzaR, lenzaG, lenzaB, alfa2);
+        }
+        catch { }
+    }
+
     void DisegnaFiloAppeso()
     {
         if (pescePed == null || !pescePed.Exists() || !pesceAppeso) return;
