@@ -2667,6 +2667,7 @@ public class Pesca : Script
                 if (c[1].Trim() == "gall_zoom") gallZoom = Numero(c[2]);
                 if (c[1].Trim() == "profondita_cm") profondita = Numero(c[2]) / 100f;
                 if (c[1].Trim() == "minuti") minutiFatti = Numero(c[2]);
+                if (c[1].Trim() == "soldi_nassa") soldiNassa = Numero(c[2]);
                 if (c[1].Trim() == "frizione")
                 {
                     frizione = Numero(c[2]);
@@ -2731,6 +2732,7 @@ public class Pesca : Script
         v.Add("imp|gall_zoom|" + gallZoom);
         v.Add("imp|profondita_cm|" + (int)(profondita * 100f + 0.5f));
         v.Add("imp|frizione|" + frizione);
+        v.Add("imp|soldi_nassa|" + soldiNassa);
         v.Add("imp|minuti|" + minutiFatti);
         {
             long oraP = AdessoSec();
@@ -4198,6 +4200,7 @@ public class Pesca : Script
             xpTot = 0;
             livelloPescatore = 1;
             kgNassa = 0f;
+            soldiNassa = 0;
             escaMontata = -1;
             frizione = 2;
             minutiFatti = 0;
@@ -5315,6 +5318,7 @@ public class Pesca : Script
         // se avevi un torneo in corso finisce qui, e senza premio: sei
         // andato a casa prima del tempo
         if (torneoOra >= 0) ChiudiTorneo(true);
+        VendiNassa();
         inPesca = false;
         licZona = "";
         licGiorni = 0;
@@ -6085,6 +6089,7 @@ public class Pesca : Script
         licGiorni--;
         if (licGiorni > 0)
         {
+            VendiNassa();
             Alba();
             nassaOggi.Clear();
             kgNassa = 0f;
@@ -9019,6 +9024,9 @@ public class Pesca : Script
                                   + "||" + cardKg.ToString("0.##", CultureInfo.InvariantCulture)
                                   + " kg   $" + cardVale + "   +" + cardXp + " XP"
                                   + "|" + colClas + "|245,205,80");
+                    // e il suo valore va nel conto della nassa: si incassa
+                    // a fine giornata, quando la nassa si svuota
+                    soldiNassa += cardVale;
                 }
 
                 cardPesce = -1;
@@ -10942,6 +10950,18 @@ public class Pesca : Script
     // quanto pesa il pescato che hai nella nassa e quanto ce ne sta
     float KgNassaDentro() { return kgNassa; }
     float kgNassa = 0f;
+    int soldiNassa = 0;      // quanto vale il pesce nella nassa, si incassa a fine giornata
+
+    // LA NASSA SI VENDE: a fine giornata (e a ogni giornata della licenza)
+    // il pesce tenuto si incassa al prezzo al chilo del wiki.
+    void VendiNassa()
+    {
+        if (soldiNassa <= 0) { soldiNassa = 0; return; }
+        Paga(-soldiNassa);
+        Avviso("~g~Pesce venduto: +$" + soldiNassa);
+        Diario("nassa venduta: $" + soldiNassa);
+        soldiNassa = 0;
+    }
 
     // il pesce piu' grosso che ci sta dentro: oltre questo lo rilasci,
     // per quanto sia grande la rete
@@ -11081,7 +11101,10 @@ public class Pesca : Script
         int tariffa = s.PrC;
         if (s.KgU > 0f && pesceKg >= s.KgU) tariffa = s.PrU;
         else if (s.KgT > 0f && pesceKg >= s.KgT) tariffa = s.PrT;
-        int vale = Dollari((int)(tariffa * pesceKg + 0.5f));
+        // IL PREZZO DEL PESCE E' QUELLO DEL WIKI, AL CHILO, PIENO: la
+        // divisione per dieci (CAMBIO) e' solo dell'attrezzatura, che ha i
+        // prezzi gonfiati. Il pesce no: un luccio vale 170 al chilo.
+        int vale = (int)(tariffa * pesceKg + 0.5f);
 
         Aggiungi(quaderno, s.Nome, 1);
         {

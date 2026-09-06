@@ -13,9 +13,11 @@ punti per pesce, i prezzi delle licenze, e il cambio crediti->dollari.
 Ogni file che contiene roba nostra lo dice in cima.
 
 ## I SOLDI
-I prezzi del wiki sono in crediti, gonfiati perche' quel gioco ci
-vende sopra la moneta a pagamento. In GTA i soldi non sono un freno,
-quindi li dividiamo per 10 (const CAMBIO in Pesca.cs).
+I prezzi dell'ATTREZZATURA sul wiki sono gonfiati, perche' e' quella
+che Fishing Planet vende per soldi veri: quelli li dividiamo per 10
+(const CAMBIO in Pesca.cs). I prezzi del PESCE invece sono regolari,
+al chilo, e restano pieni: un luccio vale 170 al chilo.
+Il pesce nella nassa si incassa a fine giornata.
 Il freno vero non e' il prezzo dell'attrezzatura: e' la LICENZA.
 
 ## I LIVELLI
