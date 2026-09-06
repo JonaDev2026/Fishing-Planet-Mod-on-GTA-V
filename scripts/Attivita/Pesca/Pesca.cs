@@ -5845,10 +5845,54 @@ public class Pesca : Script
             // l'immagine a sinistra, in un riquadro sempre uguale
             float ih = rh - 8f, iw = ih * LeggiF("menu_eq_img_rapporto", 1.6f);
             if (img != null && img.Length > 0) Sprite(img, x + 4f, ry + 3f, iw, ih);
-            TestoMenu(nome, x + 4f + iw + 10f, ry + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
-            TestoMenu(Quantita(c[0], id, quante, lista == eqBorsa), x + w - 10f, ry + rh * 0.5f - 9f,
-                      0.26f, 0, 2, s ? 60 : 245, s ? 62 : 205, s ? 70 : 80, 255);
+            // il titolo sopra, piu' piccolo, e sotto i dati coi colori del
+            // vecchio inventario: quantita' rosa, kg verde, misure azzurre,
+            // il resto giallo
+            float tx = x + 4f + iw + 10f;
+            TestoMenu(nome, tx, ry + LeggiF("menu_eq_nome_giu", 5f), LeggiF("menu_eq_nome_testo", 0.24f), 0, 0, r, g, b, 255);
+            float dy = ry + LeggiF("menu_eq_dati_giu", 26f);
+            float dt = LeggiF("menu_eq_dati_testo", 0.22f);
+            float dx = tx, dmax = x + w - 8f;
+            List<string> pz = new List<string>();
+            pz.Add(Quantita(c[0], id, quante, lista == eqBorsa));
+            string det = Dettaglio(c[0], id);
+            if (det.Length > 0)
+            {
+                string[] sp = det.Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
+                int q;
+                for (q = 0; q < sp.Length; q++) pz.Add(sp[q].Trim());
+            }
+            int z;
+            for (z = 0; z < pz.Count; z++)
+            {
+                if (pz[z].Length == 0) continue;
+                float w1 = LarghezzaTesto(pz[z], dt, 0);
+                if (dx + w1 > dmax) break;
+                int[] col = ColoreValore(pz[z], s);
+                TestoMenu(pz[z], dx, dy, dt, 0, 0, col[0], col[1], col[2], 255);
+                dx += w1 + 9f;
+            }
         }
+    }
+
+    // i colori dei dati, gli stessi del vecchio inventario
+    static int[] ColoreValore(string s, bool sel)
+    {
+        string b = s.ToLower();
+        bool qta = b.StartsWith("x") && b.Length > 1 && char.IsDigit(b[1]);
+        bool kg = b.EndsWith(" kg") || b.EndsWith("kg");
+        bool mis = b.EndsWith(" mm") || b.EndsWith(" m") || b.IndexOf('#') >= 0;
+        if (sel)
+        {
+            if (qta) return new int[] { 130, 40, 80 };
+            if (kg) return new int[] { 30, 90, 60 };
+            if (mis) return new int[] { 30, 70, 105 };
+            return new int[] { 95, 80, 25 };
+        }
+        if (qta) return new int[] { 245, 150, 195 };
+        if (kg) return new int[] { 140, 225, 175 };
+        if (mis) return new int[] { 130, 200, 245 };
+        return new int[] { 235, 210, 130 };
     }
 
     void DisegnaColonneEquip(float px, float py, float pw, float ph)
