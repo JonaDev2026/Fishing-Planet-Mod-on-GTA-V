@@ -5650,8 +5650,8 @@ public class Pesca : Script
 
     // LE SCHEDE del menu nuovo, come quelle della pausa di GTA: LB e RB
     // le cambiano. Il contenuto arriva scheda per scheda.
-    static readonly string[] SCHEDE_IT = { "ZONE", "EQUIPAGGIAMENTO", "NEGOZIO", "PESCI", "TORNEI", "IMPOSTAZIONI" };
-    static readonly string[] SCHEDE_EN = { "SPOTS", "TACKLE", "SHOP", "FISH", "TOURNAMENTS", "SETTINGS" };
+    static readonly string[] SCHEDE_IT = { "ZONE", "EQUIPAGGIAMENTO", "NEGOZIO", "DIARIO", "TORNEI", "IMPOSTAZIONI" };
+    static readonly string[] SCHEDE_EN = { "SPOTS", "TACKLE", "SHOP", "LOG", "TOURNAMENTS", "SETTINGS" };
     int menuScheda = 0;
 
     // il tic del menu: un file nostro nella sessione di sistema di Windows
@@ -5674,7 +5674,7 @@ public class Pesca : Script
     void RiempiSidebar()
     {
         sbVoci.Clear(); sbDestra.Clear(); sbArea.Clear();
-        if (menuScheda == 0)
+        if (menuScheda == 0 || menuScheda == 3)
         {
             // le zone, nell'ordine della pagina del trainer (per livello)
             List<int> ord = new List<int>();
@@ -5720,6 +5720,116 @@ public class Pesca : Script
         if (sbSel >= sbVoci.Count) sbSel = 0;
         sbTop = 0;
         sbScheda = menuScheda;
+    }
+
+    // IL DIARIO: le zone a sinistra, a destra i pesci presi in quella zona
+    // con quante volte, e il tuo record (peso, classe, esca, amo).
+    List<int> diPesci = new List<int>();
+    int diArea = -1, diSel = 0, diTop = 0;
+
+    void RiempiDiario(int a)
+    {
+        diPesci.Clear();
+        int i;
+        for (i = 0; i < pesci.Count; i++)
+            if (presoQui.ContainsKey(arNome[a] + "|" + pesci[i].Nome)) diPesci.Add(i);
+        if (diArea != a) { diSel = 0; diTop = 0; }
+        if (diSel >= diPesci.Count) diSel = 0;
+        diArea = a;
+    }
+
+    void DisegnaDiario(float px, float py, float pw, float ph)
+    {
+        if (sbSel < 0 || sbSel >= sbArea.Count) return;
+        int a = sbArea[sbSel];
+        if (diArea != a) RiempiDiario(a);
+        float pad = LeggiF("menu_pn_bordo", 10f);
+        float x = px + pad, w = pw - pad * 2f;
+        float ts = LeggiF("menu_eq_titolo_testo", 0.32f), ta = LeggiF("menu_eq_titolo_alto", 26f);
+        float y = SezioneColonna(arNome[a].ToUpper(), x, py + pad, w, ts, ta);
+        float fondo = py + ph - pad;
+        if (diPesci.Count == 0)
+        {
+            TestoMenu(L("Nothing caught here yet", "Qui non hai ancora preso niente"), x + 10f, y + 6f, 0.26f, 0, 0, 200, 202, 210, 255);
+            return;
+        }
+        float rh = LeggiF("menu_eq_riga", 52f);
+        int righe = (int)((fondo - y) / rh);
+        if (righe < 1) righe = 1;
+        if (diSel < diTop) diTop = diSel;
+        if (diSel >= diTop + righe) diTop = diSel - righe + 1;
+        float iw = (rh - 8f) * LeggiF("menu_eq_img_rapporto", 1.6f);
+        float ns = LeggiF("menu_eq_nome_testo", 0.24f), dt = LeggiF("menu_eq_dati_testo", 0.22f);
+        int i;
+        for (i = 0; i < righe && diTop + i < diPesci.Count; i++)
+        {
+            Specie sp = pesci[diPesci[diTop + i]];
+            float ry = y + i * rh;
+            bool s = (menuLato == 1 && diTop + i == diSel);
+            if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, 255);
+            else DisegnaRett(x, ry, w, rh - 2f, 0, 0, 0, 120);
+            if (sp.Img.Length > 0) Sprite(sp.Img, x + 4f, ry + 3f, iw, rh - 8f);
+            float tx = x + 4f + iw + 10f;
+            int r = s ? 20 : 245, g = s ? 22 : 245, b = s ? 28 : 250;
+            TestoMenu(sp.Nome, tx, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 0, r, g, b, 255);
+            // a destra la classe del tuo record, col suo colore
+            float kg = record.ContainsKey(sp.Nome) ? record[sp.Nome] : 0f;
+            string clas = ClasseDi(kg, sp.KgT, sp.KgU);
+            int[] cc = ColoreCfgTesto(ColoreClasse(clas));
+            if (s) { cc[0] = 20; cc[1] = 22; cc[2] = 28; }
+            TestoMenu(clas, x + w - 8f, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 2, cc[0], cc[1], cc[2], 255);
+            // sotto: quante volte qui, il record in kg, esca e amo
+            float dy = ry + LeggiF("menu_eq_dati_giu", 26f);
+            List<string> pz = new List<string>();
+            pz.Add("x" + Quanti(presoQui, arNome[a] + "|" + sp.Nome));
+            if (kg > 0f) pz.Add(kg.ToString("0.##", CultureInfo.InvariantCulture) + " kg");
+            string es = recEsca.ContainsKey(sp.Nome) ? recEsca[sp.Nome] : "";
+            if (es.Length > 0) pz.Add(EscheIt(es));
+            string am = recAmo.ContainsKey(sp.Nome) ? recAmo[sp.Nome] : "";
+            if (am.Length > 0) pz.Add(am);
+            float dx = tx, dmax = x + w - 8f;
+            int z;
+            for (z = 0; z < pz.Count; z++)
+            {
+                float w1 = LarghezzaTesto(pz[z], dt, 0);
+                if (dx + w1 > dmax) break;
+                int[] col = ColoreValore(pz[z], s);
+                TestoMenu(pz[z], dx, dy, dt, 0, 0, col[0], col[1], col[2], 255);
+                dx += w1 + 9f;
+            }
+        }
+    }
+
+    static int[] ColoreCfgTesto(string rgb)
+    {
+        string[] c = rgb.Split(',');
+        if (c.Length < 3) return new int[] { 245, 245, 250 };
+        return new int[] { Numero(c[0]), Numero(c[1]), Numero(c[2]) };
+    }
+
+    void TastiDiario(int now)
+    {
+        if (sbVoci.Count == 0) return;
+        bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
+               || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
+        bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 19)
+                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 173);
+        bool dx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 175);
+        bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174);
+        if (menuLato == 0 && (su || giu))
+        {
+            int n = sbVoci.Count;
+            sbSel = (sbSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 0 && dx && diPesci.Count > 0) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && sx) { menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && (su || giu) && diPesci.Count > 0)
+        {
+            int n = diPesci.Count;
+            diSel = (diSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
     }
 
     // IL NEGOZIO: categoria a sinistra, in mezzo il tipo (spinning,
@@ -6734,6 +6844,7 @@ public class Pesca : Script
     {
         if (menuScheda == 1) { TastiEquip(now); return; }
         if (menuScheda == 2) { TastiNegozio(now); return; }
+        if (menuScheda == 3) { TastiDiario(now); return; }
         if (menuScheda != 0 || sbVoci.Count == 0) return;
         bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
@@ -6898,6 +7009,12 @@ public class Pesca : Script
             DisegnaColonneEquip(xCasa, xLista + sbl + mezzo, w, cy, ch);
         }
         if (menuScheda == 2) DisegnaNegozio(mx, cy, mw, ch);
+        if (menuScheda == 3)
+        {
+            DisegnaSidebar(mx, cy, ch);
+            float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
+            DisegnaDiario(mx + sbw, cy, mw - sbw, ch);
+        }
 
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
@@ -6955,6 +7072,16 @@ public class Pesca : Script
             Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
             Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Buy", "Compra"));
             Voce(ic, tx, "croce_sxdx", "<", L("Type", "Tipo"));
+        }
+        if (menuScheda == 3 && menuLato == 0)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Spot", "Zona"));
+            Voce(ic, tx, "croce_sxdx", ">", L("Fish", "Pesci"));
+        }
+        if (menuScheda == 3 && menuLato == 1)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Fish", "Pesce"));
+            Voce(ic, tx, "croce_sxdx", "<", L("Spot", "Zona"));
         }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
