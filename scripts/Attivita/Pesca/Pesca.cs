@@ -4638,8 +4638,15 @@ public class Pesca : Script
 
     bool Vendi(string cat, int id)
     {
+        return Vendi(cat, id, true);
+    }
+
+    // si vende da casa e anche dallo zaino, senza spostare prima
+    bool Vendi(string cat, int id, bool daCasa)
+    {
+        Dictionary<string, int> magazzino = daCasa ? this.magazzino : borsa;
         string k = cat + ":" + id;
-        if (Quanti(magazzino, k) <= 0) { Messaggio("Non ce l'hai in casa."); return true; }
+        if (Quanti(magazzino, k) <= 0) { Messaggio(daCasa ? "Non ce l'hai in casa." : "Non ce l'hai nello zaino."); return true; }
         if (inPesca) { Messaggio("Si vende da casa, non in riva."); return true; }
 
         string nome, img;
@@ -4661,6 +4668,7 @@ public class Pesca : Script
         }
 
         vendiChiesto = "";
+        if (!daCasa && Quanti(magazzino, k) <= 1) SeArmatoSmonta(cat, id);
         magazzino[k] = Quanti(magazzino, k) - 1;
         if (magazzino[k] <= 0) magazzino.Remove(k);
         Paga(-reso);
@@ -6386,7 +6394,7 @@ public class Pesca : Script
             eqSelBorsa = (eqSelBorsa + (giu ? 1 : n - 1)) % n;
             menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
         }
-        // sull'oggetto: A sposta, X vende (solo da casa), Y getta
+        // sull'oggetto: A sposta, X vende, Y getta, da casa e dallo zaino
         else if (menuLato == 1 || menuLato == 2)
         {
             bool ok = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201);
@@ -6412,10 +6420,11 @@ public class Pesca : Script
             else if (c[0] == "bob")
             {
                 if (ok) fatto = BobinaACasa(id);
+                else if (tx) fatto = VendiBobinaBorsa(id);
                 else if (ty) fatto = ButtaBobina(id);
             }
             else if (ok) fatto = Sposta(c[0], id, menuLato == 1);
-            else if (tx && menuLato == 1) fatto = Vendi(c[0], id);
+            else if (tx) fatto = Vendi(c[0], id, menuLato == 1);
             else if (ty) fatto = Butta(c[0], id, menuLato == 1);
             if (fatto) { SuonoMenu("menu_apri.wav"); SalvaStato(); }
             RiempiEquip(eqCat);
@@ -6628,6 +6637,7 @@ public class Pesca : Script
         {
             Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
             Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Move", "Sposta"));
+            Voce(ic, tx, "x", L("SPACE", "SPAZIO"), L("Sell", "Vendi"));
             Voce(ic, tx, "y", "Y", L("Throw away", "Getta"));
             Voce(ic, tx, "croce_sxdx", "<", L("List", "Lista"));
         }
@@ -10739,6 +10749,16 @@ public class Pesca : Script
     // diviso i suoi metri, per i metri rimasti, alla percentuale di vendita.
     bool VendiBobinaCasa(int i)
     {
+        return VendiBobinaDa(bobineCasa, i, "bobc:");
+    }
+
+    bool VendiBobinaBorsa(int i)
+    {
+        return VendiBobinaDa(bobine, i, "bob:");
+    }
+
+    bool VendiBobinaDa(List<string> bobineCasa, int i, string pref)
+    {
         if (i < 0 || i >= bobineCasa.Count) return false;
         if (inPesca) { Messaggio("Si vende da casa, non in riva."); return true; }
         string[] c = bobineCasa[i].Split('|');
@@ -10752,7 +10772,7 @@ public class Pesca : Script
         if (perc < 0) perc = 0;
         if (perc > 100) perc = 100;
         int reso = (int)((long)prezzo * m / tot * perc / 100);
-        string k = "bobc:" + i;
+        string k = pref + i;
         int ora = Game.GameTime;
         if (vendiChiesto != k || ora > vendiScade)
         {
