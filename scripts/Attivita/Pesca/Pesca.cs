@@ -5884,9 +5884,16 @@ public class Pesca : Script
 
     void Spunta(float x, float y, bool si, string testo, int r, int g, int b)
     {
-        // il cerchietto: pieno se preso
-        DisegnaRett(x, y + 3f, 9f, 9f, r, g, b, si ? 255 : 70);
-        TestoMenu(testo, x + 13f, y + LeggiF("menu_spunta_giu", 2f), 0.19f, 0, 0, r, g, b, si ? 255 : 120);
+        // le tre taglie sono sempre accese: il quadratino e' vuoto, e
+        // quando l'hai presa ci compare una X
+        float q = 11f;
+        DisegnaRett(x, y + 2f, q, q, r, g, b, 60);
+        DisegnaRett(x, y + 2f, q, 1f, r, g, b, 255);
+        DisegnaRett(x, y + 2f + q - 1f, q, 1f, r, g, b, 255);
+        DisegnaRett(x, y + 2f, 1f, q, r, g, b, 255);
+        DisegnaRett(x + q - 1f, y + 2f, 1f, q, r, g, b, 255);
+        if (si) TestoMenu("X", x + q * 0.5f, y - 2f, 0.24f, 0, 1, r, g, b, 255);
+        TestoMenu(testo, x + q + 4f, y + LeggiF("menu_spunta_giu", 2f), 0.19f, 0, 0, r, g, b, 255);
     }
 
     void DisegnaColonnaPesci(int a, float x, float y0, float fondo, float xFine)
@@ -5912,8 +5919,8 @@ public class Pesca : Script
             int presa = TagliaPresa(sp);
             float sy2 = y + rh - 18f;
             Spunta(x + 8f, sy2, presa >= 1, L("Common", "Comune"), 200, 202, 210);
-            Spunta(x + 70f, sy2, presa >= 2, L("Trophy", "Trofeo"), 130, 225, 180);
-            Spunta(x + 130f, sy2, presa >= 3, L("Unique", "Unico"), 245, 205, 80);
+            Spunta(x + 72f, sy2, presa >= 2, L("Trophy", "Trofeo"), 130, 225, 180);
+            Spunta(x + 134f, sy2, presa >= 3, L("Unique", "Unico"), 245, 205, 80);
             DisegnaRett(x, y + rh - 2f, cw, 1f, 255, 255, 255, 25);
         }
         // la scheda a destra
