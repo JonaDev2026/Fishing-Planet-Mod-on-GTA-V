@@ -5516,7 +5516,10 @@ public class Pesca : Script
         // grigio delle righe del trainer (menu_bg r,g,b e menu_velo alfa)
         int[] bg = ColoreCfg("menu_bg", 14, 22, 40);
         DisegnaRett(0f, 0f, 1280f, 720f, bg[0], bg[1], bg[2], (int)LeggiF("menu_velo", 190f));
-        DisegnaTesto(L("B  back", "B  indietro"), 640f, 660f, 0.28f, 200, 202, 210);
+        List<string> ic = new List<string>();
+        List<string> tx = new List<string>();
+        Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
+        DisegnaBarraTasti(ic, tx);
     }
 
     // L'ORA DEL GIOCO, in alto a sinistra (orario_x / orario_y)
@@ -8912,12 +8915,6 @@ public class Pesca : Script
     // (la larghezza del testo e' stimata: "consigli_car" pixel a lettera).
     void Consigli()
     {
-        // TASTIERA O PAD: come fa GTA, si guarda l'ultimo input usato.
-        // Con la tastiera le icone diventano riquadri col tasto scritto.
-        bool tastiera = false;
-        try { tastiera = Function.Call<bool>((Hash)0xA571D46727E2B718, 0); }
-        catch { }
-
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
         // ogni voce: icona del pad | tasto di tastiera | testo
@@ -8951,7 +8948,19 @@ public class Pesca : Script
             Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Keep", "Tieni"));
             Voce(ic, tx, "b", "ESC", L("Release", "Ributta"));
         }
+        DisegnaBarraTasti(ic, tx);
+    }
+
+    // LA BARRA DEI TASTI: la usa la pesca e la usa il menu nuovo, sempre
+    // la stessa. Ogni voce: icona del pad | tasto di tastiera | testo.
+    void DisegnaBarraTasti(List<string> ic, List<string> tx)
+    {
         if (ic.Count == 0) return;
+        // TASTIERA O PAD: come fa GTA, si guarda l'ultimo input usato.
+        // Con la tastiera le icone diventano riquadri col tasto scritto.
+        bool tastiera = false;
+        try { tastiera = Function.Call<bool>((Hash)0xA571D46727E2B718, 0); }
+        catch { }
 
         float lato = LeggiF("consigli_lato", 22f);
         float y = 720f - LeggiF("consigli_dal_fondo", 20f) - lato;
