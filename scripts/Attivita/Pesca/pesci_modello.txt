@@ -22,6 +22,10 @@
 # I quarantaquattro pesci che sul wiki la famiglia non ce l'hanno -
 # quasi tutti tropicali - li ho indovinati dal nome: quelli sono
 # una scelta mia. Se ne vedi uno sbagliato, cambia il numero.
+# I GROSSI (6 settembre 2026): squali e spinarolo = squalo tigre, lo squalo toro
+# = squalo martello, marlin/pesce vela/pesce spada/tonni grossi/cernia gigante =
+# squalo tigre (l'unico modello lungo e grosso), i pesci piatti (halibut,
+# rombo, passere) = razza. Scelta nostra, da vedere in gioco.
 African Big Eye Catfish|a_c_fish|0
 African Pike|a_c_fish|0
 African Sharptooth Catfish|a_c_fish|0
@@ -38,7 +42,7 @@ Arctic Char|a_c_fish|1
 Arctic Grayling|a_c_fish|0
 Asp|a_c_fish|2
 Atlantic Cod|a_c_fish|1
-Atlantic Halibut|a_c_fish|1
+Atlantic Halibut|a_c_stingray|1
 Atlantic Herring|a_c_fish|1
 Atlantic Horse Mackerel|a_c_fish|1
 Atlantic Mackerel|a_c_fish|1
@@ -52,14 +56,14 @@ Banded Tilapia|a_c_fish|2
 Beluga|a_c_fish|0
 Biara|a_c_fish|0
 Bicuda|a_c_fish|1
-Bigeye Tuna|a_c_fish|1
+Bigeye Tuna|a_c_sharktiger|1
 Bigfin Reef Squid|a_c_fish|1
 Bighead Carp|a_c_fish|2
 Bigmouth Buffalo|a_c_fish|2
 Black Bullhead Catfish|a_c_fish|0
 Black Crappie|a_c_fish|2
 Black Drum|a_c_fish|2
-Black Marlin|a_c_fish|1
+Black Marlin|a_c_sharktiger|1
 Black Sea Roach|a_c_fish|2
 Blacktail Shiner|a_c_fish|0
 Blacktip Reef Shark|a_c_sharktiger|1
@@ -69,12 +73,12 @@ Bluegill|a_c_fish|2
 Bluntnose Minnow|a_c_fish|0
 Bonefish|a_c_fish|0
 Bowfin|a_c_fish|0
-Brill|a_c_fish|1
+Brill|a_c_stingray|1
 Brook Trout|a_c_fish|0
 Brown Bullhead Catfish|a_c_fish|0
 Brown Trout|a_c_fish|0
 Brycon|a_c_fish|0
-Bull Shark|a_c_sharktiger|0
+Bull Shark|a_c_sharkhammer|0
 Bull Trout|a_c_fish|0
 Bulldog Fish|a_c_fish|0
 Burbot|a_c_fish|0
@@ -108,7 +112,7 @@ Creek Brown Trout|a_c_fish|0
 Crucian Carp|a_c_fish|2
 Cusk|a_c_fish|1
 Cutthroat Trout|a_c_fish|0
-Dogtooth Tuna|a_c_fish|1
+Dogtooth Tuna|a_c_sharktiger|1
 Dolly Varden|a_c_fish|0
 Electric Eel|a_c_fish|0
 Elephant Fish|a_c_fish|0
@@ -117,7 +121,7 @@ European Angler|a_c_fish|1
 European Bitterling|a_c_fish|2
 European Brown Trout|a_c_fish|0
 European Eel|a_c_fish|0
-European Flounder|a_c_fish|0
+European Flounder|a_c_stingray|0
 European Grayling|a_c_fish|0
 European Hake|a_c_fish|1
 European Perch|a_c_fish|2
@@ -130,7 +134,7 @@ Florida Gar|a_c_fish|0
 Freshwater Drum|a_c_fish|2
 Gafftopsail Catfish|a_c_fish|0
 Ghost Carp|a_c_fish|2
-Giant Grouper|a_c_fish|1
+Giant Grouper|a_c_sharktiger|1
 Giant Sweetlips|a_c_fish|1
 Giant Trevally|a_c_fish|1
 Gilded Catfish|a_c_fish|0
@@ -145,7 +149,7 @@ Great Barracuda|a_c_fish|1
 Greater Amberjack|a_c_fish|1
 Green Jobfish|a_c_fish|1
 Green Sunfish|a_c_fish|2
-Greenland Halibut|a_c_fish|1
+Greenland Halibut|a_c_stingray|1
 Greenland Shark|a_c_sharktiger|1
 Gudgeon|a_c_fish|0
 Haddock|a_c_fish|1
@@ -182,7 +186,7 @@ Norway Seaperch|a_c_fish|1
 Oregon Redband Trout|a_c_fish|0
 Orinoco Peacock Bass|a_c_fish|2
 Oscar|a_c_fish|0
-Pacific Bluefin Tuna|a_c_fish|1
+Pacific Bluefin Tuna|a_c_sharktiger|1
 Payara|a_c_fish|0
 Permit|a_c_fish|2
 Pink Salmon|a_c_fish|0
@@ -206,7 +210,7 @@ Ripsaw Catfish|a_c_fish|0
 Rock Bass|a_c_fish|2
 Round Goby|a_c_fish|0
 Ruby Snapper|a_c_fish|1
-Sailfish|a_c_fish|1
+Sailfish|a_c_sharktiger|1
 Sauger|a_c_fish|2
 Sea Trout|a_c_fish|1
 Shoal Bass|a_c_fish|2
@@ -222,9 +226,9 @@ Smallmouth Bass|a_c_fish|2
 Smallmouth Buffalo|a_c_fish|2
 Sockeye Salmon|a_c_fish|0
 Sorubim Catfish|a_c_fish|0
-Southern Flounder|a_c_fish|0
+Southern Flounder|a_c_stingray|0
 Speckled Peacock Bass|a_c_fish|2
-Spiny Dogfish|a_c_fish|1
+Spiny Dogfish|a_c_sharktiger|1
 Splake|a_c_fish|0
 Spotfin Flyingfish|a_c_fish|1
 Spotted Aracu|a_c_fish|2
@@ -234,8 +238,8 @@ Steelhead|a_c_fish|0
 Sterlet|a_c_fish|0
 Striped Bass|a_c_fish|2
 Striped Bonito|a_c_fish|1
-Striped Marlin|a_c_fish|1
-Swordfish|a_c_fish|1
+Striped Marlin|a_c_sharktiger|1
+Swordfish|a_c_sharktiger|1
 Tambaqui|a_c_fish|2
 Tarpon|a_c_fish|0
 Tench|a_c_fish|2
@@ -257,7 +261,7 @@ White Sucker|a_c_fish|2
 White-Eye Bream|a_c_fish|2
 Whiting|a_c_fish|1
 Yellow Perch|a_c_fish|2
-Yellowfin Tuna|a_c_fish|1
+Yellowfin Tuna|a_c_sharktiger|1
 Yellowstripe Scad|a_c_fish|1
 Zander|a_c_fish|2
 Ziege|a_c_fish|2
