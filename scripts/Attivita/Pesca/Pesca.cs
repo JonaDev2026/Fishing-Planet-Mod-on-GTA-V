@@ -5964,8 +5964,13 @@ public class Pesca : Script
         // a destra, sulla stessa riga del titolo: livello e XP
         float dx = mx + mw;
         float dy = ty + LeggiF("menu_liv_giu", 14f);
-        TestoMenu(L("LEVEL ", "LIV. ") + livelloPescatore + "   " + xpTot + " XP", dx, dy,
-                  LeggiF("menu_liv_testo", 0.55f), 4, 2, 245, 245, 250, 255);
+        // a destra di livello e XP, i soldi, in verde come dappertutto
+        string soldiTxt = "$" + Soldi().ToString("N0", CultureInfo.InvariantCulture);
+        float ts = LeggiF("menu_liv_testo", 0.55f);
+        TestoMenu(soldiTxt, dx, dy, ts, 4, 2, 130, 225, 180, 255);
+        float wSoldi = LarghezzaTesto(soldiTxt, ts, 4) + LeggiF("menu_soldi_gap", 18f);
+        TestoMenu(L("LEVEL ", "LIV. ") + livelloPescatore + "   " + xpTot + " XP", dx - wSoldi, dy,
+                  ts, 4, 2, 245, 245, 250, 255);
 
         // le schede
         float sy = LeggiF("menu_schede_y", 82f);
@@ -10861,6 +10866,20 @@ public class Pesca : Script
                     DisegnaTestoDestra(misA, tx, ecy - 4f, LeggiF("esca_amo_testo", 0.22f), 245, 245, 250);
             }
         }
+    }
+
+    // quanto e' largo un testo, in pixel su 1280
+    float LarghezzaTesto(string t, float scala, int font)
+    {
+        try
+        {
+            Function.Call(Hash.BEGIN_TEXT_COMMAND_GET_SCREEN_WIDTH_OF_DISPLAY_TEXT, "STRING");
+            Function.Call(Hash.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME, t);
+            Function.Call(Hash.SET_TEXT_FONT, font);
+            Function.Call(Hash.SET_TEXT_SCALE, scala, scala);
+            return Function.Call<float>(Hash.END_TEXT_COMMAND_GET_SCREEN_WIDTH_OF_DISPLAY_TEXT, true) * 1280f;
+        }
+        catch { return t.Length * scala * 20f; }
     }
 
     // testo del menu: font a scelta (0 ChaletLondon, 4 ChaletComprime, 7 Pricedown),
