@@ -5341,7 +5341,7 @@ public class Pesca : Script
                                  ox, oy + LeggiF("orario_lic_giu", 24f), 0.22f, 200, 202, 210);
         // livello e XP sotto "Esplorazione", con lo stesso font
         DisegnaTestoSinistra(L("Level ", "Liv. ") + livelloPescatore + "   " + xpTot + " XP",
-                             LeggiF("liv_x", 192f), LeggiF("liv_y", 286f), LeggiF("orario_liv_testo", 0.20f), 200, 202, 210);
+                             LeggiF("liv_x", 24f), LeggiF("liv_y", 75f), LeggiF("orario_liv_testo", 0.20f), 200, 202, 210);
     }
 
     // IL POSTO SULL'HUD: nome dell'acqua, sotto una riga bianca
@@ -5374,7 +5374,7 @@ public class Pesca : Script
         // sopra il grafico: l'icona del meteo con la temperatura dell'aria,
         // e l'icona dell'acqua con quella dell'acqua (le nostre)
         {
-            float ty = LeggiF("temp_y", 86f);
+            float ty = LeggiF("temp_y", 90f);
             float ic = LeggiF("temp_icona", 18f);
             float sp = LeggiF("temp_spazio", 6f);
             float gap = LeggiF("temp_gap", 22f);
