@@ -5368,8 +5368,8 @@ public class Pesca : Script
         float by = LeggiF("esplora_y", 280f);
         DisegnaRett(px, by, bw, 2f, 255, 255, 255, 45);
         DisegnaRett(px, by, bw * pct / 100f, 2f, 255, 255, 255, 210);
-        DisegnaTestoSinistra(pct + "%  " + scoperte + "/" + qs, px + bw + 8f, by - 8f, 0.20f, 200, 202, 210);
-        DisegnaTestoSinistra(L("Exploration", "Esplorazione"),
+
+        DisegnaTestoSinistra(L("Exploration ", "Esplorazione ") + pct + "%",
                              px, by + LeggiF("posto_lic_giu", 6f), 0.22f, 200, 202, 210);
         // sopra il grafico: l'icona del meteo con la temperatura dell'aria,
         // e l'icona dell'acqua con quella dell'acqua (le nostre)
