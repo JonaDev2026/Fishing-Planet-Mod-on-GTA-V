@@ -5374,7 +5374,7 @@ public class Pesca : Script
                 if (sc.Length == 0) continue;
                 try { Function.Call(Hash.START_AUDIO_SCENE, sc); } catch { }
             }
-            menuGeloA = now + (int)LeggiF("menu_gelo_ms", 400f);
+            menuGeloA = now + (int)LeggiF("menu_gelo_ms", 1200f);
             // in piu', se vuoi il muto totale di Windows (spegne anche i tic)
             if (LeggiF("menu_muto_windows", 0f) > 0.5f) AbbassaAudio();
             // LO SFONDO SFOCATO: col tempo a zero la transizione di GTA non
