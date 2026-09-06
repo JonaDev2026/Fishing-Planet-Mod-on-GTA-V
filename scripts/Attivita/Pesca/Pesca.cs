@@ -5706,6 +5706,25 @@ public class Pesca : Script
                 sbArea.Add(ic);
             }
         }
+        if (menuScheda == 4)
+        {
+            // i tornei, per livello richiesto
+            List<int> ord = new List<int>();
+            int i, k;
+            for (i = 0; i < tornei.Count; i++) ord.Add(i);
+            for (i = 1; i < ord.Count; i++)
+            {
+                int t = ord[i]; int l1 = tornei[t].LivMin; k = i - 1;
+                while (k >= 0 && tornei[ord[k]].LivMin > l1) { ord[k + 1] = ord[k]; k--; }
+                ord[k + 1] = t;
+            }
+            for (i = 0; i < ord.Count; i++)
+            {
+                sbVoci.Add(tornei[ord[i]].Nome);
+                sbDestra.Add(L("Lv.", "Liv.") + tornei[ord[i]].LivMin);
+                sbArea.Add(ord[i]);
+            }
+        }
         if (menuScheda == 2)
         {
             // il negozio: tutte le categorie, nell'ordine degli scaffali
@@ -5720,6 +5739,211 @@ public class Pesca : Script
         if (sbSel >= sbVoci.Count) sbSel = 0;
         sbTop = 0;
         sbScheda = menuScheda;
+    }
+
+    // I TORNEI: come la scheda delle zone. La lista dei tornei a sinistra,
+    // la colonna del torneo (banner, dati, premi, regole, record, tasto)
+    // e a destra i pesci della sua zona.
+    string IconaMeteoDa(string m, int ora)
+    {
+        if (m == null) m = "";
+        m = m.ToUpper();
+        bool notte = (ora >= 21 || ora < 5);
+        if (m == "EXTRASUNNY" || m == "CLEAR") return notte ? "luna" : "sole";
+        if (m == "CLEARING" || m == "SMOG" || m == "NEUTRAL") return notte ? "luna" : "variabile";
+        if (m == "RAIN") return "pioggia";
+        if (m == "THUNDER") return "temporale";
+        if (m == "SNOW" || m == "SNOWLIGHT" || m == "BLIZZARD" || m == "XMAS") return "tormenta";
+        return "nuvole";
+    }
+
+    // un testo su piu' righe, a parole, dentro maxW
+    List<string> RigheMenu(string t, float scala, int font, float maxW)
+    {
+        List<string> r = new List<string>();
+        if (t == null || t.Length == 0) return r;
+        string[] parole = t.Replace("|", " ").Split(' ');
+        string riga = "";
+        int i;
+        for (i = 0; i < parole.Length; i++)
+        {
+            if (parole[i].Length == 0) continue;
+            string prova = (riga.Length == 0) ? parole[i] : riga + " " + parole[i];
+            if (riga.Length > 0 && LarghezzaTesto(prova, scala, font) > maxW)
+            {
+                r.Add(riga);
+                riga = parole[i];
+            }
+            else riga = prova;
+        }
+        if (riga.Length > 0) r.Add(riga);
+        return r;
+    }
+
+    float TestoRighe(string t, float x, float y, float maxW, float scala, int r, int g, int b)
+    {
+        List<string> righe = RigheMenu(t, scala, 0, maxW);
+        int i;
+        for (i = 0; i < righe.Count; i++)
+        {
+            TestoMenu(righe[i], x, y, scala, 0, 0, r, g, b, 255);
+            y += 15f;
+        }
+        return y;
+    }
+
+    // lo stato del tasto in fondo alla colonna del torneo
+    void StatoTorneo(int i, out string testo, out bool attivo, out string cmd, out int r, out int g, out int b)
+    {
+        Torneo t = tornei[i];
+        int luZ = LuogoDalNome(t.Zona);
+        bool qui = (luZ < 0) || (LuogoQuiMenu() == luZ);
+        if (torneoOra == i) { testo = L("Withdraw", "Ritirati"); attivo = true; cmd = "mollo_torneo"; r = 235; g = 90; b = 80; }
+        else if (torneoOra >= 0) { testo = L("Another competition running", "Hai un altro torneo in corso"); attivo = false; cmd = ""; r = 235; g = 90; b = 80; }
+        else if (livelloPescatore < t.LivMin && !qui) { testo = L("Get to the spot", "Raggiungi il posto"); attivo = true; cmd = "gps_torneo " + i; r = 130; g = 225; b = 180; }
+        else if (livelloPescatore < t.LivMin) { testo = L("Level " + t.LivMin + " needed", "Ci vuole il livello " + t.LivMin); attivo = false; cmd = ""; r = 235; g = 90; b = 80; }
+        else if (!qui) { testo = L("Get to the spot", "Raggiungi il posto"); attivo = true; cmd = "gps_torneo " + i; r = 130; g = 225; b = 180; }
+        else if (inPesca) { testo = L("Sign up  $", "Iscriviti  $") + Soldo(t.Quota); attivo = true; cmd = "iscr_torneo " + i; r = 245; g = 140; b = 40; }
+        else { testo = L("Pay and start  $", "Paga e comincia  $") + Soldo(t.Quota) + " + " + L("day", "giornata"); attivo = true; cmd = "torneo_via " + i; r = 245; g = 140; b = 40; }
+    }
+
+    void DisegnaPannelloTorneo(float px, float py, float pw, float ph)
+    {
+        if (sbSel < 0 || sbSel >= sbArea.Count) return;
+        int i = sbArea[sbSel];
+        Torneo t = tornei[i];
+        float pad = LeggiF("menu_pn_bordo", 10f);
+        float cw2 = LeggiF("menu_pn2_larga", 200f);
+        float x = px + pad, y = py + pad;
+        float fondo = py + ph - pad;
+        DisegnaRett(x, y, cw2, fondo - y, 0, 0, 0, 120);
+        // il banner del torneo
+        float bh = LeggiF("menu_pn2_banner_alto", 70f);
+        string ban = (t.Banner.Length > 0) ? ImgOk("img\\tornei\\" + t.Banner) : "";
+        if (ban.Length > 0)
+        {
+            float ih = cw2 * 191f / 630f;
+            if (ih > bh) ih = bh;
+            Sprite(ban, x, y, cw2, ih);
+            y += ih;
+        }
+        float tx2 = x + 8f;
+        y += 6f;
+        TestoMenu(EntraMenu(t.Nome, 0.40f, 4, cw2 - 16f), tx2, y, 0.40f, 4, 0, 245, 245, 250, 255); y += 24f;
+        string pesce = (t.Pesce.Length > 0 && !t.Pesce.StartsWith("(")) ? NomeIt(t.Pesce) : L("everything", "tutto il lago");
+        TestoMenu(EntraMenu(pesce + "   " + t.Zona, 0.24f, 0, cw2 - 16f), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255); y += 16f;
+        bool aperto = (livelloPescatore >= t.LivMin);
+        if (aperto) TestoMenu(L("level ", "livello ") + t.LivMin, tx2, y, 0.24f, 0, 0, 245, 205, 80, 255);
+        else TestoMenu(L("level ", "livello ") + t.LivMin + "   " + L("closed for you", "per te e' chiuso"), tx2, y, 0.24f, 0, 0, 235, 90, 80, 255);
+        y += 22f;
+        // l'ora di partenza, il cielo e la durata
+        if (t.Ora >= 0) TestoMenu(t.Ora.ToString("00") + ":00", tx2, y, 0.34f, 4, 0, 245, 245, 250, 255);
+        float ic = 18f;
+        if (t.Meteo != null && t.Meteo.Length > 0)
+            Sprite("img\\hud\\meteo\\" + IconaMeteoDa(t.Meteo, t.Ora) + ".png", tx2 + 50f, y + 2f, ic, ic);
+        TestoMenu(t.Minuti + " " + L("min", "min"), x + cw2 - 8f, y + 4f, 0.24f, 0, 2, 200, 202, 210, 255);
+        y += 26f;
+
+        // I PREMI
+        y = SezioneColonna(L("PRIZES", "PREMI"), x, y, cw2);
+        string[] med = new string[] { L("Bronze", "Bronzo"), L("Silver", "Argento"), L("Gold", "Oro") };
+        float[] kgs = new float[] { t.KgBronzo, t.KgArgento, t.KgOro };
+        int[] prs = new int[] { t.PrBronzo, t.PrArgento, t.PrOro };
+        int[][] colm = new int[][] { new int[] { 205, 127, 50 }, new int[] { 192, 192, 200 }, new int[] { 245, 205, 80 } };
+        int m;
+        for (m = 0; m < 3; m++)
+        {
+            TestoMenu(med[m], tx2, y, 0.24f, 0, 0, colm[m][0], colm[m][1], colm[m][2], 255);
+            TestoMenu(Kg(kgs[m]) + " kg", tx2 + 60f, y, 0.24f, 0, 0, 140, 225, 175, 255);
+            TestoMenu("$" + Soldo(prs[m]), x + cw2 - 8f, y, 0.24f, 0, 2, 130, 225, 180, 255);
+            y += 16f;
+        }
+        TestoMenu(L("Trophy", "Trofeo"), tx2, y, 0.22f, 0, 0, 130, 225, 180, 255);
+        TestoMenu("+$" + Soldo(t.ExTrofeo), tx2 + 60f, y, 0.22f, 0, 0, 130, 225, 180, 255);
+        TestoMenu(L("Unique", "Unico"), tx2 + 110f, y, 0.22f, 0, 0, 245, 205, 80, 255);
+        TestoMenu("+$" + Soldo(t.ExUnico), x + cw2 - 8f, y, 0.22f, 0, 2, 130, 225, 180, 255);
+        y += 20f;
+
+        // LE REGOLE
+        y = SezioneColonna(L("RULES", "REGOLE"), x, y, cw2);
+        string pun = L(t.Punteggio, (t.PunteggioIt.Length > 0) ? t.PunteggioIt : t.Punteggio);
+        if (pun.Length > 0) y = TestoRighe(pun, tx2, y, cw2 - 16f, 0.21f, 200, 202, 210);
+        string att = L(t.Attrezzi, (t.AttrezziIt.Length > 0) ? t.AttrezziIt : t.Attrezzi);
+        if (att.Length > 0) y = TestoRighe(att, tx2, y + 2f, cw2 - 16f, 0.21f, 245, 205, 80);
+        y += 6f;
+
+        // IL TUO RECORD
+        y = SezioneColonna(L("YOUR RECORD", "IL TUO RECORD"), x, y, cw2);
+        if (t.RecFatte <= 0)
+            TestoMenu(L("Never fished", "Mai fatto"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
+        else
+        {
+            TestoMenu(Kg(t.RecKg) + " kg   " + NomeMedaglia(t.RecMed), tx2, y, 0.24f, 0, 0, 245, 245, 250, 255); y += 16f;
+            TestoMenu(t.RecTrofei + " " + L("trophies", "trofei") + "   " + t.RecUnici + " " + L("uniques", "unici")
+                      + "   " + L("done ", "fatto ") + t.RecFatte + "x", tx2, y, 0.22f, 0, 0, 200, 202, 210, 255);
+        }
+
+        // IL TASTO IN FONDO, a stati come nelle zone
+        float by = fondo - 34f;
+        string tb; bool attivo; string cmd; int br, bg2, bb;
+        StatoTorneo(i, out tb, out attivo, out cmd, out br, out bg2, out bb);
+        pnRighe = 0;
+        bool selB = (menuLato == 1 && pnSel == pnRighe);
+        if (attivo)
+        {
+            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, br, bg2, bb, selB ? 255 : 150);
+            TestoMenu(EntraMenu(tb, 0.28f, 0, cw2 - 20f), x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, 20, 22, 28, 255);
+        }
+        else
+        {
+            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, br, bg2, bb, selB ? 60 : 35);
+            TestoMenu(EntraMenu(tb, 0.28f, 0, cw2 - 20f), x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, br, bg2, bb, 255);
+        }
+
+        // I PESCI della zona del torneo
+        int a = LuogoDalNome(t.Zona);
+        if (a >= 0) DisegnaColonnaPesci(a, x + cw2 + pad, py + pad, fondo, px + pw - pad);
+    }
+
+    void TastiTornei(int now)
+    {
+        if (sbVoci.Count == 0) return;
+        bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
+               || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
+        bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 19)
+                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 173);
+        bool dx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 175);
+        bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174);
+        bool ok = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201);
+        if (menuLato == 0 && (su || giu))
+        {
+            int n = sbVoci.Count;
+            sbSel = (sbSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 0 && dx) { menuLato = 1; pnSel = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && sx) { menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && dx && pcPesci.Count > 0) { menuLato = 2; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 2 && sx) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 2 && (su || giu))
+        {
+            int n = pcPesci.Count;
+            if (n > 0) pcSel = (pcSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 1 && ok && sbSel < sbArea.Count)
+        {
+            int i = sbArea[sbSel];
+            string tb; bool attivo; string cmd; int br, bg2, bb;
+            StatoTorneo(i, out tb, out attivo, out cmd, out br, out bg2, out bb);
+            menuNuovoTasto = now + 300;
+            if (!attivo || cmd.Length == 0) return;
+            int prima = torneoOra;
+            Esegui(cmd);
+            SuonoMenu("menu_apri.wav");
+            // se il torneo e' partito si torna a pescare
+            if (torneoOra >= 0 && torneoOra != prima) ChiudiMenuNuovo();
+        }
     }
 
     // IL DIARIO: le zone a sinistra, a destra i pesci presi in quella zona
@@ -6911,6 +7135,7 @@ public class Pesca : Script
         if (menuScheda == 1) { TastiEquip(now); return; }
         if (menuScheda == 2) { TastiNegozio(now); return; }
         if (menuScheda == 3) { TastiDiario(now); return; }
+        if (menuScheda == 4) { TastiTornei(now); return; }
         if (menuScheda != 0 || sbVoci.Count == 0) return;
         bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
@@ -7081,6 +7306,12 @@ public class Pesca : Script
             float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
             DisegnaDiario(mx + sbw, cy, mw - sbw, ch);
         }
+        if (menuScheda == 4)
+        {
+            DisegnaSidebar(mx, cy, ch);
+            float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
+            DisegnaPannelloTorneo(mx + sbw, cy, mw - sbw, ch);
+        }
 
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
@@ -7148,6 +7379,21 @@ public class Pesca : Script
         {
             Voce(ic, tx, "croce_sugiu", "^ v", L("Fish", "Pesce"));
             Voce(ic, tx, "croce_sxdx", "<", L("Spot", "Zona"));
+        }
+        if (menuScheda == 4 && menuLato == 0)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "croce_dx", ">", L("Details", "Dettagli"));
+        }
+        if (menuScheda == 4 && menuLato == 1)
+        {
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Confirm", "Conferma"));
+            Voce(ic, tx, "croce_sxdx", "< >", L("List / Fish", "Lista / Pesci"));
+        }
+        if (menuScheda == 4 && menuLato == 2)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Fish", "Pesce"));
+            Voce(ic, tx, "croce_sxdx", "<", L("Competition", "Torneo"));
         }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
