@@ -5765,7 +5765,7 @@ public class Pesca : Script
         float tx2 = x + 8f;
         // il nome e i dati
         y += 6f;
-        TestoMenu(arNome[a], tx2, y, 0.40f, 4, 0, 245, 245, 250, 255); y += 24f;
+        TestoMenu(EntraMenu(arNome[a], 0.40f, 4, cw2 - 16f), tx2, y, 0.40f, 4, 0, 245, 245, 250, 255); y += 24f;
         TestoMenu(arTipo[a] + "   " + quanti + " " + L("species", "specie"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255); y += 16f;
         if (aperta) TestoMenu(L("level ", "livello ") + LivelloArea(a), tx2, y, 0.24f, 0, 0, 245, 205, 80, 255);
         else TestoMenu(L("level ", "livello ") + LivelloArea(a) + "   " + L("closed for you", "per te e' chiusa"), tx2, y, 0.24f, 0, 0, 235, 90, 80, 255);
@@ -5937,7 +5937,7 @@ public class Pesca : Script
         y += 32f;
         string sotto = sp.Nome;
         if (sp.Famiglia.Length > 0) sotto += "   -   " + sp.Famiglia;
-        TestoMenu(sotto, x, y, 0.22f, 0, 0, 150, 152, 160, 255);
+        TestoMenu(EntraMenu(sotto, 0.22f, 0, w), x, y, 0.22f, 0, 0, 150, 152, 160, 255);
         y += 26f;
         DisegnaRett(x, y, w, 1f, 255, 255, 255, 40);
         y += 12f;
@@ -5997,7 +5997,9 @@ public class Pesca : Script
                         if (ey + ie > fondo - 30f) break;
                         // Img e' gia' il percorso completo (img\esche\...)
                         if (escheShop[k].Img.Length > 0) Sprite(escheShop[k].Img, ex, ey, ie, ie);
-                        TestoMenu(EscaIt(escheShop[k].Nome), ex + ie + 6f, ey + ie * 0.5f - 8f, 0.23f, 0, 0, 200, 202, 210, 255);
+                        // il nome non esce mai dalla sua casella: si accorcia
+                        string ne = EntraMenu(EscaIt(escheShop[k].Nome), 0.23f, 0, ew - ie - 14f);
+                        TestoMenu(ne, ex + ie + 6f, ey + ie * 0.5f - 8f, 0.23f, 0, 0, 200, 202, 210, 255);
                         n++;
                         break;
                     }
@@ -6022,6 +6024,16 @@ public class Pesca : Script
                     }
             TestoMenu(string.Join(", ", tipi.ToArray()), x, y, 0.25f, 0, 0, 200, 202, 210, 255);
         }
+    }
+
+    // un testo che deve stare in tot pixel: se e' piu' largo si accorcia con un punto
+    string EntraMenu(string t, float scala, int font, float maxW)
+    {
+        if (t == null) return "";
+        if (LarghezzaTesto(t, scala, font) <= maxW) return t;
+        while (t.Length > 2 && LarghezzaTesto(t + ".", scala, font) > maxW)
+            t = t.Substring(0, t.Length - 1);
+        return t.TrimEnd() + ".";
     }
 
     // etichetta grigia e valore bianco, uno sotto l'altro stretti
