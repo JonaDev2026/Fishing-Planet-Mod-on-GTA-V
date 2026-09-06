@@ -2685,6 +2685,8 @@ public class Pesca : Script
                 if (c[1].Trim() == "minuti") minutiFatti = Numero(c[2]);
                 if (c[1].Trim() == "soldi_nassa") soldiNassa = Numero(c[2]);
                 if (c[1].Trim() == "in_pesca") inPesca = (Numero(c[2]) != 0) && licZona.Length > 0 && licGiorni > 0;
+                if (c[1].Trim() == "torneo_tasca") torneoTasca = Numero(c[2]);
+                if (c[1].Trim() == "giorno_torneo") giornoTorneo = (Numero(c[2]) != 0);
                 if (c[1].Trim() == "frizione")
                 {
                     frizione = Numero(c[2]);
@@ -2751,6 +2753,8 @@ public class Pesca : Script
         v.Add("imp|frizione|" + frizione);
         v.Add("imp|soldi_nassa|" + soldiNassa);
         v.Add("imp|in_pesca|" + (inPesca ? "1" : "0"));
+        v.Add("imp|torneo_tasca|" + torneoTasca);
+        v.Add("imp|giorno_torneo|" + (giornoTorneo ? "1" : "0"));
         v.Add("imp|minuti|" + minutiFatti);
         {
             long oraP = AdessoSec();
@@ -3511,7 +3515,10 @@ public class Pesca : Script
         else if (taglia == "TROFEO") torneoTrofei++;
     }
 
-    void ApriTorneo(int i)
+    void ApriTorneo(int i) { ApriTorneo(i, false); }
+
+    // pagata = la quota l'hai gia' pagata col biglietto (menu nuovo)
+    void ApriTorneo(int i, bool pagata)
     {
         if (i < 0 || i >= tornei.Count) return;
         Torneo t = tornei[i];
@@ -3529,11 +3536,11 @@ public class Pesca : Script
         if (luZ >= 0 && luO != luZ)
         { Avviso("~r~" + L("The competition is at " + t.Zona + ".",
                            "Il torneo e' a " + t.Zona + ".")); return; }
-        if (Soldi() < t.Quota)
+        if (!pagata && Soldi() < t.Quota)
         { Avviso("~r~" + L("Entry is $" + Soldo(t.Quota) + ".",
                            "L'iscrizione costa $" + Soldo(t.Quota) + ".")); return; }
 
-        Paga(t.Quota);
+        if (!pagata) Paga(t.Quota);
 
         // L'ORA E IL TEMPO DEL TORNEO.
         // Ogni gara ha la sua ora di partenza e il suo cielo, scelti
@@ -3562,6 +3569,67 @@ public class Pesca : Script
                + t.Minuti + " " + L("minutes", "minuti") + ".");
         Diario("torneo iniziato: " + t.Nome + " - quota " + t.Quota);
         RiscriviTutto();
+    }
+
+    // IL BIGLIETTO DEL TORNEO: si compra da qualsiasi posto, come la
+    // licenza, e resta in tasca finche' non sei sul posto e lo fai
+    // partire. Il torneo e' una giornata a se': non si compra con una
+    // licenza in tasca o in corso, e con il biglietto non si compra la
+    // licenza.
+    int torneoTasca = -1;
+    bool giornoTorneo = false;   // la giornata di oggi e' quella del torneo
+
+    // il motivo per cui non puoi iscriverti adesso ("" = puoi)
+    string PercheNoTorneo(int i)
+    {
+        Torneo t = tornei[i];
+        if (torneoOra >= 0) return L("Competition already running", "Hai gia' un torneo in corso");
+        if (inPesca) return L("Licence running for another event", "Hai la licenza in corso per un altro evento");
+        if (licGiorni > 0 && licZona.Length > 0) return L("You already hold a licence", "Hai gia' una licenza in tasca");
+        if (torneoTasca >= 0 && torneoTasca != i) return L("You already hold a ticket", "Hai gia' un biglietto in tasca");
+        if (livelloPescatore < t.LivMin) return L("Level " + t.LivMin + " needed", "Ci vuole il livello " + t.LivMin);
+        return "";
+    }
+
+    bool CompraBiglietto(int i)
+    {
+        if (i < 0 || i >= tornei.Count) return false;
+        if (torneoTasca == i) return false;
+        string no = PercheNoTorneo(i);
+        if (no.Length > 0) { Messaggio(no); return false; }
+        Torneo t = tornei[i];
+        if (Soldi() < t.Quota)
+        { Messaggio(L("Entry is $", "L'iscrizione costa $") + Soldo(t.Quota) + L(", you have $", ", ne hai $") + Soldi()); return false; }
+        Paga(t.Quota);
+        torneoTasca = i;
+        Messaggio(L("Signed up: ", "Iscritto: ") + t.Nome + ". " + L("Go to the spot and start.", "Vai sul posto e fallo partire."));
+        Diario("biglietto torneo: " + t.Nome + " - quota " + t.Quota);
+        SalvaStato();
+        return true;
+    }
+
+    // sul posto col biglietto: parte la giornata del torneo
+    bool IniziaTorneo()
+    {
+        if (torneoTasca < 0 || torneoTasca >= tornei.Count) return false;
+        if (inPesca || torneoOra >= 0) return false;
+        Torneo t = tornei[torneoTasca];
+        int luZ = LuogoDalNome(t.Zona);
+        int lu = LuogoQui();
+        if (lu < 0 || (luZ >= 0 && lu != luZ))
+        { Messaggio(L("The competition is at ", "Il torneo e' a ") + t.Zona); return false; }
+        if (!AttrezzaturaMinima()) return false;
+        // la giornata del torneo, senza licenza: vale la zona del posto
+        licZona = CodiceLuogo(lu);
+        licGiorni = 1;
+        giornoTorneo = true;
+        if (!IniziaPesca()) { licZona = ""; licGiorni = 0; giornoTorneo = false; return false; }
+        int i = torneoTasca;
+        torneoTasca = -1;
+        ApriTorneo(i, true);
+        if (torneoOra != i) { FinePesca(false); giornoTorneo = false; torneoTasca = i; return false; }
+        SalvaStato();
+        return true;
     }
 
     // fine del torneo: ritirato = te ne sei andato tu, niente premi
@@ -3619,7 +3687,12 @@ public class Pesca : Script
     void ControllaTorneo()
     {
         if (torneoOra < 0) return;
-        if (Game.GameTime >= torneoFine) ChiudiTorneo(false);
+        if (Game.GameTime >= torneoFine)
+        {
+            ChiudiTorneo(false);
+            // la giornata del torneo finisce col torneo
+            if (giornoTorneo) { giornoTorneo = false; FinePesca(true); }
+        }
     }
 
     string TempoTorneo()
@@ -4384,6 +4457,7 @@ public class Pesca : Script
         if (cmd == "mollo_torneo")
         {
             ChiudiTorneo(true);
+            if (giornoTorneo) { giornoTorneo = false; FinePesca(true); }
             return true;
         }
         if (cmd == "gps_zona")
@@ -5231,6 +5305,8 @@ public class Pesca : Script
     bool CompraLicenza(string zona, int giorni, bool avvia)
     {
         if (inPesca) return false;
+        if (torneoOra >= 0) { Messaggio(L("Competition running", "Hai un torneo in corso")); return false; }
+        if (torneoTasca >= 0) { Messaggio(L("You hold a competition ticket", "Hai un biglietto del torneo in tasca")); return false; }
         int prezzo = PrezzoLicenza(zona, giorni);
         if (prezzo <= 0) return false;
         // IL LIVELLO DELL'ACQUA.
@@ -5425,6 +5501,7 @@ public class Pesca : Script
         inPesca = false;
         licZona = "";
         licGiorni = 0;
+        giornoTorneo = false;
         ViaCampo();
         campoMesso = false;
         // REGOLA: a fine giornata si smonta tutto, torna tutto in borsa
@@ -5792,19 +5869,18 @@ public class Pesca : Script
         return y;
     }
 
-    // lo stato del tasto in fondo alla colonna del torneo
+    // lo stato del tasto in fondo alla colonna del torneo, come le zone:
+    // lontano "Raggiungi il posto", sul posto "Ti trovi qui", sul posto col
+    // biglietto "Inizia il torneo", in gara "Ritirati"
     void StatoTorneo(int i, out string testo, out bool attivo, out string cmd, out int r, out int g, out int b)
     {
         Torneo t = tornei[i];
         int luZ = LuogoDalNome(t.Zona);
         bool qui = (luZ < 0) || (LuogoQuiMenu() == luZ);
         if (torneoOra == i) { testo = L("Withdraw", "Ritirati"); attivo = true; cmd = "mollo_torneo"; r = 235; g = 90; b = 80; }
-        else if (torneoOra >= 0) { testo = L("Another competition running", "Hai un altro torneo in corso"); attivo = false; cmd = ""; r = 235; g = 90; b = 80; }
-        else if (livelloPescatore < t.LivMin && !qui) { testo = L("Get to the spot", "Raggiungi il posto"); attivo = true; cmd = "gps_torneo " + i; r = 130; g = 225; b = 180; }
-        else if (livelloPescatore < t.LivMin) { testo = L("Level " + t.LivMin + " needed", "Ci vuole il livello " + t.LivMin); attivo = false; cmd = ""; r = 235; g = 90; b = 80; }
         else if (!qui) { testo = L("Get to the spot", "Raggiungi il posto"); attivo = true; cmd = "gps_torneo " + i; r = 130; g = 225; b = 180; }
-        else if (inPesca) { testo = L("Sign up  $", "Iscriviti  $") + Soldo(t.Quota); attivo = true; cmd = "iscr_torneo " + i; r = 245; g = 140; b = 40; }
-        else { testo = L("Pay and start  $", "Paga e comincia  $") + Soldo(t.Quota) + " + " + L("day", "giornata"); attivo = true; cmd = "torneo_via " + i; r = 245; g = 140; b = 40; }
+        else if (torneoTasca == i && !inPesca && torneoOra < 0) { testo = L("Start the competition", "Inizia il torneo"); attivo = true; cmd = "inizia_torneo"; r = 245; g = 140; b = 40; }
+        else { testo = L("You are here", "Ti trovi qui"); attivo = false; cmd = ""; r = 250; g = 175; b = 205; }
     }
 
     void DisegnaPannelloTorneo(float px, float py, float pw, float ph)
@@ -5875,19 +5951,39 @@ public class Pesca : Script
         // IL TUO RECORD
         y = SezioneColonna(L("YOUR RECORD", "IL TUO RECORD"), x, y, cw2);
         if (t.RecFatte <= 0)
-            TestoMenu(L("Never fished", "Mai fatto"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
+        { TestoMenu(L("Never fished", "Mai fatto"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255); y += 16f; }
         else
         {
             TestoMenu(Kg(t.RecKg) + " kg   " + NomeMedaglia(t.RecMed), tx2, y, 0.24f, 0, 0, 245, 245, 250, 255); y += 16f;
             TestoMenu(t.RecTrofei + " " + L("trophies", "trofei") + "   " + t.RecUnici + " " + L("uniques", "unici")
                       + "   " + L("done ", "fatto ") + t.RecFatte + "x", tx2, y, 0.22f, 0, 0, 200, 202, 210, 255);
+            y += 16f;
+        }
+        y += 6f;
+
+        // L'ISCRIZIONE: la riga si compra con A, come le licenze. Se non
+        // puoi, il motivo in rosso.
+        y = SezioneColonna(L("ENTRY", "ISCRIZIONE"), x, y, cw2);
+        pnRighe = 0;
+        if (torneoOra == i)
+            TestoMenu(L("Running - ", "In corso - ") + TempoTorneo(), tx2, y, 0.24f, 0, 0, 150, 235, 180, 255);
+        else if (torneoTasca == i)
+            TestoMenu(L("Ticket in pocket", "Biglietto in tasca"), tx2, y, 0.24f, 0, 0, 150, 235, 180, 255);
+        else
+        {
+            string no = PercheNoTorneo(i);
+            if (no.Length > 0) y = TestoRighe(no, tx2, y, cw2 - 16f, 0.22f, 235, 90, 80);
+            else
+            {
+                RigaLicenza(x, cw2, y, L("Sign up", "Iscriviti"), t.Quota, 0);
+                pnRighe = 1;
+            }
         }
 
         // IL TASTO IN FONDO, a stati come nelle zone
         float by = fondo - 34f;
         string tb; bool attivo; string cmd; int br, bg2, bb;
         StatoTorneo(i, out tb, out attivo, out cmd, out br, out bg2, out bb);
-        pnRighe = 0;
         bool selB = (menuLato == 1 && pnSel == pnRighe);
         if (attivo)
         {
@@ -5931,18 +6027,32 @@ public class Pesca : Script
             if (n > 0) pcSel = (pcSel + (giu ? 1 : n - 1)) % n;
             menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
         }
+        else if (menuLato == 1 && (su || giu))
+        {
+            int n = pnRighe + 1;
+            pnSel = (pnSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
         else if (menuLato == 1 && ok && sbSel < sbArea.Count)
         {
             int i = sbArea[sbSel];
+            menuNuovoTasto = now + 300;
+            if (pnSel < pnRighe)
+            {
+                if (CompraBiglietto(i)) SuonoMenu("menu_apri.wav");
+                pnSel = 0;
+                return;
+            }
             string tb; bool attivo; string cmd; int br, bg2, bb;
             StatoTorneo(i, out tb, out attivo, out cmd, out br, out bg2, out bb);
-            menuNuovoTasto = now + 300;
             if (!attivo || cmd.Length == 0) return;
-            int prima = torneoOra;
+            if (cmd == "inizia_torneo")
+            {
+                if (IniziaTorneo()) { SuonoMenu("menu_apri.wav"); ChiudiMenuNuovo(); }
+                return;
+            }
             Esegui(cmd);
             SuonoMenu("menu_apri.wav");
-            // se il torneo e' partito si torna a pescare
-            if (torneoOra >= 0 && torneoOra != prima) ChiudiMenuNuovo();
         }
     }
 
@@ -7387,6 +7497,7 @@ public class Pesca : Script
         }
         if (menuScheda == 4 && menuLato == 1)
         {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
             Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Confirm", "Conferma"));
             Voce(ic, tx, "croce_sxdx", "< >", L("List / Fish", "Lista / Pesci"));
         }
