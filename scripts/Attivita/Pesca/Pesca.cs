@@ -2400,7 +2400,7 @@ public class Pesca : Script
                 MuoviRoba(Game.GameTime, true);
             else if (robaAppesaFino > 0)
             {
-                ViaRoba();
+                PosaRobaATerra();
                 robaOra = -1;
                 robaAppesaFino = 0;
             }
@@ -10731,6 +10731,9 @@ public class Pesca : Script
                 escaScarto = 0f;
                 Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 fase = FASE_ACQUA;
+                // la robaccia della pescata prima non deve tornare in acqua:
+                // se penzola ancora dalla canna finisce per terra adesso
+                if (robaOra >= 0) { PosaRobaATerra(); robaOra = -1; robaAppesaFino = 0; }
                 // appena tocca l'acqua il cucchiaino e' in superficie:
                 // da li' comincia a scendere
                 profEsca = 0f;
@@ -14871,6 +14874,27 @@ public class Pesca : Script
             Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, robaProp, true, true);
         }
         catch { ViaRoba(); }
+    }
+
+    // LA ROBACCIA SI SGANCIA E RESTA LI': cade per terra a un metro dal
+    // pescatore, con la fisica del gioco, e la mod se ne dimentica.
+    void PosaRobaATerra()
+    {
+        try
+        {
+            if (robaProp == null || !robaProp.Exists()) { robaProp = null; return; }
+            Ped p = Game.Player.Character;
+            GTA.Math.Vector3 dove = p.Position + p.RightVector * 1.2f + p.ForwardVector * 0.5f;
+            dove.Z += 0.6f;
+            Function.Call(Hash.FREEZE_ENTITY_POSITION, robaProp, false);
+            Function.Call(Hash.SET_ENTITY_COLLISION, robaProp, true, true);
+            Function.Call(Hash.SET_ENTITY_HAS_GRAVITY, robaProp, true);
+            robaProp.Position = dove;
+            Function.Call(Hash.SET_ENTITY_AS_MISSION_ENTITY, robaProp, false, false);
+            robaProp.MarkAsNoLongerNeeded();
+        }
+        catch { }
+        robaProp = null;
     }
 
     void ViaRoba()
