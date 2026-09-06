@@ -6346,19 +6346,12 @@ public class Pesca : Script
             sbSel = (sbSel + (giu ? 1 : n - 1)) % n;
             menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
         }
-        // a destra si va solo dove c'e' qualcosa: una colonna vuota si salta
-        else if (menuLato == 0 && dx && (eqCasa.Count > 0 || eqBorsa.Count > 0))
-        {
-            menuLato = eqCasa.Count > 0 ? 1 : 2;
-            menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
-        }
-        else if (menuLato == 1 && sx) { menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
-        else if (menuLato == 1 && dx && eqBorsa.Count > 0) { menuLato = 2; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
-        else if (menuLato == 2 && sx)
-        {
-            menuLato = eqCasa.Count > 0 ? 1 : 0;
-            menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
-        }
+        // la lista sta in mezzo: SINISTRA va a casa, DESTRA allo zaino,
+        // e si va solo dove c'e' qualcosa
+        else if (menuLato == 0 && sx && eqCasa.Count > 0) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 0 && dx && eqBorsa.Count > 0) { menuLato = 2; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && dx) { menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 2 && sx) { menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
         else if (menuLato == 1 && (su || giu) && eqCasa.Count > 0)
         {
             int n = eqCasa.Count;
@@ -6560,10 +6553,20 @@ public class Pesca : Script
             Voce(ic, tx, "croce_sugiu", "^ v", L("Fish", "Pesce"));
             Voce(ic, tx, "croce_sxdx", "<", L("Spot", "Posto"));
         }
-        if (menuScheda == 1)
+        if (menuScheda == 1 && menuLato == 0)
         {
             Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
-            Voce(ic, tx, "croce_sxdx", "< >", L("Column", "Colonna"));
+            Voce(ic, tx, "croce_sxdx", "< >", L("Home / Backpack", "Casa / Zaino"));
+        }
+        if (menuScheda == 1 && menuLato == 1)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "croce_sxdx", ">", L("List", "Lista"));
+        }
+        if (menuScheda == 1 && menuLato == 2)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "croce_sxdx", "<", L("List", "Lista"));
         }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
