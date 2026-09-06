@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Drawing;
 using System.Media;
+using System.Runtime.InteropServices;
 using GTA;
 using GTA.Math;
 using GTA.Native;
@@ -5355,21 +5356,7 @@ public class Pesca : Script
             menuNuovoTasto = now + 400;
             menuNuovoPausaDa = now;
             try { Game.TimeScale = 0f; } catch { }
-            // L'AUDIO DEL MONDO SI SPEGNE con le scene audio del gioco:
-            // i nomi stanno in config (menu_audio, separati da ;) cosi' si
-            // provano senza ricompilare. Piu' scene insieme si sommano.
-            string[] scene = LeggiS("menu_audio", "FBI_HEIST_H5_MUTE_AMBIENCE_SCENE;CHARACTER_CHANGE_IN_SKY_SCENE").Split(';');
-            int q;
-            for (q = 0; q < scene.Length; q++)
-            {
-                string sc = scene[q].Trim();
-                if (sc.Length == 0) continue;
-                try { Function.Call(Hash.START_AUDIO_SCENE, sc); } catch { }
-            }
-            try { Function.Call(Hash.SET_AUDIO_FLAG, "DisableFlightMusic", true); } catch { }
-            // E LE OPZIONI AUDIO DEL GIOCO A ZERO: gli id in config
-            // (menu_audio_id: 300 effetti, 301 musica). I tuoi valori si
-            // rimettono alla chiusura, e se ricarichi gli script.
+            // e l'audio di GTA in muto dal mixer di Windows
             AbbassaAudio();
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
@@ -5392,54 +5379,99 @@ public class Pesca : Script
         menuNuovoAperto = false;
         menuNuovoTasto = Game.GameTime + 400;
         try { Game.TimeScale = 1f; } catch { }
-        string[] scene = LeggiS("menu_audio", "FBI_HEIST_H5_MUTE_AMBIENCE_SCENE;CHARACTER_CHANGE_IN_SKY_SCENE").Split(';');
-        int q;
-        for (q = 0; q < scene.Length; q++)
-        {
-            string sc = scene[q].Trim();
-            if (sc.Length == 0) continue;
-            try { Function.Call(Hash.STOP_AUDIO_SCENE, sc); } catch { }
-        }
-        try { Function.Call(Hash.SET_AUDIO_FLAG, "DisableFlightMusic", false); } catch { }
         RialzaAudio();
         // l'orologio della pesca non deve aver contato il tempo in pausa
         prossimoMinuto += Game.GameTime - menuNuovoPausaDa;
         Suono("BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET");
     }
 
-    List<int> audioId = new List<int>();
-    List<int> audioPrima = new List<int>();
+    // L'AUDIO DEL GIOCO SI AMMUTOLISCE DAL MIXER DI WINDOWS: e' la sessione
+    // audio del processo di GTA (quella che vedi nel mixer del volume),
+    // messa in muto e rimessa com'era. Non tocca le opzioni del gioco.
+    [ComImport, Guid("BCDE0395-E52F-467C-8E3D-C4579291692E")]
+    class MMDeviceEnumeratorCom { }
+
+    [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    interface IMMDeviceEnumerator
+    {
+        int EnumAudioEndpoints(int dataFlow, int stateMask, out IntPtr devices);
+        int GetDefaultAudioEndpoint(int dataFlow, int role, out IMMDevice device);
+    }
+
+    [Guid("D666063F-1587-4E43-81F1-B948E807363F"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    interface IMMDevice
+    {
+        int Activate(ref Guid iid, int clsCtx, IntPtr activationParams,
+                     [MarshalAs(UnmanagedType.IUnknown)] out object iface);
+    }
+
+    [Guid("BFA971F1-4D5E-40BB-935E-967039BFBEE4"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    interface IAudioSessionManager
+    {
+        int GetAudioSessionControl(IntPtr sessionGuid, int streamFlags, out IntPtr sessionControl);
+        int GetSimpleAudioVolume(IntPtr sessionGuid, int streamFlags, out ISimpleAudioVolume volume);
+    }
+
+    [Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    interface ISimpleAudioVolume
+    {
+        int SetMasterVolume(float level, ref Guid eventContext);
+        int GetMasterVolume(out float level);
+        int SetMute([MarshalAs(UnmanagedType.Bool)] bool mute, ref Guid eventContext);
+        int GetMute([MarshalAs(UnmanagedType.Bool)] out bool mute);
+    }
+
+    ISimpleAudioVolume audioSessione = null;
+    bool audioEraMuto = false;
+    bool audioAbbassato = false;
+
+    ISimpleAudioVolume SessioneAudio()
+    {
+        if (audioSessione != null) return audioSessione;
+        try
+        {
+            IMMDeviceEnumerator en = (IMMDeviceEnumerator)new MMDeviceEnumeratorCom();
+            IMMDevice dev;
+            if (en.GetDefaultAudioEndpoint(0, 0, out dev) != 0 || dev == null) return null;
+            Guid iid = new Guid("BFA971F1-4D5E-40BB-935E-967039BFBEE4");
+            object o;
+            if (dev.Activate(ref iid, 23, IntPtr.Zero, out o) != 0 || o == null) return null;
+            IAudioSessionManager man = (IAudioSessionManager)o;
+            ISimpleAudioVolume vol;
+            if (man.GetSimpleAudioVolume(IntPtr.Zero, 0, out vol) != 0) return null;
+            audioSessione = vol;
+        }
+        catch { audioSessione = null; }
+        return audioSessione;
+    }
 
     void AbbassaAudio()
     {
-        if (audioId.Count > 0) return;
-        string[] ids = LeggiS("menu_audio_id", "300;301").Split(';');
-        int q;
-        for (q = 0; q < ids.Length; q++)
+        if (audioAbbassato) return;
+        try
         {
-            int id;
-            if (!int.TryParse(ids[q].Trim(), out id)) continue;
-            try
-            {
-                int prima = Function.Call<int>(Hash.GET_PROFILE_SETTING, id);
-                audioId.Add(id);
-                audioPrima.Add(prima);
-                Function.Call(Hash.STAT_SET_PROFILE_SETTING_VALUE, id, 0);
-            }
-            catch { }
+            ISimpleAudioVolume v = SessioneAudio();
+            if (v == null) return;
+            bool m;
+            v.GetMute(out m);
+            audioEraMuto = m;
+            Guid g = Guid.Empty;
+            v.SetMute(true, ref g);
+            audioAbbassato = true;
         }
+        catch { }
     }
 
     void RialzaAudio()
     {
-        int q;
-        for (q = 0; q < audioId.Count; q++)
+        if (!audioAbbassato) return;
+        try
         {
-            try { Function.Call(Hash.STAT_SET_PROFILE_SETTING_VALUE, audioId[q], audioPrima[q]); }
-            catch { }
+            ISimpleAudioVolume v = SessioneAudio();
+            if (v != null) { Guid g = Guid.Empty; v.SetMute(audioEraMuto, ref g); }
         }
-        audioId.Clear();
-        audioPrima.Clear();
+        catch { }
+        audioAbbassato = false;
     }
 
     void DisegnaMenuNuovo()
