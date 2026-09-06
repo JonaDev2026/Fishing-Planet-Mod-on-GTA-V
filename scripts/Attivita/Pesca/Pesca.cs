@@ -13217,6 +13217,10 @@ public class Pesca : Script
     // il pesce tenuto si incassa al prezzo al chilo del catalogo.
     void VendiNassa()
     {
+        // venduto o no, la nassa a fine giornata e' vuota: prima restavano
+        // i chili e i pesci del giorno prima
+        nassaOggi.Clear();
+        kgNassa = 0f;
         if (soldiNassa <= 0) { soldiNassa = 0; return; }
         Paga(-soldiNassa);
         Avviso("~g~" + L("Fish sold: +$", "Pesce venduto: +$") + soldiNassa);
