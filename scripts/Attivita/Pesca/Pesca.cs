@@ -5788,8 +5788,9 @@ public class Pesca : Script
         float bh = LeggiF("menu_eq_banner", 80f);
         float x = mx + pad;
         float y = cy + pad;
+        float ts = LeggiF("menu_eq_titolo_testo", 0.32f), ta = LeggiF("menu_eq_titolo_alto", 26f);
         y = SezioneColonna(L("ITEMS YOU CAN MOVE BETWEEN HOME AND TACKLE BOX",
-                             "OGGETTI CHE PUOI SPOSTARE TRA CASA E CASSETTA"), x, y, w);
+                             "OGGETTI CHE PUOI SPOSTARE TRA CASA E CASSETTA"), x, y, w, ts, ta);
         int k;
         for (k = 0; k < sbVoci.Count; k++)
         {
@@ -5801,7 +5802,7 @@ public class Pesca : Script
             y += rh;
         }
         y += rh * 0.5f;
-        y = SezioneColonna(L("FIXED ITEMS FOR EXPANSION", "OGGETTI FISSI PER L'ESPANSIONE"), x, y, w);
+        y = SezioneColonna(L("FIXED ITEMS FOR EXPANSION", "OGGETTI FISSI PER L'ESPANSIONE"), x, y, w, ts, ta);
         DisegnaRett(x, y, w, rh - 2f, 0, 0, 0, 120);
         TestoMenu(CAT_NOME[9], x + 10f, y + rh * 0.5f - 9f, 0.28f, 0, 0, 245, 245, 250, 255);
         y += rh;
@@ -5817,11 +5818,12 @@ public class Pesca : Script
                       string titolo, string pie, float x, float y0, float w, float fondo)
     {
         float rh = LeggiF("menu_eq_riga", 26f);
-        float y = SezioneColonna(titolo, x, y0, w);
+        float ts = LeggiF("menu_eq_titolo_testo", 0.32f), ta = LeggiF("menu_eq_titolo_alto", 26f);
+        float y = SezioneColonna(titolo, x, y0, w, ts, ta);
         // in fondo la stessa riga del titolo, coi posti: la lista sta in mezzo
-        float py = fondo - 20f;
-        DisegnaRett(x, py, w, 20f, 255, 255, 255, 18);
-        TestoMenu(pie, x + 8f, py + 3f, LeggiF("menu_eq_cont_testo", 0.22f), 0, 0, 200, 202, 210, 255);
+        float py = fondo - ta;
+        DisegnaRett(x, py, w, ta, 255, 255, 255, 18);
+        TestoMenu(pie, x + 8f, py + (ta - 20f) * 0.5f + 3f, LeggiF("menu_eq_cont_testo", 0.22f), 0, 0, 200, 202, 210, 255);
         fondo = py - 4f;
         int righe = (int)((fondo - y) / rh);
         if (righe < 1) righe = 1;
@@ -5895,19 +5897,17 @@ public class Pesca : Script
         return new int[] { 235, 210, 130 };
     }
 
-    void DisegnaColonneEquip(float px, float py, float pw, float ph)
+    // casa a sinistra, la lista in mezzo, lo zaino a destra
+    void DisegnaColonneEquip(float xCasa, float xZaino, float w, float py, float ph)
     {
         if (sbSel < 0 || sbSel >= sbArea.Count) return;
         int ic = sbArea[sbSel];
         if (eqCat != ic || OraPc() - eqQuando > 500) RiempiEquip(ic);
         float pad = LeggiF("menu_pn_bordo", 10f);
-        // lo spazio in mezzo alle due colonne (menu_eq_mezzo)
-        float mezzo = LeggiF("menu_eq_mezzo", 40f);
-        float w = (pw - pad * 2f - mezzo) * 0.5f;
         float fondo = py + ph - pad;
         ColonnaEquip(eqCasa, ref eqSelCasa, ref eqTopCasa, menuLato == 1,
                      L("AT HOME", "A CASA"), L("Unlimited space", "Spazio illimitato"),
-                     px + pad, py + pad, w, fondo);
+                     xCasa, py + pad, w, fondo);
         // il titolo della colonna e' il nome di quello che porti: lo zaino
         // finche' non compri una cassetta, poi il nome della cassetta
         string tit = L("BACKPACK", "ZAINO");
@@ -5919,7 +5919,7 @@ public class Pesca : Script
                 tit = nome.ToUpper();
         }
         ColonnaEquip(eqBorsa, ref eqSelBorsa, ref eqTopBorsa, menuLato == 2,
-                     tit, Contatori(), px + pad + w + mezzo, py + pad, w, fondo);
+                     tit, Contatori(), xZaino, py + pad, w, fondo);
     }
 
     void DisegnaSidebar(float mx, float cy, float ch)
@@ -5983,9 +5983,14 @@ public class Pesca : Script
     // una sezione della colonna: la riga scura col titolo in maiuscolo
     float SezioneColonna(string titolo, float x, float y, float w)
     {
-        DisegnaRett(x, y, w, 20f, 255, 255, 255, 18);
-        TestoMenu(titolo, x + 8f, y + 2f, 0.26f, 4, 0, 245, 245, 250, 255);
-        return y + 24f;
+        return SezioneColonna(titolo, x, y, w, 0.26f, 20f);
+    }
+
+    float SezioneColonna(string titolo, float x, float y, float w, float scala, float alto)
+    {
+        DisegnaRett(x, y, w, alto, 255, 255, 255, 18);
+        TestoMenu(titolo, x + 8f, y + (alto - 20f) * 0.5f + 2f, scala, 4, 0, 245, 245, 250, 255);
+        return y + alto + 4f;
     }
 
     void DisegnaPannelloZona(float px, float py, float pw, float ph)
@@ -6523,9 +6528,16 @@ public class Pesca : Script
         }
         if (menuScheda == 1)
         {
-            DisegnaSidebarEquip(mx, cy, ch);
-            float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
-            DisegnaColonneEquip(mx + sbw, cy, mw - sbw, ch);
+            // casa | lista | zaino, con lo spazio menu_eq_mezzo tra loro
+            float pad = LeggiF("menu_pn_bordo", 10f);
+            float mezzo = LeggiF("menu_eq_mezzo", 40f);
+            float sbb = LeggiF("menu_sb_bordo", 8f);
+            float sbl = LeggiF("menu_sb_larga", 260f);
+            float w = (mw - pad * 2f - mezzo * 2f - sbl) * 0.5f;
+            float xCasa = mx + pad;
+            float xLista = xCasa + w + mezzo;
+            DisegnaSidebarEquip(xLista - sbb, cy, ch);
+            DisegnaColonneEquip(xCasa, xLista + sbl + mezzo, w, cy, ch);
         }
 
         List<string> ic = new List<string>();
