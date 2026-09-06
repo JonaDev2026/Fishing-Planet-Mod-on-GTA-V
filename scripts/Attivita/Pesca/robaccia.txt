@@ -8,7 +8,7 @@
 Vecchia scarpa|prop_ld_shoe_01|1|0.4
 Sacchetto di plastica|prop_cs_rub_binbag_01|0|0.2
 Cono stradale|prop_roadcone02a|2|1.5
-Pianta acquatica|prop_bush_lrg_01|0|0.6
+Pianta acquatica|prop_grass_da_01|0|0.6
 Bottiglia vuota|prop_beer_bottle|1|0.3
 Lattina|prop_beer_am_1|1|0.1
 Copertone|prop_wheel_tyre|3|6
