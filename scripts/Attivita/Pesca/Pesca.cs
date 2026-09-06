@@ -5626,17 +5626,19 @@ public class Pesca : Script
         int a = sbArea[sbSel];
         float pad = LeggiF("menu_pn_bordo", 10f);
         float x = px + pad, y = py + pad, w = pw - pad * 2f;
-        // il banner del posto (630x191 nei nostri PNG)
-        string ban = BannerArea(a);
-        float bh = 0f;
-        if (ban.Length > 0)
+        // il banner del posto: tolto per ora (menu_pn_banner=1 lo rimette)
+        if (LeggiF("menu_pn_banner", 0f) > 0.5f)
         {
-            bh = w * 191f / 630f;
-            float bmax = LeggiF("menu_pn_banner_max", 150f);
-            float bw2 = w;
-            if (bh > bmax) { bh = bmax; bw2 = bh * 630f / 191f; }
-            Sprite(ban, x + (w - bw2) * 0.5f, y, bw2, bh);
-            y += bh + 8f;
+            string ban = BannerArea(a);
+            if (ban.Length > 0)
+            {
+                float bh = w * 191f / 630f;
+                float bmax = LeggiF("menu_pn_banner_max", 150f);
+                float bw2 = w;
+                if (bh > bmax) { bh = bmax; bw2 = bh * 630f / 191f; }
+                Sprite(ban, x + (w - bw2) * 0.5f, y, bw2, bh);
+                y += bh + 8f;
+            }
         }
         int quanti = (a < arPesci.Count) ? arPesci[a].Count : 0;
         bool aperta = (livelloPescatore >= LivelloArea(a));
