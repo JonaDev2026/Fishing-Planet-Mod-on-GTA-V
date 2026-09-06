@@ -5814,12 +5814,15 @@ public class Pesca : Script
     }
 
     void ColonnaEquip(List<string> lista, ref int sel, ref int top, bool attiva,
-                      string titolo, float x, float y0, float w, float fondo)
+                      string titolo, string pie, float x, float y0, float w, float fondo)
     {
         float rh = LeggiF("menu_eq_riga", 26f);
         float y = SezioneColonna(titolo, x, y0, w);
-        if (lista == eqBorsa)
-            TestoMenu(Contatori(), x + w - 8f, y0 + 3f, LeggiF("menu_eq_cont_testo", 0.22f), 0, 2, 200, 202, 210, 255);
+        // in fondo la stessa riga del titolo, coi posti: la lista sta in mezzo
+        float py = fondo - 20f;
+        DisegnaRett(x, py, w, 20f, 255, 255, 255, 18);
+        TestoMenu(pie, x + 8f, py + 3f, LeggiF("menu_eq_cont_testo", 0.22f), 0, 0, 200, 202, 210, 255);
+        fondo = py - 4f;
         int righe = (int)((fondo - y) / rh);
         if (righe < 1) righe = 1;
         if (sel < top) top = sel;
@@ -5854,7 +5857,8 @@ public class Pesca : Script
         float w = (pw - pad * 3f) * 0.5f;
         float fondo = py + ph - pad;
         ColonnaEquip(eqCasa, ref eqSelCasa, ref eqTopCasa, menuLato == 1,
-                     L("AT HOME", "A CASA"), px + pad, py + pad, w, fondo);
+                     L("AT HOME", "A CASA"), L("Unlimited space", "Spazio illimitato"),
+                     px + pad, py + pad, w, fondo);
         // il titolo della colonna e' il nome di quello che porti: lo zaino
         // finche' non compri una cassetta, poi il nome della cassetta
         string tit = L("BACKPACK", "ZAINO");
@@ -5866,7 +5870,7 @@ public class Pesca : Script
                 tit = nome.ToUpper();
         }
         ColonnaEquip(eqBorsa, ref eqSelBorsa, ref eqTopBorsa, menuLato == 2,
-                     tit, px + pad * 2f + w, py + pad, w, fondo);
+                     tit, Contatori(), px + pad * 2f + w, py + pad, w, fondo);
     }
 
     void DisegnaSidebar(float mx, float cy, float ch)
