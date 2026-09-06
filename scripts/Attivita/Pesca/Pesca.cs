@@ -4855,10 +4855,15 @@ public class Pesca : Script
         // partenza: a livello 1 esci con lo zaino e basta.
         maxCanne = ZAINO_CANNE; maxMul = ZAINO_MUL;
         maxLenze = ZAINO_LENZE; maxRoba = ZAINO_ROBA;
-        foreach (KeyValuePair<string, int> kv in borsa)
+        // portacanne e cassetta sono fissi: fanno posto appena li possiedi,
+        // che stiano a casa o dietro
+        List<KeyValuePair<string, int>> tutti = new List<KeyValuePair<string, int>>();
+        foreach (KeyValuePair<string, int> kv in borsa) tutti.Add(kv);
+        foreach (KeyValuePair<string, int> kv in magazzino) tutti.Add(kv);
+        foreach (KeyValuePair<string, int> kv in tutti)
         {
             string[] c = kv.Key.Split(':');
-            if (c.Length < 2) continue;
+            if (c.Length < 2 || kv.Value <= 0) continue;
             int id = Numero(c[1]);
             int i;
             if (c[0] == "portacanne")
