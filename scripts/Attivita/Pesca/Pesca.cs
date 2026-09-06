@@ -5467,9 +5467,9 @@ public class Pesca : Script
         Function.Call(Hash.DISABLE_ALL_CONTROL_ACTIONS, 0);
 
         bool b = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 202);
-        if (b && menuLato == 1 && now > menuNuovoTasto)
+        if (b && menuLato > 0 && now > menuNuovoTasto)
         {
-            menuLato = 0; menuNuovoTasto = now + 150; TicMenu("BACK");
+            menuLato--; menuNuovoTasto = now + 150; TicMenu("BACK");
             b = false;
         }
         if (combo || b)
@@ -5675,7 +5675,7 @@ public class Pesca : Script
     void DisegnaSidebar(float mx, float cy, float ch)
     {
         if (sbScheda != menuScheda) RiempiSidebar();
-        float w = LeggiF("menu_sb_larga", 300f);
+        float w = LeggiF("menu_sb_larga", 260f);
         float rh = LeggiF("menu_sb_riga", 26f);
         float pad = LeggiF("menu_sb_bordo", 8f);
         int righe = (int)((ch - pad * 2f) / rh);
@@ -5746,7 +5746,7 @@ public class Pesca : Script
         // LA COLONNA DEL POSTO, sullo stile della scheda di Fishing Planet:
         // banner, ora e giornata, previsioni con la curva dell'attivita',
         // le licenze, e in fondo il tasto per raggiungere il posto.
-        float cw2 = LeggiF("menu_pn2_larga", 230f);
+        float cw2 = LeggiF("menu_pn2_larga", 200f);
         float x = px + pad, y = py + pad;
         float fondo = py + ph - pad;
         DisegnaRett(x, y, cw2, fondo - y, 0, 0, 0, 120);
@@ -5851,26 +5851,142 @@ public class Pesca : Script
             TestoMenu(tb, x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, br, bg2, bb, 255);
         }
 
-        // I PESCI, a destra della colonna: foto e nome in griglia
-        float gx = x + cw2 + pad;
-        float gw2 = px + pw - pad - gx;
-        float th = LeggiF("menu_pn_pesce", 44f);
-        int perRiga = (int)(gw2 / (th + 34f));
-        if (perRiga < 1) perRiga = 1;
-        float cw = gw2 / perRiga;
-        float gy = py + pad;
-        int i, n = 0;
+        // I PESCI: la colonna dei pesci (foto, nome, spunte comune/trofeo/
+        // unico) e a destra la scheda del pesce scelto
+        DisegnaColonnaPesci(a, x + cw2 + pad, py + pad, fondo, px + pw - pad);
+    }
+
+    // LA COLONNA DEI PESCI del posto, come in Fishing Planet: ogni riga ha
+    // la foto, il nome e sotto le tre spunte (comune, trofeo, unico) che si
+    // accendono quando l'hai preso. Si scorre con la croce; a destra la
+    // scheda del pesce su cui stai.
+    List<int> pcPesci = new List<int>();
+    int pcArea = -1, pcSel = 0, pcTop = 0;
+
+    void RiempiColonnaPesci(int a)
+    {
+        pcPesci.Clear();
+        int i;
         for (i = 0; i < pesci.Count; i++)
+            if (a < arPesci.Count && arPesci[a].Contains(pesci[i].Nome)) pcPesci.Add(i);
+        pcArea = a; pcSel = 0; pcTop = 0;
+    }
+
+    // che taglia hai gia' preso di questa specie: 0 mai, 1 comune, 2 trofeo, 3 unico
+    int TagliaPresa(Specie sp)
+    {
+        float kg;
+        if (!record.TryGetValue(sp.Nome, out kg)) return 0;
+        if (sp.KgU > 0f && kg >= sp.KgU) return 3;
+        if (sp.KgT > 0f && kg >= sp.KgT) return 2;
+        return 1;
+    }
+
+    void Spunta(float x, float y, bool si, string testo, int r, int g, int b)
+    {
+        // il cerchietto: pieno se preso
+        DisegnaRett(x, y + 3f, 9f, 9f, r, g, b, si ? 255 : 70);
+        TestoMenu(testo, x + 13f, y - 1f, 0.19f, 0, 0, r, g, b, si ? 255 : 120);
+    }
+
+    void DisegnaColonnaPesci(int a, float x, float y0, float fondo, float xFine)
+    {
+        if (pcArea != a) RiempiColonnaPesci(a);
+        float cw = LeggiF("menu_pc_larga", 200f);
+        float rh = LeggiF("menu_pc_riga", 92f);
+        DisegnaRett(x, y0, cw, fondo - y0, 0, 0, 0, 120);
+        int righe = (int)((fondo - y0) / rh);
+        if (righe < 1) righe = 1;
+        if (pcSel < pcTop) pcTop = pcSel;
+        if (pcSel >= pcTop + righe) pcTop = pcSel - righe + 1;
+        int i;
+        for (i = 0; i < righe && pcTop + i < pcPesci.Count; i++)
         {
-            if (a >= arPesci.Count || !arPesci[a].Contains(pesci[i].Nome)) continue;
-            float cx = gx + (n % perRiga) * cw;
-            float cy2 = gy + (n / perRiga) * (th + 18f);
-            if (cy2 + th + 14f > fondo) break;
-            if (pesci[i].Img.Length > 0) Sprite(pesci[i].Img, cx + (cw - th * 1.6f) * 0.5f, cy2, th * 1.6f, th);
-            string nn = NomeIt(pesci[i].Nome);
-            if (nn.Length > 16) nn = nn.Substring(0, 15) + ".";
-            TestoMenu(nn, cx + cw * 0.5f, cy2 + th + 1f, 0.17f, 0, 1, 200, 202, 210, 255);
-            n++;
+            Specie sp = pesci[pcPesci[pcTop + i]];
+            float y = y0 + i * rh;
+            bool sel = (menuLato == 2 && pcTop + i == pcSel);
+            if (sel) DisegnaRett(x, y, cw, rh - 2f, 255, 255, 255, 40);
+            TestoMenu(NomeIt(sp.Nome).ToUpper(), x + 8f, y + 4f, 0.24f, 4, 0, 245, 245, 250, 255);
+            float ih = rh - 44f, iw = ih * 1.6f;
+            if (sp.Img.Length > 0) Sprite(sp.Img, x + (cw - iw) * 0.5f, y + 22f, iw, ih);
+            int presa = TagliaPresa(sp);
+            float sy2 = y + rh - 18f;
+            Spunta(x + 8f, sy2, presa >= 1, L("Common", "Comune"), 200, 202, 210);
+            Spunta(x + 70f, sy2, presa >= 2, L("Trophy", "Trofeo"), 130, 225, 180);
+            Spunta(x + 130f, sy2, presa >= 3, L("Unique", "Unico"), 245, 205, 80);
+            DisegnaRett(x, y + rh - 2f, cw, 1f, 255, 255, 255, 25);
+        }
+        // la scheda a destra
+        if (pcSel >= 0 && pcSel < pcPesci.Count)
+            DisegnaSchedaPesce(pesci[pcPesci[pcSel]], x + cw + 12f, y0, xFine, fondo);
+    }
+
+    string QuandoIt(string q)
+    {
+        if (q == "notte") return L("at night", "di notte");
+        if (q == "alba_tramonto") return L("at dawn and dusk", "all'alba e al tramonto");
+        if (q == "giorno") return L("by day", "di giorno");
+        return L("all day", "tutto il giorno");
+    }
+
+    void DisegnaSchedaPesce(Specie sp, float x, float y, float xFine, float fondo)
+    {
+        float w = xFine - x;
+        TestoMenu(NomeIt(sp.Nome).ToUpper(), x, y, 0.55f, 4, 0, 245, 245, 250, 255);
+        y += 30f;
+        TestoMenu(sp.Nome + (sp.Famiglia.Length > 0 ? "   -   " + sp.Famiglia : ""), x, y, 0.24f, 0, 0, 200, 202, 210, 255);
+        y += 26f;
+        // le taglie e il prezzo
+        string kgC = sp.KgC.ToString("0.##", CultureInfo.InvariantCulture);
+        string kgT = sp.KgT.ToString("0.##", CultureInfo.InvariantCulture);
+        string kgU = sp.KgU.ToString("0.##", CultureInfo.InvariantCulture);
+        TestoMenu(L("Common ", "Comune ") + kgC + " kg", x, y, 0.26f, 0, 0, 200, 202, 210, 255);
+        TestoMenu(L("Trophy ", "Trofeo ") + kgT + " kg", x + w * 0.33f, y, 0.26f, 0, 0, 130, 225, 180, 255);
+        TestoMenu(L("Unique ", "Unico ") + kgU + " kg", x + w * 0.66f, y, 0.26f, 0, 0, 245, 205, 80, 255);
+        y += 22f;
+        TestoMenu("$" + sp.PrC + L("/kg", "/kg") + "   " + L("hook ", "amo ") + sp.Amo
+                  + (sp.Denti > 0 ? "   " + L("teeth: leader needed", "denti: serve il leader") : ""),
+                  x, y, 0.26f, 0, 0, 200, 202, 210, 255);
+        y += 22f;
+        // quando mangia e la temperatura
+        string tmp = (sp.TMin >= 0f) ? ("   " + L("water ", "acqua ") + sp.TMin.ToString("0") + "-" + sp.TMax.ToString("0") + "\u00B0C") : "";
+        TestoMenu(L("Feeds ", "Mangia ") + QuandoIt(sp.Quando) + tmp, x, y, 0.26f, 0, 0, 200, 202, 210, 255);
+        y += 30f;
+        // le esche preferite
+        if (sp.Esche != null && sp.Esche.Length > 0)
+        {
+            TestoMenu(L("Preferred baits:", "Esche preferite:"), x, y, 0.28f, 0, 0, 245, 245, 250, 255);
+            y += 20f;
+            int i, n = 0;
+            for (i = 0; i < sp.Esche.Length && y < fondo - 20f; i++)
+            {
+                int k;
+                for (k = 0; k < escheShop.Count; k++)
+                    if (escheShop[k].Id == sp.Esche[i])
+                    {
+                        TestoMenu("- " + EscaIt(escheShop[k].Nome), x + 8f, y, 0.25f, 0, 0, 200, 202, 210, 255);
+                        y += 17f; n++;
+                        break;
+                    }
+            }
+            y += 8f;
+        }
+        // gli artificiali: quanti e di che tipo
+        if (sp.Art != null && sp.Art.Length > 0 && y < fondo - 40f)
+        {
+            TestoMenu(L("Lures:", "Artificiali:"), x, y, 0.28f, 0, 0, 245, 245, 250, 255);
+            y += 20f;
+            List<string> tipi = new List<string>();
+            int i, k;
+            for (i = 0; i < sp.Art.Length; i++)
+                for (k = 0; k < artificiali.Count; k++)
+                    if (artificiali[k].Id == sp.Art[i])
+                    {
+                        if (!tipi.Contains(artificiali[k].Tipo)) tipi.Add(artificiali[k].Tipo);
+                        break;
+                    }
+            string t = sp.Art.Length + " " + L("models: ", "modelli: ") + string.Join(", ", tipi.ToArray());
+            TestoMenu(t, x + 8f, y, 0.25f, 0, 0, 200, 202, 210, 255);
         }
     }
 
@@ -5900,6 +6016,21 @@ public class Pesca : Script
         else if (menuLato == 1 && sx)
         {
             menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 1 && dx && pcPesci.Count > 0)
+        {
+            menuLato = 2; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 2 && sx)
+        {
+            menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 2 && (su || giu))
+        {
+            int n = pcPesci.Count;
+            if (n > 0) pcSel = (pcSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120;
+            TicMenu("NAV_UP_DOWN");
         }
         else if (menuLato == 1 && (su || giu))
         {
@@ -6008,7 +6139,7 @@ public class Pesca : Script
         if (menuScheda == 0)
         {
             DisegnaSidebar(mx, cy, ch);
-            float sbw = LeggiF("menu_sb_larga", 300f) + LeggiF("menu_sb_bordo", 8f) * 2f;
+            float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
             DisegnaPannelloZona(mx + sbw, cy, mw - sbw, ch);
         }
 
@@ -6025,7 +6156,12 @@ public class Pesca : Script
         {
             Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
             Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Confirm", "Conferma"));
-            Voce(ic, tx, "croce_sxdx", "<", L("List", "Lista"));
+            Voce(ic, tx, "croce_sxdx", "< >", L("List / Fish", "Lista / Pesci"));
+        }
+        if (menuScheda == 0 && menuLato == 2)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Fish", "Pesce"));
+            Voce(ic, tx, "croce_sxdx", "<", L("Spot", "Posto"));
         }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
