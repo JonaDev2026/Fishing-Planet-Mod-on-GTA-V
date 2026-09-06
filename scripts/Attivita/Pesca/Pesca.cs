@@ -847,8 +847,10 @@ public class Pesca : Script
     List<Lenza> lenze = new List<Lenza>();
 
     static readonly string[] TIPO_COD = new string[] { "mono", "fluoro", "braid", "mare" };
-    static readonly string[] TIPO_NOME = new string[] {
+    static readonly string[] TIPO_NOME_IT = new string[] {
         "Monofilo", "Fluorocarbon", "Trecciato", "Lenze da mare" };
+    static readonly string[] TIPO_NOME_EN = new string[] { "Mono", "Fluorocarbon", "Braid", "Sea lines" };
+    string[] TIPO_NOME { get { return (lang == 1) ? TIPO_NOME_IT : TIPO_NOME_EN; } }
     static readonly string[] TIPO_NOTA = new string[] {
         "Forza media, si vede poco, elastica: la lenza di tutti i giorni.",
         "Quasi invisibile in acqua e resistentissima all'abrasione: per i pesci diffidenti.",
@@ -875,13 +877,17 @@ public class Pesca : Script
     static readonly string[] CANNA_COD = new string[] {
         "spinning", "casting", "fondo", "feeder", "match",
         "carpa", "telescopica", "mare", "spod" };
-    static readonly string[] CANNA_NOME = new string[] {
+    static readonly string[] CANNA_NOME_IT = new string[] {
         "Spinning", "Casting", "Da fondo", "Feeder", "Match",
         "Da carpa", "Telescopiche", "Da mare", "Spod" };
+    static readonly string[] CANNA_NOME_EN = new string[] { "Spinning", "Casting", "Bottom", "Feeder", "Match", "Carp", "Telescopic", "Sea", "Spod" };
+    string[] CANNA_NOME { get { return (lang == 1) ? CANNA_NOME_IT : CANNA_NOME_EN; } }
 
     static readonly string[] MUL_COD = new string[] { "spinning", "casting", "mare" };
-    static readonly string[] MUL_NOME = new string[] {
+    static readonly string[] MUL_NOME_IT = new string[] {
         "Da spinning", "Da casting", "Da mare" };
+    static readonly string[] MUL_NOME_EN = new string[] { "Spinning", "Casting", "Sea" };
+    string[] MUL_NOME { get { return (lang == 1) ? MUL_NOME_IT : MUL_NOME_EN; } }
 
     // ---------- ami, jig head, rig, leader e piombi ----------
     class Terminale
@@ -894,8 +900,10 @@ public class Pesca : Script
     List<Terminale> terminali = new List<Terminale>();
 
     static readonly string[] TERM_COD = new string[] { "amo", "jig", "rig", "leader", "piombo" };
-    static readonly string[] TERM_NOME = new string[] {
+    static readonly string[] TERM_NOME_IT = new string[] {
         "Ami", "Testine piombate", "Rig montati", "Leader", "Piombi" };
+    static readonly string[] TERM_NOME_EN = new string[] { "Hooks", "Jig heads", "Ready rigs", "Leaders", "Sinkers" };
+    string[] TERM_NOME { get { return (lang == 1) ? TERM_NOME_IT : TERM_NOME_EN; } }
     static readonly string[] TERM_NOTA = new string[] {
         "Misure da #16 a #1, poi da #1/0 a #18/0.",
         "Amo e piombo in un pezzo solo, per le esche artificiali morbide.",
@@ -926,8 +934,10 @@ public class Pesca : Script
 
     static readonly string[] ESCA_COD = new string[] {
         "comuni", "vermi", "fresche", "boilies", "mare" };
-    static readonly string[] ESCA_NOME = new string[] {
+    static readonly string[] ESCA_NOME_IT = new string[] {
         "Comuni", "Vermi e insetti", "Fresche", "Boilies e pellet", "Da mare" };
+    static readonly string[] ESCA_NOME_EN = new string[] { "Common", "Worms and insects", "Fresh", "Boilies and pellets", "Sea" };
+    string[] ESCA_NOME { get { return (lang == 1) ? ESCA_NOME_IT : ESCA_NOME_EN; } }
     static readonly string[] ESCA_NOTA = new string[] {
         "Pane, formaggio, mais: quello che si trova in cucina.",
         "Lombrichi, camole, larve: l'esca che funziona quasi sempre.",
@@ -1024,7 +1034,7 @@ public class Pesca : Script
         // invece all'avvio si presenta, e mentre gira scrive l'ora in
         // vivo.txt: quel file e' il battito, e il trainer lo guarda per
         // sapere se la mod c'e' davvero.
-        Avviso("~g~Modulo pesca " + VERSIONE + "~s~  pronto.");
+        Avviso("~g~" + L("Fishing module ", "Modulo pesca ") + VERSIONE + "~s~  " + L("ready.", "pronto."));
         Battito();
 
         CaricaStato();
@@ -2438,9 +2448,11 @@ public class Pesca : Script
     static readonly string[] CAT_COD = new string[] {
         "canna", "mulinello", "lenza", "terminale", "galleggiante",
         "artificiale", "esca", "nassa", "cassetta", "portacanne" };
-    static readonly string[] CAT_NOME = new string[] {
+    static readonly string[] CAT_NOME_IT = new string[] {
         "Canne", "Mulinelli", "Lenze", "Ami e terminali", "Galleggianti",
         "Esche artificiali", "Esche", "Nasse e fili", "Cassette e borse", "Portacanne" };
+    static readonly string[] CAT_NOME_EN = new string[] { "Rods", "Reels", "Lines", "Hooks and terminal tackle", "Floats", "Lures", "Baits", "Keepnets and stringers", "Tackle boxes and bags", "Rod cases" };
+    string[] CAT_NOME { get { return (lang == 1) ? CAT_NOME_IT : CAT_NOME_EN; } }
     static readonly string[] CAT_FILE = new string[] {
         "i_canna.txt", "i_mulinello.txt", "i_lenza.txt", "i_terminale.txt",
         "i_galleggiante.txt", "i_artificiale.txt", "i_esca.txt", "i_nassa.txt",
@@ -4266,7 +4278,7 @@ public class Pesca : Script
             if (!diarioChiesto)
             {
                 diarioChiesto = true;
-                Avviso("~y~Premi ancora per azzerare il diario.");
+                Avviso("~y~" + L("Press again to clear the log.", "Premi ancora per azzerare il diario."));
                 return true;
             }
             diarioChiesto = false;
@@ -4278,7 +4290,7 @@ public class Pesca : Script
             recAmo.Clear();
             recXp.Clear();
             recVale.Clear();
-            Avviso("~g~Diario azzerato.");
+            Avviso("~g~" + L("Log cleared.", "Diario azzerato."));
             return true;
         }
         if (cmd == "imp_reset")
@@ -4288,7 +4300,7 @@ public class Pesca : Script
             if (!resetChiesto)
             {
                 resetChiesto = true;
-                Avviso("~r~Premi ancora: cancelli tutto e riparti da zero.");
+                Avviso("~r~" + L("Press again: everything is deleted and you start over.", "Premi ancora: cancelli tutto e riparti da zero."));
                 return true;
             }
             resetChiesto = false;
@@ -4318,30 +4330,30 @@ public class Pesca : Script
             licGiorni = 0;
             SalvaStato();
             RiscriviTutto();
-            Avviso("~g~Tutto azzerato. Sei di nuovo al livello 1.");
+            Avviso("~g~" + L("All cleared. You are back at level 1.", "Tutto azzerato. Sei di nuovo al livello 1."));
             return true;
         }
         if (cmd == "pesca_via")
         {
-            if (!inPesca) { Avviso("~y~Prima paga la giornata."); return true; }
+            if (!inPesca) { Avviso("~y~" + L("Pay the day first.", "Prima paga la giornata.")); return true; }
             int luV = LuogoQui();
             if (luV >= 0 && CodiceLuogo(luV) != licZona)
             {
                 string bzV;
-                Avviso("~r~La licenza e' per " + NomeChiosco(licZona, out bzV) + ".");
+                Avviso("~r~" + L("The licence is for ", "La licenza e' per ") + NomeChiosco(licZona, out bzV) + ".");
                 return true;
             }
-            if (!VicinoAllAcqua()) { Avviso("~y~Non sei in riva."); return true; }
-            if (fase != FASE_FERMO) { Avviso("~y~Hai gia' la canna in mano."); return true; }
+            if (!VicinoAllAcqua()) { Avviso("~y~" + L("You are not on the shore.", "Non sei in riva.")); return true; }
+            if (fase != FASE_FERMO) { Avviso("~y~" + L("You already hold the rod.", "Hai gia' la canna in mano.")); return true; }
             int idv; string imgv, nomev;
             if (!Montato("canna", out idv, out imgv, out nomev))
-            { Messaggio("Arma una canna dall'equipaggiamento."); return true; }
+            { Messaggio(L("Rig a rod from the tackle.", "Arma una canna dall'equipaggiamento.")); return true; }
             if (!Montato("mulinello", out idv, out imgv, out nomev))
-            { Messaggio("Arma il mulinello dall'equipaggiamento."); return true; }
+            { Messaggio(L("Rig the reel from the tackle.", "Arma il mulinello dall'equipaggiamento.")); return true; }
             if (!Montato("lenza", out idv, out imgv, out nomev))
-            { Messaggio("Imbobina una lenza sul mulinello."); return true; }
+            { Messaggio(L("Spool a line on the reel.", "Imbobina una lenza sul mulinello.")); return true; }
             if (!Montato("nassa", out idv, out imgv, out nomev))
-            { Messaggio("Porta una nassa, o i pesci dove li metti?"); return true; }
+            { Messaggio(L("Bring a keepnet, or where do you put the fish?", "Porta una nassa, o i pesci dove li metti?")); return true; }
             // e in punta ci vuole qualcosa che agganci
             string mancaQui = CosaMancaPerLanciare();
             if (mancaQui.Length > 0) { Messaggio(mancaQui); return true; }
@@ -4355,12 +4367,12 @@ public class Pesca : Script
         if (cmd == "acq_accesso")
         {
             int la = LuogoQui();
-            if (la < 0) { Avviso("~y~Non sei dentro nessuna area."); return true; }
+            if (la < 0) { Avviso("~y~" + L("You are not inside any area.", "Non sei dentro nessuna area.")); return true; }
             Vector3 pa = Game.Player.Character.Position;
             arAx[la] = pa.X; arAy[la] = pa.Y; arAcc[la] = true;
             SalvaAccessi();
             MettiBlipPunti();
-            Avviso("~g~Punto di partenza segnato: " + arNome[la] + ".");
+            Avviso("~g~" + L("Start point marked: ", "Punto di partenza segnato: ") + arNome[la] + ".");
             ScriviAcque();
             return true;
         }
@@ -4371,7 +4383,7 @@ public class Pesca : Script
             {
                 armato["galleggiante"] = -1;
                 Aggiungi(borsa, "galleggiante:" + ig, -1);
-                Avviso("~y~Galleggiante tolto.");
+                Avviso("~y~" + L("Float removed.", "Galleggiante tolto."));
             }
             else
             {
@@ -4379,7 +4391,7 @@ public class Pesca : Script
                 armato["galleggiante"] = ig;
                 string ng = "", ig2; int pg, lg;
                 if (Articolo("galleggiante", ig, out ng, out ig2, out pg, out lg))
-                    Avviso("~g~Montato: ~s~" + ng);
+                    Avviso("~g~" + L("Rigged: ", "Montato: ") + "~s~" + ng);
             }
             SalvaStato();
             ScriviProvaGall();
@@ -4449,7 +4461,7 @@ public class Pesca : Script
                 CaricaPesciAree();
                 CaricaPuntiCaldi();
                 MettiBlipPunti();
-                Avviso("~y~Buttata: " + via);
+                Avviso("~y~" + L("Thrown away: ", "Buttata: ") + via);
             }
             ScriviAcque();
             return true;
@@ -4462,7 +4474,7 @@ public class Pesca : Script
             if (!inPesca)
             {
                 int luV2 = LuogoQui();
-                if (luV2 < 0) { Avviso("~y~Non sei in una zona di pesca."); return true; }
+                if (luV2 < 0) { Avviso("~y~" + L("You are not in a fishing spot.", "Non sei in una zona di pesca.")); return true; }
                 if (!CompraLicenza(CodiceLuogo(luV2), 1)) return true;
             }
             ApriTorneo(it2);
@@ -4484,7 +4496,7 @@ public class Pesca : Script
             int az = Numero(arg);
             if (az < 0 || az >= arNome.Count) return false;
             Function.Call(Hash.SET_NEW_WAYPOINT, PuntoX(az), PuntoY(az));
-            Avviso("~g~Segnaposto su " + arNome[az] + ".");
+            Avviso("~g~" + L("Waypoint on ", "Segnaposto su ") + arNome[az] + ".");
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
@@ -4494,10 +4506,10 @@ public class Pesca : Script
             if (it < 0 || it >= tornei.Count) return false;
             Torneo tt = tornei[it];
             int lu = LuogoDalNome(tt.Zona);
-            if (lu < 0) { Avviso("~y~Non so dove sia questa zona."); return true; }
+            if (lu < 0) { Avviso("~y~" + L("I do not know where this spot is.", "Non so dove sia questa zona.")); return true; }
             // il segnaposto va al centro dell'area del torneo
             Function.Call(Hash.SET_NEW_WAYPOINT, PuntoX(lu), PuntoY(lu));
-            Avviso("~g~Segnaposto su " + tt.Zona + ".~s~  " + tt.Nome);
+            Avviso("~g~" + L("Waypoint on ", "Segnaposto su ") + tt.Zona + ".~s~  " + tt.Nome);
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
@@ -4506,7 +4518,7 @@ public class Pesca : Script
             int gz = Numero(arg);
             if (gz < 0 || gz >= GALL_ZOOM.Length) gz = 0;
             gallZoom = gz;
-            Avviso("~b~Galleggiante: " + GallZoomTxt());
+            Avviso("~b~" + L("Float: ", "Galleggiante: ") + GallZoomTxt());
             SalvaStato();
             ScriviImpostazioni();
             return true;
@@ -4525,7 +4537,7 @@ public class Pesca : Script
             escaMontata = ide;
             string ne, ie; int pe, le;
             if (Articolo("esca", ide, out ne, out ie, out pe, out le))
-                Avviso("~g~Esca: ~s~" + ne + "  x" + QuanteEsche(ide));
+                Avviso("~g~" + L("Bait: ", "Esca: ") + "~s~" + ne + "  x" + QuanteEsche(ide));
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
@@ -4616,7 +4628,7 @@ public class Pesca : Script
         if (liv > livelloPescatore)
         {
             Diario("   RIFIUTATO: serve livello " + liv);
-            Avviso("~r~" + nome + ": ci vuole il livello " + liv + ".");
+            Avviso("~r~" + nome + L(": level ", ": ci vuole il livello ") + liv + L(" needed.", "."));
             return false;
         }
         // SUL POSTO SI COMPRA TUTTO, MA CI DEVE STARE.
@@ -4627,14 +4639,14 @@ public class Pesca : Script
         if (inPesca && !CiSta(cat, id))
         {
             Diario("   RIFIUTATO: non ci sta piu' niente in " + cat);
-            Avviso("~y~Non ci sta: " + Contatori());
+            Avviso("~y~" + L("No room: ", "Non ci sta: ") + Contatori());
             return false;
         }
         int costo = PrezzoOggi(prezzo);
         if (Soldi() < costo)
         {
             Diario("   RIFIUTATO: costa " + costo + " e ne hai " + Soldi());
-            Avviso("~r~Ti servono $" + costo + ", ne hai " + Soldi() + ".");
+            Avviso("~r~" + L("You need $", "Ti servono $") + costo + L(", you have ", ", ne hai ") + Soldi() + ".");
             return false;
         }
         Paga(costo);
@@ -4643,14 +4655,14 @@ public class Pesca : Script
         Aggiungi(inPesca ? borsa : magazzino, cat + ":" + id, 1);
         // scritto per esteso cosi' si vede se i soldi si muovono davvero
         Diario("   COMPRATO " + nome + " per " + costo + ", restano " + Soldi());
-        Avviso("~g~" + nome + "  ~r~-$" + costo + "  ~s~restano $" + Soldi());
+        Avviso("~g~" + nome + "  ~r~-$" + costo + "  ~s~" + L("left $", "restano $") + Soldi());
 
         // Il consiglio arriva come AVVISO, non nel menu: il menu resta
         // pulito. Non blocca niente, la canna giusta magari la compri dopo.
         string cons = ConsiglioAcquisto(cat, id);
         if (cons.Length > 0)
         {
-            if (cons.StartsWith("Non va")) Avviso("~y~" + cons);
+            if (cons.StartsWith("Non va") || cons.StartsWith("Does not")) Avviso("~y~" + cons);
             else Avviso("~b~" + cons);
         }
         return true;
@@ -4704,11 +4716,11 @@ public class Pesca : Script
         int prezzo, liv;
         if (!Articolo("lenza", id, out nome, out img, out prezzo, out liv)) return false;
         if (!ChiediDueVolte("bob" + i,
-                "Premi ancora (Y) per gettare " + nome + " (" + m + " m)"))
+                L("Press (Y) again to throw away ", "Premi ancora (Y) per gettare ") + nome + " (" + m + " m)"))
             return true;
         if (i < 0 || i >= bobine.Count) return true;
         bobine.RemoveAt(i);
-        Messaggio("Gettata: " + nome + "   " + m + " m");
+        Messaggio(L("Thrown away: ", "Gettata: ") + nome + "   " + m + " m");
         return true;
     }
 
@@ -4721,11 +4733,11 @@ public class Pesca : Script
         int prezzo, liv;
         if (!Articolo(cat, id, out nome, out img, out prezzo, out liv)) return false;
         if (!ChiediDueVolte(k + (daCasa ? "c" : "b"),
-                "Premi ancora (Y) per gettare " + nome))
+                L("Press (Y) again to throw away ", "Premi ancora (Y) per gettare ") + nome))
             return true;
         if (!daCasa && Quanti(d, k) <= 1) SeArmatoSmonta(cat, id);
         Aggiungi(d, k, -1);
-        Messaggio("Gettato: " + nome);
+        Messaggio(L("Thrown away: ", "Gettato: ") + nome);
         return true;
     }
 
@@ -4739,8 +4751,8 @@ public class Pesca : Script
     {
         Dictionary<string, int> magazzino = daCasa ? this.magazzino : borsa;
         string k = cat + ":" + id;
-        if (Quanti(magazzino, k) <= 0) { Messaggio(daCasa ? "Non ce l'hai in casa." : "Non ce l'hai nello zaino."); return true; }
-        if (inPesca) { Messaggio("Si vende da casa, non in riva."); return true; }
+        if (Quanti(magazzino, k) <= 0) { Messaggio(daCasa ? L("You do not have it at home.", "Non ce l'hai in casa.") : L("You do not have it in the backpack.", "Non ce l'hai nello zaino.")); return true; }
+        if (inPesca) { Messaggio(L("Selling is done at home, not on the shore.", "Si vende da casa, non in riva.")); return true; }
 
         string nome, img;
         int prezzo, liv;
@@ -4756,7 +4768,7 @@ public class Pesca : Script
         {
             vendiChiesto = k;
             vendiScade = ora + 5000;
-            Messaggio("Premi ancora (X) per vendere " + nome + " a $" + Dollari(reso));
+            Messaggio(L("Press (X) again to sell ", "Premi ancora (X) per vendere ") + nome + L(" for $", " a $") + Dollari(reso));
             return true;
         }
 
@@ -4767,7 +4779,7 @@ public class Pesca : Script
         Paga(-reso);
         SalvaStato();
         RiscriviTutto();
-        Messaggio("Venduto " + nome + "   +$" + Dollari(reso));
+        Messaggio(L("Sold ", "Venduto ") + nome + "   +$" + Dollari(reso));
         return true;
     }
 
@@ -4779,12 +4791,12 @@ public class Pesca : Script
         if (Quanti(da, k) <= 0) return false;
         if (inPesca)
         {
-            Avviso("~r~Sei fuori: la borsa e' quella che ti sei portato.");
+            Avviso("~r~" + L("You are out: the bag is the one you brought.", "Sei fuori: la borsa e' quella che ti sei portato."));
             return false;
         }
         if (versoBorsa && !CiSta(cat, id))
         {
-            Avviso("~r~Non ci sta piu': guarda cassetta e portacanne.");
+            Avviso("~r~" + L("No more room: check tackle box and rod case.", "Non ci sta piu': guarda cassetta e portacanne."));
             return false;
         }
 
@@ -4800,13 +4812,13 @@ public class Pesca : Script
                 if (Montato("lenza", out q, out qi, out qn)
                     && !VaConLaCanna("lenza", q, id, out perche))
                 {
-                    Avviso("~r~Non e' equilibrata: ~s~" + perche);
+                    Avviso("~r~" + L("Not balanced: ", "Non e' equilibrata: ") + "~s~" + perche);
                     return false;
                 }
                 if (Montato("mulinello", out q, out qi, out qn)
                     && !VaConLaCanna("mulinello", q, id, out perche))
                 {
-                    Avviso("~r~Non e' equilibrata: ~s~" + perche);
+                    Avviso("~r~" + L("Not balanced: ", "Non e' equilibrata: ") + "~s~" + perche);
                     return false;
                 }
             }
@@ -4815,7 +4827,7 @@ public class Pesca : Script
                 int idc = CannaInBorsa();
                 if (idc >= 0 && !VaConLaCanna(cat, id, idc, out perche))
                 {
-                    Avviso("~r~Non e' equilibrata: ~s~" + perche);
+                    Avviso("~r~" + L("Not balanced: ", "Non e' equilibrata: ") + "~s~" + perche);
                     return false;
                 }
             }
@@ -4827,8 +4839,8 @@ public class Pesca : Script
         string nome, img;
         int prezzo, liv;
         if (!Articolo(cat, id, out nome, out img, out prezzo, out liv)) nome = cat;
-        if (versoBorsa) Avviso("~g~Equipaggiato: ~s~" + nome);
-        else Avviso("~y~Rimesso a casa: ~s~" + nome);
+        if (versoBorsa) Avviso("~g~" + L("Packed: ", "Equipaggiato: ") + "~s~" + nome);
+        else Avviso("~y~" + L("Put back home: ", "Rimesso a casa: ") + "~s~" + nome);
         return true;
     }
 
@@ -4875,8 +4887,8 @@ public class Pesca : Script
             float kg = KgLenza(id);
             if (kg > max)
             {
-                perche = "lenza da " + kg.ToString("0.##", CultureInfo.InvariantCulture)
-                       + " kg su una canna da " + max.ToString("0.##", CultureInfo.InvariantCulture)
+                perche = L("line of ", "lenza da ") + kg.ToString("0.##", CultureInfo.InvariantCulture)
+                       + L(" kg on a rod of ", " kg su una canna da ") + max.ToString("0.##", CultureInfo.InvariantCulture)
                        + " kg";
                 return false;
             }
@@ -4886,8 +4898,8 @@ public class Pesca : Script
             float fr = FrizioneMul(id);
             if (fr > max)
             {
-                perche = "frizione da " + fr.ToString("0.##", CultureInfo.InvariantCulture)
-                       + " kg su una canna da " + max.ToString("0.##", CultureInfo.InvariantCulture)
+                perche = L("drag of ", "frizione da ") + fr.ToString("0.##", CultureInfo.InvariantCulture)
+                       + L(" kg on a rod of ", " kg su una canna da ") + max.ToString("0.##", CultureInfo.InvariantCulture)
                        + " kg";
                 return false;
             }
@@ -4928,7 +4940,7 @@ public class Pesca : Script
     {
         if (cat != "lenza" && cat != "mulinello") return "";
         List<int> mie = LeMieCanne();
-        if (mie.Count == 0) return "Non hai ancora canne";
+        if (mie.Count == 0) return L("You have no rods yet", "Non hai ancora canne");
         int i;
         for (i = 0; i < mie.Count; i++)
         {
@@ -4937,11 +4949,11 @@ public class Pesca : Script
             {
                 string nome, img; int prezzo, liv;
                 if (Articolo("canna", mie[i], out nome, out img, out prezzo, out liv))
-                    return "Va con la tua " + nome;
-                return "Va con una canna che hai";
+                    return L("Goes with your ", "Va con la tua ") + nome;
+                return L("Goes with a rod you own", "Va con una canna che hai");
             }
         }
-        return "Non va con nessuna canna che hai";
+        return L("Does not go with any rod you own", "Non va con nessuna canna che hai");
     }
 
     // ------------------------------------------------------------
@@ -5139,12 +5151,12 @@ public class Pesca : Script
         if (cat == "portacanne")
             for (i = 0; i < portacanne.Count; i++)
                 if (portacanne[i].Id == id)
-                    return portacanne[i].Canne + " canne   " + portacanne[i].Mulinelli
-                         + " mulinelli   " + portacanne[i].Lenze + " lenze";
+                    return portacanne[i].Canne + L(" rods   ", " canne   ") + portacanne[i].Mulinelli
+                         + L(" reels   ", " mulinelli   ") + portacanne[i].Lenze + L(" lines", " lenze");
         if (cat == "cassetta")
             for (i = 0; i < cassette.Count; i++)
                 if (cassette[i].Id == id)
-                    return cassette[i].Attrezzi + " oggetti   " + cassette[i].Lenze + " lenze";
+                    return cassette[i].Attrezzi + L(" items   ", " oggetti   ") + cassette[i].Lenze + L(" lines", " lenze");
         return "";
     }
 
@@ -5302,11 +5314,11 @@ public class Pesca : Script
         Capienza(out mc, out mm, out ml, out mr);
         // la roba minuta sta nello zaino finche' non compri la cassetta:
         // scrivere sempre "Cassetta" era falso
-        return "Canne " + InBorsa("canna") + "/" + mc
-             + "  Mulinelli " + InBorsa("mulinello") + "/" + mm
-             + "  Lenze " + InBorsa("lenza") + "/" + ml
-             + "  Oggetti " + RobaMinuta() + "/" + mr
-             + "  Nassa " + InBorsa("nassa") + "/1";
+        return L("Rods ", "Canne ") + InBorsa("canna") + "/" + mc
+             + L("  Reels ", "  Mulinelli ") + InBorsa("mulinello") + "/" + mm
+             + L("  Lines ", "  Lenze ") + InBorsa("lenza") + "/" + ml
+             + L("  Items ", "  Oggetti ") + RobaMinuta() + "/" + mr
+             + L("  Keepnet ", "  Nassa ") + InBorsa("nassa") + "/1";
     }
 
     // ------------------------------------------------------------
@@ -5343,13 +5355,13 @@ public class Pesca : Script
         }
         if (luLic2 >= 0 && livelloPescatore < livMin)
         {
-            Avviso("~r~" + arNome[luLic2] + ": ci vuole il livello " + livMin + ".");
+            Avviso("~r~" + arNome[luLic2] + L(": level ", ": ci vuole il livello ") + livMin + L(" needed.", "."));
             return false;
         }
         if (avvia && !AttrezzaturaMinima()) return false;
         if (Soldi() < prezzo)
         {
-            Avviso("~r~La licenza costa $" + prezzo + ", hai " + Soldi() + ".");
+            Avviso("~r~" + L("The licence costs $", "La licenza costa $") + prezzo + L(", you have ", ", hai ") + Soldi() + ".");
             return false;
         }
         Paga(prezzo);
@@ -5357,7 +5369,7 @@ public class Pesca : Script
         licGiorni = giorni;
         if (!avvia)
         {
-            Avviso("~g~Licenza pagata: vai sul posto e inizia a pescare.");
+            Avviso("~g~" + L("Licence paid: go to the spot and start fishing.", "Licenza pagata: vai sul posto e inizia a pescare."));
             SalvaStato();
             return true;
         }
@@ -5374,7 +5386,7 @@ public class Pesca : Script
         if (!HoDavvero("canna") || !HoDavvero("mulinello")
          || !HoLaLenza() || !HoDavvero("nassa"))
         {
-            Messaggio("Prima prepara l'attrezzatura: canna, mulinello, lenza e nassa.");
+            Messaggio(L("Prepare the tackle first: rod, reel, line and keepnet.", "Prima prepara l'attrezzatura: canna, mulinello, lenza e nassa."));
             return false;
         }
         return true;
@@ -5390,16 +5402,16 @@ public class Pesca : Script
     bool IniziaPesca()
     {
         if (inPesca) return false;
-        if (licZona.Length == 0 || licGiorni <= 0) { Avviso("~y~Prima compra la licenza."); return false; }
+        if (licZona.Length == 0 || licGiorni <= 0) { Avviso("~y~" + L("Buy the licence first.", "Prima compra la licenza.")); return false; }
         int lu = LuogoQui();
         if (lu < 0 || CodiceLuogo(lu) != licZona)
         {
-            Avviso("~y~Non sei sul posto della licenza: l'hai pagata per " + NomeGruppo(licZona) + ".");
+            Avviso("~y~" + L("You are not at the licence spot: you paid for ", "Non sei sul posto della licenza: l'hai pagata per ") + NomeGruppo(licZona) + ".");
             return false;
         }
         if (livelloPescatore < LivelloArea(lu))
         {
-            Avviso("~r~" + arNome[lu] + ": ci vuole il livello " + LivelloArea(lu) + ".");
+            Avviso("~r~" + arNome[lu] + L(": level ", ": ci vuole il livello ") + LivelloArea(lu) + L(" needed.", "."));
             return false;
         }
         if (!AttrezzaturaMinima()) return false;
@@ -5407,7 +5419,7 @@ public class Pesca : Script
         Alba();
         SegnaCampo(Game.Player.Character);
         MettiCampo();
-        Avviso("~g~Buona pesca.");
+        Avviso("~g~" + L("Tight lines.", "Buona pesca."));
         SalvaStato();
         RiscriviTutto();
         return true;
@@ -5526,7 +5538,7 @@ public class Pesca : Script
         // REGOLA: a fine giornata si smonta tutto, torna tutto in borsa
         DisarmaTutto();
         TempoNormale();
-        if (avvisa) Avviso("~y~Giornata finita. Si torna a casa.");
+        if (avvisa) Avviso("~y~" + L("Day over. Back home.", "Giornata finita. Si torna a casa."));
         return true;
     }
 
@@ -6396,13 +6408,13 @@ public class Pesca : Script
             if (sp.Img.Length > 0) Sprite(sp.Img, x + 4f, ry + 3f, iw, rh - 8f);
             float tx = x + 4f + iw + 10f;
             int r = s ? 20 : 245, g = s ? 22 : 245, b = s ? 28 : 250;
-            TestoMenu(sp.Nome, tx, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 0, r, g, b, 255);
+            TestoMenu(NomeIt(sp.Nome), tx, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 0, r, g, b, 255);
             // a destra la classe del tuo record, col suo colore
             float kg = record.ContainsKey(sp.Nome) ? record[sp.Nome] : 0f;
             string clas = ClasseDi(kg, sp.KgT, sp.KgU);
             int[] cc = ColoreCfgTesto(ColoreClasse(clas));
             if (s) { cc[0] = 20; cc[1] = 22; cc[2] = 28; }
-            TestoMenu(clas, x + w - 8f, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 2, cc[0], cc[1], cc[2], 255);
+            TestoMenu(TagliaIt(clas), x + w - 8f, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 2, cc[0], cc[1], cc[2], 255);
             // sotto: quante volte qui, il record in kg, esca e amo
             float dy = ry + LeggiF("menu_eq_dati_giu", 26f);
             List<string> pz = new List<string>();
@@ -6478,7 +6490,7 @@ public class Pesca : Script
         else if (cat == "terminale") for (t = 0; t < TERM_COD.Length; t++) { ngTipiCod.Add(TERM_COD[t]); ngTipiNome.Add(TERM_NOME[t]); }
         else if (cat == "artificiale") for (t = 0; t < ART_COD.Length; t++) { ngTipiCod.Add(ART_COD[t]); ngTipiNome.Add(ART_NOME[t]); }
         else if (cat == "esca") for (t = 0; t < ESCA_COD.Length; t++) { ngTipiCod.Add(ESCA_COD[t]); ngTipiNome.Add(ESCA_NOME[t]); }
-        else if (cat == "nassa") { ngTipiCod.Add("nassa"); ngTipiNome.Add("Nasse"); ngTipiCod.Add("filo"); ngTipiNome.Add("Fili portapesce"); }
+        else if (cat == "nassa") { ngTipiCod.Add("nassa"); ngTipiNome.Add(L("Keepnets", "Nasse")); ngTipiCod.Add("filo"); ngTipiNome.Add(L("Stringers", "Fili portapesce")); }
         else if (cat == "galleggiante")
         {
             // i tipi come stanno nel file: classico, slider, waggler
@@ -6531,8 +6543,8 @@ public class Pesca : Script
         {
             Canna x = canne[k];
             id = x.Id; nome = x.Marca + " " + x.Modello + "   " + x.Lunghezza + " m"; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
-            if (x.Esca != null && x.Esca.Trim().Length > 0) dati = "esca " + x.Esca + " g";
-            dati = Unisci(dati, "lenza " + Corto(x.LenzaKg) + " kg");
+            if (x.Esca != null && x.Esca.Trim().Length > 0) dati = L("lure ", "esca ") + x.Esca + " g";
+            dati = Unisci(dati, L("line ", "lenza ") + Corto(x.LenzaKg) + " kg");
             dati = Unisci(dati, x.Potenza);
         }
         else if (cat == "mulinello")
@@ -6564,7 +6576,7 @@ public class Pesca : Script
             Galleggiante x = galleggianti[k];
             id = x.Id; nome = x.Nome + "   " + x.Colore; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
             dati = Unisci(Corto(x.Misura), x.Forma);
-            dati = Unisci(dati, "peso " + x.Portata);
+            dati = Unisci(dati, L("load ", "peso ") + x.Portata);
             dati = Unisci(dati, x.Materiale);
         }
         else if (cat == "artificiale")
@@ -6573,38 +6585,38 @@ public class Pesca : Script
             id = x.Id; nome = x.Nome + "   " + x.Colore; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
             if (x.Grammi != null && x.Grammi.Length > 0) dati = x.Grammi + " g";
             if (x.Cm != null && x.Cm.Length > 0) dati = Unisci(dati, x.Cm + " cm");
-            if (x.Amo != null && x.Amo.Length > 0) dati = Unisci(dati, "amo " + x.Amo);
+            if (x.Amo != null && x.Amo.Length > 0) dati = Unisci(dati, L("hook ", "amo ") + x.Amo);
         }
         else if (cat == "esca")
         {
             EscaShop x = escheShop[k];
             id = x.Id; nome = EscaIt(x.Nome); img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
             if (x.Quantita.Length > 0) dati = "x" + x.Quantita;
-            if (x.Peso.Length > 0) dati = Unisci(dati, "peso " + x.Peso);
-            if (x.Amo.Length > 0) dati = Unisci(dati, "amo " + x.Amo);
+            if (x.Peso.Length > 0) dati = Unisci(dati, L("weight ", "peso ") + x.Peso);
+            if (x.Amo.Length > 0) dati = Unisci(dati, L("hook ", "amo ") + x.Amo);
         }
         else if (cat == "nassa")
         {
             Nassa x = nasse[k];
             id = x.Id; nome = x.Nome + " " + x.Taglia; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
-            dati = "pesce max " + x.KgPesce.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
-            dati = Unisci(dati, "totale " + x.KgTotale.ToString("0.##", CultureInfo.InvariantCulture) + " kg");
+            dati = L("fish max ", "pesce max ") + x.KgPesce.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+            dati = Unisci(dati, L("total ", "totale ") + x.KgTotale.ToString("0.##", CultureInfo.InvariantCulture) + " kg");
             dati = Unisci(dati, x.Materiale);
         }
         else if (cat == "cassetta")
         {
             Cassetta x = cassette[k];
             id = x.Id; nome = x.Nome; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
-            dati = x.Attrezzi + " oggetti";
-            if (x.Lenze.Length > 0) dati = Unisci(dati, x.Lenze + " lenze");
-            if (x.Mulinelli.Length > 0 && x.Mulinelli != "0") dati = Unisci(dati, x.Mulinelli + " mulinelli");
+            dati = x.Attrezzi + L(" items", " oggetti");
+            if (x.Lenze.Length > 0) dati = Unisci(dati, x.Lenze + L(" lines", " lenze"));
+            if (x.Mulinelli.Length > 0 && x.Mulinelli != "0") dati = Unisci(dati, x.Mulinelli + L(" reels", " mulinelli"));
             dati = Unisci(dati, x.Materiale);
         }
         else if (cat == "portacanne")
         {
             Portacanne x = portacanne[k];
             id = x.Id; nome = x.Nome; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
-            dati = x.Canne + " canne   " + x.Mulinelli + " mulinelli   " + x.Lenze + " lenze";
+            dati = x.Canne + L(" rods   ", " canne   ") + x.Mulinelli + L(" reels   ", " mulinelli   ") + x.Lenze + L(" lines", " lenze");
         }
         if (img == null) img = "";
     }
@@ -6811,7 +6823,7 @@ public class Pesca : Script
             {
                 Sprite("img/cassette/Base.png", x + 4f, y + 4f, iw, ih);
                 TestoMenu(L("Backpack", "Zaino"), tx, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
-                DatiACapo(ZAINO_ROBA + " oggetti   " + ZAINO_LENZE + " lenze", tx, y + 6f + 18f, x + w - 8f);
+                DatiACapo(ZAINO_ROBA + L(" items   ", " oggetti   ") + ZAINO_LENZE + L(" lines", " lenze"), tx, y + 6f + 18f, x + w - 8f);
             }
             else
                 TestoMenu(L("none", "nessuno"), x + 10f, y + h * 0.5f - 9f, 0.26f, 0, 0, 200, 202, 210, 255);
@@ -7030,9 +7042,9 @@ public class Pesca : Script
             DisegnaRett(x, ry, w, rh - 2f, 0, 0, 0, 120);
             if (rn[2].Length > 0) Sprite(rn[2], x + 4f, ry + 3f, iw, rh - 8f);
             float tx = x + 4f + iw + 10f;
-            TestoMenu(rn[0], tx, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 0, 245, 245, 250, 255);
+            TestoMenu(NomeIt(rn[0]), tx, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 0, 245, 245, 250, 255);
             int[] cc = ColoreCfgTesto(rn.Length > 6 ? rn[6] : "245,245,250");
-            TestoMenu(rn[3], x + w - 8f, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 2, cc[0], cc[1], cc[2], 255);
+            TestoMenu(TagliaIt(rn[3]), x + w - 8f, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 2, cc[0], cc[1], cc[2], 255);
             float dy = ry + LeggiF("menu_eq_dati_giu", 26f);
             float dx = tx, dmax = x + w - 8f;
             string[] pz = rn[5].Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
@@ -7309,6 +7321,16 @@ public class Pesca : Script
         // la scheda a destra
         if (pcSel >= 0 && pcSel < pcPesci.Count)
             DisegnaSchedaPesce(pesci[pcPesci[pcSel]], x + cw + 12f, y0, xFine, fondo);
+    }
+
+    // la taglia del pesce nella lingua scelta: dentro resta COMUNE/TROFEO/UNICO
+    string TagliaIt(string t)
+    {
+        if (t == "ESEMPLARE UNICO") return L("UNIQUE SPECIMEN", "ESEMPLARE UNICO");
+        if (t == "UNICO") return L("UNIQUE", "UNICO");
+        if (t == "TROFEO") return L("TROPHY", "TROFEO");
+        if (t == "COMUNE") return L("COMMON", "COMUNE");
+        return t;
     }
 
     string QuandoIt(string q)
@@ -8035,7 +8057,7 @@ public class Pesca : Script
             Alba();
             nassaOggi.Clear();
             kgNassa = 0f;
-            Avviso("~y~Un'altra giornata: ne restano " + licGiorni + ".");
+            Avviso("~y~" + L("Another day: ", "Un'altra giornata: ne restano ") + licGiorni + L(" left.", "."));
         }
         else FinePesca(true);
         SalvaStato();
@@ -8056,7 +8078,7 @@ public class Pesca : Script
         int costo = CIBO_PREZZO[k];
         if (Soldi() < costo)
         {
-            Avviso("~r~Ti servono $" + costo + ".");
+            Avviso("~r~" + L("You need $", "Ti servono $") + costo + ".");
             return false;
         }
         Paga(costo);
@@ -9340,9 +9362,11 @@ public class Pesca : Script
 
     static readonly string[] ART_COD = new string[] {
         "cucchiaino", "rotante", "minnow", "jig", "siliconico", "mare" };
-    static readonly string[] ART_NOME = new string[] {
+    static readonly string[] ART_NOME_IT = new string[] {
         "Cucchiaini", "Rotanti", "Minnow e popper", "Jig da bass",
         "Siliconici", "Da mare" };
+    static readonly string[] ART_NOME_EN = new string[] { "Spoons", "Spinners", "Minnows and poppers", "Bass jigs", "Soft plastics", "Sea" };
+    string[] ART_NOME { get { return (lang == 1) ? ART_NOME_IT : ART_NOME_EN; } }
     static readonly string[] ART_DESC = new string[] {
         "Lamine di metallo che girano e brillano: luccio, persico, trota.",
         "Palettina rotante: fa vibrare l'acqua, i predatori la sentono da lontano.",
@@ -9991,10 +10015,10 @@ public class Pesca : Script
     {
         int id; string img, nome;
         if (!Montato("lenza", out id, out img, out nome) || metriInBobina <= 0)
-            return "Non hai lenza sul mulinello: rimonta una bobina.";
+            return L("No line on the reel: spool one.", "Non hai lenza sul mulinello: rimonta una bobina.");
         bool aggancia = (Armato("terminale") >= 0) || (InUso("artificiale") >= 0);
         if (!aggancia)
-            return "In punta non c'e' niente: monta un amo o un artificiale.";
+            return L("Nothing at the end: rig a hook or a lure.", "In punta non c'e' niente: monta un amo o un artificiale.");
         return "";
     }
 
@@ -10496,7 +10520,7 @@ public class Pesca : Script
             if (luOra >= 0 && CodiceLuogo(luOra) != licZona)
             {
                 string bzL;
-                Messaggio("~y~Non sei nel posto della licenza: l'hai pagata per "
+                Messaggio("~y~" + L("You are not at the licence spot: you paid for ", "Non sei nel posto della licenza: l'hai pagata per ")
                           + NomeChiosco(licZona, out bzL));
             }
             return;
@@ -10521,7 +10545,7 @@ public class Pesca : Script
                 // dipendono dalla canna.
                 ViaRoba();
                 robaOra = -1;
-                Messaggio("~y~Canna ritirata.");
+                Messaggio("~y~" + L("Rod put away.", "Canna ritirata."));
                 ScenaGiu(p);
                 fase = FASE_FERMO;
                 return;
@@ -10608,7 +10632,7 @@ public class Pesca : Script
                 // c'e', il suono no: quello a ripetizione era un martello.
                 if (!EscaSullAcqua())
                 {
-                    Messaggio("~y~Fuori dall'acqua: la lenza e' rientrata.");
+                    Messaggio("~y~" + L("Out of the water: the line came back.", "Fuori dall'acqua: la lenza e' rientrata."));
                     metriLenza = 0f;
                     escaInAcqua = false;
                     escaATerra = false;
@@ -10708,7 +10732,7 @@ public class Pesca : Script
                     grillettoMollato = false;
                     tastoDa = now + 400;
                     if (robaOra >= 0) RobacciaSu(now);
-                    else Messaggio("~y~Lenza ritirata.");
+                    else Messaggio("~y~" + L("Line pulled in.", "Lenza ritirata."));
                     return;
                 }
             }
@@ -10721,7 +10745,7 @@ public class Pesca : Script
             // stare pescando.
             if (!EscaSullAcqua())
             {
-                Messaggio("~y~Fuori dall'acqua: la lenza e' rientrata.");
+                Messaggio("~y~" + L("Out of the water: the line came back.", "Fuori dall'acqua: la lenza e' rientrata."));
                 metriLenza = 0f;
                 escaInAcqua = false;
                 fase = FASE_PRONTO;
@@ -10778,7 +10802,7 @@ public class Pesca : Script
                     // niente suono: questa cosa capita spesso e quel
                     // "pam pam" a ripetizione diventa un martello. Il
                     // messaggio scritto basta.
-                    Messaggio("~y~Hai tirato troppo presto: se n'e' andato.");
+                    Messaggio("~y~" + L("You struck too early: it is gone.", "Hai tirato troppo presto: se n'e' andato."));
                 }
             }
             if (QuadranteGall())
@@ -10831,7 +10855,7 @@ public class Pesca : Script
                 {
                     if (!Consuma("esca", escaMontata))
                     {
-                        Messaggio("~y~Esca finita.");
+                        Messaggio("~y~" + L("Out of bait.", "Esca finita."));
                         escaMontata = -1;
                     }
                     else SalvaStato();
@@ -10873,7 +10897,7 @@ public class Pesca : Script
             if (now >= scadeFerrata)
             {
                 Suono("LOSER", "HUD_AWARDS");
-                Messaggio("~y~Se n'e' andato.");
+                Messaggio("~y~" + L("It is gone.", "Se n'e' andato."));
                 TogliPesce();
                 fase = FASE_PRONTO;
                 grillettoMollato = false;
@@ -10913,7 +10937,7 @@ public class Pesca : Script
             // non un rapporto di polizia.
             DisegnaRett(x - 2f, y - 2f, w + 4f, h + 4f, 12, 26, 24, 240);
             DisegnaRett(x, y, w, 20f * k, 26, 74, 62, 250);
-            DisegnaTesto(sc.Nome, cx, y + 2f * k, 0.33f * kt, 235, 245, 240);
+            DisegnaTesto(NomeIt(sc.Nome), cx, y + 2f * k, 0.33f * kt, 235, 245, 240);
 
             // la foto del pesce
             DisegnaRett(x, y + 20f * k, w, 122f * k, 46, 48, 54, 235);
@@ -10924,7 +10948,7 @@ public class Pesca : Script
             if (cardTaglia == "TROFEO") { cr = 130; cg = 225; cb = 180; }
             else if (cardTaglia == "ESEMPLARE UNICO") { cr = 245; cg = 205; cb = 80; }
             DisegnaRett(x, y + 142f * k, w, 16f * k, 20, 46, 40, 245);
-            DisegnaTesto(cardTaglia, cx, y + 143f * k, 0.26f * kt, cr, cg, cb);
+            DisegnaTesto(TagliaIt(cardTaglia), cx, y + 143f * k, 0.26f * kt, cr, cg, cb);
 
             // peso, valore, punti
             DisegnaRett(x, y + 158f * k, w, 20f * k, 16, 34, 30, 245);
@@ -11890,7 +11914,7 @@ public class Pesca : Script
         if (i < 0 || i >= bobine.Count) return false;
         if (inPesca)
         {
-            Avviso("~r~Sei fuori: la borsa e' quella che ti sei portato.");
+            Avviso("~r~" + L("You are out: the bag is the one you brought.", "Sei fuori: la borsa e' quella che ti sei portato."));
             return false;
         }
         string b = bobine[i];
@@ -11898,7 +11922,7 @@ public class Pesca : Script
         bobineCasa.Add(b);
         string nome, img; int prezzo, liv;
         if (!Articolo("lenza", Numero(b.Split('|')[0]), out nome, out img, out prezzo, out liv)) nome = "bobina";
-        Avviso("~y~Rimessa a casa: ~s~" + nome);
+        Avviso("~y~" + L("Put back home: ", "Rimessa a casa: ") + "~s~" + nome);
         return true;
     }
 
@@ -11907,12 +11931,12 @@ public class Pesca : Script
         if (i < 0 || i >= bobineCasa.Count) return false;
         if (inPesca)
         {
-            Avviso("~r~Sei fuori: la borsa e' quella che ti sei portato.");
+            Avviso("~r~" + L("You are out: the bag is the one you brought.", "Sei fuori: la borsa e' quella che ti sei portato."));
             return false;
         }
         if (!CiSta("lenza"))
         {
-            Avviso("~r~Non ci sta piu': guarda cassetta e portacanne.");
+            Avviso("~r~" + L("No more room: check tackle box and rod case.", "Non ci sta piu': guarda cassetta e portacanne."));
             return false;
         }
         string b = bobineCasa[i];
@@ -11920,7 +11944,7 @@ public class Pesca : Script
         bobine.Add(b);
         string nome, img; int prezzo, liv;
         if (!Articolo("lenza", Numero(b.Split('|')[0]), out nome, out img, out prezzo, out liv)) nome = "bobina";
-        Avviso("~g~Equipaggiata: ~s~" + nome);
+        Avviso("~g~" + L("Packed: ", "Equipaggiata: ") + "~s~" + nome);
         return true;
     }
 
@@ -11939,7 +11963,7 @@ public class Pesca : Script
     bool VendiBobinaDa(List<string> bobineCasa, int i, string pref)
     {
         if (i < 0 || i >= bobineCasa.Count) return false;
-        if (inPesca) { Messaggio("Si vende da casa, non in riva."); return true; }
+        if (inPesca) { Messaggio(L("Selling is done at home, not on the shore.", "Si vende da casa, non in riva.")); return true; }
         string[] c = bobineCasa[i].Split('|');
         int id = Numero(c[0]);
         int m = (c.Length > 1) ? Numero(c[1]) : 0;
@@ -11957,7 +11981,7 @@ public class Pesca : Script
         {
             vendiChiesto = k;
             vendiScade = ora + 5000;
-            Messaggio("Premi ancora (X) per vendere " + nome + " (" + m + " m) a $" + Dollari(reso));
+            Messaggio(L("Press (X) again to sell ", "Premi ancora (X) per vendere ") + nome + " (" + m + " m)" + L(" for $", " a $") + Dollari(reso));
             return true;
         }
         vendiChiesto = "";
@@ -11966,7 +11990,7 @@ public class Pesca : Script
         Paga(-reso);
         SalvaStato();
         RiscriviTutto();
-        Messaggio("Venduta " + nome + " (" + m + " m)   +$" + Dollari(reso));
+        Messaggio(L("Sold ", "Venduta ") + nome + " (" + m + " m)   +$" + Dollari(reso));
         return true;
     }
 
@@ -11979,11 +12003,11 @@ public class Pesca : Script
         string nome, img; int prezzo, liv;
         if (!Articolo("lenza", id, out nome, out img, out prezzo, out liv)) return false;
         if (!ChiediDueVolte("bobc" + i,
-                "Premi ancora (Y) per gettare " + nome + " (" + m + " m)"))
+                L("Press (Y) again to throw away ", "Premi ancora (Y) per gettare ") + nome + " (" + m + " m)"))
             return true;
         if (i >= bobineCasa.Count) return true;
         bobineCasa.RemoveAt(i);
-        Messaggio("Gettata: " + nome + "   " + m + " m");
+        Messaggio(L("Thrown away: ", "Gettata: ") + nome + "   " + m + " m");
         return true;
     }
 
@@ -12000,18 +12024,18 @@ public class Pesca : Script
     bool ArmaLenzaNuova(int id)
     {
         if (Quanti(borsa, "lenza:" + id) <= 0)
-        { Messaggio("Non hai questa lenza in cassetta."); return false; }
+        { Messaggio(L("You do not have this line in the box.", "Non hai questa lenza in cassetta.")); return false; }
         string perche;
         int idc = InUso("canna");
         if (idc >= 0 && !VaConLaCanna("lenza", id, idc, out perche))
-        { Messaggio("Non e' equilibrata: " + perche); return false; }
+        { Messaggio(L("Not balanced: ", "Non e' equilibrata: ") + perche); return false; }
 
         DisarmaLenza();
         Aggiungi(borsa, "lenza:" + id, -1);
         int avanza = Taglia(id, MetriLenza(id));
         MettiBobina(id, avanza);
         armato["lenza"] = id;
-        Messaggio("Imbobinati " + metriInBobina + " m"
+        Messaggio(L("Spooled ", "Imbobinati ") + metriInBobina + " m"
                   + (avanza > 0 ? ("   restano " + avanza + " m sul rotolo") : ""));
         return true;
     }
@@ -12025,15 +12049,15 @@ public class Pesca : Script
         string perche;
         int idc = InUso("canna");
         if (idc >= 0 && !VaConLaCanna("lenza", id, idc, out perche))
-        { Messaggio("Non e' equilibrata: " + perche); return false; }
+        { Messaggio(L("Not balanced: ", "Non e' equilibrata: ") + perche); return false; }
 
         bobine.RemoveAt(i);
         DisarmaLenza();
         int avanza = Taglia(id, m);
         MettiBobina(id, avanza);
         armato["lenza"] = id;
-        Messaggio("Imbobinati " + metriInBobina + " m"
-                  + (avanza > 0 ? ("   restano " + avanza + " m") : ""));
+        Messaggio(L("Spooled ", "Imbobinati ") + metriInBobina + " m"
+                  + (avanza > 0 ? (L("   left ", "   restano ") + avanza + " m") : ""));
         return true;
     }
 
@@ -12045,7 +12069,7 @@ public class Pesca : Script
         if (vecchia >= 0 && metriInBobina > 0)
         {
             MettiBobina(vecchia, metriInBobina);
-            Messaggio("Tolta: " + metriInBobina + " m tornano in cassetta.");
+            Messaggio(L("Removed: ", "Tolta: ") + metriInBobina + L(" m go back in the box.", " m tornano in cassetta."));
         }
         metriInBobina = 0;
         if (armato.ContainsKey("lenza")) armato["lenza"] = -1;
@@ -12189,7 +12213,7 @@ public class Pesca : Script
             // -1 vuol dire "disarmato apposta": senza questo tornerebbe
             // buono il ripiego e il pezzo si rimonterebbe da solo
             armato[cat] = -1;
-            Messaggio("Tolto dall'armatura");
+            Messaggio(L("Unrigged", "Tolto dall'armatura"));
             return true;
         }
 
@@ -12206,14 +12230,14 @@ public class Pesca : Script
         if (cat == "artificiale")
         {
             if (InUso("galleggiante") >= 0)
-            { Messaggio("Prima smonta il galleggiante."); return false; }
+            { Messaggio(L("Unrig the float first.", "Prima smonta il galleggiante.")); return false; }
             if (Armato("terminale") >= 0)
-            { Messaggio("Prima smonta " + NomeTerminale(Armato("terminale")) + "."); return false; }
+            { Messaggio(L("Unrig ", "Prima smonta ") + NomeTerminale(Armato("terminale")) + L(" first.", ".")); return false; }
         }
         if (cat == "galleggiante" || cat == "terminale")
         {
             if (InUso("artificiale") >= 0)
-            { Messaggio("Prima smonta il cucchiaino."); return false; }
+            { Messaggio(L("Unrig the lure first.", "Prima smonta il cucchiaino.")); return false; }
         }
 
         // non si arma roba sbilanciata: e' la stessa regola del montaggio
@@ -12222,16 +12246,16 @@ public class Pesca : Script
         {
             int q = InUso("lenza");
             if (q >= 0 && !VaConLaCanna("lenza", q, id, out perche))
-            { Avviso("~r~Non e' equilibrata: ~s~" + perche); return false; }
+            { Avviso("~r~" + L("Not balanced: ", "Non e' equilibrata: ") + "~s~" + perche); return false; }
             q = InUso("mulinello");
             if (q >= 0 && !VaConLaCanna("mulinello", q, id, out perche))
-            { Avviso("~r~Non e' equilibrata: ~s~" + perche); return false; }
+            { Avviso("~r~" + L("Not balanced: ", "Non e' equilibrata: ") + "~s~" + perche); return false; }
         }
         else
         {
             int idc = InUso("canna");
             if (idc >= 0 && !VaConLaCanna(cat, id, idc, out perche))
-            { Avviso("~r~Non e' equilibrata: ~s~" + perche); return false; }
+            { Avviso("~r~" + L("Not balanced: ", "Non e' equilibrata: ") + "~s~" + perche); return false; }
         }
 
         // SI MONTA: e da qui in poi quel pezzo non sta piu' in cassetta,
@@ -12244,7 +12268,7 @@ public class Pesca : Script
         {
             string cq = (cat == "galleggiante") ? "galleggiante" : "terminale";
             if (QuantiPezzi(cq, id) <= 0)
-            { Messaggio("Non ne hai piu' in cassetta."); return false; }
+            { Messaggio(L("None left in the box.", "Non ne hai piu' in cassetta.")); return false; }
             // quello che c'era prima nella stessa casella torna in cassetta
             int vecchio = Armato(cat);
             if (vecchio >= 0 && vecchio != id && presoSu.ContainsKey(cat))
@@ -12254,7 +12278,7 @@ public class Pesca : Script
         }
 
         armato[cat] = id;
-        Messaggio("Armato");
+        Messaggio(L("Rigged", "Armato"));
         return true;
     }
 
@@ -12303,19 +12327,19 @@ public class Pesca : Script
         }
 
         string che = "";
-        if (colLeader) che = "il leader";
-        else che = persi + " m di lenza";
+        if (colLeader) che = L("the leader", "il leader");
+        else che = persi + L(" m of line", " m di lenza");
         if (t >= 0) che += ", " + NomeTerminale(t);
-        if (pb >= 0) che += ", il piombo";
-        if (g >= 0) che += ", il galleggiante";
-        if (a >= 0) che += ", il cucchiaino";
-        if (avevaEsca) che += ", l'esca";
+        if (pb >= 0) che += L(", the sinker", ", il piombo");
+        if (g >= 0) che += L(", the float", ", il galleggiante");
+        if (a >= 0) che += L(", the lure", ", il cucchiaino");
+        if (avevaEsca) che += L(", the bait", ", l'esca");
 
         // se e' stato il pesce a segare il filo lo dice, che e' un'altra
         // cosa dal tirare troppo
-        string testa = colLeader ? "Leader spezzato: persi "
-                                 : (dentiDa > 0 ? "Ti ha tranciato il filo: persi "
-                                                : "Lenza spezzata: persi ");
+        string testa = colLeader ? L("Leader snapped: lost ", "Leader spezzato: persi ")
+                                 : (dentiDa > 0 ? L("It cut your line: lost ", "Ti ha tranciato il filo: persi ")
+                                                : L("Line snapped: lost ", "Lenza spezzata: persi "));
         Messaggio(testa + che + ".");
         SalvaStato();
         RiscriviTutto();
@@ -12934,7 +12958,7 @@ public class Pesca : Script
     {
         if (soldiNassa <= 0) { soldiNassa = 0; return; }
         Paga(-soldiNassa);
-        Avviso("~g~Pesce venduto: +$" + soldiNassa);
+        Avviso("~g~" + L("Fish sold: +$", "Pesce venduto: +$") + soldiNassa);
         Diario("nassa venduta: $" + soldiNassa);
         soldiNassa = 0;
     }
@@ -12980,7 +13004,7 @@ public class Pesca : Script
         }
         if (ids.Count == 0)
         {
-            Avviso("~y~Non hai esche in borsa.");
+            Avviso("~y~" + L("No bait in the bag.", "Non hai esche in borsa."));
             return;
         }
         int dove = ids.IndexOf(escaMontata);
@@ -12988,7 +13012,7 @@ public class Pesca : Script
         string nome, img;
         int prezzo, liv;
         if (Articolo("esca", escaMontata, out nome, out img, out prezzo, out liv))
-            Avviso("~g~Esca: ~s~" + nome + "  x" + QuanteEsche(escaMontata));
+            Avviso("~g~" + L("Bait: ", "Esca: ") + "~s~" + nome + "  x" + QuanteEsche(escaMontata));
         Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
     }
 
@@ -13003,7 +13027,7 @@ public class Pesca : Script
         }
         int ora = InUso("artificiale");
         if (ora >= 0 && !ids.Contains(ora)) ids.Add(ora);
-        if (ids.Count < 2) { Messaggio("Non hai altri artificiali in cassetta."); return; }
+        if (ids.Count < 2) { Messaggio(L("No other lures in the box.", "Non hai altri artificiali in cassetta.")); return; }
         ids.Sort();
         int dove = ids.IndexOf(ora);
         int nuovo = ids[(dove + 1) % ids.Count];
@@ -13053,18 +13077,18 @@ public class Pesca : Script
         if (max <= 0f)
         {
             cardPuoTenere = false;
-            cardPerche = "Non hai una nassa dove metterlo";
+            cardPerche = L("No keepnet to put it in", "Non hai una nassa dove metterlo");
         }
         else if (maxPesce > 0f && pesceKg > maxPesce)
         {
             cardPuoTenere = false;
-            cardPerche = "Troppo grosso per questa nassa (max "
+            cardPerche = L("Too big for this keepnet (max ", "Troppo grosso per questa nassa (max ")
                        + maxPesce.ToString("0.##", CultureInfo.InvariantCulture) + " kg)";
         }
         else if (kgNassa >= max)
         {
             cardPuoTenere = false;
-            cardPerche = "La nassa e' piena";
+            cardPerche = L("The keepnet is full", "La nassa e' piena");
         }
         int guadagno = (int)(b * r * t);
         xpTot += guadagno;
@@ -13115,7 +13139,7 @@ public class Pesca : Script
 
 
         if (livelloPescatore > livPrima)
-            Avviso("~y~LIVELLO " + livelloPescatore + "!");
+            Avviso("~y~" + L("LEVEL ", "LIVELLO ") + livelloPescatore + "!");
         Vibra(300, 120);
 
         // la finestra della cattura: resta li' finche' non scegli
@@ -13679,9 +13703,13 @@ public class Pesca : Script
     static readonly string[] RUOTA_CAT = new string[] {
         "canna", "mulinello", "lenza", "leader", "piombo", "pesci",
         "zaino", "nassa", "terminale", "galleggiante", "esca", "artificiale" };
-    static readonly string[] RUOTA_NOME = new string[] {
+    static readonly string[] RUOTA_NOME_IT = new string[] {
         "Canna", "Mulinello", "Lenza", "Leader", "Piombo", "Pesci del lago",
         "Zaino", "Nassa", "Amo", "Galleggiante", "Esca", "Cucchiaino" };
+    static readonly string[] RUOTA_NOME_EN = new string[] {
+        "Rod", "Reel", "Line", "Leader", "Sinker", "Fish of the lake",
+        "Backpack", "Keepnet", "Hook", "Float", "Bait", "Lure" };
+    string[] RUOTA_NOME { get { return (lang == 1) ? RUOTA_NOME_IT : RUOTA_NOME_EN; } }
 
     class VoceRuota
     {
@@ -13735,7 +13763,7 @@ public class Pesca : Script
         if (cat.Length == 0 || cat == "zaino" || cat == "nassa" || cat == "pesci") return v;
         VoceRuota vuoto = new VoceRuota();
         vuoto.Cat = cat; vuoto.Id = -1; vuoto.Bob = -1;
-        vuoto.Nome = "Vuoto"; vuoto.Dett = "";
+        vuoto.Nome = L("Empty", "Vuoto"); vuoto.Dett = "";
         // l'ombra del posto, se c'e' il PNG (img/ruota/vuoto_<categoria>.png)
         vuoto.Img = "img/ruota/vuoto_" + cat + ".png";
         v.Add(vuoto);
@@ -13799,7 +13827,7 @@ public class Pesca : Script
         fase = FASE_PRONTO;
         grillettoMollato = false;
         tastoDa = Game.GameTime + 400;
-        Messaggio("Lenza ritirata");
+        Messaggio(L("Line pulled in", "Lenza ritirata"));
     }
 
     void Ruota()
@@ -13951,7 +13979,7 @@ public class Pesca : Script
             else if (InUso(r.Cat) >= 0) via = Arma(r.Cat, InUso(r.Cat));
             if (via)
             {
-                Messaggio(nomeSp + ": smontato");
+                Messaggio(nomeSp + L(": unrigged", ": smontato"));
                 Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
                 SalvaStato();
             }
@@ -14067,23 +14095,23 @@ public class Pesca : Script
         DisegnaTesto(RUOTA_NOME[ruotaSpicchio].ToUpper(), cx, cy - 28f, 0.24f, 200, 200, 200);
         if (RUOTA_CAT[ruotaSpicchio] == "zaino")
         {
-            DisegnaTesto("Apri l'equipaggiamento", cx, cy - 8f, 0.26f, 255, 255, 255);
+            DisegnaTesto(L("Open the tackle", "Apri l'equipaggiamento"), cx, cy - 8f, 0.26f, 255, 255, 255);
             return;
         }
         if (RUOTA_CAT[ruotaSpicchio] == "nassa")
         {
-            DisegnaTesto("Il pescato del giorno", cx, cy - 8f, 0.26f, 255, 255, 255);
+            DisegnaTesto(L("Today's catch", "Il pescato del giorno"), cx, cy - 8f, 0.26f, 255, 255, 255);
             return;
         }
         if (RUOTA_CAT[ruotaSpicchio] == "pesci")
         {
-            DisegnaTesto("I pesci di questo posto", cx, cy - 8f, 0.26f, 255, 255, 255);
+            DisegnaTesto(L("The fish of this spot", "I pesci di questo posto"), cx, cy - 8f, 0.26f, 255, 255, 255);
             return;
         }
         List<VoceRuota> vs = VociRuota(ruotaSpicchio);
         if (vs.Count == 0)
         {
-            DisegnaTesto("Niente in borsa", cx, cy - 8f, 0.26f, 255, 255, 255);
+            DisegnaTesto(L("Nothing in the bag", "Niente in borsa"), cx, cy - 8f, 0.26f, 255, 255, 255);
             return;
         }
         int ps = ruotaPos[ruotaSpicchio];
@@ -14688,7 +14716,7 @@ public class Pesca : Script
         MettiRoba();
         quandoAbbocca = now + 3600000;
         Vibra(200, 120);
-        Messaggio("~y~Qualcosa ha preso: recupera.");
+        Messaggio("~y~" + L("Something took: reel in.", "Qualcosa ha preso: recupera."));
     }
 
     // lenza ritirata con la roba attaccata: penzola dalla canna un momento

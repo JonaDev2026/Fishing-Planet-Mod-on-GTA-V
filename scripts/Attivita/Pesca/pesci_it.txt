@@ -1,17 +1,16 @@
 # I NOMI DEI PESCI IN ITALIANO.
 # nome_inglese|nome_italiano
-# Sono i nomi comuni italiani veri della specie. Dove la specie
-# non ha un nome comune italiano (quasi tutte le americane, le
-# africane e le amazzoniche) il nome resta quello inglese, che e'
-# anche il nome con cui la si chiama qui: non ne inventiamo.
-African Big Eye Catfish|African Big Eye Catfish
-African Pike|African Pike
+# Sono i nomi comuni italiani veri della specie dove esistono.
+# NOTA: per 93 specie senza nome comune italiano il nome e' un ADATTAMENTO NOSTRO
+# (traduzione del nome inglese o nome locale invariato: Apapa, Biara, Wahoo, Walleye...).
+African Big Eye Catfish|Pesce gatto africano occhione
+African Pike|Luccio africano
 African Sharptooth Catfish|pesce gatto africano
 African Tigerfish|pesce tigre africano
-Alaska Blackfish|Alaska Blackfish
+Alaska Blackfish|Pesce nero dell'Alaska
 Albacore|alalunga
 Alligator Gar|lepisosteo alligatore
-American Gizzard Shad|American Gizzard Shad
+American Gizzard Shad|Alosa americana
 American Shad|alosa americana
 Amur Bitterling|rodeo dell'Amur
 Apapa|Apapa
@@ -29,26 +28,26 @@ Atlantic Saury|costardella
 Atlantic Wolffish|pesce lupo
 Azov Shad|cheppia d'Azov
 Baikal Omul|omul del Bajkal
-Banded Aracu|Banded Aracu
-Banded Tilapia|Banded Tilapia
+Banded Aracu|Aracu fasciato
+Banded Tilapia|Tilapia fasciata
 Beluga|storione beluga
 Biara|Biara
 Bicuda|Bicuda
 Bigeye Tuna|tonno obeso
 Bigfin Reef Squid|calamaro di scogliera
 Bighead Carp|carpa testa grossa
-Bigmouth Buffalo|Bigmouth Buffalo
+Bigmouth Buffalo|Bufalo boccalarga
 Black Bullhead Catfish|pesce gatto
-Black Crappie|Black Crappie
-Black Drum|Black Drum
+Black Crappie|Crappie nero
+Black Drum|Tamburo nero
 Black Marlin|marlin nero
-Black Sea Roach|Black Sea Roach
-Blacktail Shiner|Blacktail Shiner
+Black Sea Roach|Rutilo del Mar Nero
+Blacktail Shiner|Shiner codanera
 Blacktip Reef Shark|squalo pinna nera del reef
-Blue Bream|Blue Bream
-Blue Catfish|Blue Catfish
-Bluegill|Bluegill
-Bluntnose Minnow|Bluntnose Minnow
+Blue Bream|Abramide blu
+Blue Catfish|Pesce gatto blu
+Bluegill|Persico sole blu
+Bluntnose Minnow|Minnow muso tondo
 Bonefish|pesce signora
 Bowfin|amia
 Brill|rombo liscio
@@ -57,21 +56,21 @@ Brown Bullhead Catfish|pesce gatto bruno
 Brown Trout|trota fario
 Brycon|Brycon
 Bull Shark|squalo leuca
-Bull Trout|Bull Trout
-Bulldog Fish|Bulldog Fish
+Bull Trout|Trota toro
+Bulldog Fish|Pesce bulldog
 Burbot|bottatrice
-Butterfly Peacock Bass|Butterfly Peacock Bass
-California Roach|California Roach
-Chain Pickerel|Chain Pickerel
+Butterfly Peacock Bass|Pavone farfalla
+California Roach|Rutilo della California
+Chain Pickerel|Luccio a catena
 Channel Catfish|pesce gatto punteggiato
-Chinese Sleeper|Chinese Sleeper
+Chinese Sleeper|Dormiglione cinese
 Chinook Salmon|salmone reale
 Chub|cavedano
 Chum Salmon|salmone keta
-Clear Muskie|Clear Muskie
+Clear Muskie|Muskie chiaro
 Coalfish|merluzzo carbonaro
 Coho Salmon|salmone argentato
-Colorado Golden Trout|Colorado Golden Trout
+Colorado Golden Trout|Trota dorata del Colorado
 Common Barbel|barbo
 Common Bleak|alborella
 Common Bream|abramide
@@ -82,14 +81,14 @@ Common Minnow|sanguinerola
 Common Nase|naso
 Common Roach|rutilo
 Common Rudd|scardola
-Common Shiner|Common Shiner
-Common Snook|Common Snook
-Congo Yellowfish|Congo Yellowfish
+Common Shiner|Shiner comune
+Common Snook|Snook comune
+Congo Yellowfish|Pesce giallo del Congo
 Cornish Jack|Cornish Jack
 Creek Brown Trout|trota fario di torrente
 Crucian Carp|carassio
 Cusk|brosme
-Cutthroat Trout|Cutthroat Trout
+Cutthroat Trout|Trota golatagliata
 Dogtooth Tuna|tonno dente di cane
 Dolly Varden|salmerino Dolly Varden
 Electric Eel|anguilla elettrica
@@ -105,28 +104,28 @@ European Hake|nasello
 European Perch|persico reale
 European Sea Sturgeon|storione comune
 European Weatherfish|cobite di stagno
-Flag-Tailed Prochilodus|Flag-Tailed Prochilodus
-Flathead Catfish|Flathead Catfish
-Flatwhiskered Catfish|Flatwhiskered Catfish
-Florida Gar|Florida Gar
-Freshwater Drum|Freshwater Drum
-Gafftopsail Catfish|Gafftopsail Catfish
+Flag-Tailed Prochilodus|Prochilodus coda a bandiera
+Flathead Catfish|Pesce gatto testapiatta
+Flatwhiskered Catfish|Pesce gatto baffi piatti
+Florida Gar|Luccio alligatore della Florida
+Freshwater Drum|Tamburo d'acqua dolce
+Gafftopsail Catfish|Pesce gatto vela
 Ghost Carp|carpa fantasma
 Giant Grouper|cernia gigante
-Giant Sweetlips|Giant Sweetlips
+Giant Sweetlips|Labbradolce gigante
 Giant Trevally|carangide gigante
-Gilded Catfish|Gilded Catfish
-Giraffe Catfish|Giraffe Catfish
-Golden Shiner|Golden Shiner
+Gilded Catfish|Pesce gatto dorato
+Giraffe Catfish|Pesce gatto giraffa
+Golden Shiner|Shiner dorato
 Golden Tench|tinca dorata
 Goliath Tigerfish|pesce tigre golia
-Gorgeous Swallowtail|Gorgeous Swallowtail
+Gorgeous Swallowtail|Coda di rondine splendida
 Grass Carp|carpa erbivora
-Grass Pickerel|Grass Pickerel
+Grass Pickerel|Luccio d'erba
 Great Barracuda|barracuda
 Greater Amberjack|ricciola
-Green Jobfish|Green Jobfish
-Green Sunfish|Green Sunfish
+Green Jobfish|Jobfish verde
+Green Sunfish|Persico sole verde
 Greenland Halibut|ippoglosso nero
 Greenland Shark|squalo della Groenlandia
 Gudgeon|gobione
@@ -134,13 +133,13 @@ Haddock|eglefino
 Humpback Whitefish|coregone
 Hybrid F1 Carp|carpa ibrida F1
 Ide|ido
-Indo-Pacific King Mackerel|Indo-Pacific King Mackerel
+Indo-Pacific King Mackerel|Sgombro reale indo-pacifico
 Jacunda|Jacunda
 Japanese Amberjack|ricciola giapponese
 Japanese Anchovy|acciuga giapponese
 Japanese Jack Mackerel|sugarello giapponese
-Kamba Catfish|Kamba Catfish
-Lake Chub|Lake Chub
+Kamba Catfish|Pesce gatto kamba
+Lake Chub|Cavedano di lago
 Lake Sturgeon|storione di lago
 Lake Trout|trota di lago
 Lake Whitefish|coregone di lago
@@ -148,12 +147,12 @@ Largemouth Bass|persico trota
 Leather Carp|carpa cuoio
 Lenok|lenok
 Longnose Gar|lepisosteo
-Longnose Sucker|Longnose Sucker
+Longnose Sucker|Succhiatore musolungo
 Mahi-Mahi|lampuga
 Marble Trout|trota marmorata
 Meagre|ombrina bocca d'oro
 Mirror Carp|carpa a specchio
-Monkey Goby|Monkey Goby
+Monkey Goby|Ghiozzo scimmia
 Muskellunge|Muskellunge
 Narrow-Barred Mackerel|maccarello reale
 Nile Perch|persico del Nilo
@@ -161,8 +160,8 @@ Nile Tilapia|tilapia del Nilo
 Northern Pike|luccio
 Norway Atlantic Salmon|salmone atlantico norvegese
 Norway Seaperch|scorfano norvegese
-Oregon Redband Trout|Oregon Redband Trout
-Orinoco Peacock Bass|Orinoco Peacock Bass
+Oregon Redband Trout|Trota fascia rossa dell'Oregon
+Orinoco Peacock Bass|Pavone dell'Orinoco
 Oscar|oscar
 Pacific Bluefin Tuna|tonno rosso del Pacifico
 Payara|Payara
@@ -172,46 +171,46 @@ Piraiba|Piraiba
 Porbeagle Shark|smeriglio
 Prussian Carp|carassio prussiano
 Pumpkinseed|persico sole
-Purple Labeo|Purple Labeo
+Purple Labeo|Labeo viola
 Rainbow Trout|trota iridea
 Red Drum|ombrina ocellata
-Red Peacock Bass|Red Peacock Bass
-Red Tail Barracuda|Red Tail Barracuda
+Red Peacock Bass|Pavone rosso
+Red Tail Barracuda|Barracuda codarossa
 Red-Bellied Piranha|piranha dal ventre rosso
-Redbreast Sunfish|Redbreast Sunfish
-Redear Sunfish|Redear Sunfish
+Redbreast Sunfish|Persico sole pettorosso
+Redear Sunfish|Persico sole orecchierosse
 Redeye Piranha|piranha occhio rosso
-Redfin Pickerel|Redfin Pickerel
-Rednose Labeo|Rednose Labeo
+Redfin Pickerel|Luccio pinnarossa
+Rednose Labeo|Labeo musorosso
 Redtail Catfish|pesce gatto dalla coda rossa
-Ripsaw Catfish|Ripsaw Catfish
+Ripsaw Catfish|Pesce gatto sega
 Rock Bass|persico delle rocce
 Round Goby|ghiozzo tondo
-Ruby Snapper|Ruby Snapper
+Ruby Snapper|Dentice rubino
 Sailfish|pesce vela
 Sauger|Sauger
 Sea Trout|trota di mare
-Shoal Bass|Shoal Bass
+Shoal Bass|Bass di secca
 Siberian Taimen|taimen siberiano
-Sickle Pomfret|Sickle Pomfret
+Sickle Pomfret|Pesce castagna falce
 Silver Arowana|arowana argentata
 Silver Bream|blicca
 Silver Carp|carpa argentata
-Silver Croaker|Silver Croaker
+Silver Croaker|Ombrina argentata
 Skipjack Tuna|tonnetto striato
-Sleek Unicornfish|Sleek Unicornfish
+Sleek Unicornfish|Pesce unicorno liscio
 Smallmouth Bass|boccapiccola
-Smallmouth Buffalo|Smallmouth Buffalo
+Smallmouth Buffalo|Bufalo boccapiccola
 Sockeye Salmon|salmone rosso
-Sorubim Catfish|Sorubim Catfish
-Southern Flounder|Southern Flounder
-Speckled Peacock Bass|Speckled Peacock Bass
+Sorubim Catfish|Sorubim
+Southern Flounder|Rombo del sud
+Speckled Peacock Bass|Pavone maculato
 Spiny Dogfish|spinarolo
 Splake|Splake
 Spotfin Flyingfish|pesce volante
-Spotted Aracu|Spotted Aracu
-Spotted Bass|Spotted Bass
-Spotted Gar|Spotted Gar
+Spotted Aracu|Aracu maculato
+Spotted Bass|Bass maculato
+Spotted Gar|Luccio alligatore maculato
 Steelhead|trota steelhead
 Sterlet|sterleto
 Striped Bass|spigola striata
@@ -222,24 +221,24 @@ Tambaqui|tambaqui
 Tarpon|tarpone
 Tench|tinca
 Thicklip Grey Mullet|cefalo bosega
-Tiger Muskie|Tiger Muskie
+Tiger Muskie|Muskie tigre
 Tiger Trout|trota tigre
 Trahira|Trahira
-Two-Spot Red Snapper|Two-Spot Red Snapper
-Vundu Catfish|Vundu Catfish
+Two-Spot Red Snapper|Dentice rosso due macchie
+Vundu Catfish|Pesce gatto vundu
 Wahoo|Wahoo
 Walleye|Walleye
 Warmouth|Warmouth
 Wels Catfish|siluro
-White Bass|White Bass
-White Catfish|White Catfish
-White Crappie|White Crappie
+White Bass|Bass bianco
+White Catfish|Pesce gatto bianco
+White Crappie|Crappie bianco
 White Sturgeon|storione bianco
-White Sucker|White Sucker
-White-Eye Bream|White-Eye Bream
+White Sucker|Succhiatore bianco
+White-Eye Bream|Abramide occhiobianco
 Whiting|merlano
 Yellow Perch|persico giallo
 Yellowfin Tuna|tonno albacora
-Yellowstripe Scad|Yellowstripe Scad
+Yellowstripe Scad|Sugarello striagialla
 Zander|lucioperca
 Ziege|pesce sciabola
