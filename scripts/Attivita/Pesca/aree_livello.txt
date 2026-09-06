@@ -4,10 +4,13 @@
 # Lone Star Lake sul wiki e' livello 2 perche' l'1 e' il tutorial: da noi
 # il tutorial non c'e', quindi apre all'1.
 # L'abbinamento zona -> acqua e' NOSTRO, sul carattere dell'acqua.
+# I tre posti di Lone Star Lake NON sono tutti a 1 (6 settembre 2026): i
+# Laghetti del golf, i primi in citta', aprono all'1; Slab e la Sponda sud di
+# Alamo al 2, cosi' non si parte con tre posti uguali.
 Riva ovest di Alamo|Emerald Lake, New York|8
-Slab|Lone Star Lake, Texas|1
+Slab|Lone Star Lake, Texas|2
 Foce dello Zancudo|San Joaquin Delta, California|34
-Sponda sud di Alamo|Lone Star Lake, Texas|1
+Sponda sud di Alamo|Lone Star Lake, Texas|2
 Sandy Shores|Sander Baggersee, Germania|42
 Riva est di Alamo|Dnepr, Ucraina|46
 Grapeseed|Weeping Willow Fishery, UK|50
