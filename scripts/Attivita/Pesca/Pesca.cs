@@ -5301,12 +5301,7 @@ public class Pesca : Script
                 if (terminali[i].Id == id)
                 {
                     Terminale t = terminali[i];
-                    string d = "";
-                    if (t.Misura != null && t.Misura.Length > 0) d = Unisci(d, t.Misura);
-                    if (t.Mm != null && t.Mm.Length > 0) d = Unisci(d, t.Mm + " mm");
-                    if (t.Kg != null && t.Kg.Length > 0) d = Unisci(d, t.Kg + " kg");
-                    if (t.Grammi != null && t.Grammi.Length > 0) d = Unisci(d, t.Grammi + " g");
-                    return d;
+                    return DatiTerminale(t);
                 }
         if (cat == "esca")
             for (i = 0; i < escheShop.Count; i++)
@@ -6808,11 +6803,7 @@ public class Pesca : Script
         {
             Terminale x = terminali[k];
             id = x.Id; nome = x.Marca + " " + x.Modello; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
-            dati = x.Misura;
-            if (x.Mm != null && x.Mm.Length > 0) dati = Unisci(dati, x.Mm + " mm");
-            if (x.Kg != null && x.Kg.Length > 0) dati = Unisci(dati, x.Kg + " kg");
-            if (x.Grammi != null && x.Grammi.Length > 0) dati = Unisci(dati, x.Grammi + " g");
-            if (x.Pezzi != null && x.Pezzi.Length > 0) dati = Unisci(dati, "x" + x.Pezzi);
+            dati = DatiTerminale(x);
         }
         else if (cat == "galleggiante")
         {
@@ -6924,6 +6915,12 @@ public class Pesca : Script
             if (s) DisegnaRett(x3, ry, w3, rh - 2f, 245, 245, 250, 255);
             else DisegnaRett(x3, ry, w3, rh - 2f, 0, 0, 0, 120);
             if (img.Length > 0) Sprite(img, x3 + 4f, ry + 3f, iw, rh - 8f);
+            // triangolino verde in basso a sinistra se lo possiedi gia'
+            if (ic != 6 && Possiedo(CAT_COD[ic], id))
+            {
+                float tri = LeggiF("menu_ng_tri", 14f);
+                Sprite("img/hud/possiedo.png", x3, ry + rh - 2f - tri, tri, tri);
+            }
             float tx = x3 + 4f + iw + 10f;
             int r = s ? 20 : (ok ? 245 : 150), g = s ? 22 : (ok ? 245 : 150), b = s ? 28 : (ok ? 250 : 160);
             TestoMenu(nome, tx, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 0, r, g, b, 255);
@@ -7040,6 +7037,22 @@ public class Pesca : Script
     static readonly int[] EQ_ORD = new int[] { 0, 1, 2, 3, 6, 5, 4, 7 };
 
     // il pezzo fisso che possiedi (casa o cassetta): chiave "cat:id" o ""
+    // lo possiedi da qualche parte: a casa, in cassetta, montato,
+    // o come bobina tagliata (lenze)
+    bool Possiedo(string cat, int id)
+    {
+        string k = cat + ":" + id;
+        if (Quanti(magazzino, k) > 0 || Quanti(borsa, k) > 0) return true;
+        if (EArmato(cat, id)) return true;
+        if (cat == "lenza")
+        {
+            int i;
+            for (i = 0; i < bobine.Count; i++) if (BobinaId(i) == id) return true;
+            for (i = 0; i < bobineCasa.Count; i++) { string[] c = bobineCasa[i].Split('|'); if (c.Length > 0 && Numero(c[0]) == id) return true; }
+        }
+        return false;
+    }
+
     string PossiedoFisso(string cat)
     {
         // il migliore che possiedi, che e' quello che conta in Capienza
@@ -7237,10 +7250,16 @@ public class Pesca : Script
             return new int[] { 95, 80, 25 };
         }
         if (qta) return new int[] { 245, 150, 195 };
+        // nasse: "pesce max" azzurro, il totale resta verde
+        if (b.StartsWith("pesce max ") || b.StartsWith("fish max ")) return new int[] { 130, 200, 245 };
         if (kg) return new int[] { 140, 225, 175 };
         if (mis) return new int[] { 130, 200, 245 };
         // i punti esperienza hanno il loro azzurro, sempre lo stesso
         if (b.EndsWith("xp")) return new int[] { 130, 200, 245 };
+        // galleggianti: misure in pollici rosa, "peso" azzurro, materiale bianco
+        if (b.IndexOf('"') >= 0 || b.EndsWith("cm)")) return new int[] { 245, 150, 195 };
+        if (b.StartsWith("peso ") || b.StartsWith("load ")) return new int[] { 130, 200, 245 };
+        if (b == "plastic" || b == "balsa" || b == "polyurethane") return new int[] { 245, 245, 250 };
         return new int[] { 235, 210, 130 };
     }
 
@@ -13076,7 +13095,7 @@ public class Pesca : Script
                 int idT2; string imT2, nmT2;
                 if (Montato("terminale", out idT2, out imT2, out nmT2))
                 {
-                    string mis = MisuraTerminale(idT2);
+                    string mis = AmoTerminale(idT2);
                     if (mis.Length > 0)
                         DisegnaTestoDestra(L("Hook ", "Amo ") + mis, tx, ecy - 4f,
                                            LeggiF("esca_amo_testo", 0.22f), 245, 245, 250);
@@ -13187,6 +13206,47 @@ public class Pesca : Script
                     r = (r.Length > 0) ? (r + "  " + artificiali[i].Cm + " cm")
                                        : (artificiali[i].Cm + " cm");
                 return r;
+            }
+        return "";
+    }
+
+    // la riga dati di un terminale, letta come vanno lette le colonne:
+    // per le testine il campo kg contiene la misura dell'amo e la misura
+    // sono i grammi; per i piombi la misura e' in once
+    string DatiTerminale(Terminale x)
+    {
+        string d = "";
+        if (x.Cat == "jig")
+        {
+            if (x.Misura != null && x.Misura.Length > 0) d = x.Misura;
+            if (x.Kg != null && x.Kg.Length > 0) d = Unisci(d, L("hook ", "amo ") + x.Kg);
+        }
+        else if (x.Cat == "piombo")
+        {
+            if (x.Misura != null && x.Misura.Length > 0) d = x.Misura + " oz";
+            if (x.Grammi != null && x.Grammi.Length > 0) d = Unisci(d, x.Grammi + " g");
+        }
+        else
+        {
+            if (x.Misura != null && x.Misura.Length > 0) d = x.Misura;
+            if (x.Mm != null && x.Mm.Length > 0) d = Unisci(d, x.Mm + " mm");
+            if (x.Kg != null && x.Kg.Length > 0) d = Unisci(d, x.Kg + " kg");
+            if (x.Grammi != null && x.Grammi.Length > 0) d = Unisci(d, x.Grammi + " g");
+        }
+        if (x.Pezzi != null && x.Pezzi.Length > 0) d = Unisci(d, "x" + x.Pezzi);
+        return d;
+    }
+
+    // la misura dell'amo in punta: per l'amo e' la misura, per la testina
+    // sta nel campo kg
+    string AmoTerminale(int id)
+    {
+        int i;
+        for (i = 0; i < terminali.Count; i++)
+            if (terminali[i].Id == id)
+            {
+                if (terminali[i].Cat == "jig") return terminali[i].Kg ?? "";
+                return terminali[i].Misura ?? "";
             }
         return "";
     }
@@ -13534,7 +13594,7 @@ public class Pesca : Script
             else recEsca.Remove(s.Nome);
             int idT; string imT, nmT;
             if (Montato("terminale", out idT, out imT, out nmT))
-                recAmo[s.Nome] = MisuraTerminale(idT);
+                recAmo[s.Nome] = AmoTerminale(idT);
             else recAmo.Remove(s.Nome);
             recXp[s.Nome] = guadagno;
             recVale[s.Nome] = vale;
