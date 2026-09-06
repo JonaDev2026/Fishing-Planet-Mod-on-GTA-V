@@ -7789,7 +7789,11 @@ public class Pesca : Script
             }
             else if (inPesca && licZona == cod && torneoOra < 0)
             {
-                // smetti quando vuoi: la giornata finisce, la nassa si vende
+                // smetti quando vuoi: lenza e canna via, la giornata finisce,
+                // la nassa si vende
+                RitiraLenza();
+                ScenaGiu(Game.Player.Character);
+                fase = FASE_FERMO;
                 if (FinePesca(true)) { SuonoMenu("menu_chiudi.wav"); ChiudiMenuNuovo(); }
             }
         }
