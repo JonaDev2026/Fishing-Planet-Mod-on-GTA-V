@@ -2245,6 +2245,9 @@ public class Pesca : Script
             prossimoBattito = Game.GameTime + 2000;
             Battito();
         }
+        // IL MENU NUOVO (RB + SINISTRA): con lui aperto il mondo e' fermo
+        // e non gira altro
+        if (MenuNuovo()) return;
         // la pescata gira a ogni frame: le barre devono essere fluide
         Pescata();
         // la robaccia appena tirata su penzola dalla canna un momento
@@ -5323,6 +5326,79 @@ public class Pesca : Script
     }
 
     // la giornata di pesca finisce alle 21
+    // ============================================================
+    //  IL MENU NUOVO - la pausa nostra
+    // ============================================================
+    // RB + SINISTRA della croce apre (e chiude) il menu nuovo, che si
+    // costruisce in parallelo al trainer. Aperto: il tempo del mondo va a
+    // zero (Game.TimeScale, il trucco dei trainer: il gioco si congela ma
+    // gli script disegnano), l'audio del mondo si abbassa, tutti i comandi
+    // sono spenti tranne i nostri, e l'orologio della pesca si ferma.
+    // B chiude. Per ora dentro c'e' solo il velo e il titolo.
+    bool menuNuovoAperto = false;
+    int menuNuovoPausaDa = 0;
+    int menuNuovoTasto = 0;
+
+    bool MenuNuovo()
+    {
+        if (LeggiF("menu_nuovo", 1f) < 0.5f) return false;
+        int now = Game.GameTime;
+        bool rb = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_PRESSED, 0, 44)
+               || Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 44);
+        bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174)
+               || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 174);
+        bool combo = rb && sx && now > menuNuovoTasto;
+        if (!menuNuovoAperto)
+        {
+            if (!combo) return false;
+            menuNuovoAperto = true;
+            menuNuovoTasto = now + 400;
+            menuNuovoPausaDa = now;
+            try
+            {
+                Game.TimeScale = 0f;
+                Function.Call(Hash.START_AUDIO_SCENE, "CHARACTER_CHANGE_IN_SKY_SCENE");
+            }
+            catch { }
+            Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+            return true;
+        }
+        // aperto: niente comandi al gioco
+        Function.Call(Hash.DISABLE_ALL_CONTROL_ACTIONS, 0);
+        bool b = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 202);
+        if (combo || b)
+        {
+            ChiudiMenuNuovo();
+            return true;
+        }
+        DisegnaMenuNuovo();
+        return true;
+    }
+
+    void ChiudiMenuNuovo()
+    {
+        if (!menuNuovoAperto) return;
+        menuNuovoAperto = false;
+        menuNuovoTasto = Game.GameTime + 400;
+        try
+        {
+            Game.TimeScale = 1f;
+            Function.Call(Hash.STOP_AUDIO_SCENE, "CHARACTER_CHANGE_IN_SKY_SCENE");
+        }
+        catch { }
+        // l'orologio della pesca non deve aver contato il tempo in pausa
+        prossimoMinuto += Game.GameTime - menuNuovoPausaDa;
+        Suono("BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET");
+    }
+
+    void DisegnaMenuNuovo()
+    {
+        // il velo scuro su tutto, e il titolo: il resto arriva
+        DisegnaRett(0f, 0f, 1280f, 720f, 0, 0, 0, (int)LeggiF("menu_velo", 170f));
+        DisegnaTesto(L("FISHING", "PESCA"), 640f, 60f, 0.9f, 245, 245, 250);
+        DisegnaTesto(L("B  back", "B  indietro"), 640f, 660f, 0.28f, 200, 202, 210);
+    }
+
     // L'ORA DEL GIOCO, in alto a sinistra (orario_x / orario_y)
 
     void DisegnaOrario()
@@ -10655,6 +10731,7 @@ public class Pesca : Script
             TogliCanna();
             TogliBlipPunti();
             ViaCampo();
+            ChiudiMenuNuovo();
             Ped p = Game.Player.Character;
             if (p != null && p.Exists()) p.Task.ClearAll();
             if (orologioPreso) Function.Call(Hash.PAUSE_CLOCK, false);
