@@ -5995,8 +5995,8 @@ public class Pesca : Script
                         float ex = x + (n % perRiga) * ew;
                         float ey = y + (n / perRiga) * (ie + 6f);
                         if (ey + ie > fondo - 30f) break;
-                        string img = ImgOk("img\\esche\\" + escheShop[k].Img);
-                        if (img.Length > 0) Sprite(img, ex, ey, ie, ie);
+                        // Img e' gia' il percorso completo (img\esche\...)
+                        if (escheShop[k].Img.Length > 0) Sprite(escheShop[k].Img, ex, ey, ie, ie);
                         TestoMenu(EscaIt(escheShop[k].Nome), ex + ie + 6f, ey + ie * 0.5f - 8f, 0.23f, 0, 0, 200, 202, 210, 255);
                         n++;
                         break;
