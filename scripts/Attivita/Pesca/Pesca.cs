@@ -5706,9 +5706,306 @@ public class Pesca : Script
                 sbArea.Add(ic);
             }
         }
+        if (menuScheda == 2)
+        {
+            // il negozio: tutte le categorie, nell'ordine degli scaffali
+            int q;
+            for (q = 0; q < CASA_ORD.Length; q++)
+            {
+                sbVoci.Add(CAT_NOME[CASA_ORD[q]]);
+                sbDestra.Add("");
+                sbArea.Add(CASA_ORD[q]);
+            }
+        }
         if (sbSel >= sbVoci.Count) sbSel = 0;
         sbTop = 0;
         sbScheda = menuScheda;
+    }
+
+    // IL NEGOZIO: categoria a sinistra, in mezzo il tipo (spinning,
+    // telescopiche...), a destra gli articoli con foto, dati, prezzo e
+    // livello. A compra.
+    List<string> ngTipiCod = new List<string>();
+    List<string> ngTipiNome = new List<string>();
+    int ngCat = -1, ngTipoSel = 0, ngTipoTop = 0;
+    List<int> ngArt = new List<int>();     // indici nella lista della categoria
+    int ngArtCat = -1; string ngArtTipo = "";
+    int ngSel = 0, ngTop = 0;
+
+    void RiempiTipiNegozio(int ic)
+    {
+        ngTipiCod.Clear(); ngTipiNome.Clear();
+        string cat = CAT_COD[ic];
+        int i, t;
+        if (cat == "canna") for (t = 0; t < CANNA_COD.Length; t++) { ngTipiCod.Add(CANNA_COD[t]); ngTipiNome.Add(CANNA_NOME[t]); }
+        else if (cat == "mulinello") for (t = 0; t < MUL_COD.Length; t++) { ngTipiCod.Add(MUL_COD[t]); ngTipiNome.Add(MUL_NOME[t]); }
+        else if (cat == "lenza") for (t = 0; t < TIPO_COD.Length; t++) { ngTipiCod.Add(TIPO_COD[t]); ngTipiNome.Add(TIPO_NOME[t]); }
+        else if (cat == "terminale") for (t = 0; t < TERM_COD.Length; t++) { ngTipiCod.Add(TERM_COD[t]); ngTipiNome.Add(TERM_NOME[t]); }
+        else if (cat == "artificiale") for (t = 0; t < ART_COD.Length; t++) { ngTipiCod.Add(ART_COD[t]); ngTipiNome.Add(ART_NOME[t]); }
+        else if (cat == "esca") for (t = 0; t < ESCA_COD.Length; t++) { ngTipiCod.Add(ESCA_COD[t]); ngTipiNome.Add(ESCA_NOME[t]); }
+        else if (cat == "nassa") { ngTipiCod.Add("nassa"); ngTipiNome.Add("Nasse"); ngTipiCod.Add("filo"); ngTipiNome.Add("Fili portapesce"); }
+        else if (cat == "galleggiante")
+        {
+            // i tipi come stanno nel file: classico, slider, waggler
+            for (i = 0; i < galleggianti.Count; i++)
+                if (!ngTipiCod.Contains(galleggianti[i].Tipo))
+                {
+                    ngTipiCod.Add(galleggianti[i].Tipo);
+                    string nm = galleggianti[i].Tipo;
+                    if (nm.Length > 0) nm = char.ToUpper(nm[0]) + nm.Substring(1);
+                    ngTipiNome.Add(nm);
+                }
+        }
+        else { ngTipiCod.Add(""); ngTipiNome.Add(L("All", "Tutti")); }
+        // via i tipi senza articoli
+        for (t = ngTipiCod.Count - 1; t >= 0; t--)
+        {
+            RiempiArticoli(ic, ngTipiCod[t]);
+            if (ngArt.Count == 0) { ngTipiCod.RemoveAt(t); ngTipiNome.RemoveAt(t); }
+        }
+        ngArtCat = -1;
+        if (ngCat != ic) { ngTipoSel = 0; ngTipoTop = 0; ngSel = 0; ngTop = 0; }
+        if (ngTipoSel >= ngTipiCod.Count) ngTipoSel = 0;
+        ngCat = ic;
+    }
+
+    void RiempiArticoli(int ic, string tipo)
+    {
+        ngArt.Clear();
+        string cat = CAT_COD[ic];
+        int i;
+        if (cat == "canna") for (i = 0; i < canne.Count; i++) { if (canne[i].Tipo == tipo) ngArt.Add(i); }
+        else if (cat == "mulinello") for (i = 0; i < mulinelli.Count; i++) { if (mulinelli[i].Tipo == tipo) ngArt.Add(i); }
+        else if (cat == "lenza") for (i = 0; i < lenze.Count; i++) { if (lenze[i].Tipo == tipo) ngArt.Add(i); }
+        else if (cat == "terminale") for (i = 0; i < terminali.Count; i++) { if (terminali[i].Cat == tipo) ngArt.Add(i); }
+        else if (cat == "galleggiante") for (i = 0; i < galleggianti.Count; i++) { if (galleggianti[i].Tipo == tipo) ngArt.Add(i); }
+        else if (cat == "artificiale") for (i = 0; i < artificiali.Count; i++) { if (artificiali[i].Tipo == tipo) ngArt.Add(i); }
+        else if (cat == "esca") for (i = 0; i < escheShop.Count; i++) { if (escheShop[i].Cat == tipo) ngArt.Add(i); }
+        else if (cat == "nassa") for (i = 0; i < nasse.Count; i++) { if (nasse[i].Tipo == tipo) ngArt.Add(i); }
+        else if (cat == "cassetta") for (i = 0; i < cassette.Count; i++) ngArt.Add(i);
+        else if (cat == "portacanne") for (i = 0; i < portacanne.Count; i++) ngArt.Add(i);
+        ngArtCat = ic; ngArtTipo = tipo;
+    }
+
+    // l'articolo k-esimo della categoria: id, nome, foto, dati, prezzo e livello
+    void ArticoloNegozio(int ic, int k, out int id, out string nome, out string img, out string dati, out int prezzo, out int liv)
+    {
+        string cat = CAT_COD[ic];
+        id = -1; nome = ""; img = ""; dati = ""; prezzo = 0; liv = 0;
+        if (cat == "canna")
+        {
+            Canna x = canne[k];
+            id = x.Id; nome = x.Marca + " " + x.Modello + "   " + x.Lunghezza + " m"; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            if (x.Esca != null && x.Esca.Trim().Length > 0) dati = "esca " + x.Esca + " g";
+            dati = Unisci(dati, "lenza " + Corto(x.LenzaKg) + " kg");
+            dati = Unisci(dati, x.Potenza);
+        }
+        else if (cat == "mulinello")
+        {
+            Mulinello x = mulinelli[k];
+            id = x.Id; nome = x.Marca + " " + x.Serie + " " + x.Misura; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            dati = x.Frizione.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+            dati = Unisci(dati, x.Rapporto);
+            dati = Unisci(dati, x.Recupero + " cm");
+        }
+        else if (cat == "lenza")
+        {
+            Lenza x = lenze[k];
+            id = x.Id; nome = x.Marca + " " + x.Prodotto; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            dati = x.Mm + " mm   " + x.Kg.ToString("0.##", CultureInfo.InvariantCulture) + " kg   " + x.Metri + " m";
+        }
+        else if (cat == "terminale")
+        {
+            Terminale x = terminali[k];
+            id = x.Id; nome = x.Marca + " " + x.Modello; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            dati = x.Misura;
+            if (x.Mm != null && x.Mm.Length > 0) dati = Unisci(dati, x.Mm + " mm");
+            if (x.Kg != null && x.Kg.Length > 0) dati = Unisci(dati, x.Kg + " kg");
+            if (x.Grammi != null && x.Grammi.Length > 0) dati = Unisci(dati, x.Grammi + " g");
+            if (x.Pezzi != null && x.Pezzi.Length > 0) dati = Unisci(dati, "x" + x.Pezzi);
+        }
+        else if (cat == "galleggiante")
+        {
+            Galleggiante x = galleggianti[k];
+            id = x.Id; nome = x.Nome + "   " + x.Colore; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            dati = Unisci(Corto(x.Misura), x.Forma);
+            dati = Unisci(dati, "peso " + x.Portata);
+            dati = Unisci(dati, x.Materiale);
+        }
+        else if (cat == "artificiale")
+        {
+            Artificiale x = artificiali[k];
+            id = x.Id; nome = x.Nome + "   " + x.Colore; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            if (x.Grammi != null && x.Grammi.Length > 0) dati = x.Grammi + " g";
+            if (x.Cm != null && x.Cm.Length > 0) dati = Unisci(dati, x.Cm + " cm");
+            if (x.Amo != null && x.Amo.Length > 0) dati = Unisci(dati, "amo " + x.Amo);
+        }
+        else if (cat == "esca")
+        {
+            EscaShop x = escheShop[k];
+            id = x.Id; nome = EscaIt(x.Nome); img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            if (x.Quantita.Length > 0) dati = "x" + x.Quantita;
+            if (x.Peso.Length > 0) dati = Unisci(dati, "peso " + x.Peso);
+            if (x.Amo.Length > 0) dati = Unisci(dati, "amo " + x.Amo);
+        }
+        else if (cat == "nassa")
+        {
+            Nassa x = nasse[k];
+            id = x.Id; nome = x.Nome + " " + x.Taglia; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            dati = "pesce max " + x.KgPesce.ToString("0.##", CultureInfo.InvariantCulture) + " kg";
+            dati = Unisci(dati, "totale " + x.KgTotale.ToString("0.##", CultureInfo.InvariantCulture) + " kg");
+            dati = Unisci(dati, x.Materiale);
+        }
+        else if (cat == "cassetta")
+        {
+            Cassetta x = cassette[k];
+            id = x.Id; nome = x.Nome; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            dati = x.Attrezzi + " oggetti";
+            if (x.Lenze.Length > 0) dati = Unisci(dati, x.Lenze + " lenze");
+            if (x.Mulinelli.Length > 0 && x.Mulinelli != "0") dati = Unisci(dati, x.Mulinelli + " mulinelli");
+            dati = Unisci(dati, x.Materiale);
+        }
+        else if (cat == "portacanne")
+        {
+            Portacanne x = portacanne[k];
+            id = x.Id; nome = x.Nome; img = x.Img; prezzo = x.Prezzo; liv = x.LivWiki;
+            dati = x.Canne + " canne   " + x.Mulinelli + " mulinelli   " + x.Lenze + " lenze";
+        }
+        if (img == null) img = "";
+    }
+
+    // una lista semplice a righe (le due colonne di sinistra del negozio)
+    void ListaMenu(List<string> voci, int sel, ref int top, bool attiva, float x, float y, float w, float h)
+    {
+        float rh = LeggiF("menu_sb_riga", 26f);
+        int righe = (int)(h / rh);
+        if (righe < 1) righe = 1;
+        if (sel < top) top = sel;
+        if (sel >= top + righe) top = sel - righe + 1;
+        int i;
+        for (i = 0; i < righe && top + i < voci.Count; i++)
+        {
+            int k = top + i;
+            float ry = y + i * rh;
+            bool s = (k == sel);
+            if (s) DisegnaRett(x, ry, w, rh - 2f, 245, 245, 250, attiva ? 255 : 170);
+            else DisegnaRett(x, ry, w, rh - 2f, 0, 0, 0, 120);
+            int r = s ? 20 : 245, g = s ? 22 : 245, b = s ? 28 : 250;
+            TestoMenu(voci[k], x + 10f, ry + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
+        }
+    }
+
+    void DisegnaNegozio(float mx, float cy, float mw, float ch)
+    {
+        if (sbScheda != menuScheda) RiempiSidebar();
+        if (sbSel < 0 || sbSel >= sbArea.Count) return;
+        int ic = sbArea[sbSel];
+        if (ngCat != ic) RiempiTipiNegozio(ic);
+        string tipo = (ngTipoSel < ngTipiCod.Count) ? ngTipiCod[ngTipoSel] : "";
+        if (ngArtCat != ic || ngArtTipo != tipo) RiempiArticoli(ic, tipo);
+        if (ngSel >= ngArt.Count) ngSel = 0;
+
+        float pad = LeggiF("menu_pn_bordo", 10f);
+        float w1 = LeggiF("menu_ng_sb1", 200f);
+        float w2 = LeggiF("menu_ng_sb2", 200f);
+        float gap = LeggiF("menu_ng_gap", 10f);
+        float x1 = mx + pad, x2 = x1 + w1 + gap, x3 = x2 + w2 + gap;
+        float w3 = mx + mw - pad - x3;
+        float y = cy + pad, h = ch - pad * 2f;
+        ListaMenu(sbVoci, sbSel, ref sbTop, menuLato == 0, x1, y, w1, h);
+        ListaMenu(ngTipiNome, ngTipoSel, ref ngTipoTop, menuLato == 1, x2, y, w2, h);
+
+        // gli articoli
+        float rh = LeggiF("menu_eq_riga", 52f);
+        int righe = (int)(h / rh);
+        if (righe < 1) righe = 1;
+        if (ngSel < ngTop) ngTop = ngSel;
+        if (ngSel >= ngTop + righe) ngTop = ngSel - righe + 1;
+        float iw = (rh - 8f) * LeggiF("menu_eq_img_rapporto", 1.6f);
+        float ns = LeggiF("menu_eq_nome_testo", 0.24f), dt = LeggiF("menu_eq_dati_testo", 0.22f);
+        int i;
+        for (i = 0; i < righe && ngTop + i < ngArt.Count; i++)
+        {
+            int id; string nome, img, dati; int prezzo, liv;
+            ArticoloNegozio(ic, ngArt[ngTop + i], out id, out nome, out img, out dati, out prezzo, out liv);
+            float ry = y + i * rh;
+            bool s = (menuLato == 2 && ngTop + i == ngSel);
+            bool ok = (liv <= livelloPescatore);
+            if (s) DisegnaRett(x3, ry, w3, rh - 2f, 245, 245, 250, 255);
+            else DisegnaRett(x3, ry, w3, rh - 2f, 0, 0, 0, 120);
+            if (img.Length > 0) Sprite(img, x3 + 4f, ry + 3f, iw, rh - 8f);
+            float tx = x3 + 4f + iw + 10f;
+            int r = s ? 20 : (ok ? 245 : 150), g = s ? 22 : (ok ? 245 : 150), b = s ? 28 : (ok ? 250 : 160);
+            TestoMenu(nome, tx, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 0, r, g, b, 255);
+            // prezzo verde e livello giallo (rosso se non ci arrivi) a destra
+            string pTxt = "$" + PrezzoOggi(prezzo);
+            string lTxt = L("Lv. ", "Liv. ") + liv;
+            float dy = ry + LeggiF("menu_eq_dati_giu", 26f);
+            TestoMenu(pTxt, x3 + w3 - 8f, ry + LeggiF("menu_eq_nome_giu", 5f), ns, 0, 2,
+                      s ? 30 : 130, s ? 90 : 225, s ? 60 : 180, 255);
+            TestoMenu(lTxt, x3 + w3 - 8f, dy, dt, 0, 2,
+                      s ? (ok ? 95 : 130) : (ok ? 235 : 245), s ? (ok ? 80 : 40) : (ok ? 210 : 90), s ? (ok ? 25 : 40) : (ok ? 130 : 90), 255);
+            float dmax = x3 + w3 - 8f - LarghezzaTesto(pTxt, ns, 0) - 12f;
+            float dx = tx;
+            string[] pz = dati.Split(new string[] { "   " }, StringSplitOptions.RemoveEmptyEntries);
+            int z;
+            for (z = 0; z < pz.Length; z++)
+            {
+                string p1 = pz[z].Trim();
+                if (p1.Length == 0) continue;
+                float w1t = LarghezzaTesto(p1, dt, 0);
+                if (dx + w1t > dmax) break;
+                int[] col = ColoreValore(p1, s);
+                TestoMenu(p1, dx, dy, dt, 0, 0, col[0], col[1], col[2], 255);
+                dx += w1t + 9f;
+            }
+        }
+    }
+
+    void TastiNegozio(int now)
+    {
+        if (sbVoci.Count == 0) return;
+        bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
+               || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
+        bool giu = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 19)
+                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 173);
+        bool dx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 175);
+        bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174);
+        bool ok = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 201);
+        if (menuLato == 0 && (su || giu))
+        {
+            int n = sbVoci.Count;
+            sbSel = (sbSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 0 && dx && ngTipiNome.Count > 0) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && (su || giu) && ngTipiNome.Count > 0)
+        {
+            int n = ngTipiNome.Count;
+            ngTipoSel = (ngTipoSel + (giu ? 1 : n - 1)) % n;
+            ngSel = 0; ngTop = 0;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 1 && sx) { menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 1 && dx && ngArt.Count > 0) { menuLato = 2; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 2 && sx) { menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN"); }
+        else if (menuLato == 2 && (su || giu) && ngArt.Count > 0)
+        {
+            int n = ngArt.Count;
+            ngSel = (ngSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120; TicMenu("NAV_UP_DOWN");
+        }
+        else if (menuLato == 2 && ok && ngSel < ngArt.Count && sbSel < sbArea.Count)
+        {
+            int id; string nome, img, dati; int prezzo, liv;
+            ArticoloNegozio(sbArea[sbSel], ngArt[ngSel], out id, out nome, out img, out dati, out prezzo, out liv);
+            menuNuovoTasto = now + 300;
+            if (Compra(CAT_COD[sbArea[sbSel]], id))
+            {
+                SuonoMenu("menu_apri.wav");
+                Messaggio(L("Bought: ", "Comprato: ") + nome);
+            }
+        }
     }
 
     // L'EQUIPAGGIAMENTO: a destra della lista due colonne, quello che hai
@@ -6436,6 +6733,7 @@ public class Pesca : Script
     void TastiSidebar(int now)
     {
         if (menuScheda == 1) { TastiEquip(now); return; }
+        if (menuScheda == 2) { TastiNegozio(now); return; }
         if (menuScheda != 0 || sbVoci.Count == 0) return;
         bool su = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 27)
                || Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 172);
@@ -6599,6 +6897,7 @@ public class Pesca : Script
             DisegnaSidebarEquip(xLista - sbb, cy, ch);
             DisegnaColonneEquip(xCasa, xLista + sbl + mezzo, w, cy, ch);
         }
+        if (menuScheda == 2) DisegnaNegozio(mx, cy, mw, ch);
 
         List<string> ic = new List<string>();
         List<string> tx = new List<string>();
@@ -6640,6 +6939,22 @@ public class Pesca : Script
             Voce(ic, tx, "x", L("SPACE", "SPAZIO"), L("Sell", "Vendi"));
             Voce(ic, tx, "y", "Y", L("Throw away", "Getta"));
             Voce(ic, tx, "croce_sxdx", "<", L("List", "Lista"));
+        }
+        if (menuScheda == 2 && menuLato == 0)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "croce_sxdx", ">", L("Type", "Tipo"));
+        }
+        if (menuScheda == 2 && menuLato == 1)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "croce_sxdx", "< >", L("Category / Items", "Categoria / Articoli"));
+        }
+        if (menuScheda == 2 && menuLato == 2)
+        {
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Buy", "Compra"));
+            Voce(ic, tx, "croce_sxdx", "<", L("Type", "Tipo"));
         }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
         DisegnaBarraTasti(ic, tx);
