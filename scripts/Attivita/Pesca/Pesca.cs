@@ -5754,7 +5754,7 @@ public class Pesca : Script
             if (cat == "cassetta")
             {
                 float zh = h - 8f;
-                Sprite("img/cassette/zaino.png", x + 4f, y + 4f, zh, zh);
+                Sprite("img/cassette/Base.png", x + 4f, y + 4f, zh * 1.6f, zh);
                 TestoMenu(L("Backpack", "Zaino"), x + zh + 12f, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
                 TestoMenu(ZAINO_ROBA + " attrezzi   " + ZAINO_LENZE + " lenze", x + zh + 12f, y + 6f + 18f,
                           0.22f, 0, 0, 200, 202, 210, 255);
