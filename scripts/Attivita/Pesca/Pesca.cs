@@ -14926,8 +14926,22 @@ public class Pesca : Script
             quandoAbbocca = now + 6000 + caso.Next(8000);
             return;
         }
-        robaOra = caso.Next(robaccia.Count);
-        MettiRoba();
+        // se il modello di quella roba non si carica (nome sbagliato o
+        // non ancora in memoria) se ne prova un'altra: senza il prop
+        // restava "qualcosa" invisibile attaccato alla lenza
+        int tent;
+        for (tent = 0; tent < 4; tent++)
+        {
+            robaOra = caso.Next(robaccia.Count);
+            MettiRoba();
+            if (robaProp != null) break;
+        }
+        if (robaProp == null)
+        {
+            robaOra = -1;
+            quandoAbbocca = now + 6000 + caso.Next(8000);
+            return;
+        }
         quandoAbbocca = now + 3600000;
         Vibra(200, 120);
         Messaggio("~y~" + L("Something took: reel in.", "Qualcosa ha preso: recupera."));
