@@ -5747,16 +5747,19 @@ public class Pesca : Script
     void BannerFisso(string cat, float x, float y, float w, float h)
     {
         DisegnaRett(x, y, w, h, 0, 0, 0, 120);
+        // il riquadro dell'immagine ha sempre la stessa misura, cosi' il
+        // testo parte sempre dallo stesso punto
+        float ih = h - 8f, iw = ih * LeggiF("menu_eq_img_rapporto", 1.6f);
+        float tx = x + 4f + iw + 12f;
         string chiave = PossiedoFisso(cat);
         if (chiave.Length == 0)
         {
             // senza cassetta c'e' lo zaino, che hai da sempre
             if (cat == "cassetta")
             {
-                float zh = h - 8f;
-                Sprite("img/cassette/Base.png", x + 4f, y + 4f, zh * 1.6f, zh);
-                TestoMenu(L("Backpack", "Zaino"), x + zh + 12f, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
-                TestoMenu(ZAINO_ROBA + " attrezzi   " + ZAINO_LENZE + " lenze", x + zh + 12f, y + 6f + 18f,
+                Sprite("img/cassette/Base.png", x + 4f, y + 4f, iw, ih);
+                TestoMenu(L("Backpack", "Zaino"), tx, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
+                TestoMenu(ZAINO_ROBA + " attrezzi   " + ZAINO_LENZE + " lenze", tx, y + 6f + 18f,
                           0.22f, 0, 0, 200, 202, 210, 255);
             }
             else
@@ -5767,10 +5770,9 @@ public class Pesca : Script
         int id = Numero(c[1]);
         string nome, img; int prezzo, liv;
         if (!Articolo(cat, id, out nome, out img, out prezzo, out liv)) return;
-        float ih = h - 8f, iw = ih * 1.6f;
         if (img.Length > 0) Sprite(img, x + 4f, y + 4f, iw, ih);
-        TestoMenu(nome, x + iw + 12f, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
-        TestoMenu(Dettaglio(cat, id), x + iw + 12f, y + 6f + 18f, 0.22f, 0, 0, 200, 202, 210, 255);
+        TestoMenu(nome, tx, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
+        TestoMenu(Dettaglio(cat, id), tx, y + 6f + 18f, 0.22f, 0, 0, 200, 202, 210, 255);
     }
 
     void DisegnaSidebarEquip(float mx, float cy, float ch)
