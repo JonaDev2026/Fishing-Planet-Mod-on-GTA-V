@@ -10908,12 +10908,15 @@ public class Pesca : Script
             // stare pescando.
             if (!EscaSullAcqua())
             {
-                Messaggio("~y~" + L("Out of the water: the line came back.", "Fuori dall'acqua: la lenza e' rientrata."));
                 metriLenza = 0f;
                 escaInAcqua = false;
                 fase = FASE_PRONTO;
                 grillettoMollato = false;
                 tastoDa = now + 300;
+                // con la robaccia attaccata e' arrivata a riva: resta
+                // appesa alla canna con la sua scheda, come il pesce
+                if (robaOra >= 0) { fase = FASE_ROBA; robaAppesaFino = 0; return; }
+                Messaggio("~y~" + L("Out of the water: the line came back.", "Fuori dall'acqua: la lenza e' rientrata."));
                 return;
             }
 
