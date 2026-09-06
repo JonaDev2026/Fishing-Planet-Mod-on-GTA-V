@@ -11,6 +11,12 @@ temperatura ha l'acqua, cosa hai montato e come lo usi.
 e portacanne, 51 tornei con premi in denaro, progressione a livelli e un diario
 con 239 specie da riempire.
 
+## Il video
+
+[![La mod in gioco](https://img.youtube.com/vi/fE_OSdsgQKs/hqdefault.jpg)](https://www.youtube.com/watch?v=fE_OSdsgQKs)
+
+https://www.youtube.com/watch?v=fE_OSdsgQKs
+
 Questo file è il manuale: spiega come si gioca e, soprattutto, **perché un
 pesce abbocca o no**. Tutte le regole descritte qui sono quelle scritte nel
 codice; dove un numero è nostro e non del wiki, è detto.
