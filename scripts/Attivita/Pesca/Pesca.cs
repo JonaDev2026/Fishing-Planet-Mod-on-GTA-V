@@ -1161,13 +1161,13 @@ public class Pesca : Script
                 torneoFine = Game.GameTime + torneoRestaMs;
             else torneoOra = -1;
         }
-        else { torneoOra = -1; nassaOggi.Clear(); kgNassa = 0f; }
-        torneoRestaMs = -1;
         else
         {
+            torneoOra = -1; nassaOggi.Clear(); kgNassa = 0f;
             try { Function.Call(Hash.PAUSE_CLOCK, false); }
             catch { }
         }
+        torneoRestaMs = -1;
         RiscriviTutto();
     }
 
