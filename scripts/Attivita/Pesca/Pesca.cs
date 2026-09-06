@@ -5906,7 +5906,7 @@ public class Pesca : Script
         DisegnaRett(x, y + 2f + q - 1f, q, 1f, r, g, b, 255);
         DisegnaRett(x, y + 2f, 1f, q, r, g, b, 255);
         DisegnaRett(x + q - 1f, y + 2f, 1f, q, r, g, b, 255);
-        if (si) TestoMenu("X", x + q * 0.5f, y - 2f, 0.24f, 0, 1, r, g, b, 255);
+        if (si) TestoMenu("X", x + q * 0.5f + LeggiF("menu_x_dx", 0f), y - 2f + LeggiF("menu_x_giu", 3f), 0.24f, 0, 1, r, g, b, 255);
         TestoMenu(testo, x + q + 4f, y + LeggiF("menu_spunta_giu", 2f), 0.19f, 0, 0, r, g, b, 255);
     }
 
