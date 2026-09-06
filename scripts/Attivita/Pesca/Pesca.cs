@@ -5764,8 +5764,8 @@ public class Pesca : Script
         int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
         int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
         TestoMenu(hh.ToString("00") + ":" + mi.ToString("00"), tx2, y, 0.34f, 4, 0, 245, 245, 250, 255);
-        if (inPesca && licGiorni > 0)
-            TestoMenu(L("Day ", "Giorno ") + "1/" + licGiorni + "   " + TempoCheResta(), x + cw2 - 8f, y + 4f, 0.24f, 0, 2, 200, 202, 210, 255);
+        if (inPesca && licGiorni > 0 && licZona == CodiceLuogo(a))
+            TestoMenu(L("License ", "Licenza ") + TempoCheResta(), x + cw2 - 8f, y + 4f, 0.24f, 0, 2, 200, 202, 210, 255);
         y += 26f;
 
         // LE PREVISIONI: meteo e gradi, e la curva dell'attivita' del posto
@@ -5807,9 +5807,9 @@ public class Pesca : Script
                       tx2, y, 0.24f, 0, 0, 150, 235, 180, 255);
         else if (p1 > 0)
         {
-            RigaLicenza(x, cw2, y, L("1 day", "1 giorno"), p1, 0);
+            RigaLicenza(x, cw2, y, L("Buy 1 day", "Acquista 1 giorno"), p1, 0);
             y += 20f;
-            RigaLicenza(x, cw2, y, L("3 days", "3 giorni"), p3, 1);
+            RigaLicenza(x, cw2, y, L("Buy 3 days", "Acquista 3 giorni"), p3, 1);
             pnRighe = 2;
         }
         else TestoMenu(L("No license needed", "Senza licenza"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
@@ -5878,7 +5878,9 @@ public class Pesca : Script
         }
         else if (menuLato == 0 && dx)
         {
-            menuLato = 1; pnSel = pnRighe; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
+            // si entra sulla prima licenza, non sul tasto in fondo: cosi'
+            // si capisce che le licenze si comprano
+            menuLato = 1; pnSel = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
         }
         else if (menuLato == 1 && sx)
         {
