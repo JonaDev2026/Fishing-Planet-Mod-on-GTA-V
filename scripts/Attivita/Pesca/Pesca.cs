@@ -11647,7 +11647,9 @@ public class Pesca : Script
         }
         else if (fase == FASE_CARD)
         {
-            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Keep", "Tieni"));
+            // se non lo puoi tenere (nassa piena, pesce troppo grosso) c'e'
+            // solo "Ributta": "Tieni" non fa niente e non si mostra
+            if (cardPuoTenere) Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Keep", "Tieni"));
             Voce(ic, tx, "b", "ESC", L("Release", "Ributta"));
         }
         else if (fase == FASE_ROBA)
