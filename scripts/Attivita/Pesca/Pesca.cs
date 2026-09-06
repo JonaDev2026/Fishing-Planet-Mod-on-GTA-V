@@ -5683,11 +5683,12 @@ public class Pesca : Script
         }
         if (menuScheda == 1)
         {
-            // le categorie dell'attrezzatura, nell'ordine degli scaffali
+            // solo la roba che si sposta tra casa e cassetta; portacanne e
+            // cassette sono fissi e stanno sotto, col loro banner
             int q;
-            for (q = 0; q < CASA_ORD.Length; q++)
+            for (q = 0; q < EQ_ORD.Length; q++)
             {
-                int ic = CASA_ORD[q];
+                int ic = EQ_ORD[q];
                 sbVoci.Add(CAT_NOME[ic]);
                 sbDestra.Add("");
                 sbArea.Add(ic);
@@ -5726,6 +5727,74 @@ public class Pesca : Script
         if (eqSelBorsa >= eqBorsa.Count) eqSelBorsa = eqBorsa.Count > 0 ? eqBorsa.Count - 1 : 0;
         eqCat = ic;
         eqQuando = OraPc();
+    }
+
+    // canne, mulinelli, lenze, ami, esche, artificiali, galleggianti, nasse
+    static readonly int[] EQ_ORD = new int[] { 0, 1, 2, 3, 6, 5, 4, 7 };
+
+    // il pezzo fisso che possiedi (casa o cassetta): chiave "cat:id" o ""
+    string PossiedoFisso(string cat)
+    {
+        foreach (KeyValuePair<string, int> kv in borsa)
+            if (kv.Value > 0 && kv.Key.StartsWith(cat + ":")) return kv.Key;
+        foreach (KeyValuePair<string, int> kv in magazzino)
+            if (kv.Value > 0 && kv.Key.StartsWith(cat + ":")) return kv.Key;
+        return "";
+    }
+
+    // il banner di un pezzo fisso: l'immagine grande a sinistra, nome e
+    // dati a destra. Se non ce l'hai, "nessuno".
+    void BannerFisso(string cat, float x, float y, float w, float h)
+    {
+        DisegnaRett(x, y, w, h, 0, 0, 0, 120);
+        string chiave = PossiedoFisso(cat);
+        if (chiave.Length == 0)
+        {
+            TestoMenu(L("none", "nessuno"), x + 10f, y + h * 0.5f - 9f, 0.26f, 0, 0, 200, 202, 210, 255);
+            return;
+        }
+        string[] c = chiave.Split(':');
+        int id = Numero(c[1]);
+        string nome, img; int prezzo, liv;
+        if (!Articolo(cat, id, out nome, out img, out prezzo, out liv)) return;
+        float ih = h - 8f, iw = ih * 1.6f;
+        if (img.Length > 0) Sprite(img, x + 4f, y + 4f, iw, ih);
+        TestoMenu(nome, x + iw + 12f, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
+        TestoMenu(Dettaglio(cat, id), x + iw + 12f, y + 6f + 18f, 0.22f, 0, 0, 200, 202, 210, 255);
+    }
+
+    void DisegnaSidebarEquip(float mx, float cy, float ch)
+    {
+        if (sbScheda != menuScheda) RiempiSidebar();
+        float w = LeggiF("menu_sb_larga", 260f);
+        float rh = LeggiF("menu_sb_riga", 26f);
+        float pad = LeggiF("menu_sb_bordo", 8f);
+        float bh = LeggiF("menu_eq_banner", 80f);
+        float x = mx + pad;
+        float y = cy + pad;
+        y = SezioneColonna(L("ITEMS YOU CAN MOVE BETWEEN HOME AND TACKLE BOX",
+                             "OGGETTI CHE PUOI SPOSTARE TRA CASA E CASSETTA"), x, y, w);
+        int k;
+        for (k = 0; k < sbVoci.Count; k++)
+        {
+            bool sel = (k == sbSel);
+            if (sel) DisegnaRett(x, y, w, rh - 2f, 245, 245, 250, menuLato == 0 ? 255 : 170);
+            else DisegnaRett(x, y, w, rh - 2f, 0, 0, 0, 120);
+            int r = sel ? 20 : 245, g = sel ? 22 : 245, b = sel ? 28 : 250;
+            TestoMenu(sbVoci[k], x + 10f, y + rh * 0.5f - 9f, 0.28f, 0, 0, r, g, b, 255);
+            y += rh;
+        }
+        y += rh * 0.5f;
+        y = SezioneColonna(L("FIXED ITEMS FOR EXPANSION", "OGGETTI FISSI PER L'ESPANSIONE"), x, y, w);
+        DisegnaRett(x, y, w, rh - 2f, 0, 0, 0, 120);
+        TestoMenu(CAT_NOME[9], x + 10f, y + rh * 0.5f - 9f, 0.28f, 0, 0, 245, 245, 250, 255);
+        y += rh;
+        BannerFisso("portacanne", x, y, w, bh);
+        y += bh + 4f;
+        DisegnaRett(x, y, w, rh - 2f, 0, 0, 0, 120);
+        TestoMenu(CAT_NOME[8], x + 10f, y + rh * 0.5f - 9f, 0.28f, 0, 0, 245, 245, 250, 255);
+        y += rh;
+        BannerFisso("cassetta", x, y, w, bh);
     }
 
     void ColonnaEquip(List<string> lista, ref int sel, ref int top, bool attiva,
@@ -6366,7 +6435,7 @@ public class Pesca : Script
         }
         if (menuScheda == 1)
         {
-            DisegnaSidebar(mx, cy, ch);
+            DisegnaSidebarEquip(mx, cy, ch);
             float sbw = LeggiF("menu_sb_larga", 260f) + LeggiF("menu_sb_bordo", 8f) * 2f;
             DisegnaColonneEquip(mx + sbw, cy, mw - sbw, ch);
         }
