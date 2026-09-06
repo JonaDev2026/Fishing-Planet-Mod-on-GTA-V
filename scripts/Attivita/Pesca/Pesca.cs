@@ -9882,6 +9882,7 @@ public class Pesca : Script
     float recuperato = 0f;       // 0..100: a 100 il pesce e' tuo
     int pesceQui = -1;           // indice in pesci
     int dentiDa = 0;             // da quando ha in bocca il filo nudo
+    int rotturaDa = 0;           // da quando la tensione sta al massimo
     float pesceKg = 0f;
     int ultimoMsg = 0;
     float metriLenza = 0f;
@@ -11200,6 +11201,7 @@ public class Pesca : Script
             {
                 fase = FASE_LOTTA;
                 tensione = 30f;
+                rotturaDa = 0;
                 recuperato = 0f;
                 stanchezza = 0f;
                 strappoFine = 0;
@@ -11426,6 +11428,9 @@ public class Pesca : Script
             if (spinta > 1f) spinta = 1f;
 
             float dtL = Game.LastFrameTime;
+            // un fotogramma lungo (caricamento, scatto) non deve far
+            // saltare la tensione di colpo: al massimo vale 50 ms
+            if (dtL > 0.05f) dtL = 0.05f;
 
             // ---- ogni tanto il pesce parte ----
             // SI STANCA. Piu' lo contrasti piu' si consuma, e da stanco
@@ -11545,8 +11550,18 @@ public class Pesca : Script
             // lo senti dal mulinello e te lo dice il pad.
             Metri(metriLenza);
 
+            // LA ROTTURA HA UN MARGINE: la lenza si spezza se resta al
+            // massimo per lenza_rottura_ms (in cima, tutta rossa), non al
+            // primo fotogramma che tocca il 100. Il tempo di mollare.
             if (tensione >= 100f)
             {
+                tensione = 100f;
+                if (rotturaDa == 0) rotturaDa = now;
+            }
+            else rotturaDa = 0;
+            if (rotturaDa > 0 && now - rotturaDa >= (int)LeggiF("lenza_rottura_ms", 700f))
+            {
+                rotturaDa = 0;
                 Suono("LOSER", "HUD_AWARDS");
                 dentiDa = 0;          // e' la tensione, non i denti
                 PerdiArmatura();
