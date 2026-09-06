@@ -1,0 +1,38 @@
+# I NOMI DELLE ZONE IN INGLESE (nome_italiano|nome_inglese).
+# Il nome italiano e' la chiave usata dappertutto nei dati e nel salvataggio:
+# questo file serve solo a mostrarlo in inglese.
+Riva ovest di Alamo|Alamo west shore
+Slab|Slab
+Foce dello Zancudo|Zancudo mouth
+Sponda sud di Alamo|Alamo south bank
+Sandy Shores|Sandy Shores
+Riva est di Alamo|Alamo east shore
+Grapeseed|Grapeseed
+Riva nord-est di Alamo|Alamo north-east shore
+Mount Chiliad|Mount Chiliad
+Riva nord di Alamo|Alamo north shore
+Ponte Calafia|Calafia Bridge
+Fiume Zancudo alto|Upper Zancudo River
+Fiume Zancudo basso|Lower Zancudo River
+Palude di Zancudo ovest|Zancudo marsh west
+Torrente di Tongva alto|Upper Tongva Creek
+Torrente di Tongva basso|Lower Tongva Creek
+Palude di Zancudo est|Zancudo marsh east
+Cassidy Creek alto|Upper Cassidy Creek
+Cassidy Creek basso|Lower Cassidy Creek
+Foce del Cassidy|Cassidy mouth
+Lago di Vinewood|Vinewood Lake
+Diga di Land Act|Land Act Dam
+Land Act nord|Land Act north
+Land Act ovest|Land Act west
+Mirror Park|Mirror Park
+Laghetti del golf|Golf course ponds
+Vespucci Beach e molo di Del Perro|Vespucci Beach and Del Perro Pier
+Isolotto di San Chianski|San Chianski islet
+Faro di El Gordo|El Gordo Lighthouse
+Molo di Paleto Cove|Paleto Cove pier
+Paleto Bay ovest|Paleto Bay west
+Paleto Bay est|Paleto Bay east
+Spiaggia e molo di Chumash|Chumash beach and pier
+Spiaggia di Pacific Bluffs|Pacific Bluffs beach
+Palomino Highlands|Palomino Highlands

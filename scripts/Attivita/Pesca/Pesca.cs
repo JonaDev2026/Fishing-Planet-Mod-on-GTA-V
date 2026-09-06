@@ -90,6 +90,41 @@ public class Pesca : Script
     }
 
     // il nome di un pesce nella lingua scelta
+    // I NOMI DELLE ZONE IN INGLESE, da zone_en.txt: la chiave resta italiana
+    Dictionary<string, string> zoneEn = new Dictionary<string, string>();
+
+    void CaricaZoneEn()
+    {
+        zoneEn.Clear();
+        string[] r = LeggiRighe("zone_en.txt");
+        int i;
+        for (i = 0; i < r.Length; i++)
+        {
+            string l = r[i].Trim();
+            if (l.Length == 0 || l[0] == '#') continue;
+            string[] c = l.Split('|');
+            if (c.Length > 1) zoneEn[c[0].Trim()] = c[1].Trim();
+        }
+    }
+
+    string NomeZona(string it)
+    {
+        if (lang == 1 || it == null) return it;
+        if (zoneEn.Count == 0) CaricaZoneEn();
+        string v;
+        if (zoneEn.TryGetValue(it.Trim(), out v)) return v;
+        return it;
+    }
+
+    string TipoAcqua(string t)
+    {
+        if (t == "lago") return L("lake", "lago");
+        if (t == "fiume") return L("river", "fiume");
+        if (t == "mare") return L("sea", "mare");
+        if (t == "palude") return L("marsh", "palude");
+        return t;
+    }
+
     string NomeIt(string en)
     {
         if (lang != 1 || en == null) return en;
@@ -447,6 +482,17 @@ public class Pesca : Script
         int i;
         for (i = 0; i < arCodice.Count; i++) if (arCodice[i] == zona) return i;
         return -1;
+    }
+
+    // il nome dell'acqua vera in inglese: i paesi tradotti
+    string GruppoL(string g)
+    {
+        if (lang == 1 || g == null) return g;
+        return g.Replace("Fiordo di ", "").Replace(", Norvegia", " fjord, Norway").Replace(", Francia", ", France")
+                .Replace(", Ucraina", ", Ukraine").Replace(", Olanda", ", Netherlands").Replace(", Giappone", ", Japan")
+                .Replace(", Cechia", ", Czech Republic").Replace(", Germania", ", Germany").Replace(", Maldive", ", Maldives")
+                .Replace("Tevere, Italia", "Tiber, Italy").Replace(", Italia", ", Italy").Replace(", Spagna", ", Spain").Replace(", Brasile", ", Brazil")
+                .Replace(", Sudafrica", ", South Africa").Replace(", Russia", ", Russia").Replace(", Canada", ", Canada");
     }
 
     string NomeGruppo(string zona)
@@ -3565,7 +3611,7 @@ public class Pesca : Script
         int luZ = LuogoDalNome(t.Zona);
         int luO = LuogoQui();
         if (luZ >= 0 && luO != luZ)
-        { Avviso("~r~" + L("The competition is at " + t.Zona + ".",
+        { Avviso("~r~" + L("The competition is at " + NomeZona(t.Zona) + ".",
                            "Il torneo e' a " + t.Zona + ".")); return; }
         if (!pagata && Soldi() < t.Quota)
         { Avviso("~r~" + L("Entry is $" + Soldo(t.Quota) + ".",
@@ -3648,7 +3694,7 @@ public class Pesca : Script
         int luZ = LuogoDalNome(t.Zona);
         int lu = LuogoQui();
         if (lu < 0 || (luZ >= 0 && lu != luZ))
-        { Messaggio(L("The competition is at ", "Il torneo e' a ") + t.Zona); return false; }
+        { Messaggio(L("The competition is at ", "Il torneo e' a ") + NomeZona(t.Zona)); return false; }
         if (!AttrezzaturaMinima()) return false;
         // la giornata del torneo, senza licenza: vale la zona del posto
         licZona = CodiceLuogo(lu);
@@ -4340,7 +4386,7 @@ public class Pesca : Script
             if (luV >= 0 && CodiceLuogo(luV) != licZona)
             {
                 string bzV;
-                Avviso("~r~" + L("The licence is for ", "La licenza e' per ") + NomeChiosco(licZona, out bzV) + ".");
+                Avviso("~r~" + L("The licence is for ", "La licenza e' per ") + GruppoL(NomeChiosco(licZona, out bzV)) + ".");
                 return true;
             }
             if (!VicinoAllAcqua()) { Avviso("~y~" + L("You are not on the shore.", "Non sei in riva.")); return true; }
@@ -4372,7 +4418,7 @@ public class Pesca : Script
             arAx[la] = pa.X; arAy[la] = pa.Y; arAcc[la] = true;
             SalvaAccessi();
             MettiBlipPunti();
-            Avviso("~g~" + L("Start point marked: ", "Punto di partenza segnato: ") + arNome[la] + ".");
+            Avviso("~g~" + L("Start point marked: ", "Punto di partenza segnato: ") + NomeZona(arNome[la]) + ".");
             ScriviAcque();
             return true;
         }
@@ -4496,7 +4542,7 @@ public class Pesca : Script
             int az = Numero(arg);
             if (az < 0 || az >= arNome.Count) return false;
             Function.Call(Hash.SET_NEW_WAYPOINT, PuntoX(az), PuntoY(az));
-            Avviso("~g~" + L("Waypoint on ", "Segnaposto su ") + arNome[az] + ".");
+            Avviso("~g~" + L("Waypoint on ", "Segnaposto su ") + NomeZona(arNome[az]) + ".");
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
@@ -4509,7 +4555,7 @@ public class Pesca : Script
             if (lu < 0) { Avviso("~y~" + L("I do not know where this spot is.", "Non so dove sia questa zona.")); return true; }
             // il segnaposto va al centro dell'area del torneo
             Function.Call(Hash.SET_NEW_WAYPOINT, PuntoX(lu), PuntoY(lu));
-            Avviso("~g~" + L("Waypoint on ", "Segnaposto su ") + tt.Zona + ".~s~  " + tt.Nome);
+            Avviso("~g~" + L("Waypoint on ", "Segnaposto su ") + NomeZona(tt.Zona) + ".~s~  " + tt.Nome);
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
@@ -5355,7 +5401,7 @@ public class Pesca : Script
         }
         if (luLic2 >= 0 && livelloPescatore < livMin)
         {
-            Avviso("~r~" + arNome[luLic2] + L(": level ", ": ci vuole il livello ") + livMin + L(" needed.", "."));
+            Avviso("~r~" + NomeZona(arNome[luLic2]) + L(": level ", ": ci vuole il livello ") + livMin + L(" needed.", "."));
             return false;
         }
         if (avvia && !AttrezzaturaMinima()) return false;
@@ -5406,12 +5452,12 @@ public class Pesca : Script
         int lu = LuogoQui();
         if (lu < 0 || CodiceLuogo(lu) != licZona)
         {
-            Avviso("~y~" + L("You are not at the licence spot: you paid for ", "Non sei sul posto della licenza: l'hai pagata per ") + NomeGruppo(licZona) + ".");
+            Avviso("~y~" + L("You are not at the licence spot: you paid for ", "Non sei sul posto della licenza: l'hai pagata per ") + GruppoL(NomeGruppo(licZona)) + ".");
             return false;
         }
         if (livelloPescatore < LivelloArea(lu))
         {
-            Avviso("~r~" + arNome[lu] + L(": level ", ": ci vuole il livello ") + LivelloArea(lu) + L(" needed.", "."));
+            Avviso("~r~" + NomeZona(arNome[lu]) + L(": level ", ": ci vuole il livello ") + LivelloArea(lu) + L(" needed.", "."));
             return false;
         }
         if (!AttrezzaturaMinima()) return false;
@@ -5827,7 +5873,7 @@ public class Pesca : Script
             }
             for (i = 0; i < ord.Count; i++)
             {
-                sbVoci.Add(arNome[ord[i]]);
+                sbVoci.Add(NomeZona(arNome[ord[i]]));
                 sbDestra.Add(L("Lv.", "Liv.") + LivelloArea(ord[i]));
                 sbArea.Add(ord[i]);
             }
@@ -6210,7 +6256,7 @@ public class Pesca : Script
         y += 6f;
         TestoMenu(EntraMenu(t.Nome, 0.40f, 4, cw2 - 16f), tx2, y, 0.40f, 4, 0, 245, 245, 250, 255); y += 24f;
         string pesce = (t.Pesce.Length > 0 && !t.Pesce.StartsWith("(")) ? NomeIt(t.Pesce) : L("everything", "tutto il lago");
-        TestoMenu(EntraMenu(pesce + "   " + t.Zona, 0.24f, 0, cw2 - 16f), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255); y += 16f;
+        TestoMenu(EntraMenu(pesce + "   " + NomeZona(t.Zona), 0.24f, 0, cw2 - 16f), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255); y += 16f;
         bool aperto = (livelloPescatore >= t.LivMin);
         if (aperto) TestoMenu(L("level ", "livello ") + t.LivMin, tx2, y, 0.24f, 0, 0, 245, 205, 80, 255);
         else TestoMenu(L("level ", "livello ") + t.LivMin + "   " + L("closed for you", "per te e' chiuso"), tx2, y, 0.24f, 0, 0, 235, 90, 80, 255);
@@ -6383,7 +6429,7 @@ public class Pesca : Script
         float pad = LeggiF("menu_pn_bordo", 10f);
         float x = px + pad, w = pw - pad * 2f;
         float ts = LeggiF("menu_eq_titolo_testo", 0.32f), ta = LeggiF("menu_eq_titolo_alto", 26f);
-        float y = SezioneColonna(arNome[a].ToUpper(), x, py + pad, w, ts, ta);
+        float y = SezioneColonna(NomeZona(arNome[a]).ToUpper(), x, py + pad, w, ts, ta);
         float fondo = py + ph - pad;
         if (diPesci.Count == 0)
         {
@@ -7160,8 +7206,8 @@ public class Pesca : Script
         float tx2 = x + 8f;
         // il nome e i dati
         y += 6f;
-        TestoMenu(EntraMenu(arNome[a], 0.40f, 4, cw2 - 16f), tx2, y, 0.40f, 4, 0, 245, 245, 250, 255); y += 24f;
-        TestoMenu(arTipo[a] + "   " + quanti + " " + L("species", "specie"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255); y += 16f;
+        TestoMenu(EntraMenu(NomeZona(arNome[a]), 0.40f, 4, cw2 - 16f), tx2, y, 0.40f, 4, 0, 245, 245, 250, 255); y += 24f;
+        TestoMenu(TipoAcqua(arTipo[a]) + "   " + quanti + " " + L("species", "specie"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255); y += 16f;
         if (aperta) TestoMenu(L("level ", "livello ") + LivelloArea(a), tx2, y, 0.24f, 0, 0, 245, 205, 80, 255);
         else TestoMenu(L("level ", "livello ") + LivelloArea(a) + "   " + L("closed for you", "per te e' chiusa"), tx2, y, 0.24f, 0, 0, 235, 90, 80, 255);
         y += 22f;
@@ -7886,7 +7932,7 @@ public class Pesca : Script
         for (q = 0; q < qs; q++)
             if (presoQui.ContainsKey(arNome[a] + "|" + arPesci[a][q])) scoperte++;
         int pct = (qs > 0) ? (int)(100f * scoperte / qs + 0.5f) : 0;
-        DisegnaTestoSinistra(arNome[a], px, py, 0.30f, 245, 245, 250);
+        DisegnaTestoSinistra(NomeZona(arNome[a]), px, py, 0.30f, 245, 245, 250);
         // la riga dell'esplorazione ha la sua altezza (esplora_y): sta sotto
         // livello e XP, in alto a sinistra
         float by = LeggiF("esplora_y", 280f);
