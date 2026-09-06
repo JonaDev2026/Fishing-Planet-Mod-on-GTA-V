@@ -6102,19 +6102,28 @@ public class Pesca : Script
     {
         List<string> r = new List<string>();
         if (t == null || t.Length == 0) return r;
+        // la misura del testo di GTA si ferma a 99 caratteri: si misura
+        // parola per parola e si sommano le larghezze
         string[] parole = t.Replace("|", " ").Split(' ');
+        float spazio = LarghezzaTesto("a a", scala, font) - LarghezzaTesto("aa", scala, font);
+        if (spazio <= 0f) spazio = scala * 10f;
         string riga = "";
+        float larga = 0f;
         int i;
         for (i = 0; i < parole.Length; i++)
         {
             if (parole[i].Length == 0) continue;
-            string prova = (riga.Length == 0) ? parole[i] : riga + " " + parole[i];
-            if (riga.Length > 0 && LarghezzaTesto(prova, scala, font) > maxW)
+            float wp = LarghezzaTesto(parole[i], scala, font);
+            if (riga.Length > 0 && larga + spazio + wp > maxW)
             {
                 r.Add(riga);
-                riga = parole[i];
+                riga = parole[i]; larga = wp;
             }
-            else riga = prova;
+            else
+            {
+                riga = (riga.Length == 0) ? parole[i] : riga + " " + parole[i];
+                larga = (larga <= 0f) ? wp : larga + spazio + wp;
+            }
         }
         if (riga.Length > 0) r.Add(riga);
         return r;
