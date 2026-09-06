@@ -5620,71 +5620,131 @@ public class Pesca : Script
     // IL PANNELLO DELLA ZONA, a destra della lista: il banner, due righe di
     // dati, i pesci che ci vivono con la loro foto, e in fondo il tasto
     // "Raggiungi il posto". Con DESTRA ci vai sopra, con SINISTRA torni.
+    // una sezione della colonna: la riga scura col titolo in maiuscolo
+    float SezioneColonna(string titolo, float x, float y, float w)
+    {
+        DisegnaRett(x, y, w, 20f, 255, 255, 255, 18);
+        TestoMenu(titolo, x + 8f, y + 2f, 0.26f, 4, 0, 245, 245, 250, 255);
+        return y + 24f;
+    }
+
     void DisegnaPannelloZona(float px, float py, float pw, float ph)
     {
         if (sbSel < 0 || sbSel >= sbArea.Count) return;
         int a = sbArea[sbSel];
         float pad = LeggiF("menu_pn_bordo", 10f);
-        // LA SECONDA COLONNA, accanto alla lista: in alto il riquadro col
-        // banner del posto, sotto i dati; a destra di tutto i pesci.
+        // LA COLONNA DEL POSTO, sullo stile della scheda di Fishing Planet:
+        // banner, ora e giornata, previsioni con la curva dell'attivita',
+        // le licenze, e in fondo il tasto per raggiungere il posto.
         float cw2 = LeggiF("menu_pn2_larga", 230f);
         float x = px + pad, y = py + pad;
-        float bh = LeggiF("menu_pn2_banner_alto", 130f);
-        DisegnaRett(x, y, cw2, bh, 0, 0, 0, 120);
+        float fondo = py + ph - pad;
+        DisegnaRett(x, y, cw2, fondo - y, 0, 0, 0, 120);
+        // il banner
+        float bh = LeggiF("menu_pn2_banner_alto", 70f);
         string ban = BannerArea(a);
         if (ban.Length > 0)
         {
             float ih = cw2 * 191f / 630f;
-            Sprite(ban, x, y + (bh - ih) * 0.5f, cw2, ih);
+            if (ih > bh) ih = bh;
+            Sprite(ban, x, y, cw2, ih);
+            y += ih;
         }
-        float iy = y + bh + 8f;
-        DisegnaRett(x, iy, cw2, py + ph - 40f - iy, 0, 0, 0, 120);
         int quanti = (a < arPesci.Count) ? arPesci[a].Count : 0;
         bool aperta = (livelloPescatore >= LivelloArea(a));
         float tx2 = x + 8f;
-        iy += 6f;
-        TestoMenu(arNome[a], tx2, iy, 0.40f, 4, 0, 245, 245, 250, 255);
-        iy += 24f;
-        TestoMenu(arTipo[a], tx2, iy, 0.26f, 0, 0, 200, 202, 210, 255); iy += 18f;
-        TestoMenu(quanti + " " + L("species", "specie"), tx2, iy, 0.26f, 0, 0, 200, 202, 210, 255); iy += 18f;
-        TestoMenu(L("level ", "livello ") + LivelloArea(a), tx2, iy, 0.26f, 0, 0, 245, 205, 80, 255); iy += 18f;
-        if (!aperta)
-        { TestoMenu(L("closed for you", "per te e' chiusa"), tx2, iy, 0.26f, 0, 0, 235, 90, 80, 255); iy += 18f; }
+        // il nome e i dati
+        y += 6f;
+        TestoMenu(arNome[a], tx2, y, 0.40f, 4, 0, 245, 245, 250, 255); y += 24f;
+        TestoMenu(arTipo[a] + "   " + quanti + " " + L("species", "specie"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255); y += 16f;
+        if (aperta) TestoMenu(L("level ", "livello ") + LivelloArea(a), tx2, y, 0.24f, 0, 0, 245, 205, 80, 255);
+        else TestoMenu(L("level ", "livello ") + LivelloArea(a) + "   " + L("closed for you", "per te e' chiusa"), tx2, y, 0.24f, 0, 0, 235, 90, 80, 255);
+        y += 22f;
+        // l'ora e la giornata
+        int hh = Function.Call<int>(Hash.GET_CLOCK_HOURS);
+        int mi = Function.Call<int>(Hash.GET_CLOCK_MINUTES);
+        TestoMenu(hh.ToString("00") + ":" + mi.ToString("00"), tx2, y, 0.34f, 4, 0, 245, 245, 250, 255);
+        if (inPesca && licGiorni > 0)
+            TestoMenu(L("Day ", "Giorno ") + "1/" + licGiorni + "   " + TempoCheResta(), x + cw2 - 8f, y + 4f, 0.24f, 0, 2, 200, 202, 210, 255);
+        y += 26f;
 
-        // i pesci: foto e nome, in griglia, a destra della colonna
+        // LE PREVISIONI: meteo e gradi, e la curva dell'attivita' del posto
+        y = SezioneColonna(L("FORECAST", "PREVISIONI"), x, y, cw2);
+        float ic = 18f;
+        Sprite("img\\hud\\meteo\\" + IconaMeteoHud() + ".png", tx2, y, ic, ic);
+        TestoMenu(GradiAria().ToString("0", CultureInfo.InvariantCulture) + "\u00B0C", tx2 + ic + 6f, y - 2f, 0.30f, 0, 0, 245, 245, 250, 255);
+        Sprite("img\\hud\\meteo\\acqua.png", tx2 + 90f, y, ic, ic);
+        TestoMenu(GradiAcqua().ToString("0", CultureInfo.InvariantCulture) + "\u00B0C", tx2 + 90f + ic + 6f, y - 2f, 0.30f, 0, 0, 245, 245, 250, 255);
+        y += 26f;
+        float gw = cw2 - 16f, ga = LeggiF("menu_pn2_grafico_alto", 46f);
+        string png = "img\\attivita\\" + a + "_" + ClasseMeteo() + ".png";
+        if (File.Exists(Path.Combine(MY_DIR, png))) Sprite(png, tx2, y, gw, ga);
+        float basso = y + ga;
+        DisegnaRett(tx2, basso, gw, 1f, 255, 255, 255, 120);
+        int k;
+        for (k = 0; k <= 24; k += 6)
+        {
+            float xk = tx2 + gw * k / 24f;
+            DisegnaRett(xk, basso, 1f, 3f, 255, 255, 255, 120);
+            DisegnaTesto("" + ((5 + k) % 24), xk, basso + 3f, 0.17f, 200, 202, 210);
+        }
+        // la riga dell'ora di adesso
+        float oraOra = hh + mi / 60f - 5f;
+        while (oraOra < 0f) oraOra += 24f;
+        DisegnaRett(tx2 + gw * oraOra / 24f, y, 1f, ga, 255, 255, 255, 200);
+        y = basso + 22f;
+
+        // LE LICENZE del posto, coi prezzi
+        y = SezioneColonna(L("LICENSES", "LICENZE"), x, y, cw2);
+        string cod = CodiceLuogo(a);
+        int p1 = PrezzoLicenza(cod, 1), p3 = PrezzoLicenza(cod, 3);
+        if (inPesca && licZona == cod)
+            TestoMenu(L("Active - ", "Attiva - ") + TempoCheResta(), tx2, y, 0.24f, 0, 0, 150, 235, 180, 255);
+        else if (p1 > 0)
+        {
+            TestoMenu(L("1 day", "1 giorno"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
+            TestoMenu("$" + Dollari(p1), x + cw2 - 8f, y, 0.24f, 0, 2, 130, 225, 180, 255);
+            y += 16f;
+            TestoMenu(L("3 days", "3 giorni"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
+            TestoMenu("$" + Dollari(p3), x + cw2 - 8f, y, 0.24f, 0, 2, 130, 225, 180, 255);
+        }
+        else TestoMenu(L("No license needed", "Senza licenza"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
+
+        // il tasto in fondo alla colonna
+        float by = fondo - 34f;
+        bool qui = (zonaQui == a);
+        string tb = qui ? L("You are here", "Sei qui") : L("Get to the spot", "Raggiungi il posto");
+        if (menuLato == 1 && !qui)
+        {
+            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, 245, 245, 250, 255);
+            TestoMenu(tb, x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, 20, 22, 28, 255);
+        }
+        else
+        {
+            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, 255, 255, 255, 30);
+            TestoMenu(tb, x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, qui ? 250 : 245, qui ? 175 : 245, qui ? 205 : 250, 255);
+        }
+
+        // I PESCI, a destra della colonna: foto e nome in griglia
         float gx = x + cw2 + pad;
-        float gw = px + pw - pad - gx;
+        float gw2 = px + pw - pad - gx;
         float th = LeggiF("menu_pn_pesce", 44f);
-        int perRiga = (int)(gw / (th + 34f));
+        int perRiga = (int)(gw2 / (th + 34f));
         if (perRiga < 1) perRiga = 1;
-        float cw = gw / perRiga;
+        float cw = gw2 / perRiga;
+        float gy = py + pad;
         int i, n = 0;
         for (i = 0; i < pesci.Count; i++)
         {
             if (a >= arPesci.Count || !arPesci[a].Contains(pesci[i].Nome)) continue;
             float cx = gx + (n % perRiga) * cw;
-            float cy2 = y + (n / perRiga) * (th + 18f);
-            if (cy2 + th + 14f > py + ph - 40f) break;
+            float cy2 = gy + (n / perRiga) * (th + 18f);
+            if (cy2 + th + 14f > fondo) break;
             if (pesci[i].Img.Length > 0) Sprite(pesci[i].Img, cx + (cw - th * 1.6f) * 0.5f, cy2, th * 1.6f, th);
             string nn = NomeIt(pesci[i].Nome);
             if (nn.Length > 16) nn = nn.Substring(0, 15) + ".";
             TestoMenu(nn, cx + cw * 0.5f, cy2 + th + 1f, 0.17f, 0, 1, 200, 202, 210, 255);
             n++;
-        }
-        // il tasto in fondo: acceso quando sei sul pannello
-        float w = pw - pad * 2f;
-        float by = py + ph - 34f;
-        bool qui = (zonaQui == a);
-        string tb = qui ? L("You are here", "Sei qui") : L("Get to the spot", "Raggiungi il posto");
-        if (menuLato == 1 && !qui)
-        {
-            DisegnaRett(x, by, w, 26f, 245, 245, 250, 255);
-            TestoMenu(tb, x + w * 0.5f, by + 4f, 0.28f, 0, 1, 20, 22, 28, 255);
-        }
-        else
-        {
-            DisegnaRett(x, by, w, 26f, 0, 0, 0, 120);
-            TestoMenu(tb, x + w * 0.5f, by + 4f, 0.28f, 0, 1, qui ? 250 : 245, qui ? 175 : 245, qui ? 205 : 250, 255);
         }
     }
 
