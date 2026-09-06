@@ -2607,6 +2607,8 @@ public class Pesca : Script
             {
                 licZona = c[1].Trim();
                 if (c.Length > 2) licGiorni = Numero(c[2]);
+                // vecchi salvataggi: licenza = giornata in corso. Quelli
+                // nuovi lo dicono con imp|in_pesca, letto dopo.
                 inPesca = (licZona.Length > 0 && licGiorni > 0);
             }
             else if (k == "campo" && c.Length > 4)
@@ -2668,6 +2670,7 @@ public class Pesca : Script
                 if (c[1].Trim() == "profondita_cm") profondita = Numero(c[2]) / 100f;
                 if (c[1].Trim() == "minuti") minutiFatti = Numero(c[2]);
                 if (c[1].Trim() == "soldi_nassa") soldiNassa = Numero(c[2]);
+                if (c[1].Trim() == "in_pesca") inPesca = (Numero(c[2]) != 0) && licZona.Length > 0 && licGiorni > 0;
                 if (c[1].Trim() == "frizione")
                 {
                     frizione = Numero(c[2]);
@@ -2733,6 +2736,7 @@ public class Pesca : Script
         v.Add("imp|profondita_cm|" + (int)(profondita * 100f + 0.5f));
         v.Add("imp|frizione|" + frizione);
         v.Add("imp|soldi_nassa|" + soldiNassa);
+        v.Add("imp|in_pesca|" + (inPesca ? "1" : "0"));
         v.Add("imp|minuti|" + minutiFatti);
         {
             long oraP = AdessoSec();
@@ -4455,6 +4459,13 @@ public class Pesca : Script
             if (a.Length < 2) return false;
             return CompraLicenza(a[0], Numero(a[1]));
         }
+        if (cmd == "licenza_tasca")
+        {
+            string[] a = arg.Split(' ');
+            if (a.Length < 2) return false;
+            return CompraLicenza(a[0], Numero(a[1]), false);
+        }
+        if (cmd == "inizia_pesca") return IniziaPesca();
         if (cmd == "marca") return Marca(arg);
         if (cmd == "smarca") return Smarca();
         if (cmd == "smetti") return FinePesca(true);
@@ -5184,31 +5195,37 @@ public class Pesca : Script
     // ------------------------------------------------------------
     bool CompraLicenza(string zona, int giorni)
     {
+        return CompraLicenza(zona, giorni, true);
+    }
+
+    // COMPRARE LA LICENZA E INIZIARE A PESCARE SONO DUE COSE. Dal menu
+    // nuovo la compri dove vuoi (avvia=false): resta in tasca finche' non
+    // sei sul posto e premi "Inizia a pescare" (IniziaPesca). Il trainer
+    // vecchio fa le due cose insieme (avvia=true), com'era.
+    bool CompraLicenza(string zona, int giorni, bool avvia)
+    {
         if (inPesca) return false;
         int prezzo = PrezzoLicenza(zona, giorni);
         if (prezzo <= 0) return false;
         // IL LIVELLO DELL'ACQUA.
         // Come su Fishing Planet: in certi posti non ti fanno entrare
         // finche' non sei del livello giusto. Non e' che il pesce non c'e',
-        // e' che quel lago non e' ancora aperto per te.
-        int luLic2 = LuogoQui();
-        if (luLic2 >= 0 && livelloPescatore < LivelloArea(luLic2))
+        // e' che quel lago non e' ancora aperto per te. Comprando da
+        // lontano vale il tratto piu' basso di quell'acqua.
+        int luLic2 = avvia ? LuogoQui() : IndiceLuogo(zona);
+        int livMin = (luLic2 >= 0) ? LivelloArea(luLic2) : 0;
+        if (!avvia)
         {
-            Avviso("~r~" + arNome[luLic2] + ": ci vuole il livello "
-                   + LivelloArea(luLic2) + ".");
+            int q;
+            for (q = 0; q < arCodice.Count; q++)
+                if (arCodice[q] == zona && LivelloArea(q) < livMin) livMin = LivelloArea(q);
+        }
+        if (luLic2 >= 0 && livelloPescatore < livMin)
+        {
+            Avviso("~r~" + arNome[luLic2] + ": ci vuole il livello " + livMin + ".");
             return false;
         }
-        // IL MINIMO PER PESCARE: canna, mulinello, lenza e la nassa.
-        // Attenzione a dove si guarda: un pezzo ARMATO non sta piu' in
-        // cassetta, sta sulla canna - e la lenza nemmeno li', sta sul
-        // mulinello. Contando solo la borsa, chi si era gia' preparato
-        // si sentiva dire di prepararsi.
-        if (!HoDavvero("canna") || !HoDavvero("mulinello")
-         || !HoLaLenza() || !HoDavvero("nassa"))
-        {
-            Messaggio("Prima prepara l'attrezzatura: canna, mulinello, lenza e nassa.");
-            return false;
-        }
+        if (avvia && !AttrezzaturaMinima()) return false;
         if (Soldi() < prezzo)
         {
             Avviso("~r~La licenza costa $" + prezzo + ", hai " + Soldi() + ".");
@@ -5217,12 +5234,70 @@ public class Pesca : Script
         Paga(prezzo);
         licZona = zona;
         licGiorni = giorni;
+        if (!avvia)
+        {
+            Avviso("~g~Licenza pagata: vai sul posto e inizia a pescare.");
+            SalvaStato();
+            return true;
+        }
+        return IniziaPesca();
+    }
+
+    // IL MINIMO PER PESCARE: canna, mulinello, lenza e la nassa.
+    // Attenzione a dove si guarda: un pezzo ARMATO non sta piu' in
+    // cassetta, sta sulla canna - e la lenza nemmeno li', sta sul
+    // mulinello. Contando solo la borsa, chi si era gia' preparato
+    // si sentiva dire di prepararsi.
+    bool AttrezzaturaMinima()
+    {
+        if (!HoDavvero("canna") || !HoDavvero("mulinello")
+         || !HoLaLenza() || !HoDavvero("nassa"))
+        {
+            Messaggio("Prima prepara l'attrezzatura: canna, mulinello, lenza e nassa.");
+            return false;
+        }
+        return true;
+    }
+
+    // hai la licenza in tasca (comprata, non ancora usata) per quest'acqua?
+    bool LicenzaInTasca(string zona)
+    {
+        return !inPesca && licZona == zona && licGiorni > 0;
+    }
+
+    // INIZIA A PESCARE: sul posto, con la licenza in tasca, parte la giornata
+    bool IniziaPesca()
+    {
+        if (inPesca) return false;
+        if (licZona.Length == 0 || licGiorni <= 0) { Avviso("~y~Prima compra la licenza."); return false; }
+        int lu = LuogoQui();
+        if (lu < 0 || CodiceLuogo(lu) != licZona)
+        {
+            Avviso("~y~Non sei sul posto della licenza: l'hai pagata per " + NomeGruppo(licZona) + ".");
+            return false;
+        }
+        if (livelloPescatore < LivelloArea(lu))
+        {
+            Avviso("~r~" + arNome[lu] + ": ci vuole il livello " + LivelloArea(lu) + ".");
+            return false;
+        }
+        if (!AttrezzaturaMinima()) return false;
         inPesca = true;
         Alba();
         SegnaCampo(Game.Player.Character);
         MettiCampo();
-        Avviso("~g~Licenza pagata. Buona pesca.");
+        Avviso("~g~Buona pesca.");
+        SalvaStato();
+        RiscriviTutto();
         return true;
+    }
+
+    string NomeGruppo(string zona)
+    {
+        int i;
+        for (i = 0; i < arCodice.Count; i++)
+            if (arCodice[i] == zona) return arGruppo[i];
+        return zona;
     }
 
     // IL PREZZO DELLA LICENZA: paghi per quello che puoi pescare. Un'acqua
@@ -5633,6 +5708,25 @@ public class Pesca : Script
     // IL PANNELLO DELLA ZONA, a destra della lista: il banner, due righe di
     // dati, i pesci che ci vivono con la loro foto, e in fondo il tasto
     // "Raggiungi il posto". Con DESTRA ci vai sopra, con SINISTRA torni.
+    int pnSel = 0;       // la riga scelta nella colonna (licenze, poi il tasto)
+    int pnRighe = 0;     // quante righe di licenza ci sono adesso
+
+    void RigaLicenza(float x, float cw2, float y, string testo, int prezzo, int k)
+    {
+        bool sel = (menuLato == 1 && pnSel == k);
+        if (sel)
+        {
+            DisegnaRett(x + 6f, y - 3f, cw2 - 12f, 18f, 245, 245, 250, 255);
+            TestoMenu(testo, x + 12f, y, 0.24f, 0, 0, 20, 22, 28, 255);
+            TestoMenu("$" + prezzo, x + cw2 - 12f, y, 0.24f, 0, 2, 20, 22, 28, 255);
+        }
+        else
+        {
+            TestoMenu(testo, x + 12f, y, 0.24f, 0, 0, 200, 202, 210, 255);
+            TestoMenu("$" + prezzo, x + cw2 - 12f, y, 0.24f, 0, 2, 130, 225, 180, 255);
+        }
+    }
+
     // una sezione della colonna: la riga scura col titolo in maiuscolo
     float SezioneColonna(string titolo, float x, float y, float w)
     {
@@ -5707,35 +5801,46 @@ public class Pesca : Script
         DisegnaRett(tx2 + gw * oraOra / 24f, y, 1f, ga, 255, 255, 255, 200);
         y = basso + 22f;
 
-        // LE LICENZE del posto, coi prezzi
+        // LE LICENZE del posto: due righe che si comprano con A (quando
+        // sei sulla colonna, la croce sceglie la riga)
         y = SezioneColonna(L("LICENSES", "LICENZE"), x, y, cw2);
         string cod = CodiceLuogo(a);
         int p1 = PrezzoLicenza(cod, 1), p3 = PrezzoLicenza(cod, 3);
+        pnRighe = 0;
         if (inPesca && licZona == cod)
             TestoMenu(L("Active - ", "Attiva - ") + TempoCheResta(), tx2, y, 0.24f, 0, 0, 150, 235, 180, 255);
+        else if (LicenzaInTasca(cod))
+            TestoMenu(L("Bought: ", "Comprata: ") + licGiorni + (licGiorni == 1 ? L(" day", " giorno") : L(" days", " giorni")),
+                      tx2, y, 0.24f, 0, 0, 150, 235, 180, 255);
         else if (p1 > 0)
         {
-            TestoMenu(L("1 day", "1 giorno"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
-            TestoMenu("$" + p1, x + cw2 - 8f, y, 0.24f, 0, 2, 130, 225, 180, 255);
-            y += 16f;
-            TestoMenu(L("3 days", "3 giorni"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
-            TestoMenu("$" + p3, x + cw2 - 8f, y, 0.24f, 0, 2, 130, 225, 180, 255);
+            RigaLicenza(x, cw2, y, L("1 day", "1 giorno"), p1, 0);
+            y += 20f;
+            RigaLicenza(x, cw2, y, L("3 days", "3 giorni"), p3, 1);
+            pnRighe = 2;
         }
         else TestoMenu(L("No license needed", "Senza licenza"), tx2, y, 0.24f, 0, 0, 200, 202, 210, 255);
 
-        // il tasto in fondo alla colonna
+        // IL TASTO IN FONDO, a stati: lontano "Raggiungi il posto"; sul posto
+        // "Ti trovi qui"; sul posto con la licenza in tasca "Inizia a
+        // pescare"; con la giornata in corso "Stai pescando".
         float by = fondo - 34f;
         bool qui = (zonaQui == a);
-        string tb = qui ? L("You are here", "Sei qui") : L("Get to the spot", "Raggiungi il posto");
-        if (menuLato == 1 && !qui)
+        string tb; bool attivo;
+        if (!qui) { tb = L("Get to the spot", "Raggiungi il posto"); attivo = true; }
+        else if (inPesca && licZona == cod) { tb = L("Fishing", "Stai pescando"); attivo = false; }
+        else if (LicenzaInTasca(cod)) { tb = L("Start fishing", "Inizia a pescare"); attivo = true; }
+        else { tb = L("You are here", "Ti trovi qui"); attivo = false; }
+        bool selB = (menuLato == 1 && pnSel == pnRighe);
+        if (selB && attivo)
         {
             DisegnaRett(x + 6f, by, cw2 - 12f, 26f, 245, 245, 250, 255);
             TestoMenu(tb, x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, 20, 22, 28, 255);
         }
         else
         {
-            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, 255, 255, 255, 30);
-            TestoMenu(tb, x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, qui ? 250 : 245, qui ? 175 : 245, qui ? 205 : 250, 255);
+            DisegnaRett(x + 6f, by, cw2 - 12f, 26f, 255, 255, 255, selB ? 60 : 30);
+            TestoMenu(tb, x + cw2 * 0.5f, by + 4f, 0.28f, 0, 1, attivo ? 245 : 250, attivo ? 245 : 175, attivo ? 250 : 205, 255);
         }
 
         // I PESCI, a destra della colonna: foto e nome in griglia
@@ -5780,20 +5885,38 @@ public class Pesca : Script
         }
         else if (menuLato == 0 && dx)
         {
-            menuLato = 1; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
+            menuLato = 1; pnSel = pnRighe; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
         }
         else if (menuLato == 1 && sx)
         {
             menuLato = 0; menuNuovoTasto = now + 150; TicMenu("NAV_UP_DOWN");
         }
+        else if (menuLato == 1 && (su || giu))
+        {
+            int n = pnRighe + 1;
+            pnSel = (pnSel + (giu ? 1 : n - 1)) % n;
+            menuNuovoTasto = now + 120;
+            TicMenu("NAV_UP_DOWN");
+        }
         else if (menuLato == 1 && ok && sbSel < sbArea.Count)
         {
             int a = sbArea[sbSel];
-            if (zonaQui != a)
+            string cod = CodiceLuogo(a);
+            menuNuovoTasto = now + 300;
+            if (pnSel < pnRighe)
+            {
+                // compra la licenza: 1 o 3 giorni, resta in tasca
+                if (CompraLicenza(cod, pnSel == 0 ? 1 : 3, false)) SuonoMenu("menu_apri.wav");
+                pnSel = 0;
+            }
+            else if (zonaQui != a)
             {
                 Esegui("gps_zona " + a);
-                menuNuovoTasto = now + 300;
                 SuonoMenu("menu_apri.wav");
+            }
+            else if (LicenzaInTasca(cod))
+            {
+                if (IniziaPesca()) { SuonoMenu("menu_apri.wav"); ChiudiMenuNuovo(); }
             }
         }
     }
@@ -5885,7 +6008,8 @@ public class Pesca : Script
         }
         if (menuScheda == 0 && menuLato == 1)
         {
-            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Get to the spot", "Raggiungi il posto"));
+            Voce(ic, tx, "croce_sugiu", "^ v", L("Choose", "Scegli"));
+            Voce(ic, tx, "a", L("ENTER", "INVIO"), L("Confirm", "Conferma"));
             Voce(ic, tx, "croce_sxdx", "<", L("List", "Lista"));
         }
         Voce(ic, tx, "b", "ESC", L("Back", "Indietro"));
