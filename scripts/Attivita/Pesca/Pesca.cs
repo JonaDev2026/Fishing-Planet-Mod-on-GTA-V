@@ -1186,7 +1186,7 @@ public class Pesca : Script
         for (i = 0; i < cassette.Count; i++)
         {
             Cassetta x = cassette[i];
-            string et = x.Nome + "   " + x.Attrezzi + " attrezzi";
+            string et = x.Nome + "   " + x.Attrezzi + " oggetti";
             if (x.Lenze.Length > 0) et += "   " + x.Lenze + " lenze";
             if (x.Mulinelli.Length > 0) et += "   " + x.Mulinelli + " mulinelli";
             string ds = "Liv." + x.LivWiki + "   $" + Dollari(x.Prezzo);
@@ -5043,7 +5043,7 @@ public class Pesca : Script
         if (cat == "cassetta")
             for (i = 0; i < cassette.Count; i++)
                 if (cassette[i].Id == id)
-                    return cassette[i].Attrezzi + " attrezzi   " + cassette[i].Lenze + " lenze";
+                    return cassette[i].Attrezzi + " oggetti   " + cassette[i].Lenze + " lenze";
         return "";
     }
 
@@ -5201,11 +5201,10 @@ public class Pesca : Script
         Capienza(out mc, out mm, out ml, out mr);
         // la roba minuta sta nello zaino finche' non compri la cassetta:
         // scrivere sempre "Cassetta" era falso
-        string dove = (InBorsa("cassetta") > 0) ? "Cassetta" : "Zaino";
         return "Canne " + InBorsa("canna") + "/" + mc
              + "  Mulinelli " + InBorsa("mulinello") + "/" + mm
              + "  Lenze " + InBorsa("lenza") + "/" + ml
-             + "  " + dove + " " + RobaMinuta() + "/" + mr
+             + "  Oggetti " + RobaMinuta() + "/" + mr
              + "  Nassa " + InBorsa("nassa") + "/1";
     }
 
@@ -5764,7 +5763,7 @@ public class Pesca : Script
             {
                 Sprite("img/cassette/Base.png", x + 4f, y + 4f, iw, ih);
                 TestoMenu(L("Backpack", "Zaino"), tx, y + 6f, 0.26f, 0, 0, 245, 245, 250, 255);
-                TestoMenu(ZAINO_ROBA + " attrezzi   " + ZAINO_LENZE + " lenze", tx, y + 6f + 18f,
+                TestoMenu(ZAINO_ROBA + " oggetti   " + ZAINO_LENZE + " lenze", tx, y + 6f + 18f,
                           0.22f, 0, 0, 200, 202, 210, 255);
             }
             else
