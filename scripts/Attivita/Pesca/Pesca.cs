@@ -5354,12 +5354,19 @@ public class Pesca : Script
             menuNuovoAperto = true;
             menuNuovoTasto = now + 400;
             menuNuovoPausaDa = now;
-            try
+            try { Game.TimeScale = 0f; } catch { }
+            // L'AUDIO DEL MONDO SI SPEGNE con le scene audio del gioco:
+            // i nomi stanno in config (menu_audio, separati da ;) cosi' si
+            // provano senza ricompilare. Piu' scene insieme si sommano.
+            string[] scene = LeggiS("menu_audio", "FBI_HEIST_H5_MUTE_AMBIENCE_SCENE;CHARACTER_CHANGE_IN_SKY_SCENE").Split(';');
+            int q;
+            for (q = 0; q < scene.Length; q++)
             {
-                Game.TimeScale = 0f;
-                Function.Call(Hash.START_AUDIO_SCENE, "CHARACTER_CHANGE_IN_SKY_SCENE");
+                string sc = scene[q].Trim();
+                if (sc.Length == 0) continue;
+                try { Function.Call(Hash.START_AUDIO_SCENE, sc); } catch { }
             }
-            catch { }
+            try { Function.Call(Hash.SET_AUDIO_FLAG, "DisableFlightMusic", true); } catch { }
             Suono("SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET");
             return true;
         }
@@ -5380,12 +5387,16 @@ public class Pesca : Script
         if (!menuNuovoAperto) return;
         menuNuovoAperto = false;
         menuNuovoTasto = Game.GameTime + 400;
-        try
+        try { Game.TimeScale = 1f; } catch { }
+        string[] scene = LeggiS("menu_audio", "FBI_HEIST_H5_MUTE_AMBIENCE_SCENE;CHARACTER_CHANGE_IN_SKY_SCENE").Split(';');
+        int q;
+        for (q = 0; q < scene.Length; q++)
         {
-            Game.TimeScale = 1f;
-            Function.Call(Hash.STOP_AUDIO_SCENE, "CHARACTER_CHANGE_IN_SKY_SCENE");
+            string sc = scene[q].Trim();
+            if (sc.Length == 0) continue;
+            try { Function.Call(Hash.STOP_AUDIO_SCENE, sc); } catch { }
         }
-        catch { }
+        try { Function.Call(Hash.SET_AUDIO_FLAG, "DisableFlightMusic", false); } catch { }
         // l'orologio della pesca non deve aver contato il tempo in pausa
         prossimoMinuto += Game.GameTime - menuNuovoPausaDa;
         Suono("BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET");
