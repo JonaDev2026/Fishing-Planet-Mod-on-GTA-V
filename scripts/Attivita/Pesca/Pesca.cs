@@ -26,6 +26,25 @@ public class Pesca : Script
 
     void LeggiLingua()
     {
+        // la lingua sta nel nostro config.ini (lingua=0 inglese, 1 italiano);
+        // se manca si guarda quella del vecchio trainer
+        try
+        {
+            string fm = Path.Combine(MY_DIR, "config.ini");
+            if (File.Exists(fm))
+            {
+                string[] rm = File.ReadAllLines(fm);
+                int im;
+                for (im = 0; im < rm.Length; im++)
+                {
+                    string l = rm[im].Trim();
+                    if (!l.StartsWith("lingua=")) continue;
+                    int vm;
+                    if (int.TryParse(l.Substring(7).Trim(), out vm)) { lang = vm; return; }
+                }
+            }
+        }
+        catch { }
         try
         {
             string f = Path.Combine(TRAINER_DIR, "config.ini");
@@ -5522,6 +5541,7 @@ public class Pesca : Script
     // sono spenti tranne i nostri, e l'orologio della pesca si ferma.
     // B chiude. Per ora dentro c'e' solo il velo e il titolo.
     bool menuNuovoAperto = false;
+    bool menuTastoGiu = false;
     int menuNuovoPausaDa = 0;
     int menuNuovoTasto = 0;
 
@@ -5538,7 +5558,18 @@ public class Pesca : Script
                || Function.Call<bool>(Hash.IS_CONTROL_PRESSED, 0, 44);
         bool sx = Function.Call<bool>(Hash.IS_DISABLED_CONTROL_JUST_PRESSED, 0, 174)
                || Function.Call<bool>(Hash.IS_CONTROL_JUST_PRESSED, 0, 174);
-        bool combo = rb && sx && now > menuNuovoTasto;
+        // dalla tastiera: il tasto di menu_tasto (F7)
+        bool tasto = false;
+        try
+        {
+            string nt = LeggiS("menu_tasto", "F7");
+            System.Windows.Forms.Keys kk = (System.Windows.Forms.Keys)Enum.Parse(typeof(System.Windows.Forms.Keys), nt, true);
+            bool giu = Game.IsKeyPressed(kk);
+            tasto = giu && !menuTastoGiu;
+            menuTastoGiu = giu;
+        }
+        catch { }
+        bool combo = (rb && sx || tasto) && now > menuNuovoTasto;
         if (!menuNuovoAperto)
         {
             if (!combo) return false;
@@ -13115,6 +13146,27 @@ public class Pesca : Script
 
     // i valori regolati a mano stanno in config.ini, come nella mod vecchia:
     // cosi' si ritoccano a gioco acceso senza ricompilare
+    // cambia (o aggiunge) una chiave in config.ini
+    void ScriviCfg(string chiave, string valore)
+    {
+        try
+        {
+            string f = Path.Combine(MY_DIR, "config.ini");
+            List<string> r = new List<string>();
+            if (File.Exists(f)) r.AddRange(File.ReadAllLines(f));
+            bool fatto = false;
+            int i;
+            for (i = 0; i < r.Count; i++)
+            {
+                string l = r[i].Trim();
+                if (l.StartsWith(chiave + "=")) { r[i] = chiave + "=" + valore; fatto = true; }
+            }
+            if (!fatto) r.Add(chiave + "=" + valore);
+            File.WriteAllLines(f, r.ToArray());
+        }
+        catch { }
+    }
+
     float LeggiF(string chiave, float dif)
     {
         try
