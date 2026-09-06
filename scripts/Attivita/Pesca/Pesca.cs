@@ -1138,6 +1138,10 @@ public class Pesca : Script
         CaricaStato();
         livelloPescatore = LivelloDa(xpTot);
         ViaSfocatura();
+        // se il gioco era rimasto in muto (crash o ricarica col menu
+        // aperto: Windows si ricorda il muto per programma e per
+        // dispositivo) lo si toglie subito
+        SbloccaAudio();
         // il campo torna dov'era, se la licenza e' ancora in corso
         if (inPesca && campoMesso) MettiCampo();
         ScaffaliDelNegozio();
@@ -5871,6 +5875,19 @@ public class Pesca : Script
         return audioSessione;
     }
 
+    // GTA fuori dal muto, sempre: non si torna a "com'era", perche' se
+    // "com'era" era un muto lasciato da noi resterebbe cosi' per sempre
+    void SbloccaAudio()
+    {
+        try
+        {
+            audioSessione = null;
+            ISimpleAudioVolume v = SessioneAudio();
+            if (v != null) { Guid g = Guid.Empty; v.SetMute(false, ref g); }
+        }
+        catch { }
+    }
+
     void AbbassaAudio()
     {
         if (audioAbbassato) return;
@@ -5891,12 +5908,7 @@ public class Pesca : Script
     void RialzaAudio()
     {
         if (!audioAbbassato) return;
-        try
-        {
-            ISimpleAudioVolume v = SessioneAudio();
-            if (v != null) { Guid g = Guid.Empty; v.SetMute(audioEraMuto, ref g); }
-        }
-        catch { }
+        SbloccaAudio();
         audioAbbassato = false;
     }
 
