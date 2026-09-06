@@ -5474,10 +5474,27 @@ public class Pesca : Script
         audioAbbassato = false;
     }
 
+    // un colore "r,g,b" dal config, con il suo valore di partenza
+    int[] ColoreCfg(string chiave, int r, int g, int b)
+    {
+        int[] c = new int[] { r, g, b };
+        string v = LeggiS(chiave, "");
+        if (v.Length == 0) return c;
+        string[] pz = v.Split(',');
+        if (pz.Length < 3) return c;
+        int x;
+        if (int.TryParse(pz[0].Trim(), out x)) c[0] = x;
+        if (int.TryParse(pz[1].Trim(), out x)) c[1] = x;
+        if (int.TryParse(pz[2].Trim(), out x)) c[2] = x;
+        return c;
+    }
+
     void DisegnaMenuNuovo()
     {
-        // il velo scuro su tutto, e il titolo: il resto arriva
-        DisegnaRett(0f, 0f, 1280f, 720f, 0, 0, 0, (int)LeggiF("menu_velo", 170f));
+        // il pannello a tutto schermo: grigio scuro trasparente, lo stesso
+        // grigio delle righe del trainer (menu_bg r,g,b e menu_velo alfa)
+        int[] bg = ColoreCfg("menu_bg", 30, 32, 38);
+        DisegnaRett(0f, 0f, 1280f, 720f, bg[0], bg[1], bg[2], (int)LeggiF("menu_velo", 215f));
         DisegnaTesto(L("FISHING", "PESCA"), 640f, 60f, 0.9f, 245, 245, 250);
         DisegnaTesto(L("B  back", "B  indietro"), 640f, 660f, 0.28f, 200, 202, 210);
     }
