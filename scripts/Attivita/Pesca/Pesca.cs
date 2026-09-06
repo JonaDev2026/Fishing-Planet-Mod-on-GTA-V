@@ -5701,6 +5701,16 @@ public class Pesca : Script
     // IL PANNELLO DELLA ZONA, a destra della lista: il banner, due righe di
     // dati, i pesci che ci vivono con la loro foto, e in fondo il tasto
     // "Raggiungi il posto". Con DESTRA ci vai sopra, con SINISTRA torni.
+    // il posto dove sei, per il menu: ricalcolato ogni mezzo secondo
+    int luogoMenu = -1;
+    int luogoMenuQuando = 0;
+    int LuogoQuiMenu()
+    {
+        int now = OraPc();
+        if (now - luogoMenuQuando > 500) { luogoMenuQuando = now; luogoMenu = LuogoQui(); }
+        return luogoMenu;
+    }
+
     int pnSel = 0;       // la riga scelta nella colonna (licenze, poi il tasto)
     int pnRighe = 0;     // quante righe di licenza ci sono adesso
 
@@ -5818,7 +5828,8 @@ public class Pesca : Script
         // "Ti trovi qui"; sul posto con la licenza in tasca "Inizia a
         // pescare"; con la giornata in corso "Stai pescando".
         float by = fondo - 34f;
-        bool qui = (zonaQui == a);
+        // dove sei adesso, non dove eri quando e' stata scritta la pagina
+        bool qui = (LuogoQuiMenu() == a);
         // ogni stato ha il suo colore: verdolino per raggiungere, rosa
         // quando sei qui, arancione (quello di Fishing Planet) per iniziare
         string tb; bool attivo; int br, bg2, bb;
@@ -5908,7 +5919,7 @@ public class Pesca : Script
                 if (CompraLicenza(cod, pnSel == 0 ? 1 : 3, false)) SuonoMenu("menu_apri.wav");
                 pnSel = 0;
             }
-            else if (zonaQui != a)
+            else if (LuogoQuiMenu() != a)
             {
                 Esegui("gps_zona " + a);
                 SuonoMenu("menu_apri.wav");
