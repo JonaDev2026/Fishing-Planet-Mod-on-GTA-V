@@ -5855,8 +5855,18 @@ public class Pesca : Script
         float fondo = py + ph - pad;
         ColonnaEquip(eqCasa, ref eqSelCasa, ref eqTopCasa, menuLato == 1,
                      L("AT HOME", "A CASA"), px + pad, py + pad, w, fondo);
+        // il titolo della colonna e' il nome di quello che porti: lo zaino
+        // finche' non compri una cassetta, poi il nome della cassetta
+        string tit = L("BACKPACK", "ZAINO");
+        string kc = PossiedoFisso("cassetta");
+        if (kc.Length > 0)
+        {
+            string nome, img; int prezzo, liv;
+            if (Articolo("cassetta", Numero(kc.Split(':')[1]), out nome, out img, out prezzo, out liv))
+                tit = nome.ToUpper();
+        }
         ColonnaEquip(eqBorsa, ref eqSelBorsa, ref eqTopBorsa, menuLato == 2,
-                     L("TACKLE BOX", "CASSETTA"), px + pad * 2f + w, py + pad, w, fondo);
+                     tit, px + pad * 2f + w, py + pad, w, fondo);
     }
 
     void DisegnaSidebar(float mx, float cy, float ch)
