@@ -5961,12 +5961,14 @@ public class Pesca : Script
 
         // I DATI: etichetta grigia, valore bianco, su due colonne
         float c2 = x + w * 0.5f;
-        Dato(x, y, L("Price", "Prezzo"), "$" + sp.PrC + "/kg");
-        Dato(c2, y, L("Hook", "Amo"), sp.Amo);
+        // i colori di sempre: prezzo verde, amo azzurro, il resto bianco,
+        // la temperatura gialla
+        Dato(x, y, L("Price", "Prezzo"), "$" + sp.PrC + "/kg", 130, 225, 180);
+        Dato(c2, y, L("Hook", "Amo"), sp.Amo, 130, 200, 245);
         y += 22f;
-        Dato(x, y, L("Feeds", "Mangia"), QuandoIt(sp.Quando));
+        Dato(x, y, L("Feeds", "Mangia"), QuandoIt(sp.Quando), 245, 245, 250);
         if (sp.TMin >= 0f)
-            Dato(c2, y, L("Water", "Acqua"), sp.TMin.ToString("0") + "-" + sp.TMax.ToString("0") + "\u00B0C");
+            Dato(c2, y, L("Water", "Acqua"), sp.TMin.ToString("0") + "-" + sp.TMax.ToString("0") + "\u00B0C", 245, 205, 80);
         y += 22f;
         if (sp.Denti > 0)
         {
@@ -6061,10 +6063,10 @@ public class Pesca : Script
     }
 
     // etichetta grigia e valore bianco, uno sotto l'altro stretti
-    void Dato(float x, float y, string etichetta, string valore)
+    void Dato(float x, float y, string etichetta, string valore, int r, int g, int b)
     {
         TestoMenu(etichetta.ToUpper(), x, y, 0.18f, 0, 0, 150, 152, 160, 255);
-        TestoMenu(valore, x + 62f, y - 2f, 0.26f, 0, 0, 245, 245, 250, 255);
+        TestoMenu(valore, x + 62f, y - 2f, 0.26f, 0, 0, r, g, b, 255);
     }
 
     void TastiSidebar(int now)
